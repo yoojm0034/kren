@@ -11,8 +11,8 @@
         <div class="container is-fluid">
             <div class="navbar-brand">
                 <a href="/" class="navbar-item">
-                    <img class="logo light-image" src="${pageContext.request.contentType}/resources/template/assets/img/logo/krenlogo.png" width="112" height="28" alt="">
-                    <img class="logo dark-image" src="${pageContext.request.contentType}/resources/template/assets/img/logo/friendkit-white.svg" width="112" height="28" alt="">
+                    <img class="logo light-image" src="resources/template/assets/img/logo/krenlogo.png" width="112" height="28" alt="">
+                    <img class="logo dark-image" src="resources/template/assets/img/logo/friendkit-white.svg" width="112" height="28" alt="">
                 </a>
             </div>
             <div class="navbar-menu">

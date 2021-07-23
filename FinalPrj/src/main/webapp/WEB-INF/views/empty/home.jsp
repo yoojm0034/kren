@@ -33,6 +33,7 @@
                             <div class="buttons">
                                 <a href="#landing-start" class="button">Sign In</a>
                                 <button id="tour-start" class="button is-hidden-mobile">Sign Up</button>
+                                <button id="tour-start" class="button is-hidden-mobile" onclick="location.href='test.do'">테스트페이지</button>                                
                             </div>
 						</div>
 					</div>
