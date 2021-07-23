@@ -9,9 +9,12 @@ public class HomeController {
 	
 	@RequestMapping("home.do")
 	public String home() {
-		
-		
 		return "empty/home";
+	}
+
+	@RequestMapping("test.do")
+	public String test() {
+		return "main/test";
 	}
 	
 }

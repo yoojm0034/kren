@@ -16,7 +16,7 @@
 	<!-- Data Source DBCP -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>	
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>	
+		<property name="url" value="jdbc:oracle:thin:@192.168.0.76:1521:xe"></property>	
 		<property name="username" value="kren"></property>
 		<property name="password" value="kren"></property>
 	</bean>		

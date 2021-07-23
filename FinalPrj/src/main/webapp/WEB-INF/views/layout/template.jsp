@@ -5,17 +5,21 @@
 <!DOCTYPE html>
 <html class="html1">
 <head>
-<title>KREN</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta http-equiv="x-ua-compatible" content="ie=edge">
-<link rel="icon" type="image/png" href="${pageContext.request.contentType}/resources/template/assets/img/favicon.png" />
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-<!-- Core CSS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/app.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	<title>KREN</title>
+	<link rel="icon" type="image/png" href="${pageContext.request.contentType}/resources/template/assets/img/favicon.png" />
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
+
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/app.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 </head>
 
 <body>
@@ -23,9 +27,12 @@
 		<tiles:insertAttribute name="head">
 		</tiles:insertAttribute>
 	</div>
-	<div>
+	<div class="view-wrapper">
+        <!-- Container -->
+        
 		<tiles:insertAttribute name="content">
 		</tiles:insertAttribute>
+		
 	</div>
 	
 <!-- Concatenated js plugins and jQuery -->
