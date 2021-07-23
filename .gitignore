@@ -11,7 +11,10 @@ tmp/
 *~.nib
 local.properties
 pom.properties
+*.prefs
 .settings/
+FinalPrj/.settings/
+FinalPrj/.settings/*
 .loadpath
 .recommenders
 
