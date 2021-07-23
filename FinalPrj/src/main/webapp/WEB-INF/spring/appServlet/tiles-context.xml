@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="layout" template="/WEB-INF/views/layout/template.jsp">
+		<put-attribute name="head" value="/WEB-INF/views/layout/head.jsp"></put-attribute>
+	<!-- 템플릿 적용 받지 않음 -->	
+	</definition>
+		<definition name="empty/*" template="/WEB-INF/views/layout/empty.jsp">
+          <put-attribute name="content" value="/WEB-INF/views/empty/{1}.jsp"></put-attribute>
+    </definition>
+	<!-- 템플릿 적용 받음 -->
+	<definition name="*/*" extends="layout">
+		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+	</definition>
+	
+</tiles-definitions>
