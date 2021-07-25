@@ -4,6 +4,17 @@
 
 <style>
 
+@font-face {
+    font-family: 'ONE-Mobile-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+	font-family:'ONE-Mobile-Regular';
+}
+
 .navbar-v1{
 	height: auto;
 }
@@ -17,24 +28,23 @@
 }
 
 .navbar-start ul li {
-	margin: 0 .5rem;
+	margin-right: 2rem;
 	display: inline-block;
 	font-size: 1.3rem;
 }
 
 .navbar-start ul li:not(.is-active) a {
 	border-color: transparent;
-	color: #a2a5b9
+	color: #777;
 }
 
 .navbar-start ul li.is-active a {
-	font-weight: 500;
 	color: #5596e6;
 	border-color: #5596e6
 }
 
 .navbar-start ul li a {
-	font-family: "Roboto", sans-serif;
+	font-family: 'ONE-Mobile-Regular';
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -49,6 +59,29 @@
 	height: 70px;
 	border-width: 4px
 }
+
+.navbar-v1 .navbar-brand {
+    height: 55px;
+    margin-left: 5px !important;
+    margin-right: 50px;
+}
+
+.navbar-v1 .navbar-brand .navbar-item .logo {
+	max-height: 58px !important;
+}
+
+.mobile-navbar .navbar-brand img {
+	-webkit-animation: unset;
+}
+
+.navbar-item.is-icon .icon-link svg {
+    width: 20px;
+    height: 20px;
+    stroke: #777;
+    stroke-width: 2px;
+}
+
+
 </style>
 
 <!-- Pageloader -->
@@ -60,21 +93,19 @@
 	class="navbar navbar-v1 is-inline-flex is-transparent no-shadow is-hidden-mobile">
 	<div class="container is-fluid">
 		<div class="navbar-brand">
-			<a href="/" class="navbar-item"> <img class="logo light-image"
-				src="resources/template/assets/img/logo/krenlogo.png" width="112"
-				height="28" alt=""> <img class="logo dark-image"
-				src="resources/template/assets/img/logo/friendkit-white.svg"
-				width="112" height="28" alt="">
+			<a href="/" class="navbar-item"> 
+				<img class="logo light-image" src="resources/template/assets/img/logo/logo2.png"> 
+				<img class="logo dark-image" src="resources/template/assets/img/logo/logo2.png">
 			</a>
 		</div>
 		<div class="navbar-menu">
 			<!-- 네비바 왼쪽 -->
 			<div class="navbar-start">
 				<ul>
-					<li class="is-active"><a href="navbar-v2-feed.html">Feed</a></li>
-					<li><a href="navbar-v2-profile-friends.html">Friends</a></li>
-					<li><a href="navbar-v2-groups.html">Groups</a></li>
-					<li><a href="navbar-v2-ecommerce-products.html">Store</a></li>
+					<li class="is-active"><a href="navbar-v2-feed.html">피드</a></li>
+					<li><a href="navbar-v2-profile-friends.html">친구찾기</a></li>
+					<li><a href="navbar-v2-groups.html">편지</a></li>
+					<li><a href="navbar-v2-ecommerce-products.html">ABOUT US</a></li>
 				</ul>
 			</div>
 			<div class="navbar-end">
@@ -397,158 +428,23 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </div>
-<nav class="navbar mobile-navbar is-hidden-desktop"
-	aria-label="main navigation">
+
+<!-- 모바일메뉴 -->
+<nav class="navbar mobile-navbar is-hidden-desktop" aria-label="main navigation">
 	<!-- Brand -->
 	<div class="navbar-brand">
-		<a class="navbar-item" href="/"> <img class="light-image"
-			src="assets/img/logo/friendkit-bold.svg" alt=""> <img
-			class="dark-image" src="assets/img/logo/friendkit-white.svg" alt="">
+		<a class="navbar-item" href="/"> 
+			<img class="light-image" src="resources/template/assets/img/logo/logo2.png" alt="">
+			<img class="dark-image" src="resources/template/assets/img/logo/logo2.png" alt="">
 		</a>
-
-		<div class="navbar-item is-icon drop-trigger">
-			<a class="icon-link is-friends" href="javascript:void(0);"> <i
-				data-feather="heart"></i> <span class="indicator"></span>
+		<div style="position: absolute; right: 3rem; display: inherit;">
+		<div id="open-mobile-search" class="navbar-item is-icon">
+			<a class="icon-link is-primary" href="javascript:void(0);"> <i
+				data-feather="search"></i>
 			</a>
-
-			<div class="nav-drop">
-				<div class="inner">
-					<div class="nav-drop-header">
-						<span>Friend requests</span> <a href="#"> <i
-							data-feather="search"></i>
-						</a>
-					</div>
-					<div class="nav-drop-body is-friend-requests">
-						<!-- Friend request -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/bobby.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<a href="#">Bobby Brown</a> <span>Najeel verwick is a
-									common friend</span>
-							</div>
-							<div class="media-right">
-								<button class="button icon-button is-solid grey-button raised">
-									<i data-feather="user-plus"></i>
-								</button>
-								<button class="button icon-button is-solid grey-button raised">
-									<i data-feather="user-minus"></i>
-								</button>
-							</div>
-						</div>
-						<!-- Friend request -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/dan.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<a href="#">Dan Walker</a> <span>You have 4 common
-									friends</span>
-							</div>
-							<div class="media-right">
-								<button class="button icon-button is-solid grey-button raised">
-									<i data-feather="user-plus"></i>
-								</button>
-								<button class="button icon-button is-solid grey-button raised">
-									<i data-feather="user-minus"></i>
-								</button>
-							</div>
-						</div>
-						<!-- Friend request -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/nelly.png" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<span>You are now friends with <a href="#">Nelly
-										Schwartz</a>. Check her <a href="#">profile</a>.
-								</span>
-							</div>
-							<div class="media-right">
-								<div class="added-icon">
-									<i data-feather="tag"></i>
-								</div>
-							</div>
-						</div>
-						<!-- Friend request -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/milly.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<a href="#">Milly Augustine</a> <span>You have 8 common
-									friends</span>
-							</div>
-							<div class="media-right">
-								<button class="button icon-button is-solid grey-button raised">
-									<i data-feather="user-plus"></i>
-								</button>
-								<button class="button icon-button is-solid grey-button raised">
-									<i data-feather="user-minus"></i>
-								</button>
-							</div>
-						</div>
-						<!-- Friend request -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/elise.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<span>You are now friends with <a href="#">Elise
-										Walker</a>. Check her <a href="#">profile</a>.
-								</span>
-							</div>
-							<div class="media-right">
-								<div class="added-icon">
-									<i data-feather="tag"></i>
-								</div>
-							</div>
-						</div>
-						<!-- Friend request -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/edward.jpeg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<span>You are now friends with <a href="#">Edward
-										Mayers</a>. Check his <a href="#">profile</a>.
-								</span>
-							</div>
-							<div class="media-right">
-								<div class="added-icon">
-									<i data-feather="tag"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="nav-drop-footer">
-						<a href="#">View All</a>
-					</div>
-				</div>
-			</div>
 		</div>
 		<div class="navbar-item is-icon drop-trigger">
 			<a class="icon-link" href="javascript:void(0);"> <i
@@ -719,17 +615,8 @@
 				</div>
 			</div>
 		</div>
-		<div id="mobile-explorer-trigger" class="navbar-item is-icon">
-			<a class="icon-link is-primary"> <i class="mdi mdi-apps"></i>
-			</a>
 		</div>
-
-		<div id="open-mobile-search" class="navbar-item is-icon">
-			<a class="icon-link is-primary" href="javascript:void(0);"> <i
-				data-feather="search"></i>
-			</a>
-		</div>
-
+	
 		<!-- Mobile menu toggler icon -->
 		<div class="navbar-burger">
 			<span></span> <span></span> <span></span>
@@ -747,23 +634,23 @@
 
 			<!-- Mobile Dropdown -->
 			<div class="navbar-dropdown">
-				<a href="/navbar-v1-feed.html"
-					class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="activity"></i>Feed</span> <span class="menu-badge">87</span>
-				</a> <a href="/navbar-v1-videos-home-v2.html"
-					class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="play-circle"></i>Watch</span> <span class="menu-badge">21</span>
-				</a> <a href="/navbar-v1-profile-friends.html"
-					class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="heart"></i>Friend Requests</span> <span class="menu-badge">3</span>
-				</a> <a href="/navbar-v1-profile-main.html"
-					class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="user"></i>Profile</span>
-				</a> <a href="/navbar-v1-ecommerce-cart.html"
-					class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="shopping-cart"></i>Cart</span> <span class="menu-badge">3</span>
-				</a> <a href="#" class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="bookmark"></i>Bookmarks</span>
+				<a href="/navbar-v1-feed.html" class="navbar-item is-flex is-mobile-icon">
+					<span><i data-feather="activity"></i>Feed</span> <span class="menu-badge">87</span>
+				</a>
+				<a href="/navbar-v1-videos-home-v2.html" class="navbar-item is-flex is-mobile-icon">
+					<span><i data-feather="icon-users"></i>Friends</span> <span class="menu-badge">21</span>
+				</a>
+				<a href="/navbar-v1-profile-friends.html" class="navbar-item is-flex is-mobile-icon"> 
+					<span><i data-feather="icon-envelope-o"></i>Letter</span> <span class="menu-badge">3</span>
+				</a>
+				<a href="/navbar-v1-profile-main.html" class="navbar-item is-flex is-mobile-icon"> 
+					<span><i data-feather="user"></i>Profile</span>
+				</a>
+				<a href="/navbar-v1-ecommerce-cart.html" class="navbar-item is-flex is-mobile-icon">
+					<span><i data-feather="shopping-cart"></i>Cart</span> <span class="menu-badge">3</span>
+				</a>
+				<a href="#" class="navbar-item is-flex is-mobile-icon"> 
+					<span><i data-feather="bookmark"></i>Bookmarks</span>
 				</a>
 			</div>
 		</div>
@@ -792,9 +679,6 @@
 		<div class="control">
 			<input id="tipue_drop_input_mobile" class="input"
 				placeholder="Search...">
-			<div class="form-icon">
-				<i data-feather="search"></i>
-			</div>
 			<div class="close-icon">
 				<i data-feather="x"></i>
 			</div>
