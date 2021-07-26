@@ -15,6 +15,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/app.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 <meta charset="UTF-8">
+<style>
+.landing-hero-wrapper .landing-caption .button {
+    margin: 10px 10px 10px 0px;
+}
+</style>
 </head>
 <body>
 	<div class="landing-wrapper">
@@ -28,11 +33,40 @@
 							<img src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/characters/friends.svg" alt="">
 						</div>
 						<div class="column is-5">
-							<h2>KREN</h2>
-                            <h3>Social Media</h3>
+							<h2>KREN</h2><br>
+                            <div class="login-wrapper" style="max-width:400px;">
+		                        <div class="form-wrapper" style="margin: 0px;">
+		                            <!--Form-->
+		                            <div class="login-form">
+		                                <div class="field">
+		                                    <div class="control">
+		                                        <input class="input email-input" type="text" placeholder="ID">
+		                                        <div class="input-icon">
+		                                            <i data-feather="user"></i>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                <div class="field">
+		                                    <div class="control">
+		                                        <input class="input password-input" type="password" placeholder="PASSWORD">
+		                                        <div class="input-icon">
+		                                            <i data-feather="lock"></i>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                <div class="field">
+		                                    <div class="control">
+		                                        <button class="button is-solid dark-grey-button raised is-rounded is-fullwidth">Login</button>
+		                                    </div>
+		                                    <div class="control" style="display: flex;">
+		                                        <button class="button is-solid primary-button raised is-rounded" style="color: #e9f0f7;">Sign Up</button>
+		                                        <button class="button is-solid primary-button raised is-rounded" style="color: #e9f0f7;">forgot password?</button>
+		                                    </div>
+		                                </div>
+		                            </div>
+	                    		</div>
+                    		</div>
                             <div class="buttons">
-                                <a href="#landing-start" class="button">Sign In</a>
-                                <button id="tour-start" class="button is-hidden-mobile">Sign Up</button>
                                 <button id="tour-start" class="button is-hidden-mobile" onclick="location.href='test.do'">테스트페이지</button>                                
                             </div>
 						</div>
