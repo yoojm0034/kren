@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.feed.map.FeedMap">
-
+	<insert id="feedInsert">
+		INSERT INTO feed(feed_id, user_id, content, photo,
+		reg_date, tags)
+		VALUES(#{feed_id}, #{user_id}, #{content}, #{photo}, sysdate, #{tags});
+	</insert>
+	
+	<select id="feedSelectList" parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
+		SELECT u.USER_ID      "user_id", 
+		       u.EMAIL        "email",
+			   u.NAME 		  "name",	
+			   u.PHOTO        "photo",
+			   u.STATUS       "status",
+			   u.LAT          "lat",
+			   u.LON          "lon",
+			   u.TIMEZONE	  "time_zone",
+			   f.FEED_ID      "feed_id",
+			   f.USER_ID      "user_id",
+			   f.CONTENT      "content",
+			   f.PHOTO        "photo", 
+			   f.REG_DATE     "reg_date", 
+			   f.TAGS         "tags"
+		FROM feed f JOIN users u
+		ON f.USER_ID = u.USER_ID
+		WHERE u.STATUS = '일반회원'
+		AND not f.USER_ID in (	SELECT BLOCKED
+								FROM block
+								WHERE USER_ID = #{user_id}
+							  )
+		ORDER BY u.REG_DATE
+	</select>
 </mapper>
