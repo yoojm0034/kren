@@ -26,7 +26,7 @@ public class HomeController {
 	public String admin() {
 		return "admin/main";
 	} 
-	@RequestMapping("feed.do")
+	@RequestMapping("feed1.do")
 	public String feed() {
 		return "feed/mainFeed";
 	} 
