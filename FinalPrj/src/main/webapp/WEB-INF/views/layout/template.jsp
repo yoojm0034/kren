@@ -74,5 +74,8 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/compose.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/autocompletes.js"></script>
 	
+	<!-- inbox js -->
+    <script src="${pageContext.request.contextPath}/resources/template/assets/js/inbox.js"></script>
+	
 </body>
 </html>

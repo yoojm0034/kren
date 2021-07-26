@@ -140,9 +140,14 @@
 										<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 											class="card is-msg has-attachment">
 											<div class="card-content">
-												<span class="msg-timestamp"> ${vo.arrive_date }
-												<img src="resources/template/assets/img/letter/stamp.png">
-												</span>
+												<c:if test="${!empty vo.arrive_date}">
+													<span class="msg-timestamp"> ${vo.arrive_date }												
+													<img src="resources/template/assets/img/letter/stamp.png">
+													</span>
+												</c:if>
+												<c:if test="${empty vo.arrive_date }">
+													<p>배달오는 중입니다.</p>
+												</c:if>
 												<div class="msg-header">
 													<div class="user-image">
 														<img

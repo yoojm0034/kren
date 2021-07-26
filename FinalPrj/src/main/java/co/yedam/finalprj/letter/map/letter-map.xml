@@ -10,7 +10,7 @@
 	</select>
 
 	<!-- 전체 친구 -->
-	<select id="selectAllLetter" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+	<select id="selectAllFriend" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT USER_ID, SEND_DATE, ARRIVE_DATE FROM LETTER
 		WHERE TO_ID =#{to_id}
 		ORDER BY ARRIVE_DATE DESC
