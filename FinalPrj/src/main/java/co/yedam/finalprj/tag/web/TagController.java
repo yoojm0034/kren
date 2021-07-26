@@ -44,20 +44,7 @@ public class TagController {
 		data.put("data", datas);
 		return data;
 	}
-	//관리자
-	//태그업데이트
-	@PutMapping("adminTagUpdate.do")
-	@ResponseBody
-	public Map<String, Object> adminTagUpdate(@RequestBody TagData tagData) {
-		Map<String, Object> data = new HashMap<String, Object>();
-		System.out.println(tagData);
-		for(int i=0; i < tagData.updatedRows.size(); i++) {
-			tagDao.tagUpdate(tagData.updatedRows.get(i));
-		}
-		data.put("result", true);
-		data.put("data", tagData.updatedRows);
-		return data;
-	}
+	
 	//관리자
 	//태그추가
 	@PostMapping("adminTagInsert.do")
