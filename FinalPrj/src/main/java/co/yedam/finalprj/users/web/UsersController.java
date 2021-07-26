@@ -16,17 +16,35 @@ import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 import lombok.Data;
 
-@Data
+@Controller
+public class UsersController {
+	@Autowired
+	UsersService usersDao;
+
+	@Data
 class MemberData {
 	List<UsersVO> createdRows;
 	List<UsersVO> updatedRows;
 	List<UsersVO> deletedRows;
 }
 
-@Controller
-public class UsersController {
-	@Autowired
-	UsersService usersDao;
+	@RequestMapping("test3.do")
+	public String test3() {
+		return "main/test3";
+	} 
+	
+	@RequestMapping("profile.do")
+	public String profile() {
+		return "users/profile";
+	} 
+	
+	// 회원가입
+	@RequestMapping("userJoinForm1.do")
+	public String userJoinForm1() {
+		return "empty/userJoinForm1";
+	} 	
+	
+	
 	
 	//관리자 
 	//유저목록
@@ -40,6 +58,7 @@ public class UsersController {
 		data.put("data", datas);
 		return data;
 	}
+	
 	//관리자
 	//유저상태업데이트
 	@PutMapping("adminUsersUpdate.do")
@@ -55,14 +74,5 @@ public class UsersController {
 		return data;
 	}	
 	
-	@RequestMapping("test3.do")
-	public String test3() {
-		return "main/test3";
-	} 
-
-	@RequestMapping("profile.do")
-	public String profile() {
-		return "users/profile";
-	} 
 	
 }

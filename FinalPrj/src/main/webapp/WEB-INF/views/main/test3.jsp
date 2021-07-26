@@ -48,17 +48,14 @@ img {
 	
 	// 지도
     function initMap(lat, lon) {
-        // The location of Uluru
         const city = { lat: lat,
         		lng: lon};
-        // The map, centered at Uluru
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 8,
           center: city,
           mapTypeControl: false,
           streetViewControl: false,
         });
-        // The marker, positioned at Uluru
         const marker = new google.maps.Marker({
           position: city,
           map: map,
