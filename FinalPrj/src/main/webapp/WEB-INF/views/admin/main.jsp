@@ -149,7 +149,7 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='stampList.do'">
                                         <a>
                                             <span>상품목록</span>
                                         </a>

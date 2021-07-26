@@ -16,10 +16,10 @@
 		const dataSource = {
 				  contentType: 'application/json',
 				  api: {
-				    readData: {url:'adminTopicList.do',method: 'GET'},
-				    updateData: { url: 'adminTopicUpdate.do', method: 'PUT' },
-				    createData: { url: 'adminTopicInsert.do', method: 'POST' },
-				    deleteData: { url: 'adminTopicDelete.do', method: 'PUT' }
+				    readData: {url:'adminStampList.do',method: 'GET'},
+				    updateData: { url: 'adminStampUpdate.do', method: 'PUT' },
+				    createData: { url: 'adminStampInsert.do', method: 'POST' },
+				    deleteData: { url: 'adminStampDelete.do', method: 'PUT' }
 				  }
 				};
 		console.log(dataSource);
@@ -28,31 +28,21 @@
 			el : document.getElementById('recruitGrid'), // DOM의 id지정
 			data : dataSource,
 			columns : [ {
-				header : 'NO(desc)',
-				name : 'topic_id',
+				header : 'StampNO',
+				name : 'stamp_id',
 				sortingType : 'desc',
 				sortable : true,
 				align : 'center'
 			}, {
-				header : 'KR',
-				name : 'kr',
+				header : 'PAY',
+				name : 'pay',
 				align : 'center',
-				editor: 'text',
-				filter : {
-					type : 'text',
-					showApplyBtn : true,
-					showClearBtn : true
-				}
+				editor: 'text'
 			}, {
-				header : 'EN',
-				name : 'en',
+				header : 'CNT',
+				name : 'cnt',
 				align : 'center',
-				editor: 'text',
-				filter : {
-					type : 'text',
-					showApplyBtn : true,
-					showClearBtn : true
-					}
+				editor: 'text'
 			}],
 			rowHeaders : [ 'checkbox' ],
 			pagination : true,
@@ -82,8 +72,8 @@
 		}) ;
 		const prependBtn = document.getElementById('prependBtn');
 		const appendedData = {
-			      kr: '',
-			      en: ''
+			      pay: '',
+			      cnt: ''
 			    };	
 		prependBtn.addEventListener('click', () => {
 			recruitGrid.prependRow(appendedData);

@@ -51,12 +51,12 @@
                                             <span>문의사항</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='topicList.do'">
                                         <a>
                                             <span>관심사관리</span>
                                         </a>
                                     </li>
-                                     <li onclick="location.href='#'">
+                                     <li onclick="location.href='tagList.do'">
                                         <a>
                                             <span>태그관리</span>
                                         </a>
@@ -66,7 +66,7 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='stampList.do'">
                                         <a>
                                             <span>상품목록</span>
                                         </a>
