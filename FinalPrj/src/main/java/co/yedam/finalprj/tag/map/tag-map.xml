@@ -12,12 +12,6 @@
 		insert into tag values (#{tag_name})
 	</insert>
 	
-	<!-- update 물어보기-->
-	<update id="tagUpdate" parameterType="co.yedam.finalprj.tag.vo.TagVO">
-		update tag
-		set tag_name = #{tag_name}
-	</update>
-	
 	<!-- delete -->
 	<delete id="tagDelete" parameterType="co.yedam.finalprj.tag.vo.TagVO">
 		delete from tag where tag_name = #{tag_name}	

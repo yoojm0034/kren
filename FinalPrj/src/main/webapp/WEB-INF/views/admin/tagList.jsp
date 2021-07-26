@@ -17,7 +17,6 @@
 				  contentType: 'application/json',
 				  api: {
 				    readData: {url:'adminTagList.do',method: 'GET'},
-				    updateData: { url: 'adminTagUpdate.do', method: 'PUT' },
 				    createData: { url: 'adminTagInsert.do', method: 'POST' },
 				    deleteData: { url: 'adminTagDelete.do', method: 'PUT' }
 				  }
@@ -45,12 +44,6 @@
 				perPage : 15
 			}
 		});
-		$('#sync').click(function () {
-			  recruitGrid.request('updateData', {
-			  checkedOnly: true
-			  });
-			  
-		}) ;
 		$('#create').click(function () {
 			  recruitGrid.request('createData', {
 			  checkedOnly: true
@@ -180,7 +173,6 @@
 	            <div align="right" class="btn-wrapper">
 	            	<button id="prependBtn">태그추가</button>
 	            	<button id="create">DB입력</button>
-					<!-- <button id="sync">수정</button> -->
 					<button id="delete">삭제</button>
 	            </div>
 	            <div class="stories-container">
