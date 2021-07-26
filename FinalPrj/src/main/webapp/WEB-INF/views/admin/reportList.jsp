@@ -4,90 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원리스트</title>
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
-<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		const dataSource = {
-				  contentType: 'application/json',
-				  api: {
-				    readData: {url:'adminUsersList.do',method: 'GET'},
-				    updateData: { url: 'adminUsersUpdate.do', method: 'PUT' }
-				  }
-				};
-		console.log(dataSource);
-		const Grid = tui.Grid; //인스턴스 객체 생성 
-		const recruitGrid = new Grid({
-			el : document.getElementById('recruitGrid'), // DOM의 id지정
-			data : dataSource,
-			columns : [ {
-				header : 'USERS(desc)',
-				name : 'user_id',
-				sortingType : 'desc',
-				sortable : true,
-				align : 'center'
-			}, {
-				header : 'NAME',
-				name : 'name',
-				align : 'center',
-				filter : {
-					type : 'text',
-					showApplyBtn : true,
-					showClearBtn : true
-				}
-			}, {
-				header : 'EMAIL',
-				name : 'email',
-				align : 'center'
-			}, {
-				header : 'CONUTRY',
-				name : 'country',
-				align : 'center'
-			}, {
-				header : 'REPORTED',
-				name : 'report_cnt',
-				align : 'center'
-			}, {
-				header : 'STATUS',
-				name : 'status',
-			    editor: {
-			        type: 'select',
-			        options: {
-			          listItems: [
-			            {
-			              text: '일반회원',
-			              value: '일반회원'
-			            },
-			            {
-			              text: '정지회원',
-			              value: '정지회원'
-			            }
-			          ]
-			        }
-			      },
-				align : 'center'
-			}],
-			rowHeaders : [ 'checkbox' ],
-			pagination : true,
-			pageOptions : {
-				useClient : true,
-				perPage : 10
-			}
-		});
-		$('#sync').click(function () {
-			  recruitGrid.request('updateData', {
-			  checkedOnly: true
-			  });
-			  
-		}) ;
-	
-	});
-</script>
+<title>Insert title here</title>
 </head>
 <body>
   	 <div class="stories-wrapper is-home">
@@ -134,12 +51,12 @@
                                             <span>문의사항</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='topicList.do'">
+                                    <li onclick="location.href='#'">
                                         <a>
                                             <span>관심사관리</span>
                                         </a>
                                     </li>
-                                     <li onclick="location.href='tagList.do'">
+                                     <li onclick="location.href='#'">
                                         <a>
                                             <span>태그관리</span>
                                         </a>
@@ -188,18 +105,12 @@
                 </a>
 	            <div class="stories-content">
 	                    <div class="section-title main-section-title">
-	                        <h2>유저관리</h2>
+	                        <h2>신고목록</h2>
 	                    </div>
 	            </div>  
-	            <div align="right">
-	            	<button onclick="location.href='home.do'">홈으로</button>
-					<button id="sync">수정</button>
-	            </div>
 	            <div class="stories-container">
                         <div class="container-inner">
-                           <div align="center">
-								<div id="recruitGrid"></div>
-							</div>
+                           ㄴㄹㅇ
                         </div>
                 </div>
 	            

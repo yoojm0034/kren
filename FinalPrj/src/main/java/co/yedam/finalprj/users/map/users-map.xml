@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.users.map.UsersMap">
-
+	<!-- select -->
+	<select id="usersSelectList" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select *
+		from users
+	</select>
+	<select id="adminUsersSelectList" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT *
+		FROM users
+		WHERE status = '일반회원'
+		AND report_cnt > 0
+		ORDER BY report_cnt DESC
+	</select>
+	<!-- update -->
+	<update id="adminUsersUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		update users
+		set status = #{status}
+		where user_id = #{user_id}
+	</update>
 </mapper>
