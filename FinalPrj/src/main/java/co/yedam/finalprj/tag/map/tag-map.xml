@@ -21,5 +21,5 @@
 	<!-- delete -->
 	<delete id="tagDelete" parameterType="co.yedam.finalprj.tag.vo.TagVO">
 		delete from tag where tag_name = #{tag_name}	
-	</delete>
+	</delete> 
 </mapper>
