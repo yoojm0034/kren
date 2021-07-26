@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.tag.map.TagMap">
-
+	<!-- select -->
+	<select id="tagSelectList" resultType="co.yedam.finalprj.tag.vo.TagVO">
+		select tag_name
+		from tag
+	</select>
+	
+	<!-- insert -->
+	<insert id="tagInsert" parameterType="co.yedam.finalprj.tag.vo.TagVO">
+		insert into tag values (#{tag_name})
+	</insert>
+	
+	<!-- update -->
+	<update id="tagUpdate" parameterType="co.yedam.finalprj.tag.vo.TagVO">
+		update tag
+		set tag_name = #{tag_name}
+	</update>
+	
+	<!-- delete -->
+	<delete id="tagDelete" parameterType="co.yedam.finalprj.tag.vo.TagVO">
+		delete from tag where tag_name = #{tag_name}	
+	</delete> 
 </mapper>

@@ -1,5 +1,8 @@
 package co.yedam.finalprj.tag.vo;
 
-public class TagVO {
+import lombok.Data;
 
+@Data
+public class TagVO {
+	private String tag_name;
 }

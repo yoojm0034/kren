@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.letter.map.LetterMap">
+	<!-- 전체 편지 -->
+	<select id="selectAllLetter" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+		SELECT * FROM LETTER
+		WHERE ARRIVE_DATE IS NOT NULL
+			AND TO_ID =#{to_id}
+		ORDER BY ARRIVE_DATE DESC
+	</select>
+
+	<!-- 전체 친구 -->
+	<select id="selectAllFriend" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+		SELECT USER_ID, SEND_DATE, ARRIVE_DATE FROM LETTER
+		WHERE TO_ID =#{to_id}
+		ORDER BY ARRIVE_DATE DESC
+	</select>
+	
+	<!-- 답장 안한 편지 -->
+	<select id="selectNewLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+		SELECT * FROM LETTER
+		WHERE SEND_YN ='N'
+			AND TO_ID =#{to_id}
+			AND ARRIVE_DATE IS NOT NULL
+		ORDER BY ARRIVE_DATE DESC
+	</select>
+	
+	<!-- 친구편지목록 -->
+	<select id="selectFriendLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+		SELECT * FROM LETTER
+		WHERE
+			TO_ID =#{to_id} AND USER_ID =#{user_id}
+			OR
+			TO_ID =#{user_id} AND USER_ID =#{to_id}
+		ORDER BY SEND_DATE
+	</select>
+	
+	<!-- 임시저장한 편지 -->
+	<select id="selectSaveLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+		SELECT * FROM LETTER
+		WHERE
+			USER_ID =#{user_id}
+			AND
+			GUBUN ='임시저장'
+		ORDER BY SEND_DATE
+	</select>
+	
+	<!-- 편지 작성 -->
+	<insert id="insertLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		INSERT INTO LETTER
+			(LETTER_ID, TO_ID, USER_ID, CONTENT, PHOTO, GUBUN)
+		VALUES
+			(letter_seq.nextval, #{to_id}, #{user_id}, #{content}, #{photo}, #{gubun})
+	</insert>
+	
+	<!-- 편지 삭제 -->
+	<update id="deleteLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		UPDATE LETTER SET TO_DELETE = 'Y' 
+		WHERE LETTER_ID =#{letter_id}
+			AND
+			USER_ID =#{user_id}
+	</update>
 
 </mapper>

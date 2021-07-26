@@ -1,5 +1,16 @@
 package co.yedam.finalprj.feed.vo;
 
-public class FeedVO {
+import java.sql.Date;
 
+import lombok.Data;
+
+@Data
+public class FeedVO {
+	private String feed_id;
+	private String user_id;
+	private String content;
+	private String photo;
+	private Date reg_date;
+	private String tags;
+	
 }
