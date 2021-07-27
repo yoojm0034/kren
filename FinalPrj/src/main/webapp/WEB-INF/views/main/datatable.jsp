@@ -6,7 +6,7 @@
     list-style: none;
     border-radius: .35rem;
 }
-
+ 
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     margin: 2px 0;
     white-space: nowrap;
