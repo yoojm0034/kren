@@ -4,7 +4,73 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>문의사항리스트</title>
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		const dataSource = {
+				  contentType: 'application/json',
+				  api: {
+				    readData: {url:'adminQnaList.do',method: 'GET'},
+				    updateData: { url: 'adminQnaUpdate.do', method: 'PUT' }
+				  }
+				};
+		console.log(dataSource);
+		const Grid = tui.Grid; //인스턴스 객체 생성 
+		const recruitGrid = new Grid({
+			el : document.getElementById('recruitGrid'), // DOM의 id지정
+			data : dataSource,
+			columns : [ {
+				header : 'QnaNO',
+				name : 'qna_id',
+				sortingType : 'desc',
+				sortable : true,
+				align : 'center'
+			}, {
+				header : 'EMAIL',
+				name : 'email',
+				align : 'center',
+				editor: 'text',
+				filter : {
+					type : 'text',
+					showApplyBtn : true,
+					showClearBtn : true
+				}
+			}, {
+				header : 'CONTENT',
+				name : 'content',
+				align : 'center'
+			}, {
+				header : 'DATE',
+				name : 'qna_dt',
+				align : 'center'
+			}, {
+				header : 'ANSWER',
+				name : 'answer',
+				editor: 'text',
+				align : 'center'
+			}],
+			rowHeaders : [ 'checkbox' ],
+			pagination : true,
+			pageOptions : {
+				useClient : true,
+				perPage : 15
+			}
+		});
+		$('#sync').click(function () {
+			  recruitGrid.request('updateData', {
+			  checkedOnly: true
+			  });
+			  
+		}) ;
+	
+	});
+</script>
 </head>
 <body>
   	 <div class="stories-wrapper is-home">
@@ -105,12 +171,17 @@
                 </a>
 	            <div class="stories-content">
 	                    <div class="section-title main-section-title">
-	                        <h2>신고목록</h2>
+	                        <h2>문의사항 관리</h2>
 	                    </div>
 	            </div>  
+	            <div align="right" class="btn-wrapper">
+					<button id="sync">수정</button>
+	            </div>
 	            <div class="stories-container">
                         <div class="container-inner">
-                           ㄴㄹㅇ
+                           <div align="center">
+								<div id="recruitGrid"></div>
+							</div>
                         </div>
                 </div>
 	            
@@ -119,9 +190,7 @@
            
             
         </div>
-
         
-      
 					
 </body>
 </html>

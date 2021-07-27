@@ -122,7 +122,7 @@
                                             <span>신고내역</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='qnaList.do'">
                                         <a>
                                             <span>문의사항</span>
                                         </a>
@@ -181,12 +181,12 @@
                 </a>
 	            <div class="stories-content">
 	                    <div class="section-title main-section-title">
-	                        <h2>관심사 관리</h2>
+	                        <h2>우표상품 관리</h2>
 	                    </div>
 	            </div>  
 	            <div align="right" class="btn-wrapper">
 	            	<button id="prependBtn">행추가</button>
-	            	<button id="create">추가</button>
+	            	<button id="create">DB입력</button>
 					<button id="sync">수정</button>
 					<button id="delete">삭제</button>
 	            </div>

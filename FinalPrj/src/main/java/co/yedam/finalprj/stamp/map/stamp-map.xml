@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.stamp.map.StampMap">
-
+	<!-- select -->
+	<select id="stampSelectList" resultType="co.yedam.finalprj.stamp.vo.StampVO">
+		select stamp_id,pay,cnt
+		from stamp
+		order by stamp_id desc
+	</select>
+	
+	<!-- update -->
+	<update id="stampUpdate" parameterType="co.yedam.finalprj.stamp.vo.StampVO">
+		update stamp
+		set pay = #{pay}, cnt = #{cnt}
+		where stamp_id = #{stamp_id}
+	</update>
+	
+	<!-- insert -->
+	<insert id="stampInsert" parameterType="co.yedam.finalprj.stamp.vo.StampVO">
+		insert into stamp values ('stamp_'||stamp_seq.nextval, #{pay}, #{cnt})
+	</insert> 
+	
+	<!-- Delete -->
+	<delete id="stampDelete" parameterType="co.yedam.finalprj.stamp.vo.StampVO">
+		delete from stamp where stamp_id = #{stamp_id}	
+	</delete>
 </mapper>

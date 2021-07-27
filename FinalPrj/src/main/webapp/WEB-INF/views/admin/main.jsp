@@ -129,7 +129,7 @@
                                             <span>신고내역</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='qnaList.do'">
                                         <a>
                                             <span>문의사항</span>
                                         </a>
