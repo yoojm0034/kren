@@ -20,6 +20,10 @@
 	<!-- Core CSS -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/app.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/dataTables.bootstrap4.css">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	
 </head>
 
 <body>
@@ -77,5 +81,9 @@
 	<!-- inbox js -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/inbox.js"></script>
 	
+	<!-- DATATABLES PLUGINS -->
+	<script src="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/jquery.dataTables.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/dataTables.bootstrap4.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/datatables-demo.js"></script>
 </body>
 </html>

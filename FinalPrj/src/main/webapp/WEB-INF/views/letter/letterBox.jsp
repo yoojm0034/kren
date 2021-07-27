@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+<head>
 <style>
 .inbox-wrapper .inbox-wrapper-inner .inbox-left-sidebar .inbox-left-sidebar-inner
 	{
@@ -34,7 +35,71 @@
 	color: #999;
 	font-size: .9rem;
 }
+
+.dropdown-menu {
+    display: none;
+    left: 0;
+    max-width: fit-content;
+    padding-top: 4px;
+    position: absolute;
+    top: 100%;
+    z-index: 20;
+}
+
+.dropdown.is-spaced .dropdown-menu {
+    box-shadow: 0px 5px 16px rgb(0 0 0 / 5%);
+    border-color: #e8e8e8;
+    padding-top: 0;
+    min-width: 0;
+}
+
+.dropdown.is-spaced .dropdown-menu .dropdown-content {
+    border: 1px solid #e8e8e8;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: fit-content;
+}
 </style>
+<script>
+	
+		function tokr(index){
+			var en = $("#english"+index).val();
+			console.log(en);
+	 		$.ajax({
+	 			url:"korean",
+	 			type:"GET",
+	 			dataType:"json",
+	 			data:{english:en},
+	 			success:function(v){
+	 				console.log(v);
+	 				var korean=v.message.result.translatedText;
+	 				$("#ko"+index).append($('<p/>').html(korean));
+	 			},error:function(e){
+	 				console.log(e);
+	 			}
+	 		});
+		}
+			
+		function toen(index){
+			var ko = $("#korean"+index).val();
+			console.log(ko);
+//				$.ajax({
+//					url:"/english",
+//					type:"GET",
+//					dataType:"json",
+//					data:{korean:ko},
+//					success:function(v){
+//						console.log(v);
+//						var english=v.message.result.translatedText;
+//						$("#en"+index).append($('<p/>').html(english));
+//					},error:function(e){
+//						console.log(e);
+//					}
+//				});
+		}
+	
+</script>
+</head>
 <body>
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
@@ -43,6 +108,17 @@
 			<div class="inbox-left-sidebar">
 				<div class="inbox-left-sidebar-inner ">
 					<!-- Compose button -->
+					<div class="control has-icon">
+						<input id="search" type="text" class="input">
+						<div class="form-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="feather feather-search">
+								<circle cx="11" cy="11" r="8"></circle>
+								<line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+						</div>
+					</div>
 					<div class="compose">
 						<a class="button is-fullwidth raised is-bold">Write</a>
 					</div>
@@ -69,7 +145,6 @@
 				<div class="inbox-center-container-inner">
 					<div class="messages">
 						<!-- Button group -->
-						<div class="action-buttons">
 							<div
 								class="control is-grouped is-hidden-desktop is-hidden-landscape">
 								<a id="open-compose" class="button is-solo"> <svg
@@ -83,7 +158,9 @@
 									</svg>
 								</a>
 							</div>
+
 							<div class="control is-grouped">
+							<div class="action-buttons">
 								<a class="button" href="letterBox.do"> <svg
 										xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 										viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -95,39 +172,24 @@
 											d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
 									</svg>
 								</a>
+								<!--Basic Dropdown-->
+
+								<div class="dropdown is-spaced is-accent dropdown-trigger">
+									<div>
+										<div class="button">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24"
+												height="24" viewBox="0 0 24 24" fill="none"
+												stroke="currentColor" stroke-width="2"
+												stroke-linecap="round" stroke-linejoin="round"
+												class="feather feather-more-horizontal">
+												<circle cx="12" cy="12" r="1"></circle>
+												<circle cx="19" cy="12" r="1"></circle>
+												<circle cx="5" cy="12" r="1"></circle></svg>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="control is-grouped">
-								<a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-star">
-										<polygon
-											points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-									</svg>
-								</a> <a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-inbox">
-										<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
-										<path
-											d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
-									</svg>
-								</a>
-							</div>
-							<div class="control is-grouped is-arrows">
-								<a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-chevron-left">
-										<polyline points="15 18 9 12 15 6"></polyline></svg>
-								</a> <a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-chevron-right">
-										<polyline points="9 18 15 12 9 6"></polyline></svg>
-								</a> <span class="message-count" style="vertical-align: bottom;">1-10
-									of 123</span>
-							</div>
+
 						</div>
 
 						<!-- Messages list -->
@@ -149,14 +211,11 @@
 															style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
 															src="https://via.placeholder.com/400x400" alt="friends">
 														<span class="msg-from"
-															style="vertical-align: top; margin-left: 5px;"> <small><a>${vo.user_id }</a></small>
+															style="vertical-align: top; margin-left: 5px;"> <small><a>${vo.name }</a></small>
 														</span>
 													</div>
 												</div>
 												<br>
-												<div class="msg-subject" style="text-align: right;">
-													<span>letter Status</span>
-												</div>
 												<div class="msg-snippet">
 													<p>${vo.content }</p>
 												</div>
@@ -255,7 +314,7 @@
 													data-user-popover="1">
 											</div>
 											<div class="meta">
-												<div class="name">${vo.user_id }</div>
+												<div class="name">${vo.name }</div>
 												<div class="date">${vo.arrive_date }</div>
 											</div>
 										</div>
@@ -263,10 +322,13 @@
 										<hr>
 										<div class="content">
 											<p>${vo.content }</p>
+											<input type="hidden" id="korean${status.index }" value="${vo.content }">
+											<input type="hidden" id="english${status.index }" value="${vo.content }">
+											<div id="en${status.index }"></div>
+											<div id="ko${status.index }"></div>
 										</div>
 										<div class="has-text-right">
-											<a class="button is-solid grey-button is-bold raised">Reply
-												to Message</a>
+											<button class="button is-solid grey-button is-bold raised" onclick="tokr(${status.index })">Translate</button>
 										</div>
 									</div>
 								</div>
@@ -274,28 +336,14 @@
 	
 								<div class="reply-wrapper">
 									<div class="reply-title">
-										Reply to conversation <i data-feather="help-circle"
-											class="has-tip"></i>
-										<!-- Title Popover -->
-										<div class="webui-popover-content">
-											<div class="popover-flex-block">
-												<div class="icon-block">
-													<i data-feather="info"></i>
-												</div>
-												<div class="content-block">
-													<span>Format message, </span> <span>Select the text
-														you want to edit to make the toolbar appear.</span>
-												</div>
-											</div>
-										</div>
+									Reply to correcting
 									</div>
-	
 									<div class="reply-wrapper-inner">
 										<div class="flex-form">
 											<img src="https://via.placeholder.com/300x300"
 												data-demo-src="assets/img/avatars/jenna.png" alt="">
 											<div class="control">
-												<div class="reply-textarea"></div>
+												<div id="corText" class="reply-textarea"></div>
 											</div>
 										</div>
 										<div class="has-text-right">

@@ -133,15 +133,18 @@
 						<!-- Messages list -->
 						<!-- Message cards -->
 						<c:choose>
-							<c:when test="${!empty newLetter }">
+							<c:when test="${!empty friends }">
 								<div id="inbox-messages" class="inbox-messages has-slimscroll">
 									<div class="inbox-messages-inner">
-									<c:forEach items="${newLetter }" var="vo" varStatus="status">
+									<c:forEach items="${friends}" var="vo" varStatus="status">
 										<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 											class="card is-msg has-attachment">
 											<div class="card-content">
-												<span class="msg-timestamp"> ${vo.arrive_date } <img
-													src="resources/template/assets/img/letter/stamp.png">
+												<span class="msg-timestamp">													
+													<c:if test="${!empty vo.arrive_date } ">
+														${vo.arrive_date }
+													</c:if>
+													<img src="resources/template/assets/img/letter/stamp.png">
 												</span>
 												<div class="msg-header">
 													<div class="user-image">
@@ -158,7 +161,13 @@
 													<span>letter Status</span>
 												</div>
 												<div class="msg-snippet">
-													<p>${vo.content }</p>
+														<c:if test="${empty vo.arrive_date }">
+															<p>편지가 오는 중입니다.</p>
+														</c:if>
+														<c:if test="${!empty vo.arrive_date }">
+														<p>Corporis tempora id quae fuga. Perspiciatis quam
+															magnam dolores ut quia. Neque vero</p>
+														</c:if>
 												</div>
 											</div>
 										</div>
@@ -242,9 +251,9 @@
 
 					<!-- Message Previews -->
 					<c:choose>
-						<c:when test="${!empty newLetter }">
+						<c:when test="${!empty friendLetter }">
 						<div class="message-body has-slimscroll">
-						<c:forEach items="${newLetter }" var="vo" varStatus="status">
+						<c:forEach items="${friendLetter }" var="vo" varStatus="status">
 						<div id="message-preview-${status.index }" class="message-body-inner">
 								<div class="box message-preview">
 									<div class="box-inner">

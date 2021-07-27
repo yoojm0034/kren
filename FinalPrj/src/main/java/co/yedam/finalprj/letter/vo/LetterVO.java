@@ -2,11 +2,13 @@ package co.yedam.finalprj.letter.vo;
 
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LetterVO {
 	private String letter_id;
 	private String to_id;
@@ -20,5 +22,8 @@ public class LetterVO {
 	private Date arrive_date;
 	private String send_yn;
 	private String letter_gubun;
+	
+	// 없는 필드
+	private String name;
 
 }

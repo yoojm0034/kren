@@ -17,6 +17,7 @@ public class LetterController {
 	public String letterBox(Model model, LetterVO vo) {
 		vo.setTo_id("user3");
 		model.addAttribute("newLetter", letterDao.selectNewLetter(vo));
+		model.addAttribute("friends", letterDao.selectAllFriend(vo));		
 		return "letter/letterBox";
 	}
 
@@ -31,5 +32,10 @@ public class LetterController {
 	@RequestMapping("savedLetter.do")
 	public String SavedLetter() {
 		return "letter/savedLetter";
+	}
+
+	@RequestMapping("datatable.do")
+	public String datatable() {
+		return "main/datatable";
 	}
 }
