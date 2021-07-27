@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +16,9 @@
 <!-- Core CSS -->
 <link rel="stylesheet" href="resources/template/assets/css/app.css">
 <link rel="stylesheet" href="resources/template/assets/css/core.css">
+<link href="resources/template/assets/nicelabel/css/jquery-nicelabel.css" rel="stylesheet">
+<script src="resources/template/assets/nicelabel/js/jquery.min.js"></script>
+<script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
 <style>
 @font-face {
 	font-family: 'ONE-Mobile-Regular';
@@ -45,27 +51,83 @@ body {
 	width: 250px;
 }
 
+.block {
+	width: 79%; 
+	display: inline-block;
+}
+
+.topic-label > .left { float: left; }
+.topic-label > .right { float: right; display: inline-block; margin-bottom: 15px;}
+.topic-list { display: inline-block}
+
 #city, #country {font-size: 20px; font-weight: 600;}
 
 a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https://maps.google.com/maps"]{display:none !important} .gmnoprint a, .gmnoprint span, .gm-style-cc { display:none; } .gmnoprint div { background:none !important; }
-
 </style>
 </head>
+<script>
+function frm(e) {
+	e.preventDefault();
+	var id = $('input[name=user_id]').val();
+	var name = $('input[name=name]').val();
+	var email = $('input[name=email]').val();
+	var code = $('#codeCheck').val();
+	console.log(id, name, email, code);
+};
 
+// ------------------- TOPIC 체크 카운트 계산 ---------------------
+function fchk() {
+    var chk_obj = document.getElementsByName("topic");
+    var chk_leng = chk_obj.length;
+    var checked = 0;
+    for (i=0; i < chk_leng; i++) {
+        if (chk_obj[i].checked == true) {
+            checked += 1;
+        }
+    }
+    if (checked < 3 ) {
+        alert("항목을 3개 선택해주세요");
+        return;
+    }
+}
+
+// 정해진 개수 이상 체크 불가.
+var count = 0;
+function check_q1(chk_obj) {
+    if(chk_obj.checked == true) {
+        count++;
+        $("#checked").text(count);
+    } else {
+        count--;
+    }
+    if(count <= 30) {
+        return true;
+    } else {
+        count--;
+        return false;
+    }
+}
+
+function check(obj,condition, n) {
+    if(condition == false){
+        obj.checked = false;
+        alert(n + "개를 초과 선택 불가합니다");
+    }
+}
+
+//------------------- TOPIC 체크 카운트 계산 끝 ---------------------
+
+</script>
 <body>
-
 	<!-- Pageloader -->
 	<div class="pageloader"></div>
 	<div class="infraloader is-active"></div>
 	<div class="signup-wrapper">
-
 		<div class="fake-nav">
-			<a href="/" class="logo"> <img
-				src="resources/template/assets/img/logo/logo2.png" width="112"
-				height="28" alt="">
+			<a href="/" class="logo"> 
+				<img src="resources/template/assets/img/logo/logo2.png" width="112" height="28" alt="">
 			</a>
 		</div>
-
 		<div class="process-bar-wrap">
 			<div class="process-bar">
 				<div class="progress-wrap">
@@ -90,56 +152,64 @@ a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https:/
 				</div>
 			</div>
 		</div>
-
+		<!-------------- 페이지 상단 라벨 ------------------->
 		<div class="outer-panel">
 			<div class="outer-panel-inner">
 				<div class="process-title">
 					<h2 id="step-title-1" class="step-title is-active">시작해볼까요?</h2>
 					<h2 id="step-title-2" class="step-title">당신을 표현할 사진을 골라주세요.</h2>
 					<h2 id="step-title-3" class="step-title">위치를 공유해주세요.</h2>
-					<h2 id="step-title-4" class="step-title">관심있는 언어와 주제를 선택해주세요.</h2>
+					<h2 id="step-title-4" class="step-title" style="margin-top: 5%;">관심있는 언어와 주제를 선택해주세요.</h2>
 					<h2 id="step-title-5" class="step-title">You're all set.
 						Ready?</h2>
 				</div>
-
-				<div id="signup-panel-1"
-					class="process-panel-wrap is-narrow is-active">
+				
+				<form:form action="userJoin.do" modelAttribute="UsersVO" enctype="multipart/form-data">
+				
+				<!-------------- 페이지1 아이디/이메일 입력 ------------------->
+				<div id="signup-panel-1" class="process-panel-wrap is-narrow is-active">
 					<div class="form-panel">
-						<div class="field">
+						<div class="field block">
 							<label>ID</label>
 							<div class="control">
-								<input type="text" class="input" placeholder="아이디를 입력하세요">
+								<form:input class="input" path="user_id" placeholder="아이디를 입력하세요" />
 							</div>
 						</div>
-						<div class="field">
+						<a class="button is-solid dark-grey-button raised"
+							style="vertical-align: super">중복확인</a>
+						<div class="field block">
 							<label>NAME</label>
 							<div class="control">
-								<input type="text" class="input" placeholder="사용할 이름을 입력하세요">
+								<form:input class="input" path="name" placeholder="사용할 이름을 입력하세요" />
 							</div>
 						</div>
-						<div class="field" style="width: 380px; display: inline-block;">
+						<a class="button is-solid dark-grey-button raised"
+							style="vertical-align: super">중복확인</a>
+						<div class="field block">
 							<label>EMAIL</label>
 							<div class="control">
-								<input type="text" class="input" placeholder="이메일을 입력하세요">
+								<form:input class="input" path="email" placeholder="이메일을 입력하세요" />
 							</div>
 						</div>
 						<a class="button is-solid dark-grey-button raised"
-							style="vertical-align: -webkit-baseline-middle">코드발송</a>
-						<div class="field" style="width: 380px; display: inline-block;">
+							style="vertical-align: super">코드발송</a>
+						<div class="field block">
 							<div class="control">
-								<input type="text" class="input" placeholder="인증코드를 입력하세요">
+								<input type="text" class="input" id="codeCheck" placeholder="인증코드를 입력하세요">
 							</div>
 						</div>
 						<a class="button is-solid dark-grey-button raised"
-							style="vertical-align: -webkit-baseline-middle">코드확인</a>
+							style="vertical-align: sub">코드확인</a>
 					</div>
 
 					<div class="buttons">
 						<a class="button process-button" data-step="step-dot-1">Home</a> <a
 							class="button process-button is-next" data-step="step-dot-2">Next</a>
 					</div>
+					<button onclick="frm(event)">제출</button>
 				</div>
 
+				<!-------------- 페이지2 사진 입력 ------------------->
 				<div id="signup-panel-2" class="process-panel-wrap is-narrow">
 					<div class="form-panel">
 						<div class="photo-upload">
@@ -157,17 +227,18 @@ a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https:/
 							</div>
 						</div>
 					</div>
-
 					<div class="buttons">
 						<a class="button process-button" data-step="step-dot-1">Back</a> <a
 							class="button process-button is-next" data-step="step-dot-3">Next</a>
+						
 					</div>
 				</div>
 
+
+				<!-------------- 페이지3 위치 입력 ------------------->
 				<script>
 					function getLocation() {
-						$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi", function(
-								json) {
+						$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi", function(json) {
 							console.log(json);
 							$("#country").text(', ' + json['location']['country']['name']);
 							$("#city").text(json['location']['region']['name']);
@@ -196,7 +267,7 @@ a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https:/
 					// 지도
 				    function initMap(lat, lon) {
 				        const city = { lat: lat,
-				        		lng: lon};
+				        			   lng: lon};
 				        const map = new google.maps.Map(document.getElementById("map"), {
 				          zoom: 6,
 				          center: city,
@@ -229,37 +300,55 @@ a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https:/
 					</div>
 				</div>
 
+				<!-------------- 페이지4 언어/관심사 입력 ------------------->
 				<div id="signup-panel-4" class="process-panel-wrap is-narrow">
 					<div class="form-panel">
-						<div class="field">
-							<label>Password</label>
-							<div class="control">
-								<input type="password" class="input"
-									placeholder="Choose a password">
+						<div class="dropbox" style="text-align:center;">
+							<div class="control" style="display: inline-grid;margin: 1rem;">
+							<b><label>Native</label></b>
+								<select name="language1" style="width: 100px; font-size: 12pt;">
+									<option value="Korean">Korean</option>
+									<option value="English">English</option>
+								</select>
+							</div>
+							<div class="control" style="display: inline-grid;margin: 1rem;">
+								<b><label>Learn</label></b>
+								<select name="language2" style="width: 100px; font-size: 12pt;">
+									<option value="Beginner">Beginner</option>
+									<option value="Elementary">Elementary</option>
+									<option value="Intermediate">Intermediate</option>
+									<option value="Advanced">Advanced</option>
+									<option value="Proficient">Proficient</option>
+								</select>
 							</div>
 						</div>
-						<div class="field">
-							<label>Repeat Password</label>
-							<div class="control">
-								<input type="password" class="input"
-									placeholder="Repeat your password">
+						<div class="topic">
+							<div class="topic-label">
+								<div class="left"><label><b>Topics of Interest</b></label></div>
+								<div class="right">( <span id="checked">0</span> / 30)</div>
 							</div>
-						</div>
-						<div class="field">
-							<label>Phone Number</label>
-							<div class="control">
-								<input type="text" class="input"
-									placeholder="Enter your phone number">
+							<div class="topic-list">
+								<c:forEach items="${topic }" var="vo">
+									<input class="text-nicelabel" name="topic" 
+									data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}' 
+									type="checkbox" onclick="check(this,check_q1(this),30);">
+								</c:forEach>
+								<script>
+								$('input').nicelabel({
+								});
+								</script>
 							</div>
 						</div>
 					</div>
-
+			
 					<div class="buttons">
 						<a class="button process-button" data-step="step-dot-3">Back</a> <a
 							class="button process-button is-next" data-step="step-dot-5">Next</a>
 					</div>
 				</div>
-
+				</form:form>
+				
+				<!-------------- 페이지5 완료 ------------------->
 				<div id="signup-panel-5" class="process-panel-wrap is-narrow">
 					<div class="form-panel">
 						<img class="success-image"
@@ -275,8 +364,6 @@ a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https:/
 				</div>
 			</div>
 		</div>
-
-
 
 		<!--Edit Credit card Modal-->
 		<div id="crop-modal" class="modal is-small crop-modal is-animated">
@@ -328,36 +415,9 @@ a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https:/
 	<script src="resources/template/assets/js/popovers-pages.js"></script>
 	<script src="resources/template/assets/js/lightbox.js"></script>
 
-	<!-- Landing page js -->
-
 	<!-- Signup page js -->
 	<script src="resources/template/assets/js/signup.js"></script>
 
-	<!-- Feed pages js -->
-
-	<!-- profile js -->
-
-	<!-- stories js -->
-
-	<!-- friends js -->
-
-	<!-- questions js -->
-
-	<!-- video js -->
-
-	<!-- events js -->
-
-	<!-- news js -->
-
-	<!-- shop js -->
-
-	<!-- inbox js -->
-
-	<!-- settings js -->
-
-	<!-- map page js -->
-
-	<!-- elements page js -->
 </body>
 
 </html>
