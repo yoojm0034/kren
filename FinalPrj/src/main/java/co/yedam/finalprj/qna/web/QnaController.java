@@ -31,7 +31,7 @@ public class QnaController {
 	}
 	//관리자 
 	//문의사항목록
-	@RequestMapping("adminQnaicList.do")
+	@RequestMapping("adminQnaList.do")
 	@ResponseBody
 	public Map<String, Object> adminQnaList(QnaVO vo){
 		Map<String, Object> datas = new HashMap<String, Object>();

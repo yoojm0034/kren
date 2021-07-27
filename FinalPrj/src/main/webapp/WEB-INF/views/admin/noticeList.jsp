@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,12 +11,41 @@
 	src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script
 	src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#table_id').DataTable();
-    
-    } );
-</script>
+<style>
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .35rem;
+}
+ 
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin: 2px 0;
+    white-space: nowrap;
+    justify-content: flex-end;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #4e73df;
+    background-color: #fff;
+    border: 1px solid #dddfeb;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+div.dataTables_wrapper div.dataTables_paginate {
+    margin: 0;
+    white-space: nowrap;
+    text-align: right;
+}
+</style>
 </head>
 <body>
 	<div class="stories-wrapper is-home">
@@ -92,29 +122,50 @@
 				</div>
 			</div>
 
-			<div class="stories-container">
+			<div class="stories-container" id="page-top">
 				<form action="">
-					<div>
-						<table id="table_id" class="table table-striped table-bordered"
-							style="width: 80%">
-							<thead>
-								<tr>
-									<th>NO</th>
-									<th>TITLE</th>
-									<th>REG_DATE</th>
-									<th>HIT</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>notice_1</td>
-									<td>System Architect</td>
-									<td>2021/07/27</td>
-									<td>61</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+					<!-- Page Wrapper -->
+					<div id="wrapper">
+						<!-- Content Wrapper -->
+						<div id="content-wrapper" class="d-flex flex-column">
+							<!-- Main Content -->
+							<div id="content">
+								<!-- Begin Page Content -->
+								<div class="container-fluid">
+									<!-- DataTales Example -->
+									<div class="card shadow mb-4">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-bordered" id="dataTable" style="width:100%;cellspacing:0;" >
+													<thead>
+														<tr>
+															<th>글번호</th>
+															<th>제목</th>
+															<th>등록일</th>
+															<th>조회수</th>
+														</tr>
+													</thead>
+													<tbody>
+														<c:forEach items="${noticeList }" var="vo">
+														<tr onclick="">
+															<td>${vo.notice_id }</td>
+															<td>${vo.title }</td>
+															<td>${vo.reg_date }</td>
+															<td>${vo.hit }</td>
+														</tr>
+														</c:forEach>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									</div>
+									</div>
+								</div>
+								<!-- /.container-fluid -->
+
+							</div>
+							<!-- End of Main Content -->
 				</form>
 			</div>
 			<div>
@@ -122,8 +173,6 @@
 			</div>
 		</div>
 		<!-- 컨텐츠 종료 -->
-
-
 	</div>
 
 
