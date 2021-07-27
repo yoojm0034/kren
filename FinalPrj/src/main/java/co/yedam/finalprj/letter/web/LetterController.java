@@ -15,14 +15,14 @@ public class LetterController {
 	
 	@RequestMapping("letterBox.do")
 	public String letterBox(Model model, LetterVO vo) {
-//		vo.setTo_id("user3");
+		vo.setTo_id("user3");
 		model.addAttribute("newLetter", letterDao.selectNewLetter(vo));
 		return "letter/letterBox";
 	}
 
 	@RequestMapping("arriveLetter.do")
 	public String ArriveLetter(Model model, LetterVO vo) {
-//		vo.setTo_id("user3");		
+		vo.setTo_id("user3");		
 		model.addAttribute("friends", letterDao.selectAllFriend(vo));		
 		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo));		
 		return "letter/arriveLetter";

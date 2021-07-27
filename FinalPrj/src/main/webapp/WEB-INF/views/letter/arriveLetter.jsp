@@ -48,9 +48,9 @@
 					</div>
 					<!-- Menu -->
 					<div class="left-menu">
-						<a href="letterBox.do" class="item is-active"> <i
+						<a href="letterBox.do" class="item"> <i
 							data-feather="mail"></i> <span class="name">New Letters</span>
-						</a> <a href="arriveLetter.do" class="item"> <i
+						</a> <a href="arriveLetter.do" class="item is-active"> <i
 							data-feather="star"></i> <span class="name">Arrive Letters</span>
 						</a> <a href="savedLetter.do" class="item"> <i
 							data-feather="folder"></i> <span class="name">Saved

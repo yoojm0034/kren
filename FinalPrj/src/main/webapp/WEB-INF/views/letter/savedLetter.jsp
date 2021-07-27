@@ -38,7 +38,7 @@
                             <i data-feather="mail"></i>
                             <span class="name">New Letters</span>
                         </a>
-                        <a href="arriveLetter" class="item">
+                        <a href="arriveLetter.do" class="item">
                             <i data-feather="star"></i>
                             <span class="name">Arrive Letters</span>
                         </a>

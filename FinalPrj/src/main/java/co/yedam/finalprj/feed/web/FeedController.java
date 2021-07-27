@@ -23,7 +23,7 @@ public class FeedController {
 	
 	@RequestMapping("feed.do")
 	public String feedList(FeedVO vo, Model model) {
-//		vo.setUser_id("user1");
+		vo.setUser_id("user1");
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 		return "feed/mainFeed";
 	}

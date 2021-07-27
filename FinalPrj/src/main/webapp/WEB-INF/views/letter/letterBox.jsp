@@ -133,21 +133,16 @@
 						<!-- Messages list -->
 						<!-- Message cards -->
 						<c:choose>
-							<c:when test="${!empty friends }">
+							<c:when test="${!empty newLetter }">
 								<div id="inbox-messages" class="inbox-messages has-slimscroll">
 									<div class="inbox-messages-inner">
-									<c:forEach items="${friends }" var="vo" varStatus="status">
+									<c:forEach items="${newLetter }" var="vo" varStatus="status">
 										<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 											class="card is-msg has-attachment">
 											<div class="card-content">
-												<c:if test="${!empty vo.arrive_date}">
-													<span class="msg-timestamp"> ${vo.arrive_date }												
-													<img src="resources/template/assets/img/letter/stamp.png">
-													</span>
-												</c:if>
-												<c:if test="${empty vo.arrive_date }">
-													<p>배달오는 중입니다.</p>
-												</c:if>
+												<span class="msg-timestamp"> ${vo.arrive_date } <img
+													src="resources/template/assets/img/letter/stamp.png">
+												</span>
 												<div class="msg-header">
 													<div class="user-image">
 														<img
@@ -162,7 +157,9 @@
 												<div class="msg-subject" style="text-align: right;">
 													<span>letter Status</span>
 												</div>
-
+												<div class="msg-snippet">
+													<p>${vo.content }</p>
+												</div>
 											</div>
 										</div>
 									</c:forEach>
