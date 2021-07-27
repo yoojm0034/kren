@@ -1,32 +1,40 @@
 package co.yedam.finalprj.users.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 import lombok.Data;
 
-@Controller
-public class UsersController {
-	@Autowired
-	UsersService usersDao;
-
-	@Data
+@Data
 class MemberData {
 	List<UsersVO> createdRows;
 	List<UsersVO> updatedRows;
 	List<UsersVO> deletedRows;
 }
+
+@Controller
+public class UsersController {
+	@Autowired
+	UsersService usersDao;
+	
+	@Autowired
+	TopicService topicDao;
+
 
 	@RequestMapping("test3.do")
 	public String test3() {
@@ -39,11 +47,18 @@ class MemberData {
 	} 
 	
 	// 회원가입
-	@RequestMapping("userJoinForm1.do")
-	public String userJoinForm1() {
-		return "empty/userJoinForm1";
+	@RequestMapping("userJoinForm.do")
+	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model) {
+	model.addAttribute("topic", topicDao.topicSelectList());
+		return "empty/userJoinForm";
 	} 	
 	
+	@RequestMapping(value="userJoin.do", method = RequestMethod.GET)
+	public String userJoin(UsersVO vo, Model model) throws Exception {
+	    return "empty/home";
+	}
+
+
 	
 	
 	//관리자 

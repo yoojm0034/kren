@@ -1,10 +1,76 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>관심사리스트</title>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		const dataSource = {
+				  contentType: 'application/json',
+				  api: {
+				    readData: {url:'adminPaymentList.do',method: 'GET'},
+				  }
+				};
+		console.log(dataSource);
+		const Grid = tui.Grid; //인스턴스 객체 생성 
+		const recruitGrid = new Grid({
+			el : document.getElementById('recruitGrid'), // DOM의 id지정
+			data : dataSource,
+			columns : [ {
+				header : 'pay_id',
+				name : 'pay_id',
+				sortingType : 'desc',
+				sortable : true,
+				align : 'center'
+			}, {
+				header : 'USER',
+				name : 'user_id',
+				align : 'center',
+				filter : {
+					type : 'text',
+					showApplyBtn : true,
+					showClearBtn : true
+				}
+			}, {
+				header : '가격',
+				name : 'price',
+				align : 'center'
+			},{
+				header : '결제일',
+				name : 'pay_dt',
+				align : 'center'
+			}],
+			summary: {
+			    height: 15,
+			    position: 'bottom', 
+			    columnContent:{
+			    	price: {
+			            template: function(valueMap) {
+			              return `합계 : ` +valueMap.sum+`원`;
+			       		}
+			        }
+			    }
+			},
+			rowHeaders : [ 'rowNum' ],
+			pagination : true,
+			pageOptions : {
+				useClient : true,
+				perPage : 15
+			}
+		});
+		  
+	});
+</script>
 </head>
 <body>
   	 <div class="stories-wrapper is-home">
@@ -19,8 +85,8 @@
                         <div class="avatar-wrap">
                             <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/jenna.png" data-user-popover="0" alt="">
                         </div>
-                        <h4>Jenna Davis</h4>
-                        <p>Melbourne, AU</p>
+                        <h4>Admin</h4>
+                        <p>Daegu, KR</p>
                         <div class="user-stats">
                             <div class="stat-block">
                                 <span>Followers</span>
@@ -105,23 +171,22 @@
                 </a>
 	            <div class="stories-content">
 	                    <div class="section-title main-section-title">
-	                        <h2>신고목록</h2>
+	                        <h2>결제내역 관리</h2>
 	                    </div>
 	            </div>  
 	            <div class="stories-container">
                         <div class="container-inner">
-                           ㄴㄹㅇ
+                           <div align="center">
+								<div id="recruitGrid"></div>
+							</div>
                         </div>
                 </div>
-	            
 	         </div>          
             <!-- 컨텐츠 종료 -->
            
             
         </div>
-
         
-      
 					
 </body>
 </html>

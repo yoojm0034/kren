@@ -11,7 +11,7 @@
 	
 	<!-- insert -->
 	<insert id="topicInsert" parameterType="co.yedam.finalprj.topic.vo.TopicVO">
-		insert into topic values (#{topic_id}, #{kr}, #{en})
+		insert into topic values ('topic_'||topic_seq.nextval, #{kr}, #{en})
 	</insert>
 	
 	<!-- delete -->

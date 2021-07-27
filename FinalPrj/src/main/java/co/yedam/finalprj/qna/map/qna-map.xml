@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.qna.map.QnaMap">
-
+	<!-- select -->
+	<select id="qnaSelectList" resultType="co.yedam.finalprj.qna.vo.QnaVO">
+		select qna_id, email, content, qna_dt, answer
+		from qna
+		order by qna_dt desc
+	</select>
+	
+	<!-- update -->
+	<update id="qnaUpdate" parameterType="co.yedam.finalprj.qna.vo.QnaVO">
+		update qna
+		set answer = #{answer}
+		where qna_id = #{qna_id}
+	</update>
+		
 </mapper>
