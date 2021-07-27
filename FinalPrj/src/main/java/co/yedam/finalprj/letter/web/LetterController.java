@@ -13,6 +13,7 @@ public class LetterController {
 	@Autowired
 	LetterService letterDao;
 	
+	// 답장안한편지 조회
 	@RequestMapping("letterBox.do")
 	public String letterBox(Model model, LetterVO vo) {
 		vo.setTo_id("user3");
@@ -29,8 +30,10 @@ public class LetterController {
 		return "letter/arriveLetter";
 	}
 	
+	// 임시저장한 편지조회
 	@RequestMapping("savedLetter.do")
-	public String SavedLetter() {
+	public String SavedLetter(Model model, LetterVO vo) {
+		model.addAttribute("save", letterDao.selectSaveLetter(vo));				
 		return "letter/savedLetter";
 	}
 

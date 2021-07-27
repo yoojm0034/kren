@@ -4,49 +4,45 @@
 	<!-- 전체 편지 -->
 	<select id="selectAllLetter" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT * FROM LETTER
-		WHERE ARRIVE_DATE IS NOT NULL
-			AND TO_ID =#{to_id}
-		ORDER BY ARRIVE_DATE DESC
+		 WHERE ARRIVE_DATE IS NOT NULL
+		   AND TO_ID =#{to_id}
+		 ORDER BY ARRIVE_DATE DESC
 	</select>
 
 	<!-- 전체 친구 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT  L.USER_ID, U.NAME, L.SEND_DATE, L.ARRIVE_DATE FROM LETTER L, USERS U
-		WHERE L.USER_ID=U.USER_ID
-    		and L.TO_ID =#{to_id}
-    		and
-    		L.USER_ID IN (SELECT DISTINCT USER_ID FROM LETTER WHERE USER_ID NOT IN #{to_id})
-		ORDER BY ARRIVE_DATE DESC
+		 WHERE L.USER_ID=U.USER_ID
+    	   AND L.TO_ID =#{to_id}
+    	   AND L.USER_ID IN (SELECT DISTINCT USER_ID FROM LETTER WHERE USER_ID NOT IN #{to_id})
+		 ORDER BY ARRIVE_DATE DESC
 	</select>
 	
 	<!-- 답장 안한 편지 -->
 	<select id="selectNewLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT L.*, U.NAME FROM LETTER L, USERS U
-		WHERE L.USER_ID=U.USER_ID
-    		AND SEND_YN ='N'
-			AND TO_ID =#{to_id}
-			AND ARRIVE_DATE IS NOT NULL
-		ORDER BY ARRIVE_DATE DESC
+		 WHERE L.USER_ID=U.USER_ID
+    	   AND SEND_YN ='N'
+		   AND TO_ID =#{to_id}
+		   AND ARRIVE_DATE IS NOT NULL
+		 ORDER BY ARRIVE_DATE DESC
 	</select>
 	
 	<!-- 친구편지목록 -->
 	<select id="selectFriendLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT * FROM LETTER
-		WHERE
-			TO_ID =#{to_id} AND USER_ID =#{user_id}
-			OR
-			TO_ID =#{user_id} AND USER_ID =#{to_id}
-		ORDER BY SEND_DATE
+		 WHERE TO_ID =#{to_id} AND USER_ID =#{user_id}
+		    OR TO_ID =#{user_id} AND USER_ID =#{to_id}
+		 ORDER BY SEND_DATE
 	</select>
 	
-	<!-- 임시저장한 편지 -->
+	<!-- 임시저장한 편지조회 -->
 	<select id="selectSaveLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT * FROM LETTER
-		WHERE
-			USER_ID =#{user_id}
-			AND
-			GUBUN ='임시저장'
-		ORDER BY SEND_DATE
+		SELECT L.*, U.NAME FROM LETTER L, USERS U
+		 WHERE L.USER_ID=U.USER_ID
+		   AND L.USER_ID =#{user_id}
+		   AND GUBUN ='임시저장'
+		 ORDER BY SEND_DATE DESC
 	</select>
 	
 	<!-- 편지 작성 -->
@@ -54,15 +50,14 @@
 		INSERT INTO LETTER
 			(LETTER_ID, TO_ID, USER_ID, CONTENT, PHOTO, GUBUN)
 		VALUES
-			(letter_seq.nextval, #{to_id}, #{user_id}, #{content}, #{photo}, #{gubun})
+			('letter_'||letter_seq.nextval, #{to_id}, #{user_id}, #{content}, #{photo}, #{gubun})			
 	</insert>
 	
 	<!-- 편지 삭제 -->
 	<update id="deleteLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
 		UPDATE LETTER SET TO_DELETE = 'Y' 
-		WHERE LETTER_ID =#{letter_id}
-			AND
-			USER_ID =#{user_id}
+		 WHERE LETTER_ID =#{letter_id}
+		   AND USER_ID =#{user_id}
 	</update>
 
 </mapper>
