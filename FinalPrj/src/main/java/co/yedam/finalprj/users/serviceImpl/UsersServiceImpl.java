@@ -2,6 +2,8 @@ package co.yedam.finalprj.users.serviceImpl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +25,7 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public UsersVO usersSelect(UsersVO vo) {
 		// TODO Auto-generated method stub
-		return null;
+		return map.usersSelect(vo);
 	}
 
 	@Override
@@ -54,6 +56,18 @@ public class UsersServiceImpl implements UsersService {
 	public List<UsersVO> adminUsersSelectList() {
 		// TODO Auto-generated method stub
 		return map.adminUsersSelectList();
+	}
+
+	@Override
+	public boolean loginCheck(UsersVO vo) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void logout(HttpSession session) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

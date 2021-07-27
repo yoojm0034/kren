@@ -2,6 +2,8 @@ package co.yedam.finalprj.users.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface UsersService {
@@ -14,4 +16,10 @@ public interface UsersService {
 	//admin
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();
+	
+	//login
+	public boolean loginCheck(UsersVO vo);
+	
+	//logout
+	public void logout(HttpSession session);
 }
