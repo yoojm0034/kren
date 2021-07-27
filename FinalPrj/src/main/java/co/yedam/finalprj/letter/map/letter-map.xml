@@ -10,16 +10,20 @@
 	</select>
 
 	<!-- 전체 친구 -->
-	<select id="selectAllFriend" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT USER_ID, SEND_DATE, ARRIVE_DATE FROM LETTER
-		WHERE TO_ID =#{to_id}
+	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+		SELECT  L.USER_ID, U.NAME, L.SEND_DATE, L.ARRIVE_DATE FROM LETTER L, USERS U
+		WHERE L.USER_ID=U.USER_ID
+    		and L.TO_ID =#{to_id}
+    		and
+    		L.USER_ID IN (SELECT DISTINCT USER_ID FROM LETTER WHERE USER_ID NOT IN #{to_id})
 		ORDER BY ARRIVE_DATE DESC
 	</select>
 	
 	<!-- 답장 안한 편지 -->
 	<select id="selectNewLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT * FROM LETTER
-		WHERE SEND_YN ='N'
+		SELECT L.*, U.NAME FROM LETTER L, USERS U
+		WHERE L.USER_ID=U.USER_ID
+    		AND SEND_YN ='N'
 			AND TO_ID =#{to_id}
 			AND ARRIVE_DATE IS NOT NULL
 		ORDER BY ARRIVE_DATE DESC
