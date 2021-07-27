@@ -111,10 +111,7 @@
 		});
 	}
 	
-	function console() {
-		var word = $('#filter option:selected').val();
-		console.log(word);
-	}
+	
 </script>
 </head>
 <body>
