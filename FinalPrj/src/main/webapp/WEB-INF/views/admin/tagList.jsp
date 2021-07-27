@@ -30,11 +30,7 @@
 				header : 'TAG',
 				name : 'tag_name',
 				editor: 'text',
-				filter : {
-					type : 'text',
-					showApplyBtn : true,
-					showClearBtn : true
-					},
+				filter : 'select',
 				align : 'center'
 			}],
 			rowHeaders : [ 'checkbox' ],
@@ -133,7 +129,7 @@
                                             <span>상품목록</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='paymentList.do'">
                                         <a>
                                             <span>결제내역</span>
                                         </a>
@@ -143,7 +139,7 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='noticeList.do'">
                                         <a>
                                             <span>공지사항</span>
                                         </a>
@@ -161,7 +157,7 @@
             </div>
             <!-- 사이드바 종료 -->
             <!-- 컨텐츠 시작 -->
-            <div class="inner-wrapper">
+            <div class="inner-wrapper" style="width:1200px;">
                 <a class="mobile-sidebar-trigger is-home-v2">
                     <i data-feather="menu"></i>
                 </a>
@@ -170,19 +166,18 @@
 	                        <h2>태그 관리</h2>
 	                    </div>
 	            </div>  
-	            <div align="right" class="btn-wrapper">
-	            	<button id="prependBtn">태그추가</button>
-	            	<button id="create">DB입력</button>
+		        <div align="right" class="btn-wrapper">
+		            <button id="prependBtn">태그추가</button>
+		            <button id="create">DB입력</button>
 					<button id="delete">삭제</button>
+		        </div>
+		        <div class="stories-container">
+	                <div class="container-inner">
+	                    <div align="center">
+	 						<div id="recruitGrid"></div>
+						</div>
+                    </div>
 	            </div>
-	            <div class="stories-container">
-                        <div class="container-inner">
-                           <div align="center">
-								<div id="recruitGrid"></div>
-							</div>
-                        </div>
-                </div>
-	            
 	         </div>          
             <!-- 컨텐츠 종료 -->
            

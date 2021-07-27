@@ -1,5 +1,13 @@
 package co.yedam.finalprj.notice.map;
 
-public interface NoticeMap {
+import java.util.List;
 
+import co.yedam.finalprj.notice.vo.NoticeVO;
+
+public interface NoticeMap {
+	List<NoticeVO> noticeSelectList();
+	NoticeVO noticeSelect(NoticeVO vo);
+	int noticeInsert(NoticeVO vo);
+	int noticeUpdate(NoticeVO vo);
+	int noticeDelete(NoticeVO vo);
 }

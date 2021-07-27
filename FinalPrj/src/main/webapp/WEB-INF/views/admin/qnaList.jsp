@@ -36,11 +36,7 @@
 				name : 'email',
 				align : 'center',
 				editor: 'text',
-				filter : {
-					type : 'text',
-					showApplyBtn : true,
-					showClearBtn : true
-				}
+				filter : 'select'
 			}, {
 				header : 'CONTENT',
 				name : 'content',
@@ -137,7 +133,7 @@
                                             <span>상품목록</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='paymentList.do'">
                                         <a>
                                             <span>결제내역</span>
                                         </a>
@@ -147,7 +143,7 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='#'">
+                                    <li onclick="location.href='noticeList.do'">
                                         <a>
                                             <span>공지사항</span>
                                         </a>

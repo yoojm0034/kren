@@ -1,5 +1,14 @@
 package co.yedam.finalprj.notice.service;
 
-public interface NoticeService {
+import java.util.List;
 
+import co.yedam.finalprj.notice.vo.NoticeVO;
+
+
+public interface NoticeService {
+	List<NoticeVO> noticeSelectList();
+	NoticeVO noticeSelect(NoticeVO vo);
+	int noticeInsert(NoticeVO vo);
+	int noticeUpdate(NoticeVO vo);
+	int noticeDelete(NoticeVO vo);
 }
