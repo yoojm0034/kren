@@ -12,6 +12,7 @@ public class NoticeVO {
 	private String content;
 	private Date reg_date;
 	private int hit;
-	private String photo;
+	private String fileName;
+	private String uuid;
 	private MultipartFile file;
 }

@@ -9,5 +9,6 @@ public interface NoticeMap {
 	NoticeVO noticeSelect(NoticeVO vo);
 	int noticeInsert(NoticeVO vo);
 	int noticeUpdate(NoticeVO vo);
+	int noticeUpdateHit(NoticeVO vo);
 	int noticeDelete(NoticeVO vo);
 }
