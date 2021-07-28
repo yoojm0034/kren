@@ -10,6 +10,7 @@
 	width: 100%;
 	height: 100%;
 	padding: 8%;
+	overflow: auto;
 }
 
 .inbox-wrapper .inbox-wrapper-inner .inbox-center-container .inbox-center-container-inner .messages .action-buttons .button
@@ -61,6 +62,7 @@
 }
 </style>
 <script>
+	// 영어 -> 한국어
 	function tokr(index){
 		var en = $("#english"+index).val();
 		var Data = {english:en};
@@ -85,7 +87,8 @@
 				}
 			});
 	}
-			
+		
+	// 한국어 -> 영어
 	function toen(index){
 		var ko = $("#korean"+index).val();
 		var Data = {korean:ko};
@@ -108,6 +111,15 @@
 			}
 		});
 	}
+	
+	$(function() {
+		$('a.item').on('click', function() {
+		    var aid = $(this).data('id');
+		    console.log(aid);
+		    location.href='selectLetters.do?user_id='+aid; 
+		});		
+	});
+
 </script>
 </head>
 <body>
@@ -116,31 +128,26 @@
 			<!-- LEFT SIDEBAR  -->
 			<div class="inbox-left-sidebar">
 				<div class="inbox-left-sidebar-inner ">
-					<div class="control has-icon">
-						<input id="search" type="text" class="input">
-						<div class="form-icon">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-								viewBox="0 0 24 24" fill="none" stroke="currentColor"
-								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-								class="feather feather-search">
-								<circle cx="11" cy="11" r="8"></circle>
-								<line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-						</div>
-					</div>
 					<div class="compose">
 						<a class="button is-fullwidth raised is-bold">Write</a>
 					</div>
 					<!-- MENU -->
-					<div class="left-menu">
-						<a href="letterBox.do" class="item is-active">
+					<div class="left-menu" style="overflow: auto;">
+						<a href="letterBox.do" class="item">
 							<span class="name">New Letters</span>
 						</a>
-						<a href="arriveLetter.do" class="item">
-							<span class="name">Arrive Letters</span>
-						</a>
-						<a href="savedLetter.do" class="item">
+						<a href="savedLetter.do" class="item is-active">
 							<span class="name">Saved Letters</span>
 						</a>
+						<c:if test="${!empty friends }">
+						<c:forEach items="${friends }" var="vo">						
+							<a data-id="${vo.user_id}" class="item">
+								<span class="name">${vo.name }</span>
+							</a>
+						</c:forEach>
+						</c:if>						
+						
+						
 					</div>
 					<!-- MOBILE ONLY CLOSE -->
 					<div class="close-menu is-hidden-desktop is-hidden-landscape">
@@ -162,6 +169,7 @@
 				<div class="inbox-center-container-inner">
 					<div class="messages">
 						<!-- BUTTON GROUP -->
+						<div class="action-buttons">
 						<div class="control is-grouped is-hidden-desktop is-hidden-landscape">
 							<a id="open-compose" class="button is-solo"> <svg
 									xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -176,7 +184,6 @@
 						</div>
 
 						<div class="control is-grouped">
-						<div class="action-buttons">
 							<a class="button" href="letterBox.do"> <svg
 									xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 									viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -205,6 +212,7 @@
 								</div>
 							</div>
 						</div>
+						<!-- /BUTTON GROUP -->
 						</div>
 
 						<!-- MESSAGES LIST -->

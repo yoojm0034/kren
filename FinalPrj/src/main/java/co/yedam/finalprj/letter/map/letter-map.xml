@@ -6,10 +6,11 @@
 		SELECT * FROM LETTER
 		 WHERE ARRIVE_DATE IS NOT NULL
 		   AND TO_ID =#{to_id}
+		   AND GUBUN IN ('일반','교정')
 		 ORDER BY ARRIVE_DATE DESC
 	</select>
 
-	<!-- 전체 친구 -->
+	<!-- 나에게 편지를 보낸 친구 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT  L.USER_ID, U.NAME, L.SEND_DATE, L.ARRIVE_DATE FROM LETTER L, USERS U
 		 WHERE L.USER_ID=U.USER_ID
@@ -28,12 +29,12 @@
 		 ORDER BY ARRIVE_DATE DESC
 	</select>
 	
-	<!-- 친구편지목록 -->
+	<!-- 해당친구이름과 해당편지목록 -->
 	<select id="selectFriendLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT * FROM LETTER
+ 		SELECT * FROM LETTER_FROM_V
 		 WHERE TO_ID =#{to_id} AND USER_ID =#{user_id}
 		    OR TO_ID =#{user_id} AND USER_ID =#{to_id}
-		 ORDER BY SEND_DATE
+		 ORDER BY ARRIVE_DATE DESC
 	</select>
 	
 	<!-- 임시저장한 편지조회 -->

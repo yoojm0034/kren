@@ -116,14 +116,10 @@
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
 		    console.log(aid);
-    
-		    
 		    location.href='selectLetters.do?user_id='+aid; 
 		});		
 	});
-	
 
-		
 </script>
 </head>
 <body>
@@ -221,10 +217,10 @@
 						<!-- MESSAGES LIST -->
 						<!-- MESSAGE CARDS -->
 						<c:choose>
-						<c:when test="${!empty newLetter }">
+						<c:when test="${!empty friendLetter }">
 							<div id="inbox-messages" class="inbox-messages has-slimscroll">
 								<div class="inbox-messages-inner">
-								<c:forEach items="${newLetter }" var="vo" varStatus="status">
+								<c:forEach items="${friendLetter }" var="vo" varStatus="status">
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
@@ -328,9 +324,9 @@
 
 					<!-- MESSAGE PREVIEWS -->
 					<c:choose>
-					<c:when test="${!empty newLetter }">
+					<c:when test="${!empty friendLetter }">
 					<div class="message-body has-slimscroll">
-					<c:forEach items="${newLetter }" var="vo" varStatus="status">
+					<c:forEach items="${friendLetter }" var="vo" varStatus="status">
 					<div id="message-preview-${status.index }" class="message-body-inner">
 						<div class="box message-preview">
 							<div class="box-inner">

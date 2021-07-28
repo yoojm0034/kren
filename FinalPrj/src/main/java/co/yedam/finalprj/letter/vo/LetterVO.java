@@ -25,5 +25,6 @@ public class LetterVO {
 	
 	// 없는 필드
 	private String name;
+	private String cate;
 
 }
