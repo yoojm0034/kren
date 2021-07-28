@@ -1,59 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<style>
-.pagination {
-    display: flex;
-    padding-left: 0;
-    list-style: none;
-    border-radius: .35rem;
-}
- 
-div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-    margin: 2px 0;
-    white-space: nowrap;
-    justify-content: flex-end;
-}
-
-.page-link {
-    position: relative;
-    display: block;
-    padding: .5rem .75rem;
-    margin-left: -1px;
-    line-height: 1.25;
-    color: #4e73df;
-    background-color: #fff;
-    border: 1px solid #dddfeb;
-}
-
-*, ::after, ::before {
-    box-sizing: border-box;
-}
-
-div.dataTables_wrapper div.dataTables_paginate {
-    margin: 0;
-    white-space: nowrap;
-    text-align: right;
-}
-tr:hover { 
-	cursor: pointer; 
-	background-color: silver;
-	}
-</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 <script type="text/javascript">
- $(function(){
-	$('#dataTable tbody tr').on('click', function(){
-		location.href='noticeUpdateForm.do?notice_id='+$(this).data('id')
-	})
-	$('#btnNotice').on('click', function(){
-		location.href='noticeForm.do'
-	})
- })	
+	$(function() {
+		{
+			CKEDITOR
+					.replace(
+							'content',
+							{
+								filebrowserUploadUrl : '${pageContext.request.contextPath}/ckupload',
+								height : '400px',
+								width : '100%'
+							});
+		}
+		;
+		$('#btnNoticeList').on('click', function() {
+			location.href = 'noticeList.do'
+		});
+
+	});
 </script>
 </head>
 <body>
@@ -127,63 +99,51 @@ tr:hover {
 			</a>
 			<div class="stories-content">
 				<div class="section-title main-section-title">
-					<h2>공지사항</h2>
+					<h2>공지사항수정</h2>
 				</div>
 			</div>
 
-			<div class="stories-container" id="page-top">
-				<form action="">
-					<!-- Page Wrapper -->
-					<div id="wrapper">
-						<!-- Content Wrapper -->
-						<div id="content-wrapper" class="d-flex flex-column">
-							<!-- Main Content -->
-							<div id="content">
-								<!-- Begin Page Content -->
-								<div class="container-fluid">
-									<!-- DataTales Example -->
-									<div class="card shadow mb-4">
-										<div class="card-body">
-											<div class="table-responsive">
-												<table class="table table-bordered" id="dataTable" style="width:100%;cellspacing:0;" >
-													<thead>
-														<tr>
-															<th>글번호</th>
-															<th width="50%">제목</th>
-															<th>등록일</th>
-															<th>작성자</th>
-															<th>조회수</th>
-														</tr>
-													</thead>
-													<tbody>
-														<c:forEach items="${noticeList }" var="vo">
-															<tr data-id="${vo.notice_id}">
-																<td>${vo.notice_id }</td>
-																<td>${vo.title }</td>
-																<td>${vo.reg_date }</td>
-																<td>관리자</td>
-																<td>${vo.hit }</td>
-															</tr>
-														</c:forEach>
-													</tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-									</div>
-									</div>
-								</div>
-								<!-- /.container-fluid -->
-
-							</div>
-							<!-- End of Main Content -->
+			<div class="stories-container">
+				<form id="frm" action="noticeUpdate.do" method="post" enctype="multipart/form-data">
+					<div>
+						<table class="table">
+							<tr>
+								<td colspan="4" align="left"><input type="text" style="width:100%"
+									class="form-control" id="title" name="title"
+									value="${notice.title}">
+							</tr>
+							<tr>
+								<th>작성일</th>
+								<td width="70%" align="left">${notice.reg_date}</td>
+								<th>조회수</th>
+								<td>${notice.hit}</td>
+							</tr>
+							<tr>
+								<td colspan="4" align="left"><textarea id="content"
+										name="content">${notice.content}</textarea></td>
+							</tr>
+							<tr>
+								<th>등록된 파일</th>
+								<td colspan="4" align="left"><a href="fileDown.do?notice_id=${notice.notice_id}">${notice.fileName}</a>
+								</td>
+							</tr>
+							<tr>
+								<th>수정할 파일</th>
+								<td colspan="4" align="left"><input type="file" name="file"
+									size="50"></td>
+							</tr>
+						</table>
+					</div>
+					<div>
+						<button type="submit">수정</button>
+						<button type="button" id="btnNoticeList">목록</button>
+					</div>
 				</form>
-			</div>
-			<div>
-				<button id="btnNotice">공지사항작성</button>
 			</div>
 		</div>
 		<!-- 컨텐츠 종료 -->
+
+
 	</div>
 
 

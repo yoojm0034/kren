@@ -5,7 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항작성</title>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+<script>
+	$(function() {
+		CKEDITOR.replace('content',
+						{
+							filebrowserUploadUrl : '${pageContext.request.contextPath}/ckupload',
+							height : '500px',
+							width : '100%'
+						});
+	});
+</script>
 </head>
 <body>
 	<div class="stories-wrapper is-home">
@@ -83,27 +94,30 @@
 			</div>
 
 			<div class="stories-container">
-				<form action="noticeInsert.do" enctype="multipart/form-data">
+				<form action="noticeInsert.do" enctype="multipart/form-data"
+					method="post">
 					<div>
-						<table border="1">
-							<tr>
-								<td>title</td>
-								<td><input type="text" id="title" name="title"></td>
-							</tr>
-							<tr>
-								<td>내용</td>
-								<td><textarea rows="30" cols="80" id="content" name="content"></textarea></td>
-							</tr>
-							<tr>
-								<td>사진</td>
-								<td><input type="file" id="file" name="file" multiple="multiple"></td>
-							</tr>
-						</table>
+						<label for="title">글 제목</label> 
+						<input type="text" id="title" name="title" placeholder="글 제목">
 					</div>
 					<div>
-						<button type="submit">작성</button>
-						<button type="button" onclick="location.href='noticeList.do'">목록</button>
-					</div>	
+						<label for="job-title">글 내용</label>
+						<textarea id="content" name="content"></textarea>
+					</div>
+					<div>
+						<label for="company-website-tw d-block">파일 첨부</label> <input
+							type="file" id="file" name="file">
+					</div>
+
+					<div align="center">
+						<button type="reset" >작성취소</button>
+						<button type="submit">작성하기</button>
+						<br>
+					</div>
+					<div align="right">
+						<button type="button" onclick="location.href='noticeList.do'"
+							class="btn btn-light">목록으로</button>
+					</div>
 				</form>
 			</div>
 		</div>

@@ -6,4 +6,23 @@
 		select *
 		from notice
 	</select>
+	<select id="noticeSelect" parameterType="co.yedam.finalprj.notice.vo.NoticeVO" resultType="co.yedam.finalprj.notice.vo.NoticeVO">
+		select *
+		from notice
+		where notice_id = #{notice_id}
+	</select>
+	
+	<!-- update -->
+	<update id="noticeUpdateHit" parameterType="co.yedam.finalprj.notice.vo.NoticeVO">
+		update notice 
+		set hit = hit + 1
+		where notice_id = #{notice_id}
+	</update>
+	
+	<!-- insert -->
+	<insert id="noticeInsert" parameterType="co.yedam.finalprj.notice.vo.NoticeVO">
+		insert into notice (notice_id, title, content, filename, uuid) 
+		values ('test10', #{title}, #{content}, #{fileName}, #{uuid})
+		
+	</insert>
 </mapper>

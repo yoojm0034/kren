@@ -43,4 +43,10 @@ public class NoticeServiceImpl implements NoticeService {
 		return map.noticeDelete(vo);
 	}
 
+	@Override
+	public int noticeUpdateHit(NoticeVO vo) {
+		// TODO Auto-generated method stub
+		return map.noticeUpdateHit(vo);
+	}
+
 }
