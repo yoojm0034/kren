@@ -57,15 +57,30 @@ public class UsersServiceImpl implements UsersService {
 		// TODO Auto-generated method stub
 		return map.adminUsersSelectList();
 	}
-
+	
+	//로그인체크...
 	@Override
-	public boolean loginCheck(UsersVO vo) {
+	public int loginCheck(UsersVO vo) {
 		// TODO Auto-generated method stub
-		return false;
+		return map.loginCheck(vo);
+	}
+	
+	//로그아웃...
+	@Override
+	public void logout(HttpSession session) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//아이디 비밀번호 찾기...
+	@Override
+	public void findId(UsersVO vo) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void logout(HttpSession session) {
+	public void findPw(UsersVO vo) {
 		// TODO Auto-generated method stub
 		
 	}

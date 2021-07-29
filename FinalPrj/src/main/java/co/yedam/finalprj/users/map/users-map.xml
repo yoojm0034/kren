@@ -14,18 +14,38 @@
 		ORDER BY report_cnt DESC
 	</select>
 	
-	<!-- 로그인 유저 셀렉 -->
-	<select id="usersSelect" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		select *
-		from users
-		where user_id = #{user_id}
-		and password = #{password}
-	</select>
-	
 	<!-- update -->
 	<update id="adminUsersUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
 		update users
 		set status = #{status}
 		where user_id = #{user_id}
 	</update>
+	
+	<!-- 로그인 -->
+	<select id="usersSelect" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT *
+		FROM users
+		WHERE USER_ID = #{user_id}
+		AND PASSWORD = #{password}
+	</select>
+	<select id="loginCheck" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="int">
+		SELECT count(*)
+		FROM users
+		WHERE USER_ID = #{user_id}
+		AND PASSWORD = #{password}
+	</select>
+	
+	<!-- 아이디/비밀번호 찾기 -->
+	<select id="findId" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT * 
+		FROM users 
+		WHERE EMAIL = #{email}
+		AND NAME = #{name} 
+	</select>
+	<select id="findPw" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT * 
+		FROM users 
+		WHERE EMAIL = #{email}
+		AND USER_ID = #{user_id}
+	</select>
 </mapper>

@@ -47,55 +47,61 @@
 							<div class="login-wrapper" style="max-width: 400px;">
 								<div class="form-wrapper" style="margin: 0px;">
 									<!--Form-->
-									<div class="login-form">
-										<div class="field">
-											<div class="control">
-												<input class="input email-input" type="text"
-													placeholder="ID">
-												<div class="input-icon">
-													<i data-feather="user"></i>
+									<form action="loginCheck.do" method="post">
+										<div class="login-form">
+											<div class="field">
+												<div class="control">
+													<input class="input email-input" type="text" id="user_id" name="user_id" placeholder="ID">
+													<div class="input-icon">
+														<i data-feather="user"></i>
+													</div>
+												</div>
+											</div>
+											<div class="field">
+												<div class="control">
+													<input class="input password-input" type="password"  id="password" name="password" placeholder="PASSWORD">
+													<div class="input-icon">
+														<i data-feather="lock"></i>
+													</div>
+												</div>
+											</div>
+											<c:if test="${mesagge == false}">
+													<p style="color:red">아이디 또는 비밀번호가 일치하지 않습니다.<p>
+											</c:if>
+											<div class="field">
+												<div class="control">
+													<button
+														class="button is-solid dark-grey-button raised is-rounded is-fullwidth"
+														style="border-color: #3d70b2; background: #3d70b2; color: #fff"
+														type="submit" onclick="loginCheck()">Login</button>
+												</div>
+												<div class="control" style="display: flex;">
+													<button
+														class="button is-solid primary-button raised is-rounded"
+														style="border-color: #fff; background: #ffffff00; color: #fff"
+														onclick="location.href='userJoinForm.do'">Sign Up</button>
+													<button
+														class="button is-solid primary-button raised is-rounded"
+														style="border-color: #fff; background: #ffffff00; color: #fff">forgot
+														password?</button>
 												</div>
 											</div>
 										</div>
-										<div class="field">
-											<div class="control">
-												<input class="input password-input" type="password"
-													placeholder="PASSWORD">
-												<div class="input-icon">
-													<i data-feather="lock"></i>
-												</div>
-											</div>
-										</div>
-										<div class="field">
-											<div class="control">
-												<button
-													class="button is-solid dark-grey-button raised is-rounded is-fullwidth"
-													style="border-color: #3d70b2; background: #3d70b2; color:#fff">Login</button>
-											</div>
-											<div class="control" style="display: flex;">
-												<button
-													class="button is-solid primary-button raised is-rounded"
-													style="border-color: #fff; background: #ffffff00; color:#fff" onclick="location.href='userJoinForm.do'">Sign Up</button>
-												<button
-													class="button is-solid primary-button raised is-rounded"
-													style="border-color: #fff; background: #ffffff00; color:#fff">forgot password?</button>
-											</div>
-										</div>
-									</div>
+									</form>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-						<div class="buttons" align="center">
-					<button id="tour-start" class="button is-hidden-mobile"
-						onclick="location.href='test.do'">테스트페이지</button>
-					<button id="tour-start" class="button is-hidden-mobile"
-						onclick="location.href='feed.do'">피드</button>
-					<button id="tour-start" class="button is-hidden-mobile"
-						onclick="location.href='admin.do'">관리자</button>
-				</div>
+			<div class="buttons" align="center">
+				<button id="tour-start" class="button is-hidden-mobile"
+					onclick="location.href='test.do'">테스트페이지</button>
+				<button id="tour-start" class="button is-hidden-mobile"
+					onclick="location.href='feed.do'">피드</button>
+				<button id="tour-start" class="button is-hidden-mobile"
+					onclick="location.href='admin.do'">관리자</button>
+			</div>
 		</div>
 	</div>
 	<!-- Concatenated js plugins and jQuery -->

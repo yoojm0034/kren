@@ -18,8 +18,12 @@ public interface UsersMap {
 	List<UsersVO> adminUsersSelectList();
 	
 	//login
-		public void loginCheck(UsersVO vo);
+	int loginCheck(UsersVO vo);
 		
-		//logout
-		public void logout(HttpSession session);
+	//logout
+	public void logout(HttpSession session);
+	
+	//아이디 비밀번호 찾기...
+	public void findId(UsersVO vo);
+	public void findPw(UsersVO vo);
 }
