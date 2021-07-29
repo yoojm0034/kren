@@ -12,6 +12,8 @@
 	<security:http>
 		<security:intercept-url pattern="/home.do"
 			access="permitAll()" />
+		<security:intercept-url pattern="/userJoinForm.do"
+			access="permitAll()" />
 		<security:intercept-url pattern="/"
 			access="permitAll()" />
 		<security:intercept-url pattern="/qna/**"
