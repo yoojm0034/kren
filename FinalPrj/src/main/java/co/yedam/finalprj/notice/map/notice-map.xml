@@ -19,10 +19,33 @@
 		where notice_id = #{notice_id}
 	</update>
 	
+	<update id="noticeUpdateFile" parameterType="co.yedam.finalprj.notice.vo.NoticeVO">
+		update notice
+		set filename = null, uuid = null
+		where notice_id = #{notice_id}
+	</update>
+	
+	<update id="noticeUpdate" parameterType="co.yedam.finalprj.notice.vo.NoticeVO">
+		update notice
+		set title = #{title},
+			content = #{content},
+			reg_date = sysdate,
+			filename = #{fileName},
+			uuid = #{uuid}
+		where notice_id = #{notice_id}  
+	</update>
+	
 	<!-- insert -->
 	<insert id="noticeInsert" parameterType="co.yedam.finalprj.notice.vo.NoticeVO">
 		insert into notice (notice_id, title, content, filename, uuid) 
 		values ('notice_'||notice_seq.nextval, #{title}, #{content}, #{fileName}, #{uuid})
-		
 	</insert>
+	
+	<!-- delete -->
+	<delete id="noticeDelete" parameterType="co.yedam.finalprj.notice.vo.NoticeVO">
+		delete from notice 
+		where notice_id = #{notice_id}
+	
+	</delete>
+	
 </mapper>

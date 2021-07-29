@@ -1,5 +1,10 @@
 package co.yedam.finalprj.friends.vo;
 
-public class FriendsVO {
+import lombok.Data;
 
+@Data
+public class FriendsVO {
+	private String user_id;
+	private String following;
+	private String age;
 }

@@ -48,10 +48,10 @@ tr:hover {
 <script type="text/javascript">
  $(function(){
 	$('#dataTable tbody tr').on('click', function(){
-		location.href='admin/noticeUpdateForm.do?notice_id='+$(this).data('id')
+		location.href='${pageContext.request.contextPath}/admin/noticeUpdateForm.do?notice_id='+$(this).data('id')
 	})
 	$('#btnNotice').on('click', function(){
-		location.href='admin/noticeForm.do'
+		location.href='${pageContext.request.contextPath}/admin/noticeForm.do'
 	})
  })	
 </script>
@@ -85,27 +85,27 @@ tr:hover {
 					<div class="user-menu-inner has-slimscroll">
 						<div class="menu-block">
 							<ul>
-								 <li onclick="location.href='admin/admin.do'">
+								 <li onclick="location.href='${pageContext.request.contextPath}/admin/admin.do'">
                                         <a>
                                             <span>유저관리</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userReportList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userReportList.do'">
                                         <a>
                                             <span>신고내역</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userQnaList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userQnaList.do'">
                                         <a>
                                             <span>문의사항</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userTopicList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userTopicList.do'">
                                         <a>
                                             <span>관심사관리</span>
                                         </a>
                                     </li>
-                                     <li onclick="location.href='admin/userTagList.do'">
+                                     <li onclick="location.href='${pageContext.request.contextPath}/admin/userTagList.do'">
                                         <a>
                                             <span>태그관리</span>
                                         </a>
@@ -115,16 +115,16 @@ tr:hover {
 						<div class="separator"></div>
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='admin/userStampList.do'"><a> <span>상품목록</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/userStampList.do'"><a> <span>상품목록</span>
 								</a></li>
-								<li onclick="location.href='admin/userSpaymentList.do'"><a> <span>결제내역</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/userPaymentList.do'"><a> <span>결제내역</span>
 								</a></li>
 							</ul>
 						</div>
 						<div class="separator"></div>
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='admin/noticeList.do'"><a> <span>공지사항</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/noticeList.do'"><a> <span>공지사항</span>
 								</a></li>
 								<li onclick="location.href='#'"><a> <span>통계관리</span>
 								</a></li>
@@ -195,7 +195,7 @@ tr:hover {
 				</form>
 			</div>
 			<div>
-				<button id="btnNotice">공지사항작성</button>
+				<button id="btnNotice" class="button grey-button">공지사항작성</button>
 			</div>
 		</div>
 		<!-- 컨텐츠 종료 -->

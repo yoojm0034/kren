@@ -47,27 +47,27 @@
 					<div class="user-menu-inner has-slimscroll">
 						<div class="menu-block">
 							<ul>
-								 <li onclick="location.href='admin/admin.do'">
+								 <li onclick="location.href='${pageContext.request.contextPath}/admin/admin.do'">
                                         <a>
                                             <span>유저관리</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userReportList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userReportList.do'">
                                         <a>
                                             <span>신고내역</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userQnaList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userQnaList.do'">
                                         <a>
                                             <span>문의사항</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userTopicList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userTopicList.do'">
                                         <a>
                                             <span>관심사관리</span>
                                         </a>
                                     </li>
-                                     <li onclick="location.href='admin/userTagList.do'">
+                                     <li onclick="location.href='${pageContext.request.contextPath}/admin/userTagList.do'">
                                         <a>
                                             <span>태그관리</span>
                                         </a>
@@ -77,16 +77,16 @@
 						<div class="separator"></div>
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='admin/userStampList.do'"><a> <span>상품목록</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/userStampList.do'"><a> <span>상품목록</span>
 								</a></li>
-								<li onclick="location.href='admin/userPaymentList.do'"><a> <span>결제내역</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/userPaymentList.do'"><a> <span>결제내역</span>
 								</a></li>
 							</ul>
 						</div>
 						<div class="separator"></div>
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='admin/noticeList.do'"><a> <span>공지사항</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/noticeList.do'"><a> <span>공지사항</span>
 								</a></li>
 								<li onclick="location.href='#'"><a> <span>통계관리</span>
 								</a></li>
@@ -109,11 +109,11 @@
 			</div>
 
 			<div class="stories-container">
-				<form action="admin/noticeInsert.do" enctype="multipart/form-data"
+				<form action="${pageContext.request.contextPath}/admin/noticeInsert.do" enctype="multipart/form-data"
 					method="post">
 					<div>
 						<label for="title">글 제목</label> 
-						<input type="text" id="title" name="title" placeholder="글 제목">
+						<input type="text" id="title" name="title" placeholder="글 제목" class="input">
 					</div>
 					<div>
 						<label for="job-title">글 내용</label>
@@ -125,13 +125,13 @@
 					</div>
 
 					<div align="center">
-						<button type="reset" >작성취소</button>
-						<button type="submit">작성하기</button>
+						<button type="reset" class="button">작성취소</button>
+						<button type="submit" class="button">작성하기</button>
 						<br>
 					</div>
 					<div align="right">
-						<button type="button" onclick="location.href='admin/noticeList.do'"
-							class="btn btn-light">목록으로</button>
+						<button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/noticeList.do'"
+							class="button">목록으로</button>
 					</div>
 				</form>
 			</div>

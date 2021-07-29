@@ -94,8 +94,8 @@ body {
 	<div class="container is-fluid">
 		<div class="navbar-brand">
 			<a href="home.do" class="navbar-item"> 
-				<img class="logo light-image" src="resources/template/assets/img/logo/logo2.png"> 
-				<img class="logo dark-image" src="resources/template/assets/img/logo/logo2.png">
+				<img class="logo light-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png"> 
+				<img class="logo dark-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png">
 			</a>
 		</div>
 		<div class="navbar-menu">

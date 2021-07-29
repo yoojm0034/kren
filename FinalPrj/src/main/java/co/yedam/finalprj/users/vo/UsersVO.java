@@ -28,4 +28,5 @@ public class UsersVO {
 	private int lon;
 	private String timezone;
 	private String flag;
+	private int count; // 일치하는관심사 수 
 }

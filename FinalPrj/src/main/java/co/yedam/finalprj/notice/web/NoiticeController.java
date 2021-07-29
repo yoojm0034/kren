@@ -89,33 +89,77 @@ public class NoiticeController {
 			model.addAttribute("notice", noticeDao.noticeSelect(vo));
 			path = "admin/noticeUpdateForm";
 		}else {
-			path = "redirect:admin/noticeList.do";
+			path = "redirect:noticeList.do";
 		}
 		return path;
 	}
+	//공지사항파일삭제
+	@RequestMapping("admin/noticeFileDelete.do")
+	public String noticeFileDelete(NoticeVO vo, HttpServletRequest req) {
+		//서버에 올라가있는 파일삭제
+		vo = noticeDao.noticeSelect(vo);
+		String path = req.getServletContext().getRealPath("/resources/fileupload/");
+		String uuid = vo.getUuid();
+		String filePath = path+uuid;
+		File file = new File(filePath);
+		
+		if(file.exists() == true) {
+			file.delete();
+			noticeDao.noticeUpdateFile(vo);
+		}
+	    
+		
+		
+		return "redirect:noticeUpdateForm.do?notice_id="+vo.getNotice_id();
+	}
+	
 	//공지사항 수정
 	@RequestMapping("admin/noticeUpdate.do")
 	public String noticeUpdate(NoticeVO vo, Model model, HttpServletRequest req) throws Exception {
-		UUID uuid = UUID.randomUUID();
-		String fileUUID = uuid.toString() + ".png";
 		//notice table 수정
-		String fileName=null;
 		MultipartFile uploadFile = vo.getFile();
 		
 		if (!uploadFile.isEmpty()) {
-			String originalFileName = uploadFile.getOriginalFilename();
-			fileName = originalFileName;
-			String path = req.getServletContext().getRealPath("/resources/upload/"); //filename alias name으로저장
-			uploadFile.transferTo(new File(path, fileUUID));
+			String name = uploadFile.getOriginalFilename();
+			String ext = null;
+			int dot = name.lastIndexOf(".");
+			if (dot != -1) {                              //확장자가 있을때
+			      ext = name.substring(dot);
+			} else {                                     //확장자가 없으면
+			      ext = "";
+		    }
+			UUID uuid = UUID.randomUUID();
+			String fileUUID = uuid.toString() + ext;
+			vo.setFileName(name);
+			vo.setUuid(fileUUID);
+			System.out.println(fileUUID);
+			String path = req.getServletContext().getRealPath("/resources/fileupload/"); //경로지정
 			System.out.println(path);
-			//vo.setPhoto(fileName);
+			uploadFile.transferTo(new File(path, fileUUID));//파일을 경로로 저장
+			System.out.println(vo.getFileName());
+			
 		} else {
-			NoticeVO old = noticeDao.noticeSelect(vo);
-			//vo.setPhoto(old.getPhoto());
+			System.out.println("첨부파일이 없습니다.");
 		}
-		
-		
-		return "redirect:admin/noticeUpdateForm.do?notice_id"+vo.getNotice_id();
+		int r = noticeDao.noticeUpdate(vo);
+		System.out.println(r + "건 수정");
+		return "redirect:noticeUpdateForm.do?notice_id="+vo.getNotice_id();
+	}
+	//공지사항 삭제
+	@RequestMapping("admin/noticeDelete.do")
+	public String noticeDelete(NoticeVO vo, HttpServletRequest req) {
+		vo = noticeDao.noticeSelect(vo);
+		//첨부파일지우기
+		String path = req.getServletContext().getRealPath("/resources/fileupload/");
+		String uuid = vo.getUuid();
+		String filePath = path+uuid;
+		File file = new File(filePath);
+		if(file.exists() == true) {
+			file.delete();
+		}
+		int r = noticeDao.noticeDelete(vo);
+		System.out.println(r + "건 삭제");
+		return "redirect:noticeList.do";
 	}
 	
 	//ck에디터 
@@ -154,7 +198,6 @@ public class NoiticeController {
 		json.addProperty("fileName", fileUUID);
 		json.addProperty("url", req.getContextPath() + "/resources/upload/" + fileUUID);
 		resp.getWriter().print(json);
-		//photo , photo detail에 저장
 		
 	}
 	//파일다운로드
