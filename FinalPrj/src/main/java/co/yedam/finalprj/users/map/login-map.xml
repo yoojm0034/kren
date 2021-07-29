@@ -9,11 +9,14 @@
 		WHERE USER_ID = #{user_id}
 		AND PASSWORD = #{password}
 	</select>
+	
+	<!-- 해당 loginCheck쿼리 사용X, security-context의 쿼리를 사용함 -->
 	<select id="loginCheck" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="int">
 		SELECT count(*)
 		FROM users
 		WHERE USER_ID = #{user_id}
 		AND PASSWORD = #{password}
+		AND STATUS IN ('일반회원', '관리자')
 	</select>
 	
 	<!-- 아이디/비밀번호 찾기 -->
@@ -21,7 +24,6 @@
 		SELECT * 
 		FROM users 
 		WHERE EMAIL = #{email}
-		AND NAME = #{name} 
 	</select>
 	<select id="findPw" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		SELECT * 
