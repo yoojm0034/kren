@@ -20,6 +20,21 @@
 		set status = #{status}
 		where user_id = #{user_id}
 	</update>
+
+	<!-- 아이디 중복체크 -->	
+	<select id="idCheck" parameterType="string" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+		select * from users where user_id = #{user_id}
+	</select>
+
+	<!-- 이름중복체크 -->
+	<select id="nameCheck" parameterType="string" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+		select * from users where name = #{name}
+	</select>
+	
+	<!-- 이메일중복체크 -->
+	<select id="emailCheck" parameterType="string" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+		select * from users where email = #{email}
+	</select>
 	
 	<!-- 로그인 -->
 	<select id="usersSelect" resultType="co.yedam.finalprj.users.vo.UsersVO">
