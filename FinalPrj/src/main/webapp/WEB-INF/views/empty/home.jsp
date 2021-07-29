@@ -66,13 +66,9 @@
 												</div>
 											</div>
 											<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
-											로그인 에러입니다.<br>
-											예외 타입：${SPRING_SECURITY_LAST_EXCEPTION.getClass().name}<br>
-											메시지：${SPRING_SECURITY_LAST_EXCEPTION.message}<br>
-											<c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
-											</c:if>
-											<c:if test="${mesagge == false}">
-													<p style="color:red">아이디 또는 비밀번호가 일치하지 않습니다.<p>
+												<p style="color: red">아이디 또는 비밀번호가 일치하지 않습니다.
+													<c:remove var="SPRING_SECURITY_LAST_EXCEPTION"
+														scope="session" />
 											</c:if>
 											<div class="field">
 												<div class="control">

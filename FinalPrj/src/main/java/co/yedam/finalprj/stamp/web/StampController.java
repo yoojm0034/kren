@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,27 @@ public class StampController {
 	@RequestMapping("admin/userStampList.do")
 	public String stampList() {
 		return "admin/stampList";
+	}
+	
+	@RequestMapping("stampMainList.do")
+	public String stampMainList() {
+		return "stamp/stampList";
+	}
+	
+	
+	//우표-판매목룍...
+	@RequestMapping("stampSaleList.do")
+	public String stampSaleList(Model model, StampVO vo) {
+		
+		List<StampVO> list = stampDao.stampSelectList();
+		
+		if(!list.isEmpty()) {
+			model.addAttribute("list", list);
+		}else {
+			model.addAttribute("listCheck", "empty");
+		}
+		
+		return "stamp/stampList";
 	}
 	
 	//관리자 
