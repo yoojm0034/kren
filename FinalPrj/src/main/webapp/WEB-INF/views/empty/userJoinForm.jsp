@@ -62,6 +62,12 @@ body {
 .topic-label > .right { float: right; display: inline-block; margin-bottom: 15px;}
 .topic-list { display: inline-block}
 
+.gender { margin-left: 10px }
+.signup-wrapper .process-panel-wrap .form-panel .field .gender label { 
+	font-size: 1rem;
+	margin-right: 20px;
+}
+
 #city2, #country2 {font-size: 20px; font-weight: 600;}
 
 a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https://maps.google.com/maps"]{display:none !important} .gmnoprint a, .gmnoprint span, .gm-style-cc { display:none; } .gmnoprint div { background:none !important; }
@@ -76,7 +82,9 @@ function frm(e) {
 	var pw = $('input[name=password]').val();
 	var pw2 = $('input[name=pw2]').val();
 	var code = $('#inputCode').val();
-	console.log(id, name, pw, pw2, email, code);
+	var gender = $('input[name=gender]:checked').val();
+	var birth = $('input[name=birth]').val();
+	console.log(id, name, gender, pw, pw2, email, code, birth);
 };
 
 //--------------------아이디체크-----------------------
@@ -128,7 +136,7 @@ $(function() {
 			return;
 		}
 		//유효성검사
-		var re = /^[a-zA-Z가-힣ㄱ-ㅎ]+[0-9]{2,10}$/;
+		var re = /^[a-zA-Z가-힣ㄱ-ㅎ][0-9]{2,10}$/;
 	    if(!re.test($('#name').val())) {
 	    	alert("영문 혹은 한글로 시작하는 2~10자의 닉네임을 입력하세요.");
 	        return;
@@ -326,6 +334,37 @@ function check(obj,condition, n) {
 								<button class="button is-solid dark-grey-button raised" id="nameCheck" type="button"
 								value="unChecked">중복확인</button>
 						</div>
+							<div class="field block">
+								<label>BIRTH</label>
+								<div class="gender">
+									<input type="date" id="birth" name="birth">
+<%-- 									<select name="birth1" style="width:80px">
+								       <%for(int i=2021; i>=1900; i--){ %>
+								       <option value="YEAR" hidden selected>YEAR</option>
+								       <option value="<%=i %>"><%=i %></option>
+								       <%} %>
+								     </select>&nbsp;
+								     <select name="birth2" style="width:80px">
+									     <option value="YEAR" hidden selected>MONTH</option>
+									       <%for(int i=1; i<=12; i++){ %>
+									       <option value="<%=i %>"><%=i %></option>
+									       <%} %>
+								     </select>
+								     <select name="birth3" style="width:80px">
+									     <option value="YEAR" hidden selected>DAY</option>
+									       <%for(int i=1; i<=31; i++){ %>
+									       <option value="<%=i %>"><%=i %></option>
+									       <%} %>
+								     </select> --%>
+								</div>
+							</div>
+							<div class="field block">
+								<label>GENDER</label>
+								<div class="gender">
+									<form:radiobutton path="gender" value="M" label="남" />
+									<form:radiobutton path="gender" value="W" label="여" />
+								</div>
+							</div>
 								<div class="field block">
 									<label>PASSWORD</label>
 									<div class="control">

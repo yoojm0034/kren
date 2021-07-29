@@ -33,13 +33,21 @@ $(document).ready(function () {
     }
   });
 
-/*	function page1() {
+	function page1() {
 		if ($('#idCheck').val() == 'unChecked') {
 			alert("ID 중복체크를 하세요.");
 			return false;
 		}
 		if ($('#nameCheck').val() == 'unChecked') {
 			alert("이름 중복체크를 하세요.");
+			return false;
+		}
+		if ($('#birth').val() == "") {
+			alert("생년월일을 입력하세요.");
+			return false;
+		}
+		if ($('input[name=gender]:checked').val() == "") {
+			alert("성별을 체크하세요.");
 			return false;
 		}
 		if ($('#password').val() == "") {
@@ -57,7 +65,7 @@ $(document).ready(function () {
 			return false;
 		}			
 		return true;	
-	};*/
+	};
 	
   $('.process-button').on('click', function () {
     var $this = $(this);
@@ -66,7 +74,7 @@ $(document).ready(function () {
 	var ret = true;
 	
 	if (id == 'step2') {
-//		ret = page1();
+		ret = page1();
 	} else if ( id == 'step3') {
 //		ret = page2();
 	}
