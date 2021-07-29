@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,7 +12,10 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <link rel="icon" type="image/png"
 	href="resources/template/assets/img/favicon.png" />
-<!-- Fonts -->
+<link
+	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
+	rel="stylesheet">
+<script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
 <link
 	href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900"
 	rel="stylesheet">
@@ -24,42 +28,166 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Main Feed</title>
+<style>
+article, aside, details, figcaption, figure, footer, header, hgroup,
+	menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* 또군css */
+.notice {
+	width: 100%;
+	height: 340px;
+	overflow: hidden;
+	margin-bottom: 24px;
+	border-radius: 6px;
+}
+
+.rolling {
+	position: relative;
+	width: 100%;
+	height: auto;
+}
+
+.rolling li {
+	width: 100%;
+	height: 340px;
+	line-height: 50px;
+}
+
+.tag-label {
+	display: inline-block;
+	font-size: 14px;
+	padding: 6px 15px 10px 15px;
+	border-radius: 2rem;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	transition: all 0.2s;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	background-color: #EFEFEF;
+	color: #979797;
+	margin-left: 10px;
+	margin-top: 6px;
+	margin-bottom: 5px;
+}
+</style>
+
 </head>
 <body>
 	<script>
+$(document).ready(function(){
+	//------------------- 생일 롤링 ---------------
+	var height =  $(".notice").height();
+	var num = $(".rolling li").length;
+	var max = height * num;
+	var move = 0;
 	
-		function feedInsert() {
-			var content = $('#publish').val();
-			console.log(content);
-		};
-		
-		
-		function fn_passwd(){
-			var tag = $('#activities-autocpl').val();
+	function noticeRolling() {
+		move += height;
+		$(".rolling").animate({"top":-move},600,function(){
+			if( move >= max ){
+				$(this).css("top",0);
+				move = 0;
+			};
+		});
+	};
+	
+	noticeRollingOff = setInterval(noticeRolling,3000);
+	
+	$(".rolling").append($(".rolling li").first().clone());
+	
+	$(".notice").mouseover(function(){
+		clearInterval(noticeRollingOff);
+		$(this).css("cursor", "pointer");
+	});
+	
+	$(".notice").mouseout(function(){
+		noticeRollingOff = setInterval(noticeRolling,5000);
+		$(this).css("cursor", "default");
+	});
+	//------------------- 태그 등록---------------
+	document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
+
+	function tagFunction() {
+		if(event.keyCode==13){
+	    	var tagval = $('#activities-autocpl').val();
 			
-			if (!tag) {
-				//console.log('비어있임.널,,');
+	    	if(!tagval) {
+				alert('태그를 입력해 주세요');
 			}else{
-				$('#append_tag').append('#' + i + ' ');
-				//console.log('비어있지 않음');
- 				$.ajax({
-					url: "${pageContext.request.contentType}/feed/FeedInsert.do" ,
-					type: "POST"
+				
+				$('#append_tag').append('#' + tagval + ' ');
+				$('#activities-autocpl').val('');
+				
+				$.ajax({
+					url: "tagInsert.do" ,
+					type: "POST",
+					data:{ tag_name : tagval } ,
 					success: function(data){
-						console.log('데이터를 성공적으로 입력 했을껄?');
 					},
 					error: function(err){
 						console.log(err);
 					}
-				}) 
+				}); 
 			}
-			
-			
-			$('#activities-autocpl').val('');
-			
-			console.log('값 출력됨');
-		};
-	</script>
+		}else if(event.keyCode==35){
+			event.preventDefault();
+			event.returnValue = false;
+		}
+	}
+});		
+
+</script>
+<script>
+//------------------- 피드 등록 -----------------
+$(function(){
+	$('#publish-button').on('click', function(){
+		var tagval = $('#append_tag').text();
+		var fileNameval;
+		
+		if(tagval == ""){
+		}else{
+			tagval= tagval.replace("#","");
+			tagval= tagval.replace(/#/g,",");
+		}
+		
+		//if(document.getElementById('feed-upload-input-2').value == ""){
+		//}else{
+		//	fileNameval = document.getElementById('feed-upload-input-2').files[0].name;
+		//}
+		//console.log(fileNameval);
+		
+		document.getElementById('tags').value = tagval;
+		//$('#photo').val = fileNameval;
+		$('#feedInsert').submit();
+		
+	});
+});
+</script>
+
 	<!-- Pageloader -->
 	<div class="pageloader"></div>
 	<div class="infraloader is-active"></div>
@@ -315,128 +443,47 @@
 
 				</div>
 			</div>
-			<!-- Feed page main wrapper -->
-			<!--왼쪽 사이드 바 start-->
+
+			<!-------------------------------- 왼쪽사이드바 시작 --------------------------------------->
 			<div id="activity-feed" class="view-wrap true-dom is-hidden">
 				<div class="columns">
-					<!-- Left side column -->
 					<div class="column is-3 is-hidden-mobile">
-						<!-- Pages widget -->
-						<!-- /partials/widgets/recommended-pages-1-widget.html -->
 						<div class="card">
 							<div class="card-heading is-bordered">
 								<h4>지금 인기있는 주제</h4>
 							</div>
-
 							<div class="card-body no-padding">
-								<c:forEach var="vo" items="${feedList }">
+								<c:forEach var="vo" items="${likeTag }" end="9">
 									<!-- Recommended Page -->
-									<div class="page-block transition-block">
-										<img src="https://via.placeholder.com/300x300"
-											data-demo-src="resources/template/assets/img/icons/logos/slicer.svg"
-											data-page-popover="4" alt="">
+									<label class="nicelabel-default-position"> <span
+										class="tag-label">${vo.tag_name }</span>
+									</label>
+								</c:forEach>
+							</div>
+						</div>
+
+						<!------------------------ 공지사항 시작 ------------------------->
+						<div id="latest-activity-1" class="card">
+							<div class="card-heading is-bordered">
+								<h4>운영자부터로의 편지</h4>
+							</div>
+							<div class="card-body no-padding">
+								<c:forEach items="${noticeList }" var="vo" end="3">
+									<div class="page-block">
 										<div class="page-meta">
-											<span>${vo.name }</span> <span>Web / Design</span>
-										</div>
-										<div class="add-page add-transition">
-											<i data-feather="bookmark"></i>
+											<span>${vo.title }</span>
 										</div>
 									</div>
 								</c:forEach>
 							</div>
 						</div>
-
-						<!-- Latest activities widget -->
-						<!-- /partials/widgets/latest-activity-1-widget.html -->
-						<div id="latest-activity-1" class="card">
-							<div class="card-heading is-bordered">
-								<h4>운영자부터로의 편지</h4>
-								<div
-									class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-									<div>
-										<div class="button">
-											<i data-feather="more-vertical"></i>
-										</div>
-									</div>
-									<div class="dropdown-menu" role="menu">
-										<div class="dropdown-content">
-											<a href="#" class="dropdown-item">
-												<div class="media">
-													<i data-feather="list"></i>
-													<div class="media-content">
-														<h3>All updates</h3>
-														<small>View my network's activity.</small>
-													</div>
-												</div>
-											</a> <a class="dropdown-item">
-												<div class="media">
-													<i data-feather="settings"></i>
-													<div class="media-content">
-														<h3>Settings</h3>
-														<small>Access widget settings.</small>
-													</div>
-												</div>
-											</a>
-											<hr class="dropdown-divider">
-											<a href="#" class="dropdown-item">
-												<div class="media">
-													<i data-feather="trash-2"></i>
-													<div class="media-content">
-														<h3>Remove</h3>
-														<small>Removes this widget from your feed.</small>
-													</div>
-												</div>
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="card-body no-padding">
-								<!-- Recommended Page -->
-								<div class="page-block">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="resources/template/assets/img/avatars/hanzo.svg"
-										data-page-popover="5" alt="">
-									<div class="page-meta">
-										<span>Css Ninja</span> <span>3 hours ago</span>
-									</div>
-									<div class="add-page">
-										<i data-feather="eye"></i>
-									</div>
-								</div>
-								<!-- Recommended Page -->
-								<div class="page-block">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="resources/template/assets/img/avatars/milly.jpg"
-										alt="" data-user-popover="7">
-									<div class="page-meta">
-										<span>Milly Augustine</span> <span>5 hours ago</span>
-									</div>
-									<div class="add-page">
-										<i data-feather="eye"></i>
-									</div>
-								</div>
-								<!-- Recommended Page -->
-								<div class="page-block">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="resources/template/assets/img/icons/logos/nuclearjs.svg"
-										data-page-popover="3" alt="">
-									<div class="page-meta">
-										<span>Nuclearjs</span> <span>Yesterday</span>
-									</div>
-									<div class="add-page">
-										<i data-feather="eye"></i>
-									</div>
-								</div>
-							</div>
-						</div>
+						<!------------------------ 공지사항 끝 ------------------------->
 					</div>
-					<!-- /왼쪽 사이드바 end-->
-					<!-- /Left side column -->
+					<!--------------------------- 왼쪽사이드바 끝 ------------------------------>
+
 
 					<!-- Middle column -->
 					<div class="column is-6">
-
 						<!-- Publishing Area -->
 						<!-- /partials/pages/feed/compose-card.html -->
 						<div id="compose-card" class="card is-new-content">
@@ -447,8 +494,6 @@
 										<li class="is-active"><a> <span class="icon is-small"><i
 													data-feather="edit-3"></i></span> <span>Publish</span>
 										</a></li>
-
-
 										<!-- Close X button -->
 										<li class="close-wrap"><span class="close-publish">
 												<i data-feather="x"></i>
@@ -457,14 +502,18 @@
 								</div>
 
 								<!-- Tab content -->
+								<!-- ----------글쓰는 부분 --------------->
 								<div class="tab-content">
 									<!-- Compose form -->
+									<form action="feedInsert.do" id="feedInsert" method="post" enctype="multipart/form-data">
+										<input type="hidden" id="tags" name="tags">
+										<input type="hidden" id="photo" name="photo">
 									<div class="compose">
 										<div class="compose-form">
 											<img src="https://via.placeholder.com/300x300"
 												data-demo-src="assets/img/avatars/jenna.png" alt="">
 											<div class="control">
-												<textarea id="publish" class="textarea" rows="3"
+												<textarea id="publish" name="content" class="textarea" rows="3"
 													placeholder="Write something about you..."></textarea>
 											</div>
 										</div>
@@ -495,9 +544,9 @@
 											class="is-autocomplete is-suboption is-hidden">
 											<div id="activities-autocpl-wrapper"
 												class="control has-margin">
-												<input id="activities-autocpl" type="text" class="input"
+												<input id="activities-autocpl" type="text" class="input" 
 													placeholder="태그를 입력해 주세요"
-													onKeyPress="if(event.keyCode==13){fn_passwd();event.returnValue=false}">
+													>
 												<div class="icon">
 													<i data-feather="search"></i>
 												</div>
@@ -675,6 +724,7 @@
 											</div>
 										</div>
 									</div>
+									</form>
 									<!-- /Compose form -->
 
 									<!-- General basic options -->
@@ -682,8 +732,7 @@
 										<!-- Upload action -->
 										<div class="compose-option">
 											<i data-feather="camera"></i> <span>Media</span> <input
-												id="feed-upload-input-2" type="file" type="file"
-												accept=".png, .jpg, .jpeg" onchange="readURL(this)">
+												id="feed-upload-input-2" type="file" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
 										</div>
 										<!-- Tag action -->
 										<div id="show-activities" class="compose-option">
@@ -696,20 +745,18 @@
 
 									<!-- Footer buttons -->
 									<div class="more-wrap">
+									
 										<!-- Publish button -->
 										<button id="publish-button" type="button"
 											class="button is-solid accent-button is-fullwidth is-disabled"
-											onclick="feedInsert()">Publish</button>
+											>Publish</button>
 									</div>
 								</div>
 							</div>
 						</div>
 
 
-						<!-- 포스트시작 -->
-						<!-- Post 1 -->
-						<!-- /partials/pages/feed/posts/feed-post1.html -->
-						<!-- POST #1 -->
+						<!------------------------ 포스트 시작 ------------------------->
 						<c:forEach items="${feedList }" var="vo">
 							<div id="feed-post-1" class="card is-post">
 								<!-- Main wrap -->
@@ -724,7 +771,8 @@
 													data-user-popover="1" alt="">
 											</div>
 											<div class="user-info">
-												<a href="#">${vo.name }</a> <span class="time">${vo.timezone }</span>
+												<a href="#">${vo.name }+${vo.feed_id }</a> <span
+													class="time">${vo.reg_date }, ${vo.time_zone }+시간</span>
 											</div>
 										</div>
 										<!-- Right side dropdown -->
@@ -775,18 +823,43 @@
 									<div class="card-body">
 										<!-- Post body text -->
 										<div class="post-text">
-											<p>${content }</p>
-											<p>
+											<p>${vo.content }</p>
 
-												Yesterday with <a href="#">@Karen Miller</a> and <a href="#">@Marvin
-													Stemperd</a> at the <a href="#">#Rock'n'Rolla</a> concert in
-												LA. Was totally fantastic! People were really excited about
-												this one!
-											</p>
 										</div>
 										<!-- Featured image -->
-										<c:if test="${empty vo.photo}">
+										<c:if test="${empty vo.fphoto}">
+											<div class="post-image"
+												style="margin-bottom: 50px; margin-top: 30px">
+												<!-- Action buttons -->
+												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+												<div class="like-wrapper">
+													<a href="javascript:void(0);" class="like-button"
+														onclick="likeIt()"> <i
+														class="mdi mdi-heart not-liked bouncy"></i> <i
+														class="mdi mdi-heart is-liked bouncy"></i> <span
+														class="like-overlay"></span>
+													</a>
+												</div>
+
+												<div class="fab-wrapper is-share">
+													<a href="javascript:void(0);"
+														class="small-fab share-fab modal-trigger"
+														data-modal="share-modal"> <i data-feather="link-2"></i>
+													</a>
+												</div>
+
+												<div class="fab-wrapper is-comment">
+													<a href="javascript:void(0);" class="small-fab"> <i
+														data-feather="message-circle"></i>
+													</a>
+												</div>
+											</div>
+										</c:if>
+										<c:if test="${not empty vo.fphoto}">
 											<div class="post-image">
+												 <img
+													src="https://via.placeholder.com/1600x900"
+													data-demo-src="assets/img/demo/unsplash/1.jpg" alt="">
 												<!-- Action buttons -->
 												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 												<div class="like-wrapper">
@@ -811,37 +884,6 @@
 												</div>
 											</div>
 										</c:if>
-											<div class="post-image">
-												<a data-fancybox="post1" data-lightbox-type="comments"
-													data-thumb="assets/img/demo/unsplash/1.jpg"
-													href="https://via.placeholder.com/1600x900"
-													data-demo-href="assets/img/demo/unsplash/1.jpg"> <img
-													src="https://via.placeholder.com/1600x900"
-													data-demo-src="assets/img/demo/unsplash/1.jpg" alt="">
-												</a>
-												<!-- Action buttons -->
-												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-												<div class="like-wrapper">
-													<a href="javascript:void(0);" class="like-button"> <i
-														class="mdi mdi-heart not-liked bouncy"></i> <i
-														class="mdi mdi-heart is-liked bouncy"></i> <span
-														class="like-overlay"></span>
-													</a>
-												</div>
-
-												<div class="fab-wrapper is-share">
-													<a href="javascript:void(0);"
-														class="small-fab share-fab modal-trigger"
-														data-modal="share-modal"> <i data-feather="link-2"></i>
-													</a>
-												</div>
-
-												<div class="fab-wrapper is-comment">
-													<a href="javascript:void(0);" class="small-fab"> <i
-														data-feather="message-circle"></i>
-													</a>
-												</div>
-											</div>
 									</div>
 									<!-- /Post body -->
 
@@ -862,13 +904,18 @@
 												data-demo-src="assets/img/avatars/milly.jpg"
 												data-user-popover="7" alt="">
 										</div>
+
 										<!-- Followers text -->
 										<div class="likers-text">
 											<p>
 												<a href="#">Milly</a>, <a href="#">David</a>
 											</p>
-											<p>and 23 more liked this</p>
+											<%-- 							<c:forEach items="${feedLike }" var="likevo">
+												<p>and ${likevo.feed_id } .+. ${likevo.user_id } more
+													liked this</p>
+											</c:forEach> --%>
 										</div>
+
 										<!-- Post statistics -->
 										<div class="social-count">
 											<div class="likes-count">
@@ -1401,9 +1448,8 @@
 								<!-- /Post #1 Comments -->
 							</div>
 						</c:forEach>
-						<!-- POST #1 -->
-						<!-- 포스트 1 끝 -->
-						<!-- Load more posts -->
+						<!------------------------ 포스트 끝 ------------------------->
+
 						<div class=" load-more-wrap narrow-top has-text-centered">
 							<a href="#" class="load-more-button">Load More</a>
 						</div>
@@ -1415,71 +1461,43 @@
 					<!-- Right side column -->
 
 					<div class="column is-3">
-
-						<!-- Birthday widget -->
-						<!-- /partials/widgets/birthday-widget.html -->
-						<div class="card is-birthday-card has-background-image"
-							data-background="assets/img/illustrations/cards/birthday-bg.svg">
-							<div class="card-heading">
-								<i data-feather="gift"></i>
-								<div
-									class="dropdown is-spaced is-right dropdown-trigger is-light">
-									<div>
-										<div class="button">
-											<i data-feather="more-vertical"></i>
+						<!------------------------ 생일 시작 ------------------------->
+						<div class="notice">
+							<c:forEach items="${birthUser }" var="vo" varStatus="status">
+								<ul class="rolling">
+									<li>
+										<div class="card is-birthday-card has-background-image"
+											data-background="resource/template/assets/img/illustrations/cards/birthday-bg.svg">
+											<div class="card-heading" style="border-collapse: collapse;">
+												<div
+													class="dropdown is-spaced is-right dropdown-trigger is-light">
+													<div>
+														<div class="button"></div>
+													</div>
+												</div>
+											</div>
+											<div class="card-body">
+												<div>
+													<div class="birthday-avatar">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/dan.jpg" alt="">
+														<div class="birthday-indicator">${vo.age }</div>
+													</div>
+													<div class="birthday-content">
+														<h4>${vo.following }님의${vo.age }번째생일!</h4>
+														<p>편지를 보내 생일을 축하해 주세요!</p>
+														<button type="button" class="button light-button">편지쓰러가기</button>
+														<p></p>
+													</div>
+												</div>
+											</div>
 										</div>
-									</div>
-									<!-- 드롭다운 이미지 안뜸  -->
-									<div class="dropdown-menu" role="menu">
-										<div class="dropdown-content">
-											<a href="#" class="dropdown-item">
-												<div class="media">
-													<i data-feather="clock"></i>
-													<div class="media-content">
-														<h3>Remind me</h3>
-														<small>Remind me of this later today.</small>
-													</div>
-												</div>
-											</a> <a class="dropdown-item">
-												<div class="media">
-													<i data-feather="message-circle"></i>
-													<div class="media-content">
-														<h3>Message</h3>
-														<small>Send an automatic greeting message.</small>
-													</div>
-												</div>
-											</a>
-											<hr class="dropdown-divider">
-											<a href="#" class="dropdown-item">
-												<div class="media">
-													<i data-feather="trash-2"></i>
-													<div class="media-content">
-														<h3>Remove</h3>
-														<small>Removes this widget from your feed.</small>
-													</div>
-												</div>
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="card-body">
-								<div>
-									<div class="birthday-avatar">
-										<img src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/dan.jpg" alt="">
-										<div class="birthday-indicator">31</div>
-									</div>
-									<div class="birthday-content">
-										<h4>User1님의 31번째 생일!</h4>
-										<p>편지를 보내 생일을 축하해 주세요!</p>
-										<button type="button" class="button light-button">편지쓰러가기</button>
-									</div>
-								</div>
-							</div>
+									</li>
+								</ul>
+							</c:forEach>
 						</div>
-						<!-- Suggested friends widget -->
-						<!-- /partials/widgets/suggested-friends-1-widget.html -->
+						<!------------------------ 생일 끝 ------------------------->
+						<!------------------------ 친구추천 시작 ------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
 								<h4>친구 추천</h4>
@@ -1524,34 +1542,22 @@
 							</div>
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
+								<c:forEach items="${sameTopic }" var="vo">
 								<div class="add-friend-block transition-block">
 									<img src="https://via.placeholder.com/300x300"
 										data-demo-src="assets/img/avatars/nelly.png"
 										data-user-popover="9" alt="">
 									<div class="page-meta">
-										<span>USer2</span> <span>나와 일치하는 관심사 2개</span>
+										<span>${vo.user_id }</span> <span>나와 일치하는 관심사 ${vo.count }개</span>
 									</div>
 									<div class="add-friend add-transition">
 										<i data-feather="user-plus"></i>
 									</div>
 								</div>
-
-								<!-- Suggested friend -->
-								<div class="add-friend-block transition-block">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/gaelle.jpeg"
-										data-user-popover="11" alt="">
-									<div class="page-meta">
-										<span>USer3</span> <span>나와 일치하는 관심사 1개</span>
-									</div>
-									<div class="add-friend add-transition">
-										<i data-feather="user-plus"></i>
-									</div>
-								</div>
-
-
+								</c:forEach>
 							</div>
 						</div>
+						<!------------------------ 친구추천 끝 ------------------------->
 					</div>
 					<!-- /Right side column -->
 				</div>
@@ -4610,6 +4616,14 @@
 	<!-- map page js -->
 
 	<!-- elements page js -->
+	
 </body>
 
 </html>
+
+
+
+
+
+
+

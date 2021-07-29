@@ -1,25 +1,16 @@
 package co.yedam.finalprj.users.email;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Properties;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import co.yedam.finalprj.users.email.Gmail;
-import co.yedam.finalprj.users.email.SHA256;
-
-import org.apache.velocity.tools.view.WebappUberspector.SetAttributeExecutor;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import java.util.*;
 
 @WebServlet("/sendEmail.do")
 public class SendEmail extends HttpServlet {

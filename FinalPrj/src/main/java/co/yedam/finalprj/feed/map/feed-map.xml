@@ -1,34 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.feed.map.FeedMap">
-	<insert id="feedInsert">
-		INSERT INTO feed(feed_id, user_id, content, photo,
-		reg_date, tags)
-		VALUES(#{feed_id}, #{user_id}, #{content}, #{photo}, sysdate, #{tags});
-	</insert>
-	
-	<select id="feedSelectList" parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
-		SELECT u.USER_ID      "user_id", 
-		       u.EMAIL        "email",
-			   u.NAME 		  "name",	
-			   u.PHOTO        "photo",
-			   u.STATUS       "status",
-			   u.LAT          "lat",
-			   u.LON          "lon",
-			   u.TIMEZONE	  "time_zone",
-			   f.FEED_ID      "feed_id",
-			   f.USER_ID      "user_id",
-			   f.CONTENT      "content",
-			   f.PHOTO        "photo", 
-			   f.REG_DATE     "reg_date", 
-			   f.TAGS         "tags"
-		FROM feed f JOIN users u
-		ON f.USER_ID = u.USER_ID
-		WHERE u.STATUS = '일반회원'
-		AND not f.USER_ID in (	SELECT BLOCKED
-								FROM block
-								WHERE USER_ID = #{user_id}
+
+	<!-- 일반회원 글만, 탈퇴한 회원, 정지당한 회원 글 보이지 않음 , 블락한 회원의 글 제외 -->
+	<select id="feedSelectList"
+		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
+		SELECT
+				u.USER_ID "user_id",
+				u.EMAIL "email",
+				u.NAME "name",
+				u.PHOTO "photo",
+				u.STATUS "status",
+				u.LAT "lat",
+				u.LON "lon",
+				u.TIMEZONE "time_zone",
+				f.FEED_ID "feed_id",
+				f.USER_ID "user_id",
+				f.CONTENT "content",
+				f.PHOTO "fphoto",
+				f.REG_DATE "reg_date",
+				f.TAGS "tags"
+		FROM 	feed f JOIN users u
+				ON f.USER_ID = u.USER_ID
+		WHERE   u.STATUS = '일반회원'
+		AND NOT f.USER_ID IN (  SELECT BLOCKED
+						        FROM block
+							    WHERE USER_ID = #{user_id}
 							  )
 		ORDER BY u.REG_DATE
 	</select>
+
+	<!--오늘 생일인 친구 조회 , 블릭한 친구 제외-->
+	<select id="birthUser"
+		parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.friends.vo.FriendsVO">
+		SELECT 
+			   f.FOLLOWING , 
+			   TO_CHAR(sysdate,'YYYY') - TO_CHAR(u.BIRTH,'YYYY') as "age"
+		FROM   friends f , users u
+		WHERE  f.FOLLOWING = u.USER_ID
+		AND    TO_CHAR(u.BIRTH,'MM/DD') = TO_CHAR(sysdate,'MM/DD')
+		AND    f.user_id = #{user_id}
+		AND    u.STATUS = '일반회원'
+		AND    not f.FOLLOWING in ( SELECT BLOCKED
+								    FROM block
+								    WHERE USER_ID = #{user_id}
+								 )
+	</select>
+	
+	<!-- 인기 있는 주제 조회 최근피드 내에서 조회 (중북 태그 제거) -->
+	<select id="likeTag" parameterType="co.yedam.finalprj.tag.vo.TagVO" resultType="co.yedam.finalprj.tag.vo.TagVO">
+		SELECT 	DISTINCT(c.col) as "tag_name"
+		FROM 
+				(WITH count AS (
+								  SELECT LISTAGG(tags, ',') WITHIN GROUP (ORDER BY tags) as "TAGS"
+								  FROM (
+								          SELECT * FROM  feed 
+								          ORDER BY reg_date DESC
+								        )
+				)
+				SELECT Regexp_Substr(TAGS,'[^,]+', 1, Level) COL From count 
+				Connect By Regexp_Substr(TAGS, '[^,]+', 1, Level) Is Not Null
+				) c 
+	</select>
+	
+	<!-- 나와 상대방의 일치하는 관심사 수 , 블락친구 제외, 이미 친구인 유저 제외 -->
+	<select id="sameTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT 
+				topic_cnt(#{topic},topic) as "count" , 
+				user_id
+		FROM users
+		WHERE not user_id IN (#{user_id})
+		AND NOT user_id IN (  SELECT blocked
+		                      FROM block
+		                      WHERE user_id = #{user_id}
+		                    )
+		AND NOT user_id IN ( SELECT FOLLOWING
+		                     FROM friends
+		                     WHERE user_id = #{user_id}
+		                    )
+		AND STATUS = '일반회원'
+	</select>
+	
+		<!--  아직 미완  -->
+	<select id="FeedLikeSelect"
+		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
+		SELECT  
+				feed_id ,
+				user_id
+		FROM 	likes
+		WHERE 	feed_id = #{feed_id}
+	</select>
+	
+	<!-- 피드 등록 -->
+	<insert id="feedInsert" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
+		INSERT INTO feed (feed_id, user_id, content, photo,reg_date, tags)
+		VALUES ('feed_'|| feed_seq.nextval , #{user_id}, #{content}, #{photo}, sysdate, #{tags} )
+	</insert>
+	
+	
+	
+	
+	<!-- 태그 체크 -->
+	<select id="tagSelect" parameterType="co.yedam.finalprj.tag.vo.TagVO" resultType="int">
+		SELECT count(tag_name) as tag_name
+  		FROM   tag 
+		WHERE  tag_name IN (#{tag_name})
+	</select>
+	
+	<!-- 태그 등록 -->
+	<insert id="tagInsert" parameterType="co.yedam.finalprj.tag.vo.TagVO">
+		INSERT INTO tag(tag_name) VALUES( #{tag_name} )	
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>
