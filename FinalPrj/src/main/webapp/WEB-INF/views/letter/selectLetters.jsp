@@ -118,7 +118,87 @@
 		    console.log(aid);
 		    location.href='selectLetters.do?user_id='+aid; 
 		});		
+		
+
+
+		$('b').on('click', function() {
+		    var btn = $(this).data('text');
+			var corText = $('#corText'+btn+'.ql-editor p').text();
+			console.log(cortext);			
+		});
+		
+		// 테이블 행 삭제 이벤트
+		$("#con").on('click', '#btnd',  function() {
+		    var btnd = $(this).data('btnd');
+		    console.log(btnd);
+			var trDel = $("button[data-btnd="+btnd+"]").parent().parent();
+			trDel.remove();
+		});		
+
 	});
+
+	// 		$("button[data-btnd=0]").parent().parent().remove()
+	
+	function add(id, idx) {
+		var btnn = $('#btn'+idx);
+		var lid = $("#letter"+id).val();
+		
+		console.log(lid);		
+		lid.replace()
+	    var result = lid.split(".");
+
+	    console.log(result);
+
+		
+		var div = $('#tbl'+id);
+		var tbl = $('<table>').css('border','1');
+
+		// 테이블 행제목
+		let thead = ['행', '원문', '교정','추가','삭제']
+		var head = $('<tr>');
+		for (var field in thead) {
+			var name = $('<td>').text(thead[field]);
+			head.append(name);
+		}
+		tbl.append(head);
+		div.append(tbl);
+		
+// 		for (var data of result) {
+// 			var tr = $('<tr>');
+// 			tr.append($('<td>').append(data));
+// 			tr.append($('<td>').append(result[data]));
+// 			tbl.append(tr);
+// 		}
+		
+		for(var i=0; i < result.length; i++) {
+			var tr = $('<tr>');
+			tr.append($('<td>').append(i));
+			tr.append($('<td>').append(result[i]));
+			tr.append($('<td>'));
+			tr.append($('<td>').append($('<button id="btnc" data-btnc="'+i+'">').text('교정')));
+			tr.append($('<td>').append($('<button id="btnd" data-btnd="'+i+'">').text('삭제')));
+			tbl.append(tr);			
+		}
+		
+		div.append(tbl);
+
+// 		for (var data of result) {
+// 			var tr = $('<tr>');
+// 			console.log('data',data);
+// 			for (var field in data) {
+// 				var td = $('<td>').text(result[field]);
+// 				tr.append(td);
+// 			console.log(result[field]);
+// 			}
+// 			tbl.append(tr);
+// 		}
+// 		div.append(tbl);
+
+		btnn.remove();
+		 
+	}
+	
+	
 
 </script>
 </head>
@@ -133,7 +213,7 @@
 					</div>
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
-						<a href="letterBox.do" class="item is-active">
+						<a href="letterBox.do" class="item">
 							<span class="name">New Letters</span>
 						</a>
 						<a href="savedLetter.do" class="item">
@@ -343,16 +423,19 @@
 								</div>
 	
 								<hr>
-								<div class="content">
+								<div class="content" id="con">
 									<p>${vo.content }</p>
 									<input type="hidden" id="korean${status.index }" value="${vo.content }">
 									<input type="hidden" id="english${status.index }" value="${vo.content }">
+									<input type="hidden" id="letter${vo.letter_id }" value="${vo.content }">
 									<div id="en${status.index }"></div>
 									<div id="ko${status.index }"></div>
+									<div id="tbl${vo.letter_id }"></div>
 								</div>
 								<div class="has-text-right">
 									<button class="button is-solid grey-button is-bold raised" onclick="tokr(${status.index })">Translate(KR)</button>
 									<button class="button is-solid grey-button is-bold raised" onclick="toen(${status.index })">Translate(EN)</button>
+									<button class="button is-solid grey-button is-bold raised" id="btn${status.index }" onclick="add(${vo.letter_id }, ${status.index })">교정</button>
 								</div>
 							</div>
 						</div>
@@ -370,13 +453,59 @@
 									</div>
 								</div>
 								<div class="has-text-right">
-									<button type="button"
+									<button data-text="${status.index }" type="button"
 										class="button is-solid accent-button is-bold raised send-message">Send
 										Message</button>
 								</div>
 							</div>
 						</div>
-						</div>				
+							<!-- 교정편지추가 -->
+							<div class="message-preview-transition is-first">
+								<div class="mail">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24"
+										height="24" viewBox="0 0 24 24" fill="none"
+										stroke="currentColor" stroke-width="2"
+										stroke-linecap="round" stroke-linejoin="round"
+										class="feather feather-mail">
+										<path
+											d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+										<polyline points="22,6 12,13 2,6"></polyline></svg>
+								</div>
+							</div>
+                           	<div class="box message-preview">
+                               <div class="box-inner">
+                                   <div class="header">
+                                       <div class="avatar">
+                                           <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="" data-user-popover="0">
+                                       </div>
+                                       <div class="meta">
+                                           <div class="name">Jenna Davis</div>
+                                           <div class="date">oct 18 2018, 08:19pm</div>
+                                       </div>
+                                       <div class="meta-right">
+                                           <div>
+                                               <span class="tag is-important">Important</span>
+                                           </div>
+                                           <div class="is-vhidden">
+                                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                                               <small>2 attachments</small>
+                                           </div>
+                                       </div>
+                                   </div>
+
+                                   <hr>
+                                   <div class="content">
+                                       <p>Hello Nelly,</p>
+                                       <p>Corporis tempora id quae fuga. Perspiciatis quam magnam dolores ut quia. Neque vero non laudantium
+                                           animi omnis qui debitis minus molestias. Est ut minus est dolores quo harum illum suscipit cumque.
+                                       </p>
+                                       <p>Thanks, <br>Jenna.</p>
+                                   </div>
+                               </div>
+                           	</div>	
+                           	
+                           	<!-- /교정편지추가 -->
+                           	</div>
 					</c:forEach>
 					</div>
 					</c:when>
