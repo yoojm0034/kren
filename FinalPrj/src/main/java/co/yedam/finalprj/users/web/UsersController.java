@@ -101,7 +101,7 @@ public class UsersController {
 	
 	//관리자 
 	//유저목록
-	@RequestMapping("adminUsersList.do")
+	@RequestMapping("admin/usersList.do")
 	@ResponseBody
 	public Map<String, Object> adminUsersList(UsersVO vo){
 		Map<String, Object> datas = new HashMap<String, Object>();
@@ -114,7 +114,7 @@ public class UsersController {
 	
 	//관리자
 	//유저상태업데이트
-	@PutMapping("adminUsersUpdate.do")
+	@PutMapping("admin/usersUpdate.do")
 	@ResponseBody
 	public Map<String, Object> adminUsersUpdate(@RequestBody MemberData memberData) {
 		Map<String, Object> data = new HashMap<String, Object>();

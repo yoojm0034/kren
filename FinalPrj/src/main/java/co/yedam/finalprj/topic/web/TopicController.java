@@ -27,7 +27,7 @@ public class TopicController {
 	@Autowired
 	TopicService topicDao;
 	
-	@RequestMapping("topicList.do")
+	@RequestMapping("admin/userTopicList.do")
 	public String topicList() {
 		
 		return "admin/topicList";
@@ -35,7 +35,7 @@ public class TopicController {
 	
 	//관리자 
 	//관심사목록
-	@RequestMapping("adminTopicList.do")
+	@RequestMapping("admin/topicList.do")
 	@ResponseBody
 	public Map<String, Object> adminTopicList(TopicVO vo){
 		Map<String, Object> datas = new HashMap<String, Object>();
@@ -47,7 +47,7 @@ public class TopicController {
 	}
 	//관리자
 	//관심사업데이트
-	@PutMapping("adminTopicUpdate.do")
+	@PutMapping("admin/topicUpdate.do")
 	@ResponseBody
 	public Map<String, Object> adminTopicUpdate(@RequestBody TopicData topicData) {
 		Map<String, Object> data = new HashMap<String, Object>();
@@ -61,7 +61,7 @@ public class TopicController {
 	}
 	//관리자
 	//관심사추가
-	@PostMapping("adminTopicInsert.do")
+	@PostMapping("admin/topicInsert.do")
 	@ResponseBody
 	public Map<String, Object> adminTopicInsert(@RequestBody TopicData topicData) {
 		Map<String, Object> data = new HashMap<String, Object>();
@@ -75,7 +75,7 @@ public class TopicController {
 	}
 	//관리자
 	//관심사삭제
-	@RequestMapping("adminTopicDelete.do")
+	@RequestMapping("admin/topicDelete.do")
 	@ResponseBody
 	public Map<String, Object> adminTopicDelete(@RequestBody TopicData topicData) {
 		Map<String, Object> data = new HashMap<String, Object>();

@@ -25,13 +25,13 @@ public class QnaController {
 	@Autowired
 	QnaService qnaDao;
 	
-	@RequestMapping("qnaList.do")
+	@RequestMapping("admin/userQnaList.do")
 	public String qnaList() {
 		return "admin/qnaList";
 	}
 	//관리자 
 	//문의사항목록
-	@RequestMapping("adminQnaList.do")
+	@RequestMapping("admin/qnaList.do")
 	@ResponseBody
 	public Map<String, Object> adminQnaList(QnaVO vo){
 		Map<String, Object> datas = new HashMap<String, Object>();
@@ -43,7 +43,7 @@ public class QnaController {
 	}
 	//관리자
 	//문의사항업데이트
-	@PutMapping("adminQnaUpdate.do")
+	@PutMapping("admin/qnaUpdate.do")
 	@ResponseBody
 	public Map<String, Object> adminQnaUpdate(@RequestBody QnaData qnaData) {
 		Map<String, Object> data = new HashMap<String, Object>();

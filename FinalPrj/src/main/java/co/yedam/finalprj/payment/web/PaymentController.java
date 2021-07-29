@@ -16,14 +16,14 @@ public class PaymentController {
 	@Autowired
 	PaymentService paymentDao;
 	
-	@RequestMapping("paymentList.do") 
+	@RequestMapping("admin/userPaymentList.do") 
 	public String paymentList() {
 		return "admin/paymentList";
 	}
 	
 	//관리자 
 	//결제내역목록
-	@RequestMapping("adminPaymentList.do")
+	@RequestMapping("admin/paymentList.do")
 	@ResponseBody
 	public Map<String, Object> adminPaymentList(PaymentVO vo){
 		Map<String, Object> datas = new HashMap<String, Object>();

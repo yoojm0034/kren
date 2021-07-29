@@ -22,7 +22,7 @@
 	<!-- insert -->
 	<insert id="noticeInsert" parameterType="co.yedam.finalprj.notice.vo.NoticeVO">
 		insert into notice (notice_id, title, content, filename, uuid) 
-		values ('test10', #{title}, #{content}, #{fileName}, #{uuid})
+		values ('notice_'||notice_seq.nextval, #{title}, #{content}, #{fileName}, #{uuid})
 		
 	</insert>
 </mapper>

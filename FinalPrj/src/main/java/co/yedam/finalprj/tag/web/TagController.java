@@ -26,7 +26,7 @@ public class TagController {
 	@Autowired
 	TagService tagDao;
 	
-	@RequestMapping("tagList.do")
+	@RequestMapping("admin/userTagList.do")
 	public String tagList() {
 		
 		return "admin/tagList";
@@ -34,7 +34,7 @@ public class TagController {
 	
 	//관리자 
 	//태그목록
-	@RequestMapping("adminTagList.do")
+	@RequestMapping("admin/tagList.do")
 	@ResponseBody
 	public Map<String, Object> adminTagList(TagVO vo){
 		Map<String, Object> datas = new HashMap<String, Object>();
@@ -47,7 +47,7 @@ public class TagController {
 	
 	//관리자
 	//태그추가
-	@PostMapping("adminTagInsert.do")
+	@PostMapping("admin/tagInsert.do")
 	@ResponseBody
 	public Map<String, Object> adminTagInsert(@RequestBody TagData tagData) {
 		Map<String, Object> data = new HashMap<String, Object>();
@@ -61,7 +61,7 @@ public class TagController {
 	}
 	//관리자
 	//태그삭제
-	@RequestMapping("adminTagDelete.do")
+	@RequestMapping("admin/tagDelete.do")
 	@ResponseBody
 	public Map<String, Object> adminTagDelete(@RequestBody TagData tagData) {
 		Map<String, Object> data = new HashMap<String, Object>();

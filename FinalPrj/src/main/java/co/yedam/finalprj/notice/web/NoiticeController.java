@@ -33,18 +33,18 @@ public class NoiticeController {
 	@Autowired
 	NoticeService noticeDao;
 	//공지사항리스트
-	@RequestMapping("noticeList.do")
+	@RequestMapping("admin/noticeList.do")
 	public String noticeList(Model model, NoticeVO vo) {
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());
 		return "admin/noticeList";
 	}
 	//공지사항작성페이지이동
-	@RequestMapping("noticeForm.do")
+	@RequestMapping("admin/noticeForm.do")
 	public String noticeForm() {
 		return "admin/noticeForm";
 	}
 	//공지사항작성 db입력
-	@RequestMapping("noticeInsert.do")
+	@RequestMapping("admin/noticeInsert.do")
 	public String noticeInsert(NoticeVO vo, Model model, HttpServletRequest req) throws Exception {
 		//notice table 저장
 		MultipartFile uploadFile = vo.getFile();
@@ -74,11 +74,11 @@ public class NoiticeController {
 		
 		noticeDao.noticeInsert(vo);
 		
-		return "redirect:noticeList.do";
+		return "redirect:admin/noticeList.do";
 	}
 	
 	//공지사항수정페이지이동
-	@RequestMapping("noticeUpdateForm.do")
+	@RequestMapping("admin/noticeUpdateForm.do")
 	public String noticeUpdateForm(NoticeVO vo, Model model) {
 		System.out.println(vo.getNotice_id());
 		String path = "";
@@ -89,12 +89,12 @@ public class NoiticeController {
 			model.addAttribute("notice", noticeDao.noticeSelect(vo));
 			path = "admin/noticeUpdateForm";
 		}else {
-			path = "redirect:noticeList.do";
+			path = "redirect:admin/noticeList.do";
 		}
 		return path;
 	}
 	//공지사항 수정
-	@RequestMapping("noticeUpdate.do")
+	@RequestMapping("admin/noticeUpdate.do")
 	public String noticeUpdate(NoticeVO vo, Model model, HttpServletRequest req) throws Exception {
 		UUID uuid = UUID.randomUUID();
 		String fileUUID = uuid.toString() + ".png";
@@ -115,7 +115,7 @@ public class NoiticeController {
 		}
 		
 		
-		return "redirect:noticeUpdateForm.do?notice_id"+vo.getNotice_id();
+		return "redirect:admin/noticeUpdateForm.do?notice_id"+vo.getNotice_id();
 	}
 	
 	//ck에디터 

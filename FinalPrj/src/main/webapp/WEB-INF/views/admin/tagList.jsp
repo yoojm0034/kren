@@ -16,9 +16,9 @@
 		const dataSource = {
 				  contentType: 'application/json',
 				  api: {
-				    readData: {url:'adminTagList.do',method: 'GET'},
-				    createData: { url: 'adminTagInsert.do', method: 'POST' },
-				    deleteData: { url: 'adminTagDelete.do', method: 'PUT' }
+				    readData: {url:'admin/tagList.do',method: 'GET'},
+				    createData: { url: 'admin/tagInsert.do', method: 'POST' },
+				    deleteData: { url: 'admin/tagDelete.do', method: 'PUT' }
 				  }
 				};
 		console.log(dataSource);
@@ -94,27 +94,27 @@
                         <div class="user-menu-inner has-slimscroll">
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='admin.do'">
+                                    <li onclick="location.href='admin/admin.do'">
                                         <a>
                                             <span>유저관리</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='reportList.do'">
+                                    <li onclick="location.href='admin/userReportList.do'">
                                         <a>
                                             <span>신고내역</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='qnaList.do'">
+                                    <li onclick="location.href='admin/userQnaList.do'">
                                         <a>
                                             <span>문의사항</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='topicList.do'">
+                                    <li onclick="location.href='admin/userTopicList.do'">
                                         <a>
                                             <span>관심사관리</span>
                                         </a>
                                     </li>
-                                     <li onclick="location.href='tagList.do'">
+                                     <li onclick="location.href='admin/userTagList.do'">
                                         <a>
                                             <span>태그관리</span>
                                         </a>
@@ -124,12 +124,12 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='stampList.do'">
+                                    <li onclick="location.href='admin/userStampList.do'">
                                         <a>
                                             <span>상품목록</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='paymentList.do'">
+                                    <li onclick="location.href='admin/userPaymentList.do'">
                                         <a>
                                             <span>결제내역</span>
                                         </a>
@@ -139,7 +139,7 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='noticeList.do'">
+                                    <li onclick="location.href='admin/noticeList.do'">
                                         <a>
                                             <span>공지사항</span>
                                         </a>
