@@ -32,14 +32,53 @@ $(document).ready(function () {
       $('#signup-panel-5, #step-title-5').addClass('is-active');
     }
   });
+
+/*	function page1() {
+		if ($('#idCheck').val() == 'unChecked') {
+			alert("ID 중복체크를 하세요.");
+			return false;
+		}
+		if ($('#nameCheck').val() == 'unChecked') {
+			alert("이름 중복체크를 하세요.");
+			return false;
+		}
+		if ($('#password').val() == "") {
+			alert("비밀번호를 입력하세요.");
+			$('#password').focus();
+			return false;
+		}
+		if ($('#password').val() != $('#pw2').val()) {
+			alert("비밀번호를 재확인하세요.");
+			$('#password').focus();
+			return false;
+		}
+		if ($('#codeCheck').val() == 'unChecked') {
+			alert("이메일 인증을 재확인하세요.");
+			return false;
+		}			
+		return true;	
+	};*/
+	
   $('.process-button').on('click', function () {
     var $this = $(this);
     var targetStepDot = $this.attr('data-step');
-    $this.addClass('is-loading');
-    setTimeout(function () {
-      $this.removeClass('is-loading');
-      $('#' + targetStepDot).trigger('click');
-    }, 800);
+	var id = $this.attr('id');
+	var ret = true;
+	
+	if (id == 'step2') {
+//		ret = page1();
+	} else if ( id == 'step3') {
+//		ret = page2();
+	}
+	
+	if (ret == true) {
+		$this.addClass('is-loading');
+    	setTimeout(function () {
+	      $this.removeClass('is-loading');
+	      $('#' + targetStepDot).trigger('click');
+	    }, 800);		
+	}
+   
   });
 
   if ($("#profile-pic-dz").length) {

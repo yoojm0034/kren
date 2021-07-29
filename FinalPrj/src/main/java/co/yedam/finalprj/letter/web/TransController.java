@@ -15,10 +15,9 @@ public class TransController {
 	@Autowired
 	TransService transDao;
 
-	@RequestMapping("/english")
+	@RequestMapping(value="/english", produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String english(@RequestParam(value = "korean", defaultValue = "-")String korean,
-									Model model) throws Exception{		
+	public String english(@RequestParam(value = "korean", defaultValue = "-")String korean) throws Exception{		
 		TransVO vo = new TransVO();
 		vo.setKr(korean);		
 		System.out.println(korean);
@@ -26,10 +25,9 @@ public class TransController {
 		return english;
 	}
 	
-	@RequestMapping("/korean")
+	@RequestMapping(value="/korean", produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String korean(@RequestParam(value = "english", defaultValue = "-")String english,
-			Model model) throws Exception{		
+	public String korean(@RequestParam(value = "english", defaultValue = "-")String english) throws Exception{		
 		TransVO vo = new TransVO();
 		vo.setEn(english);		
 		System.out.println(english);

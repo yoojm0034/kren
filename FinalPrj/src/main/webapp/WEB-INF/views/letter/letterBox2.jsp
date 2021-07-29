@@ -10,6 +10,7 @@
 	width: 100%;
 	height: 100%;
 	padding: 8%;
+	overflow: auto;
 }
 
 .inbox-wrapper .inbox-wrapper-inner .inbox-center-container .inbox-center-container-inner .messages .action-buttons .button
@@ -78,15 +79,63 @@
 						<a class="button is-fullwidth raised is-bold">Write</a>
 					</div>
 					<!-- Menu -->
-					<div class="left-menu">
-						<a href="letterBox.do" class="item is-active"> <i
-							data-feather="mail"></i> <span class="name">New Letters</span>
-						</a> <a href="arriveLetter.do" class="item"> <i
-							data-feather="star"></i> <span class="name">Arrive Letters</span>
-						</a> <a href="savedLetter.do" class="item"> <i
-							data-feather="folder"></i> <span class="name">Saved
-								Letters</span>
-						</a>
+					<div class="left-menu" style="overflow: auto;">
+						<a href="letterBox.do" class="item is-active"><span
+							class="name">New Letters</span> </a>
+							<a href="arriveLetter.do"
+							class="item"> <span class="name">Arrive Letters</span>
+						</a> 
+						<a href="savedLetter.do" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						<a href="#" class="item"><span class="name">Saved
+								Letters</span> </a>
+								
+						
 					</div>
 					<!-- Mobile only close -->
 					<div class="close-menu is-hidden-desktop is-hidden-landscape">

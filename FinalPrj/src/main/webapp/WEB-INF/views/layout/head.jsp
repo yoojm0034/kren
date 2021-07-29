@@ -93,7 +93,7 @@ body {
 	class="navbar navbar-v1 is-inline-flex is-transparent no-shadow is-hidden-mobile">
 	<div class="container is-fluid">
 		<div class="navbar-brand">
-			<a href="/" class="navbar-item"> 
+			<a href="home.do" class="navbar-item"> 
 				<img class="logo light-image" src="resources/template/assets/img/logo/logo2.png"> 
 				<img class="logo dark-image" src="resources/template/assets/img/logo/logo2.png">
 			</a>
@@ -102,10 +102,10 @@ body {
 			<!-- 네비바 왼쪽 -->
 			<div class="navbar-start">
 				<ul>
-					<li class="is-active"><a href="navbar-v2-feed.html">피드</a></li>
-					<li><a href="navbar-v2-profile-friends.html">친구찾기</a></li>
-					<li><a href="navbar-v2-groups.html">편지</a></li>
-					<li><a href="navbar-v2-ecommerce-products.html">ABOUT US</a></li>
+					<li class="is-active"><a href="feed.do">피드</a></li>
+					<li><a href="#">친구찾기</a></li>
+					<li><a href="letterBox.do">편지</a></li>
+					<li><a href="#">ABOUT US</a></li>
 				</ul>
 			</div>
 			<div class="navbar-end">
@@ -436,7 +436,7 @@ body {
 <nav class="navbar mobile-navbar is-hidden-desktop" aria-label="main navigation">
 	<!-- Brand -->
 	<div class="navbar-brand">
-		<a class="navbar-item" href="/"> 
+		<a class="navbar-item" href="home.do"> 
 			<img class="light-image" src="resources/template/assets/img/logo/logo2.png" alt="">
 			<img class="dark-image" src="resources/template/assets/img/logo/logo2.png" alt="">
 		</a>
