@@ -16,9 +16,9 @@
 		const dataSource = {
 				  contentType: 'application/json',
 				  api: {
-				    readData: {url:'admin/tagList.do',method: 'GET'},
-				    createData: { url: 'admin/tagInsert.do', method: 'POST' },
-				    deleteData: { url: 'admin/tagDelete.do', method: 'PUT' }
+				    readData: {url:'${pageContext.request.contextPath}/admin/tagList.do',method: 'GET'},
+				    createData: { url: '${pageContext.request.contextPath}/admin/tagInsert.do', method: 'POST' },
+				    deleteData: { url: '${pageContext.request.contextPath}/admin/tagDelete.do', method: 'PUT' }
 				  }
 				};
 		console.log(dataSource);
@@ -94,27 +94,27 @@
                         <div class="user-menu-inner has-slimscroll">
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='admin/admin.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/admin.do'">
                                         <a>
                                             <span>유저관리</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userReportList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userReportList.do'">
                                         <a>
                                             <span>신고내역</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userQnaList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userQnaList.do'">
                                         <a>
                                             <span>문의사항</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userTopicList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userTopicList.do'">
                                         <a>
                                             <span>관심사관리</span>
                                         </a>
                                     </li>
-                                     <li onclick="location.href='admin/userTagList.do'">
+                                     <li onclick="location.href='${pageContext.request.contextPath}/admin/userTagList.do'">
                                         <a>
                                             <span>태그관리</span>
                                         </a>
@@ -124,12 +124,12 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='admin/userStampList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userStampList.do'">
                                         <a>
                                             <span>상품목록</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userPaymentList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userPaymentList.do'">
                                         <a>
                                             <span>결제내역</span>
                                         </a>
@@ -139,7 +139,7 @@
                             <div class="separator"></div>
                             <div class="menu-block">
                                 <ul>
-                                    <li onclick="location.href='admin/noticeList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/noticeList.do'">
                                         <a>
                                             <span>공지사항</span>
                                         </a>
@@ -167,9 +167,9 @@
 	                    </div>
 	            </div>  
 		        <div align="right" class="btn-wrapper">
-		            <button id="prependBtn">태그추가</button>
-		            <button id="create">DB입력</button>
-					<button id="delete">삭제</button>
+		            <button id="prependBtn" class="button">태그추가</button>
+		            <button id="create" class="button">DB입력</button>
+					<button id="delete" class="button">삭제</button>
 		        </div>
 		        <div class="stories-container">
 	                <div class="container-inner">

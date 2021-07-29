@@ -100,7 +100,7 @@
 				<button id="tour-start" class="button is-hidden-mobile"
 					onclick="location.href='feed.do'">피드</button>
 				<button id="tour-start" class="button is-hidden-mobile"
-					onclick="location.href='admin.do'">관리자</button>
+					onclick="location.href='admin/admin.do'">관리자</button>
 			</div>
 		</div>
 	</div>

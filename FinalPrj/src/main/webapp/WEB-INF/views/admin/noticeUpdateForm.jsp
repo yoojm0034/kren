@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,22 @@
 		}
 		;
 		$('#btnNoticeList').on('click', function() {
-			location.href = 'noticeList.do'
+			location.href = '${pageContext.request.contextPath}/admin/noticeList.do'
+		});
+		$('#btnFileDelete').on('click', function() {
+			let result = confirm("삭제하시겠습니까?")
+			if(result) {
+				window.alert("삭제되었습니다.")
+				location.href = '${pageContext.request.contextPath}/admin/noticeFileDelete.do?notice_id='+$(this).data('id')
+			}
+		});
+		$('#btnNoticeDelete').on('click', function() {
+			let result = confirm("삭제하시겠습니까?")
+			if(result) {
+				window.alert("삭제되었습니다.")
+				location.href = '${pageContext.request.contextPath}/admin/noticeDelete.do?notice_id='+$(this).data('id')
+			}
+			
 		});
 
 	});
@@ -57,27 +73,27 @@
 					<div class="user-menu-inner has-slimscroll">
 						<div class="menu-block">
 							<ul>
-								 <li onclick="location.href='admin/admin.do'">
+								 <li onclick="location.href='${pageContext.request.contextPath}/admin/admin.do'">
                                         <a>
                                             <span>유저관리</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userReportList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userReportList.do'">
                                         <a>
                                             <span>신고내역</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userQnaList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userQnaList.do'">
                                         <a>
                                             <span>문의사항</span>
                                         </a>
                                     </li>
-                                    <li onclick="location.href='admin/userTopicList.do'">
+                                    <li onclick="location.href='${pageContext.request.contextPath}/admin/userTopicList.do'">
                                         <a>
                                             <span>관심사관리</span>
                                         </a>
                                     </li>
-                                     <li onclick="location.href='admin/userTagList.do'">
+                                     <li onclick="location.href='${pageContext.request.contextPath}/admin/userTagList.do'">
                                         <a>
                                             <span>태그관리</span>
                                         </a>
@@ -87,16 +103,16 @@
 						<div class="separator"></div>
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='admin/userStampList.do'"><a> <span>상품목록</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/userStampList.do'"><a> <span>상품목록</span>
 								</a></li>
-								<li onclick="location.href='admin/userPaymentList.do'"><a> <span>결제내역</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/userPaymentList.do'"><a> <span>결제내역</span>
 								</a></li>
 							</ul>
 						</div>
 						<div class="separator"></div>
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='admin/noticeList.do'"><a> <span>공지사항</span>
+								<li onclick="location.href='${pageContext.request.contextPath}/admin/noticeList.do'"><a> <span>공지사항</span>
 								</a></li>
 								<li onclick="location.href='#'"><a> <span>통계관리</span>
 								</a></li>
@@ -119,17 +135,18 @@
 			</div>
 
 			<div class="stories-container">
-				<form id="frm" action="admin/noticeUpdate.do" method="post" enctype="multipart/form-data">
+				<form id="frm" action="${pageContext.request.contextPath}/admin/noticeUpdate.do" method="post" enctype="multipart/form-data">
 					<div>
+						<input type="hidden" name="notice_id" value="${notice.notice_id}">	
 						<table class="table">
 							<tr>
-								<td colspan="4" align="left"><input type="text" style="width:100%"
+								<td colspan="4" align="left"><input class="input" type="text" style="width:100%"
 									class="form-control" id="title" name="title"
 									value="${notice.title}">
 							</tr>
 							<tr>
 								<th>작성일</th>
-								<td width="70%" align="left">${notice.reg_date}</td>
+								<td width="80%" align="left">${notice.reg_date}</td>
 								<th>조회수</th>
 								<td>${notice.hit}</td>
 							</tr>
@@ -139,19 +156,32 @@
 							</tr>
 							<tr>
 								<th>등록된 파일</th>
-								<td colspan="4" align="left"><a href="fileDown.do?notice_id=${notice.notice_id}">${notice.fileName}</a>
+								<td colspan="4" align="left"><a href="${pageContext.request.contextPath}/fileDown.do?notice_id=${notice.notice_id}">${notice.fileName}</a>
+									<c:if test="${not empty notice.fileName}">
+										<button type="button" id="btnFileDelete" data-id="${notice.notice_id}" class="button grey-button">삭제</button>
+									</c:if>
+									<c:if test="${empty notice.fileName}">
+										등록된 파일 없음
+									</c:if>
 								</td>
 							</tr>
 							<tr>
 								<th>수정할 파일</th>
-								<td colspan="4" align="left"><input type="file" name="file"
-									size="50"></td>
+								<td colspan="4" align="left">
+									<c:if test="${empty notice.fileName}">
+										<input type="file" name="file" size="50" >
+									</c:if>
+									<c:if test="${not empty notice.fileName}">
+										기존 파일 삭제 후 업로드 가능합니다.
+									</c:if>
+								</td>
 							</tr>
 						</table>
 					</div>
 					<div>
-						<button type="submit">수정</button>
-						<button type="button" id="btnNoticeList">목록</button>
+						<button type="submit" class="button grey-button">수정</button>
+						<button type="button" id="btnNoticeList" class="button grey-button">목록</button>
+						<button type="button" id="btnNoticeDelete" data-id="${notice.notice_id}" class="button grey-button">삭제</button>
 					</div>
 				</form>
 			</div>
