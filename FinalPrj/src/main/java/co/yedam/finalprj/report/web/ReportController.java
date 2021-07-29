@@ -12,7 +12,7 @@ public class ReportController {
 	@Autowired
 	ReportService reportDao; 
 	
-	@RequestMapping("reportList.do")
+	@RequestMapping("admin/reportList.do")
 	public String reportList() {
 		
 		return "admin/reportList";

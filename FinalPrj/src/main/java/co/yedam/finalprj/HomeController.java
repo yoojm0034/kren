@@ -22,7 +22,7 @@ public class HomeController {
 		return "main/test2";
 	} 
 
-	@RequestMapping("admin.do")
+	@RequestMapping("admin/admin.do")
 	public String admin() {
 		return "admin/main";
 	} 

@@ -26,14 +26,14 @@ public class StampController {
 	@Autowired
 	StampService stampDao;
 	
-	@RequestMapping("stampList.do")
+	@RequestMapping("admin/userStampList.do")
 	public String stampList() {
 		return "admin/stampList";
 	}
 	
 	//관리자 
 	//우표상품목록
-	@RequestMapping("adminStampList.do")
+	@RequestMapping("admin/stampList.do")
 	@ResponseBody
 	public Map<String, Object> adminStampList(StampVO vo){
 		Map<String, Object> datas = new HashMap<String, Object>();
@@ -45,7 +45,7 @@ public class StampController {
 	}
 	//관리자
 	//우표상품업데이트
-	@PutMapping("adminStampUpdate.do")
+	@PutMapping("admin/stampUpdate.do")
 	@ResponseBody
 	public Map<String, Object> adminStampUpdate(@RequestBody StampData stampData) {
 		Map<String, Object> data = new HashMap<String, Object>();
@@ -59,7 +59,7 @@ public class StampController {
 	}
 	//관리자
 	//우표상품추가
-	@PostMapping("adminStampInsert.do")
+	@PostMapping("admin/stampInsert.do")
 	@ResponseBody
 	public Map<String, Object> adminStampInsert(@RequestBody StampData stampData) {
 		Map<String, Object> data = new HashMap<String, Object>();
@@ -73,7 +73,7 @@ public class StampController {
 	}
 	//관리자
 	//우표상품삭제
-	@RequestMapping("adminStampDelete.do")
+	@RequestMapping("admin/stampDelete.do")
 	@ResponseBody
 	public Map<String, Object> adminStampDelete(@RequestBody StampData stampData) {
 		Map<String, Object> data = new HashMap<String, Object>();

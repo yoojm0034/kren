@@ -47,31 +47,46 @@
 					<div class="user-menu-inner has-slimscroll">
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='admin.do'"><a> <span>유저관리</span>
+								 <li onclick="location.href='admin/admin.do'">
+                                        <a>
+                                            <span>유저관리</span>
+                                        </a>
+                                    </li>
+                                    <li onclick="location.href='admin/userReportList.do'">
+                                        <a>
+                                            <span>신고내역</span>
+                                        </a>
+                                    </li>
+                                    <li onclick="location.href='admin/userQnaList.do'">
+                                        <a>
+                                            <span>문의사항</span>
+                                        </a>
+                                    </li>
+                                    <li onclick="location.href='admin/userTopicList.do'">
+                                        <a>
+                                            <span>관심사관리</span>
+                                        </a>
+                                    </li>
+                                     <li onclick="location.href='admin/userTagList.do'">
+                                        <a>
+                                            <span>태그관리</span>
+                                        </a>
+                                    </li>
+							</ul>
+						</div>
+						<div class="separator"></div>
+						<div class="menu-block">
+							<ul>
+								<li onclick="location.href='admin/userStampList.do'"><a> <span>상품목록</span>
 								</a></li>
-								<li onclick="location.href='reportList.do'"><a> <span>신고내역</span>
-								</a></li>
-								<li onclick="location.href='qnaList.do'"><a> <span>문의사항</span>
-								</a></li>
-								<li onclick="location.href='topicList.do'"><a> <span>관심사관리</span>
-								</a></li>
-								<li onclick="location.href='tagList.do'"><a> <span>태그관리</span>
+								<li onclick="location.href='admin/userPaymentList.do'"><a> <span>결제내역</span>
 								</a></li>
 							</ul>
 						</div>
 						<div class="separator"></div>
 						<div class="menu-block">
 							<ul>
-								<li onclick="location.href='stampList.do'"><a> <span>상품목록</span>
-								</a></li>
-								<li onclick="location.href='paymentList.do'"><a> <span>결제내역</span>
-								</a></li>
-							</ul>
-						</div>
-						<div class="separator"></div>
-						<div class="menu-block">
-							<ul>
-								<li onclick="location.href='noticeList.do'"><a> <span>공지사항</span>
+								<li onclick="location.href='admin/noticeList.do'"><a> <span>공지사항</span>
 								</a></li>
 								<li onclick="location.href='#'"><a> <span>통계관리</span>
 								</a></li>
@@ -94,7 +109,7 @@
 			</div>
 
 			<div class="stories-container">
-				<form action="noticeInsert.do" enctype="multipart/form-data"
+				<form action="admin/noticeInsert.do" enctype="multipart/form-data"
 					method="post">
 					<div>
 						<label for="title">글 제목</label> 
@@ -115,7 +130,7 @@
 						<br>
 					</div>
 					<div align="right">
-						<button type="button" onclick="location.href='noticeList.do'"
+						<button type="button" onclick="location.href='admin/noticeList.do'"
 							class="btn btn-light">목록으로</button>
 					</div>
 				</form>
