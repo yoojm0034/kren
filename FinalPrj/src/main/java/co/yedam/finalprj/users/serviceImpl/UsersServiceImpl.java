@@ -7,14 +7,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import co.yedam.finalprj.users.map.LoginMap;
 import co.yedam.finalprj.users.map.UsersMap;
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 @Repository("usersDao")
 public class UsersServiceImpl implements UsersService {
-	@Autowired
-	UsersMap map;
+	@Autowired UsersMap map;
+	@Autowired LoginMap loginmap;
 	
 	@Override
 	public List<UsersVO> usersSelectList() {
@@ -62,7 +63,7 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public int loginCheck(UsersVO vo) {
 		// TODO Auto-generated method stub
-		return map.loginCheck(vo);
+		return loginmap.loginCheck(vo);
 	}
 	
 	//로그아웃...
