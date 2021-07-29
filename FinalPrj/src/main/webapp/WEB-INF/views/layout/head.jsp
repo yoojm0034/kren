@@ -418,7 +418,7 @@ body {
 											<i data-feather="power"></i>
 										</div>
 										<div class="media-content">
-											<h3>Log out</h3>
+											<a href="logout"><h3>Log out</h3></a>
 											<small>Log out from your account.</small>
 										</div>
 									</div>

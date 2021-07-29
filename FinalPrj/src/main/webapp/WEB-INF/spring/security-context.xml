@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<security:http pattern="/resources/**" security="none" />
+	<security:http pattern="/css/**" security="none" />
+	<security:http pattern="*.jsp" security="none" />
+	
+	<security:http>
+		<security:intercept-url pattern="/home.do"
+			access="permitAll()" />
+		<security:intercept-url pattern="/"
+			access="permitAll()" />
+		<security:intercept-url pattern="/qna/**"
+			access="permitAll()" />
+		<security:intercept-url pattern="/admin/**"
+			access="hasAuthority('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/**"
+			access="isAuthenticated()" />
+		<security:form-login default-target-url="/feed.do"
+					login-page="/home.do"
+					username-parameter="user_id"
+					password-parameter="password"
+					login-processing-url="/loginCheck.do"
+		/>
+		<security:remember-me/>
+		<security:logout logout-url="/logout"
+			logout-success-url="/home.do" />
+		<security:remember-me/>
+		<security:csrf disabled="true" />
+		<security:access-denied-handler error-page="/accessDenied.jsp"/>
+		
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource"
+			 users-by-username-query=
+				 "select user_ID, '{noop}'||PASSWORD, 1
+				    from users
+				   where user_ID = ?"
+			 authorities-by-username-query=
+			 "select user_id, case when status='관리자' then 'ROLE_ADMIN'
+				else 'ROLE_USER' end status
+				from users
+			   where user_ID = ?" />
+<!-- 			<security:password-encoder hash="bcrypt"/> -->
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+</beans>
