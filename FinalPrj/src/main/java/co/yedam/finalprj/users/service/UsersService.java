@@ -13,6 +13,11 @@ public interface UsersService {
 	int usersUpdate(UsersVO vo);
 	int usersDelete(UsersVO vo);
 	
+	//회원가입
+	public UsersVO idCheck(String id);
+	public UsersVO nameCheck(String name);
+	public UsersVO emailCheck(String email);
+	
 	//admin
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();

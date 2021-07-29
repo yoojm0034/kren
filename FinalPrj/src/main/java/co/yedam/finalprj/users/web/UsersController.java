@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,11 +55,47 @@ public class UsersController {
 		return "empty/userJoinForm";
 	} 	
 	
+	// ID 중복체크
+	@RequestMapping("/userIdCheck.do")
+	@ResponseBody
+	public int userIdCheck(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		int cnt = 0;
+		if(usersDao.idCheck(id) != null) {
+			cnt = 1;
+		}
+		return cnt;
+	}
+
+	// 이름 중복체크
+	@RequestMapping("/userNameCheck.do")
+	@ResponseBody
+	public int userNameCheck(HttpServletRequest request) {
+		String name = request.getParameter("name");
+		int cnt = 0;
+		if(usersDao.nameCheck(name) != null) {
+			cnt = 1;
+		}
+		return cnt;
+	}
+	
+	// 이메일 중복체크
+	@RequestMapping("/userEmailCheck.do")
+	@ResponseBody
+	public int userEmailCheck(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		int cnt = 0;
+		if(usersDao.emailCheck(email) != null) {
+			cnt = 1;
+		}
+		return cnt;
+	}
+	
+	// 회원가입 폼 제출
 	@RequestMapping(value="userJoin.do", method = RequestMethod.GET)
 	public String userJoin(UsersVO vo, Model model) throws Exception {
 	    return "empty/home";
 	}
-
 
 	
 	

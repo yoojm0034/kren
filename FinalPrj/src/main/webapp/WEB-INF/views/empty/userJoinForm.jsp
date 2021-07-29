@@ -56,11 +56,13 @@ body {
 	display: inline-block;
 }
 
+.dark-grey-button { margin: 10px 0px 0px 10px }
+
 .topic-label > .left { float: left; }
 .topic-label > .right { float: right; display: inline-block; margin-bottom: 15px;}
 .topic-list { display: inline-block}
 
-#city, #country {font-size: 20px; font-weight: 600;}
+#city2, #country2 {font-size: 20px; font-weight: 600;}
 
 a[href^="http://maps.google.com/maps"]{display:none !important} a[href^="https://maps.google.com/maps"]{display:none !important} .gmnoprint a, .gmnoprint span, .gm-style-cc { display:none; } .gmnoprint div { background:none !important; }
 </style>
@@ -71,9 +73,144 @@ function frm(e) {
 	var id = $('input[name=user_id]').val();
 	var name = $('input[name=name]').val();
 	var email = $('input[name=email]').val();
-	var code = $('#codeCheck').val();
-	console.log(id, name, email, code);
+	var pw = $('input[name=password]').val();
+	var pw2 = $('input[name=pw2]').val();
+	var code = $('#inputCode').val();
+	console.log(id, name, pw, pw2, email, code);
 };
+
+//--------------------아이디체크-----------------------
+$(function() {
+	$('#idCheck').click(function() {
+		//공백체크
+		if($('#user_id').val()=="") {
+			alert('아이디를 입력하세요.');
+			$('#user_id').focus();
+			return;
+		}
+		//유효성검사
+		var re = /^[a-zA-Z0-9]{4,12}$/;
+	    if(!re.test($('#user_id').val())) {
+	    	alert("아이디는 4~12자의 영문 대소문자와 숫자로만 입력");
+	        return;
+	    }
+	    //중복체크
+		$.ajax({
+			url:'userIdCheck.do',
+			data: {id: $('#user_id').val()},
+			type: 'post',
+			success: function(data){
+				if(data>0) {
+					alert('이미 사용중입니다. 새로 입력해주세요.');
+					$('#user_id').val('');
+					$('#user_id').focus();
+				} else{
+					alert('사용가능합니다.');
+					$('#idCheck').val("checked");
+					$('#user_id').attr("readonly",true);
+					$('#name').focus();
+				}
+			},
+			error: function(err){
+				alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+			}
+		});
+	});
+});
+
+//--------------------닉네임 중복체크-----------------------
+$(function() {
+	$('#nameCheck').click(function() {
+		//공백체크
+		if($('#name').val()=="") {
+			alert('닉네임을 입력하세요.');
+			$('#name').focus();
+			return;
+		}
+		//유효성검사
+		var re = /^[a-zA-Z가-힣ㄱ-ㅎ]+[0-9]{2,10}$/;
+	    if(!re.test($('#name').val())) {
+	    	alert("영문 혹은 한글로 시작하는 2~10자의 닉네임을 입력하세요.");
+	        return;
+	    }
+	    //중복체크
+		$.ajax({
+			url:'userNameCheck.do',
+			data: {name: $('#name').val()},
+			type: 'post',
+			success: function(data){
+				if(data>0) {
+					alert('이미 사용중입니다. 새로 입력해주세요.');
+					$('#name').val('');
+					$('#name').focus();
+				} else{
+					alert('사용가능합니다.');
+					$('#nameCheck').val("checked");
+					$('#name').attr("readonly",true);
+					$('#email').focus();
+				}
+			},
+			error: function(err){
+				alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+			}
+		});
+	});
+});
+
+
+//------------------------이메일 체크------------------------
+$(function() {
+	$('#emailCheck').click(function() {
+		if ($('#email').val() == "") {
+			alert('이메일을 입력하세요.');
+			$('#email').focus();
+			return false;
+		}
+		//email 중복확인 ajax
+		$.ajax({
+			url : 'userEmailCheck.do',
+			data : {email : $('#email').val() },
+			type : 'post',
+			success : function(data) {
+				if (data > 0) {
+					alert('이미 사용중입니다. 새로 입력해주세요.');
+					$('#email').val('');
+					$('#email').focus();
+				} else {
+					$('#email').attr("readonly",true);
+					$('#emailCheck').val('checked');
+					$('#codeCheck').focus();
+					//중복확인 통과후 인증코드 메일보내는 ajax
+					$.ajax({
+						url : 'sendEmail.do',
+						data : {
+							email : $('#email').val()
+						},
+						type : 'post',
+						success : function(code) {
+							alert('메일이 전송되었습니다.');
+							$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
+								if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
+									alert('이메일 인증이 완료되었습니다.');
+									$('#codeCheck').val("checked");
+								} else {
+									alert('인증번호가 틀립니다');
+								}
+							})
+						},
+						error : function(err) {
+							alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+						}
+					});
+				}
+			},
+			error : function(err) {
+				console.log(err);
+			}
+		});
+	});
+});
+
 
 // ------------------- TOPIC 체크 카운트 계산 ---------------------
 function fchk() {
@@ -152,14 +289,14 @@ function check(obj,condition, n) {
 				</div>
 			</div>
 		</div>
-		<!-------------- 페이지 상단 라벨 ------------------->
+		<!-------------- 페이지별 헤더 ------------------->
 		<div class="outer-panel">
 			<div class="outer-panel-inner">
 				<div class="process-title">
-					<h2 id="step-title-1" class="step-title is-active">시작해볼까요?</h2>
+					<h2 id="step-title-1" class="step-title is-active" style="margin-top: 5%">시작해볼까요?</h2>
 					<h2 id="step-title-2" class="step-title">당신을 표현할 사진을 골라주세요.</h2>
 					<h2 id="step-title-3" class="step-title">위치를 공유해주세요.</h2>
-					<h2 id="step-title-4" class="step-title" style="margin-top: 5%;">관심있는 언어와 주제를 선택해주세요.</h2>
+					<h2 id="step-title-4" class="step-title" style="margin-top: 5%">관심있는 언어와 주제를 선택해주세요.</h2>
 					<h2 id="step-title-5" class="step-title">You're all set.
 						Ready?</h2>
 				</div>
@@ -169,44 +306,65 @@ function check(obj,condition, n) {
 				<!-------------- 페이지1 아이디/이메일 입력 ------------------->
 				<div id="signup-panel-1" class="process-panel-wrap is-narrow is-active">
 					<div class="form-panel">
-						<div class="field block">
-							<label>ID</label>
-							<div class="control">
-								<form:input class="input" path="user_id" placeholder="아이디를 입력하세요" />
+						<div style="display: flex">
+							<div class="field block">
+								<label>ID</label>
+								<div class="control">
+									<form:input class="input" path="user_id" placeholder="아이디를 입력하세요" />
+								</div>
+							</div>
+								<button class="button is-solid dark-grey-button raised" id="idCheck" type="button"
+								value="unChecked">중복확인</button>
+						</div>
+						<div style="display: flex">
+							<div class="field block">
+								<label>NAME</label>
+								<div class="control">
+									<form:input class="input" path="name" placeholder="사용할 닉네임을 입력하세요" />
+								</div>
+							</div>
+								<button class="button is-solid dark-grey-button raised" id="nameCheck" type="button"
+								value="unChecked">중복확인</button>
+						</div>
+								<div class="field block">
+									<label>PASSWORD</label>
+									<div class="control">
+										<form:password class="input" path="password" placeholder="비밀번호를 입력하세요" />
+									</div>
+								</div>
+								<div class="field block">
+									<label>PASSWORD CHECK</label>								
+									<div class="control">
+										<input type="password" class="input" id="pw2" name="pw2" placeholder="비밀번호를 재입력하세요">
+									</div>
+								</div>						
+						<div style="display: flex">
+							<div class="field block">
+								<label>EMAIL</label>
+								<div class="control">
+									<form:input class="input" path="email" placeholder="이메일을 입력하세요" />
+								</div>
+							</div>
+								<button class="button is-solid dark-grey-button raised" id="emailCheck" type="button"
+								value="unChecked">코드발송</button>
+						</div>
+						<div>
+							<div style="display: flex">
+								<div class="field block">
+									<div class="control">
+										<input type="text" class="input" id="inputCode" placeholder="인증코드를 입력하세요">
+									</div>
+								</div>
+								<button class="button is-solid dark-grey-button raised" id="codeCheck" type="button"
+								value="unChecked">코드확인</button>
 							</div>
 						</div>
-						<a class="button is-solid dark-grey-button raised"
-							style="vertical-align: super">중복확인</a>
-						<div class="field block">
-							<label>NAME</label>
-							<div class="control">
-								<form:input class="input" path="name" placeholder="사용할 이름을 입력하세요" />
-							</div>
-						</div>
-						<a class="button is-solid dark-grey-button raised"
-							style="vertical-align: super">중복확인</a>
-						<div class="field block">
-							<label>EMAIL</label>
-							<div class="control">
-								<form:input class="input" path="email" placeholder="이메일을 입력하세요" />
-							</div>
-						</div>
-						<a class="button is-solid dark-grey-button raised"
-							style="vertical-align: super">코드발송</a>
-						<div class="field block">
-							<div class="control">
-								<input type="text" class="input" id="codeCheck" placeholder="인증코드를 입력하세요">
-							</div>
-						</div>
-						<a class="button is-solid dark-grey-button raised"
-							style="vertical-align: sub">코드확인</a>
 					</div>
-
 					<div class="buttons">
-						<a class="button process-button" data-step="step-dot-1">Home</a> <a
-							class="button process-button is-next" data-step="step-dot-2">Next</a>
-					</div>
 					<button onclick="frm(event)">제출</button>
+						<a class="button process-button" href="home.do">Home</a>
+						<button type="button" class="button process-button is-next" id="step2" data-step="step-dot-2">Next</button>
+					</div>
 				</div>
 
 				<!-------------- 페이지2 사진 입력 ------------------->
@@ -228,8 +386,8 @@ function check(obj,condition, n) {
 						</div>
 					</div>
 					<div class="buttons">
-						<a class="button process-button" data-step="step-dot-1">Back</a> <a
-							class="button process-button is-next" data-step="step-dot-3">Next</a>
+						<a class="button process-button" data-step="step-dot-1">Back</a> 
+						<a class="button process-button is-next" data-step="step-dot-3">Next</a>
 						
 					</div>
 				</div>
@@ -240,26 +398,35 @@ function check(obj,condition, n) {
 					function getLocation() {
 						$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi", function(json) {
 							console.log(json);
-							$("#country").text(', ' + json['location']['country']['name']);
-							$("#city").text(json['location']['region']['name']);
-							$("#time").text(json['time_zone']['current_time']);
+							
+							// 변수 담기
+							var country = json['location']['country']['name'];
+							var city = json['location']['region']['name'];
+							var time = json['time_zone']['current_time'];
 							var lat = json['location']['latitude'];
 							var lon = json['location']['longitude'];
-							$("#lat").text(lat);
-							$("#lon").text(lon);
-				
-							// 시간계산
-							var time = json['time_zone']['current_time'];
+							var flag = json['location']['country']['flag']['emojitwo'];
+							
+							// input에 값 넣기
+							$("#country").val(country);
+							$("#city").val(city);
+							$("#lat").val(lat);
+							$("#lon").val(lon);
+							$("#flag").val(flag);
+							
+							// 화면에 출력할 시간 계산
 							var hour = time.substr(11, 2);
 							var min = time.substr(14, 2);
 							var time2 = (hour % 12 || 12) + ':'
 									+ min.toString().padStart(2, '0')
 									+ (hour < 12 ? ' A' : ' P') + 'M';
-							$("#time2").text(time2);
-							
 							var gmt = time.substr(19, 6);
-							$("#gmt").text(' (GMT'+gmt+')');
 							
+							$("#city2").text(city);
+							$("#country2").text(', ' + country);
+							$("#time2").text(time2);
+							$("#gmt").text(' (GMT'+gmt+')');
+				
 							initMap(lat, lon);
 						});
 					};
@@ -286,11 +453,16 @@ function check(obj,condition, n) {
 						<a class="button is-solid accent-button raised" onclick="getLocation()">위치확인</a>
 					</div>
 					<br>
+					<form:hidden path="city"/>
+					<form:hidden path="country"/>
+					<form:hidden path="lat"/>
+					<form:hidden path="lon"/>
+					<form:hidden path="flag"/>
 					<div class="form-panel" style="display: flex;">
 						<div id="map"></div>
 						<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
 						<div style="margin: auto 10px auto 10px;">
-							<span id="city"></span><span id="country"></span><br>
+							<span id="city2"></span><span id="country2"></span><br>
 							<span id="time2"></span><span id="gmt"></span>
 						</div>
 					</div>

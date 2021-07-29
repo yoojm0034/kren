@@ -13,13 +13,18 @@ public interface UsersMap {
 	int usersUpdate(UsersVO vo);
 	int usersDelete(UsersVO vo);
 	
+	//회원가입
+	public UsersVO idCheck(String id);
+	public UsersVO nameCheck(String name);
+	public UsersVO emailCheck(String email);
+	
 	//admin
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();
 	
 	//login
-		public void loginCheck(UsersVO vo);
+	public void loginCheck(UsersVO vo);
 		
-		//logout
-		public void logout(HttpSession session);
+	//logout
+	public void logout(HttpSession session);
 }

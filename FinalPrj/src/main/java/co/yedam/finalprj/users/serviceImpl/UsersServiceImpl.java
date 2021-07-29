@@ -70,4 +70,21 @@ public class UsersServiceImpl implements UsersService {
 		
 	}
 
+	@Override
+	public UsersVO idCheck(String id) {
+		return map.idCheck(id);
+	}
+
+	@Override
+	public UsersVO nameCheck(String name) {
+		// TODO Auto-generated method stub
+		return map.nameCheck(name);
+	}
+
+	@Override
+	public UsersVO emailCheck(String email) {
+		// TODO Auto-generated method stub
+		return map.emailCheck(email);
+	}
+
 }
