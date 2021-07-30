@@ -308,7 +308,7 @@ body {
 						<img src="https://via.placeholder.com/400x400"
 							data-demo-src="assets/img/avatars/jenna.png" alt="">
 					</div>
-					<span style="padding-left: 10px; padding-right: 20px;">유저이름</span>
+					<span style="padding-left: 10px; padding-right: 20px;">${user.name }</span>
 
 					<div class="nav-drop is-account-dropdown">
 						<div class="inner">

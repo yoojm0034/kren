@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.users.map.UsersMap">
 	<!-- select -->
+	<select id="usersSelect" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select *
+		from users
+		where user_id=#{user_id}
+	</select>
 	<select id="usersSelectList" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		select *
 		from users

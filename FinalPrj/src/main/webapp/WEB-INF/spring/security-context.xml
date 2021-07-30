@@ -7,15 +7,13 @@
 
 	<security:http pattern="/resources/**" security="none" />
 	<security:http pattern="/css/**" security="none" />
-	<security:http pattern="*.jsp" security="none" />
+	<security:http pattern="/*.jsp" security="none" />
 	
 	<security:http>
 		<security:intercept-url pattern="/home.do"
 			access="permitAll()" />
 		<security:intercept-url pattern="/userJoinForm.do"
 			access="permitAll()" />
-<!-- 		<security:intercept-url pattern="/" -->
-<!-- 			access="permitAll()" /> -->
 		<security:intercept-url pattern="/qna/**"
 			access="permitAll()" />
 		<security:intercept-url pattern="/admin/**"
@@ -28,6 +26,7 @@
 					username-parameter="user_id"
 					password-parameter="password"
 					login-processing-url="/loginCheck.do"
+					authentication-success-handler-ref="customSuccessHandler"
 		/>
 		<security:remember-me/>
 		<security:logout logout-url="/logout"
@@ -37,6 +36,12 @@
 		<security:access-denied-handler error-page="/accessDenied.jsp"/>
 		
 	</security:http>
+	
+	
+	<bean id="customSuccessHandler"
+		  class="co.yedam.finalprj.users.handler.CustomSuccessHandler">
+		<constructor-arg value="/feed.do"/>
+	</bean>
 	
 	<security:authentication-manager>
 		<security:authentication-provider>

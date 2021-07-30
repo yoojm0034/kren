@@ -3,11 +3,13 @@
 <mapper namespace="co.yedam.finalprj.users.map.LoginMap">
 	
 	<!-- 로그인 -->
-	<select id="usersSelect" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		SELECT *
-		FROM users
-		WHERE USER_ID = #{user_id}
-		AND PASSWORD = #{password}
+	<select id="usersSelect" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT USER_ID,	PASSWORD, NAME,
+			   CASE WHEN STATUS='관리자' THEN 'ROLE_ADMIN'
+				    ELSE 'ROLE_USER' END STATUS
+		FROM USERS
+		WHERE USER_ID=#{user_id}
+		  AND STATUS IN ('일반회원','관리자')
 	</select>
 	
 	<!-- 해당 loginCheck쿼리 사용X, security-context의 쿼리를 사용함 -->

@@ -32,6 +32,6 @@
 		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 	<!-- mapper interface를 찾는다 -->
-	<mybatis-spring:scan base-package="co.yedam.finalprj"/>
+	<mybatis-spring:scan base-package="co.yedam.finalprj.**.map"/>
 	
 </beans>

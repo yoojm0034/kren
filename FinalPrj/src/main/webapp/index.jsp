@@ -8,7 +8,7 @@
 </head>
 <body>
 <%
-    response.sendRedirect("home.do");    
+    response.sendRedirect("feed.do");    
 %>
 
 </body>
