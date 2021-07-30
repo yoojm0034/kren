@@ -10,7 +10,7 @@
 		 ORDER BY ARRIVE_DATE DESC
 	</select>
 
-	<!-- 나에게 편지를 보낸 친구 -->
+	<!-- 나에게 편지를 보낸 친구목록 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT  L.USER_ID, U.NAME, L.SEND_DATE, L.ARRIVE_DATE FROM LETTER L, USERS U
 		 WHERE L.USER_ID=U.USER_ID
@@ -19,7 +19,7 @@
 		 ORDER BY ARRIVE_DATE DESC
 	</select>
 	
-	<!-- 답장 안한 편지 -->
+	<!-- 답장 안한 편지목록 -->
 	<select id="selectNewLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT L.*, U.NAME FROM LETTER L, USERS U
 		 WHERE L.USER_ID=U.USER_ID
@@ -52,6 +52,14 @@
 			(LETTER_ID, TO_ID, USER_ID, CONTENT, PHOTO, GUBUN)
 		VALUES
 			('letter_'||letter_seq.nextval, #{to_id}, #{user_id}, #{content}, #{photo}, #{gubun})			
+	</insert>
+
+	<!-- 편지교정 작성 -->
+	<insert id="insertLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		INSERT INTO LETTERC
+			(LETTER_ID, LINE, ORIGIN, CORRECTING)
+		VALUES
+			(#{letter_id}, #{line}, #{origin}, #{correcting})		
 	</insert>
 	
 	<!-- 편지 삭제 -->
