@@ -6,7 +6,7 @@
 	<select id="stampSelectList" resultType="co.yedam.finalprj.stamp.vo.StampVO">
 		select stamp_id,pay,cnt
 		from stamp
-		order by stamp_id desc
+		order by stamp_id
 	</select>
 	
 	<!-- update -->
