@@ -74,7 +74,7 @@ public class NoiticeController {
 		
 		noticeDao.noticeInsert(vo);
 		
-		return "redirect:admin/noticeList.do";
+		return "redirect:noticeList.do";
 	}
 	
 	//공지사항수정페이지이동

@@ -437,8 +437,8 @@ body {
 	<!-- Brand -->
 	<div class="navbar-brand">
 		<a class="navbar-item" href="home.do"> 
-			<img class="light-image" src="resources/template/assets/img/logo/logo2.png" alt="">
-			<img class="dark-image" src="resources/template/assets/img/logo/logo2.png" alt="">
+			<img class="light-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png" alt="">
+			<img class="dark-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png" alt="">
 		</a>
 		<div style="position: absolute; right: 3rem; display: inherit;">
 		<div id="open-mobile-search" class="navbar-item is-icon">

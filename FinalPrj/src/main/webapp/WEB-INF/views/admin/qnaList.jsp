@@ -1,69 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>문의사항리스트</title>
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
-<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .35rem;
+}
+ 
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin: 2px 0;
+    white-space: nowrap;
+    justify-content: flex-end;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #4e73df;
+    background-color: #fff;
+    border: 1px solid #dddfeb;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+div.dataTables_wrapper div.dataTables_paginate {
+    margin: 0;
+    white-space: nowrap;
+    text-align: right;
+}
+tr:hover { 
+	cursor: pointer; 
+	background-color: silver;
+	}
+</style>
 <script type="text/javascript">
-	$(document).ready(function() {
-		const dataSource = {
-				  contentType: 'application/json',
-				  api: {
-				    readData: {url:'${pageContext.request.contextPath}/admin/qnaList.do',method: 'GET'},
-				    updateData: { url: '${pageContext.request.contextPath}/admin/qnaUpdate.do', method: 'PUT' }
-				  }
-				};
-		console.log(dataSource);
-		const Grid = tui.Grid; //인스턴스 객체 생성 
-		const recruitGrid = new Grid({
-			el : document.getElementById('recruitGrid'), // DOM의 id지정
-			data : dataSource,
-			columns : [ {
-				header : 'QnaNO',
-				name : 'qna_id',
-				sortingType : 'desc',
-				sortable : true,
-				align : 'center'
-			}, {
-				header : 'EMAIL',
-				name : 'email',
-				align : 'center',
-				filter : 'select'
-			}, {
-				header : 'CONTENT',
-				name : 'content',
-				align : 'center'
-			}, {
-				header : 'DATE',
-				name : 'qna_dt',
-				align : 'center'
-			}, {
-				header : 'ANSWER',
-				name : 'answer',
-				align : 'center'
-			}],
-			rowHeaders : [ 'checkbox' ],
-			pagination : true,
-			pageOptions : {
-				useClient : true,
-				perPage : 15
-			}
-		});
-		$('#sync').click(function () {
-			  recruitGrid.request('updateData', {
-			  checkedOnly: true
-			  });
-			  
-		}) ;
 	
-	});
 </script>
 </head>
 <body>
@@ -168,17 +152,51 @@
 	                        <h2>문의사항 관리</h2>
 	                    </div>
 	            </div>  
-	            <div align="right" class="btn-wrapper">
-					<button id="sync" class="button">수정</button>
-	            </div>
 	            <div class="stories-container">
-                        <div class="container-inner">
-                           <div align="center">
-								<div id="recruitGrid"></div>
+                      <div id="wrapper">
+						<!-- Content Wrapper -->
+						<div id="content-wrapper" class="d-flex flex-column">
+							<!-- Main Content -->
+							<div id="content">
+								<!-- Begin Page Content -->
+								<div class="container-fluid">
+									<!-- DataTales Example -->
+									<div class="card shadow mb-4">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-bordered" id="dataTable" style="width:100%;cellspacing:0;" >
+													<thead>
+														<tr>
+															<th>글번호</th>
+															<th>이메일</th>
+															<th width="50%">컨텐츠</th>
+															<th>작성일</th>
+															<th>답변</th>
+														</tr>
+													</thead>
+													<tbody>
+														<c:forEach items="${qnaList}" var="vo">
+															<tr data-id="${vo.qna_id}">
+																<td>${vo.qna_id }</td>
+																<td>${vo.email }</td>
+																<td>${vo.content }</td>
+																<td>${vo.qna_dt }</td>
+																<td>${vo.answer }</td>
+															</tr>
+														</c:forEach>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									</div>
+									</div>
+								</div>
+								<!-- /.container-fluid -->
+
 							</div>
-                        </div>
                 </div>
-	            
+	        
 	         </div>          
             <!-- 컨텐츠 종료 -->
            

@@ -74,7 +74,7 @@
 			  
 		}) ;
 		$('#delete').click(function () {
-			  recruitGrid.removeCheckedRows(false);	
+			  recruitGrid.removeCheckedRows(true);	
 			  recruitGrid.request('deleteData', {
 			  checkedOnly: true
 			  });
