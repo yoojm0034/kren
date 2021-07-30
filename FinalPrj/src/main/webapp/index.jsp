@@ -7,6 +7,9 @@
 <title>KREN</title>
 </head>
 <body>
-	<jsp:forward page="home.do"></jsp:forward>
+<%
+    response.sendRedirect("home.do");    
+%>
+
 </body>
 </html>

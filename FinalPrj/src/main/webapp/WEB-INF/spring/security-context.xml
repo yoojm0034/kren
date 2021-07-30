@@ -14,15 +14,16 @@
 			access="permitAll()" />
 		<security:intercept-url pattern="/userJoinForm.do"
 			access="permitAll()" />
-		<security:intercept-url pattern="/"
-			access="permitAll()" />
+<!-- 		<security:intercept-url pattern="/" -->
+<!-- 			access="permitAll()" /> -->
 		<security:intercept-url pattern="/qna/**"
 			access="permitAll()" />
 		<security:intercept-url pattern="/admin/**"
 			access="hasAuthority('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/**"
 			access="isAuthenticated()" />
-		<security:form-login default-target-url="/feed.do"
+		<security:form-login
+					default-target-url="/feed.do"
 					login-page="/home.do"
 					username-parameter="user_id"
 					password-parameter="password"

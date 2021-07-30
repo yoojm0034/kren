@@ -70,5 +70,5 @@ $(document).ready(function () {
       23. Greg Patel
       24. Hisashi Yokida
   */
-  getUserPopovers();
+//  getUserPopovers();
 });

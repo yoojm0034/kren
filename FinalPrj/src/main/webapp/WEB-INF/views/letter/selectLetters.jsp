@@ -113,21 +113,14 @@
 	}
 	
 	$(function() {
+		// 친구목록 클릭하면
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
 		    console.log(aid);
 		    location.href='selectLetters.do?user_id='+aid; 
 		});		
 		
-
-
-		$('b').on('click', function() {
-		    var btn = $(this).data('text');
-			var corText = $('#corText'+btn+'.ql-editor p').text();
-			console.log(cortext);			
-		});
-		
-		// 테이블 행 삭제 이벤트
+		// 테이블 행 삭제 그룹이벤트
 		$("#con").on('click', '#btnd',  function() {
 		    var btnd = $(this).data('btnd');
 		    console.log(btnd);
@@ -137,7 +130,6 @@
 
 	});
 
-	// 		$("button[data-btnd=0]").parent().parent().remove()
 	
 	function add(id, idx) {
 		var btnn = $('#btn'+idx);
@@ -163,13 +155,7 @@
 		tbl.append(head);
 		div.append(tbl);
 		
-// 		for (var data of result) {
-// 			var tr = $('<tr>');
-// 			tr.append($('<td>').append(data));
-// 			tr.append($('<td>').append(result[data]));
-// 			tbl.append(tr);
-// 		}
-		
+		// 교정 테이블 출력		
 		for(var i=0; i < result.length; i++) {
 			var tr = $('<tr>');
 			tr.append($('<td>').append(i));
@@ -179,21 +165,7 @@
 			tr.append($('<td>').append($('<button id="btnd" data-btnd="'+i+'">').text('삭제')));
 			tbl.append(tr);			
 		}
-		
-		div.append(tbl);
-
-// 		for (var data of result) {
-// 			var tr = $('<tr>');
-// 			console.log('data',data);
-// 			for (var field in data) {
-// 				var td = $('<td>').text(result[field]);
-// 				tr.append(td);
-// 			console.log(result[field]);
-// 			}
-// 			tbl.append(tr);
-// 		}
-// 		div.append(tbl);
-
+		div.append(tbl)
 		btnn.remove();
 		 
 	}
