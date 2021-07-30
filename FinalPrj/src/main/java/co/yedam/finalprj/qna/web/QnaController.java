@@ -26,5 +26,9 @@ public class QnaController {
 		return "admin/qnaList";
 	}
 	
-	
+	@RequestMapping("admin/mailForm.do")
+	public String mailForm(QnaVO vo, Model model) {
+		model.addAttribute("qna", qnaDao.qnaSelect(vo));
+		return "admin/mailForm";
+	}
 }

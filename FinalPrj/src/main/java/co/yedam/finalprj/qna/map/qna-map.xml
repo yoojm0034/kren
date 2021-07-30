@@ -7,7 +7,12 @@
 		from qna
 		order by qna_dt desc
 	</select>
+	<select id="qnaSelect" parameterType="co.yedam.finalprj.qna.vo.QnaVO" resultType="co.yedam.finalprj.qna.vo.QnaVO">
+		select *
+		from qna
+		where qna_id = #{qna_id}
 	
+	</select>
 	<!-- update -->
 	<update id="qnaUpdate" parameterType="co.yedam.finalprj.qna.vo.QnaVO">
 		update qna

@@ -47,7 +47,12 @@ tr:hover {
 	}
 </style>
 <script type="text/javascript">
+$(function(){
+	$('#dataTable tbody tr').on('click', function(){
+		location.href='${pageContext.request.contextPath}/admin/mailForm.do?qna_id='+$(this).data('id')
+	})
 	
+ })	
 </script>
 </head>
 <body>
