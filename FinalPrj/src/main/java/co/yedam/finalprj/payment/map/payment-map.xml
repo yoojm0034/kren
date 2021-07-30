@@ -8,4 +8,10 @@
 		order by pay_dt desc
 		
 	</select>
+	
+	<!-- 결제 정보 서버 insert -->
+	<insert id="paymentInsert" parameterType="co.yedam.finalprj.payment.vo.PaymentVO">
+		insert into payment
+		values('payment_'||payment_seq.nextval, #{user_id}, #{pay}, sysdate)
+	</insert>
 </mapper>

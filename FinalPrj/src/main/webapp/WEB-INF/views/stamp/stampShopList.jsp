@@ -5,16 +5,18 @@
 <html lang="en">
 
 <head>
-<!-- Required meta tags -->
-
 <title>STAMP SHOP</title>
 <script type="text/javascript"
 	src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$("#check_module").click(function() {
-			var name = "${user.name}"
+			var name = "${ user.name }"
+			var pName = "${ list.stamp_id }"
+			var pay = "${ list.pay }"
+			
 			console.log("222")
+			
 			var IMP = window.IMP; // 생략가능
 			IMP.init('imp86362495');
 			// 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
@@ -22,25 +24,39 @@
 			IMP.request_pay({
 				pg : 'kakao',
 				pay_method : 'card',
-
 				merchant_uid : 'merchant_' + new Date().getTime(),
-
+				//상품명
 				name : name,
-				//결제창에서 보여질 이름
-				amount : 1000,
-				//가격
-				buyer_name : name
-			}, function(rsp) {
+				//상품 가격
+				amount : pay,
+				//구매자명
+				buyer_name : pName
+			}, function(rsp) { //callback...
 				console.log(rsp);
 				if (rsp.success) {
+					//결제 성공 로직
 					var msg = '결제가 완료되었습니다.';
-					msg += '고유ID : ' + rsp.imp_uid;
-					msg += '상점 거래ID : ' + rsp.merchant_uid;
+					//msg += '고유ID : ' + rsp.imp_uid;
+					//msg += '상점 거래ID : ' + rsp.merchant_uid;
 					msg += '결제 금액 : ' + rsp.paid_amount;
-					msg += '카드 승인번호 : ' + rsp.apply_num;
 					
-
+					//에이작스로 바로 서버에 입력...
+					//결제내역 table insert
+					$.ajax({
+								url:'paymentInsert.do',
+								type: POST,
+								data: { pay: rsp.paid_amount; },         
+								dataType: 'text',
+								success: function(data){
+									console.log(data);
+									//성공하면 인트값 1보다 크면 ...입력 -> 페이지 이동
+								},
+								error function(error) {
+					        		console.error(error);
+					    		}
+								});
 				} else {
+					//결제 실패 로직
 					var msg = '결제에 실패하였습니다.';
 					msg += '에러내용 : ' + rsp.error_msg;
 				}
@@ -85,7 +101,7 @@
 										</div>
 
 										<div>
-											<button id="check_module" class="button">Buy</button>
+											<button id="check_module" class="button is-solid accent-button raised">Buy</button>
 										</div>
 
 
