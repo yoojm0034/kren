@@ -109,7 +109,7 @@ function readURL(input) {
       var deleteIcon = feather.icons.x.toSvg();
       var template = "\n                <div class=\"upload-wrap\">\n                    <img src=\"" + e.target.result + "\" alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
       $('#feed-upload').append(template);
-      $('#feed-upload-input-1, #feed-upload-input-2').attr('disabled', true);
+     // $('#feed-upload-input-1, #feed-upload-input-2').attr('disabled', true);
       $('.remove-file').on('click', function () {
         $('#feed-upload-input-1, #feed-upload-input-2').val('').attr('disabled', false);
         $(this).closest('.upload-wrap').remove();

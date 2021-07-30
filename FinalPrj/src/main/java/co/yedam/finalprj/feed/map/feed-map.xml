@@ -15,19 +15,25 @@
 				u.LON "lon",
 				u.TIMEZONE "time_zone",
 				f.FEED_ID "feed_id",
-				f.USER_ID "user_id",
 				f.CONTENT "content",
 				f.PHOTO "fphoto",
 				f.REG_DATE "reg_date",
-				f.TAGS "tags"
+				f.TAGS "tags",
+				d.ORIGINAL_NAME, 
+      			d.UUID,
+        		d.DIRECTORY
 		FROM 	feed f JOIN users u
 				ON f.USER_ID = u.USER_ID
+        		left outer join photo p
+        		on  f.PHOTO = p.PHOTO_ID
+        		left outer join photo_detail d
+       			on p.PHOTO_ID=  d.PHOTO_ID
 		WHERE   u.STATUS = '일반회원'
 		AND NOT f.USER_ID IN (  SELECT BLOCKED
 						        FROM block
 							    WHERE USER_ID = #{user_id}
 							  )
-		ORDER BY u.REG_DATE
+		ORDER BY f.REG_DATE DESC
 	</select>
 
 	<!--오늘 생일인 친구 조회 , 블릭한 친구 제외-->
@@ -81,7 +87,25 @@
 		AND STATUS = '일반회원'
 	</select>
 	
-		<!--  아직 미완  -->
+	<!-- 태그 체크 존재하면 추가 하지않음-->
+	<select id="tagSelect" parameterType="co.yedam.finalprj.tag.vo.TagVO" resultType="int">
+		SELECT count(tag_name) as tag_name
+  		FROM   tag 
+		WHERE  tag_name IN (#{tag_name})
+	</select>
+	
+	<!-- 태그 등록 존재하지 않을 시 추가  -->
+	<insert id="tagInsert" parameterType="co.yedam.finalprj.tag.vo.TagVO">
+		INSERT INTO tag(tag_name) VALUES( #{tag_name} )	
+	</insert>
+	
+	<!-- 피드 등록 -->
+	<insert id="feedInsert" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
+		{ CALL fphoto_insert( #{user_id}, #{content}, #{photo}, #{original_name}, #{tags}, #{uuid}, #{file_size}, #{directory})} 
+	</insert>
+	
+	
+	<!--  아직 미완  -->
 	<select id="FeedLikeSelect"
 		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
 		SELECT  
@@ -91,33 +115,9 @@
 		WHERE 	feed_id = #{feed_id}
 	</select>
 	
-	<!-- 피드 등록 -->
-	<insert id="feedInsert" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
-		INSERT INTO feed (feed_id, user_id, content, photo,reg_date, tags)
-		VALUES ('feed_'|| feed_seq.nextval , #{user_id}, #{content}, #{photo}, sysdate, #{tags} )
-	</insert>
-	
-	
-	
-	
-	<!-- 태그 체크 -->
-	<select id="tagSelect" parameterType="co.yedam.finalprj.tag.vo.TagVO" resultType="int">
-		SELECT count(tag_name) as tag_name
-  		FROM   tag 
-		WHERE  tag_name IN (#{tag_name})
-	</select>
-	
-	<!-- 태그 등록 -->
-	<insert id="tagInsert" parameterType="co.yedam.finalprj.tag.vo.TagVO">
-		INSERT INTO tag(tag_name) VALUES( #{tag_name} )	
-	</insert>
-	
-	
-	
-	
-	
-	
-	
+
+
+
 	
 	
 </mapper>

@@ -1,19 +1,21 @@
 
 package co.yedam.finalprj.feed.web;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import co.yedam.finalprj.feed.service.FeedService;
@@ -21,7 +23,6 @@ import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.likes.vo.LikesVO;
 import co.yedam.finalprj.notice.service.NoticeService;
-import co.yedam.finalprj.notice.vo.NoticeVO;
 import co.yedam.finalprj.tag.vo.TagVO;
 import co.yedam.finalprj.users.vo.UsersVO;
 
@@ -101,13 +102,42 @@ public class FeedController {
 	
 	// 피드 등록
 	@RequestMapping("feedInsert.do")
-	public String feedInsert(FeedVO vo, Model model) {
+	public String feedInsert(FeedVO vo, Model model, HttpServletRequest request) throws IllegalStateException, IOException{
 		vo.setUser_id("user1");
-		feedDao.feedInsert(vo);
+		MultipartFile file = vo.getFile();
+		
+		if(!file.isEmpty()) {
+			String fileName = file.getOriginalFilename();
+			int fileSize = (int) file.getSize();
+			
+			String ext = null;
+			int dot = fileName.lastIndexOf(".");
+			
+			if(dot != -1) {
+				ext = fileName.substring(dot);
+			}else {
+				ext = "";
+			}
+			
+			UUID uuid = UUID.randomUUID();
+			String fileUUID = uuid.toString() + ext;
+			String path = request.getServletContext().getRealPath("/resources/upload/");
+	
+			vo.setFile_size(fileSize);
+			vo.setDirectory(path);
+			vo.setUuid(fileUUID);
+			vo.setOriginal_name(fileName);
+			
+			file.transferTo(new File(path, fileUUID));//파일을 경로로 저장
+	
+			feedDao.feedInsert(vo);
+		}else {
+			feedDao.feedInsert(vo);
+		}
+
 		return "redirect:feed.do";
 	}
 
-	
 
 	
 }

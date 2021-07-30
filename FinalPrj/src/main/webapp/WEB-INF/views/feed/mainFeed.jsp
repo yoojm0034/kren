@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,7 +137,7 @@ $(document).ready(function(){
 	    	var tagval = $('#activities-autocpl').val();
 			
 	    	if(!tagval) {
-				alert('태그를 입력해 주세요');
+				alert('태그를 입력해 주세요!');
 			}else{
 				
 				$('#append_tag').append('#' + tagval + ' ');
@@ -156,8 +157,13 @@ $(document).ready(function(){
 		}else if(event.keyCode==35){
 			event.preventDefault();
 			event.returnValue = false;
+		}else if(event.keyCode==44){
+			event.preventDefault();
+			event.returnValue = false;
 		}
 	}
+	
+	
 });		
 
 </script>
@@ -174,14 +180,8 @@ $(function(){
 			tagval= tagval.replace(/#/g,",");
 		}
 		
-		//if(document.getElementById('feed-upload-input-2').value == ""){
-		//}else{
-		//	fileNameval = document.getElementById('feed-upload-input-2').files[0].name;
-		//}
-		//console.log(fileNameval);
-		
 		document.getElementById('tags').value = tagval;
-		//$('#photo').val = fileNameval;
+		
 		$('#feedInsert').submit();
 		
 	});
@@ -440,7 +440,6 @@ $(function(){
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 
@@ -456,7 +455,7 @@ $(function(){
 								<c:forEach var="vo" items="${likeTag }" end="9">
 									<!-- Recommended Page -->
 									<label class="nicelabel-default-position"> <span
-										class="tag-label">${vo.tag_name }</span>
+										class="tag-label">#${vo.tag_name }</span>
 									</label>
 								</c:forEach>
 							</div>
@@ -484,6 +483,7 @@ $(function(){
 
 					<!-- Middle column -->
 					<div class="column is-6">
+						<form action="feedInsert.do" id="feedInsert" method="post" enctype="multipart/form-data">
 						<!-- Publishing Area -->
 						<!-- /partials/pages/feed/compose-card.html -->
 						<div id="compose-card" class="card is-new-content">
@@ -500,12 +500,10 @@ $(function(){
 										</span></li>
 									</ul>
 								</div>
-
 								<!-- Tab content -->
 								<!-- ----------글쓰는 부분 --------------->
 								<div class="tab-content">
 									<!-- Compose form -->
-									<form action="feedInsert.do" id="feedInsert" method="post" enctype="multipart/form-data">
 										<input type="hidden" id="tags" name="tags">
 										<input type="hidden" id="photo" name="photo">
 									<div class="compose">
@@ -517,11 +515,9 @@ $(function(){
 													placeholder="Write something about you..."></textarea>
 											</div>
 										</div>
-
 										<div id="feed-upload" class="feed-upload"></div>
 										<div id="append_tag"></div>
 										<div id="options-summary" class="options-summary"></div>
-
 										<div id="tag-suboption"
 											class="is-autocomplete is-suboption is-hidden">
 											<!-- Tag friends suboption -->
@@ -724,7 +720,7 @@ $(function(){
 											</div>
 										</div>
 									</div>
-									</form>
+									
 									<!-- /Compose form -->
 
 									<!-- General basic options -->
@@ -732,7 +728,7 @@ $(function(){
 										<!-- Upload action -->
 										<div class="compose-option">
 											<i data-feather="camera"></i> <span>Media</span> <input
-												id="feed-upload-input-2" type="file" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
+												id="feed-upload-input-2" name="file" type="file" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
 										</div>
 										<!-- Tag action -->
 										<div id="show-activities" class="compose-option">
@@ -754,8 +750,7 @@ $(function(){
 								</div>
 							</div>
 						</div>
-
-
+					</form>
 						<!------------------------ 포스트 시작 ------------------------->
 						<c:forEach items="${feedList }" var="vo">
 							<div id="feed-post-1" class="card is-post">
@@ -771,8 +766,8 @@ $(function(){
 													data-user-popover="1" alt="">
 											</div>
 											<div class="user-info">
-												<a href="#">${vo.name }+${vo.feed_id }</a> <span
-													class="time">${vo.reg_date }, ${vo.time_zone }+시간</span>
+												<a href="#">${vo.feed_id } : ${vo.name } </a> <span
+													class="time">${vo.reg_date } : ${vo.time_zone }</span>
 											</div>
 										</div>
 										<!-- Right side dropdown -->
@@ -824,8 +819,8 @@ $(function(){
 										<!-- Post body text -->
 										<div class="post-text">
 											<p>${vo.content }</p>
-
 										</div>
+	
 										<!-- Featured image -->
 										<c:if test="${empty vo.fphoto}">
 											<div class="post-image"
@@ -858,8 +853,8 @@ $(function(){
 										<c:if test="${not empty vo.fphoto}">
 											<div class="post-image">
 												 <img
-													src="https://via.placeholder.com/1600x900"
-													data-demo-src="assets/img/demo/unsplash/1.jpg" alt="">
+													src='<c:url value = "${vo.directory }" />'
+													data-demo-src ='<c:url value = "${vo.directory }" />' alt="">
 												<!-- Action buttons -->
 												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 												<div class="like-wrapper">
@@ -884,6 +879,13 @@ $(function(){
 												</div>
 											</div>
 										</c:if>
+										<div>
+											<input type="hidden" value="${vo.tags }">
+											<p>
+												<a>${fn:replace(fn:replace(vo.tags,',','#'))}</a>
+												<a>${vo.tags }</a>
+											</p>
+										</div>
 									</div>
 									<!-- /Post body -->
 
@@ -907,6 +909,7 @@ $(function(){
 
 										<!-- Followers text -->
 										<div class="likers-text">
+
 											<p>
 												<a href="#">Milly</a>, <a href="#">David</a>
 											</p>
@@ -1434,7 +1437,7 @@ $(function(){
 															<i data-feather="smile"></i>
 														</div>
 														<div class="action is-upload">
-															<i data-feather="camera"></i> <input type="file">
+															<i data-feather="camera"></i> 
 														</div>
 														<a class="button is-solid primary-button raised">Post
 															Comment</a>
@@ -1461,43 +1464,7 @@ $(function(){
 					<!-- Right side column -->
 
 					<div class="column is-3">
-						<!------------------------ 생일 시작 ------------------------->
-						<div class="notice">
-							<c:forEach items="${birthUser }" var="vo" varStatus="status">
-								<ul class="rolling">
-									<li>
-										<div class="card is-birthday-card has-background-image"
-											data-background="resource/template/assets/img/illustrations/cards/birthday-bg.svg">
-											<div class="card-heading" style="border-collapse: collapse;">
-												<div
-													class="dropdown is-spaced is-right dropdown-trigger is-light">
-													<div>
-														<div class="button"></div>
-													</div>
-												</div>
-											</div>
-											<div class="card-body">
-												<div>
-													<div class="birthday-avatar">
-														<img src="https://via.placeholder.com/300x300"
-															data-demo-src="assets/img/avatars/dan.jpg" alt="">
-														<div class="birthday-indicator">${vo.age }</div>
-													</div>
-													<div class="birthday-content">
-														<h4>${vo.following }님의${vo.age }번째생일!</h4>
-														<p>편지를 보내 생일을 축하해 주세요!</p>
-														<button type="button" class="button light-button">편지쓰러가기</button>
-														<p></p>
-													</div>
-												</div>
-											</div>
-										</div>
-									</li>
-								</ul>
-							</c:forEach>
-						</div>
-						<!------------------------ 생일 끝 ------------------------->
-						<!------------------------ 친구추천 시작 ------------------------->
+									<!------------------------ 친구추천 시작 ------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
 								<h4>친구 추천</h4>
@@ -1558,6 +1525,43 @@ $(function(){
 							</div>
 						</div>
 						<!------------------------ 친구추천 끝 ------------------------->
+						<!------------------------ 생일 시작 ------------------------->
+						<div class="notice">
+							<c:forEach items="${birthUser }" var="vo" varStatus="status">
+								<ul class="rolling">
+									<li>
+										<div class="card is-birthday-card has-background-image"
+											data-background="resource/template/assets/img/illustrations/cards/birthday-bg.svg">
+											<div class="card-heading" style="border-collapse: collapse;">
+												<div
+													class="dropdown is-spaced is-right dropdown-trigger is-light">
+													<div>
+														<div class="button"></div>
+													</div>
+												</div>
+											</div>
+											<div class="card-body">
+												<div>
+													<div class="birthday-avatar">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/dan.jpg" alt="">
+														<div class="birthday-indicator">${vo.age }</div>
+													</div>
+													<div class="birthday-content">
+														<h4>${vo.following }님의${vo.age }번째생일!</h4>
+														<p>편지를 보내 생일을 축하해 주세요!</p>
+														<button type="button" class="button light-button">편지쓰러가기</button>
+														<p></p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</c:forEach>
+						</div>
+						<!------------------------ 생일 끝 ------------------------->
+		
 					</div>
 					<!-- /Right side column -->
 				</div>
@@ -1586,7 +1590,7 @@ $(function(){
 					<div class="subheading">
 						<!-- Group avatar -->
 						<div class="group-avatar">
-							<input id="group-avatar-upload" type="file">
+							<input id="group-avatar-upload">
 							<div class="add-photo">
 								<i data-feather="plus"></i>
 							</div>
@@ -1782,7 +1786,7 @@ $(function(){
 					</div>
 					<div class="card-body">
 						<div class="content-block is-active">
-							<img src="assets/img/illustrations/cards/albums.svg" alt="">
+							<img src="resources/template/assets/img/illustrations/cards/albums.svg" alt="">
 							<div class="help-text">
 								<h3>Manage your photos</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -1791,7 +1795,7 @@ $(function(){
 						</div>
 
 						<div class="content-block">
-							<img src="assets/img/illustrations/cards/upload.svg" alt="">
+							<img src="resources/template/assets/img/illustrations/cards/upload.svg" alt="">
 							<div class="help-text">
 								<h3>Upload your photos</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -2080,7 +2084,7 @@ $(function(){
 					</div>
 					<div class="card-body">
 						<div class="content-block is-active">
-							<img src="assets/img/illustrations/cards/videotrip.svg" alt="">
+							<img src="resources/template/assets/img/illustrations/cards/videotrip.svg" alt="">
 							<div class="help-text">
 								<h3>Share live videos</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -2089,7 +2093,7 @@ $(function(){
 						</div>
 
 						<div class="content-block">
-							<img src="assets/img/illustrations/cards/videocall.svg" alt="">
+							<img src="resources/template/assets/img/illustrations/cards/videocall.svg" alt="">
 							<div class="help-text">
 								<h3>To build your audience</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -2150,7 +2154,7 @@ $(function(){
 							<div class="right-section">
 								<div class="header">
 									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/jenna.png" alt="">
+										data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 									<div class="user-meta">
 										<span>Jenna Davis <small>is live</small></span> <span><small>right
 												now</small></span>
@@ -2247,7 +2251,7 @@ $(function(){
 											<div>
 												<div class="avatar-button">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/jenna.png" alt="">
+														data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 													<i data-feather="triangle"></i>
 												</div>
 											</div>
@@ -2256,7 +2260,7 @@ $(function(){
 													<a href="#" class="dropdown-item is-selected">
 														<div class="media">
 															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/jenna.png" alt="">
+																data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 															<div class="media-content">
 																<h3>Jenna Davis</h3>
 																<small>Interact as Jenna Davis.</small>
@@ -2270,7 +2274,7 @@ $(function(){
 													<a href="#" class="dropdown-item">
 														<div class="media">
 															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/avatars/hanzo.svg" alt="">
+																data-demo-src="resources/template/assets/img/avatars/hanzo.svg" alt="">
 															<div class="media-content">
 																<h3>Css Ninja</h3>
 																<small>Interact as Css Ninja.</small>
@@ -2298,7 +2302,7 @@ $(function(){
 											<figure class="media-left">
 												<p class="image is-32x32">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/dan.jpg" alt=""
+														data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt=""
 														data-user-popover="1">
 												</p>
 											</figure>
@@ -2317,7 +2321,7 @@ $(function(){
 											<figure class="media-left">
 												<p class="image is-32x32">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/david.jpg" alt=""
+														data-demo-src="resources/template/assets/img/avatars/david.jpg" alt=""
 														data-user-popover="4">
 												</p>
 											</figure>
@@ -2335,7 +2339,7 @@ $(function(){
 											<figure class="media-left">
 												<p class="image is-32x32">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/rolf.jpg" alt=""
+														data-demo-src="resources/template/assets/img/avatars/rolf.jpg" alt=""
 														data-user-popover="17">
 												</p>
 											</figure>
@@ -2356,7 +2360,7 @@ $(function(){
 								<div class="comment-controls">
 									<div class="controls-inner">
 										<img src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/jenna.png" alt="">
+											data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 										<div class="control">
 											<textarea class="textarea comment-textarea is-rounded"
 												rows="1"></textarea>
@@ -2369,9 +2373,6 @@ $(function(){
 
 							</div>
 						</div>
-
-
-
 					</div>
 				</div>
 
@@ -2481,7 +2482,7 @@ $(function(){
 										<div>
 											<div class="button page-selector">
 												<img src="https://via.placeholder.com/150x150"
-													data-demo-src="assets/img/avatars/hanzo.svg" alt="">
+													data-demo-src="resources/template/assets/img/avatars/hanzo.svg" alt="">
 												<span>Css Ninja</span> <i data-feather="chevron-down"></i>
 											</div>
 										</div>
@@ -2490,7 +2491,7 @@ $(function(){
 												<div class="dropdown-item">
 													<div class="media">
 														<img src="https://via.placeholder.com/150x150"
-															data-demo-src="assets/img/avatars/hanzo.svg" alt="">
+															data-demo-src="resources/template/assets/img/avatars/hanzo.svg" alt="">
 														<div class="media-content">
 															<h3>Css Ninja</h3>
 															<small>Share on Css Ninja.</small>
@@ -2501,7 +2502,7 @@ $(function(){
 												<div class="dropdown-item">
 													<div class="media">
 														<img src="https://via.placeholder.com/150x150"
-															data-demo-src="assets/img/icons/logos/nuclearjs.svg"
+															data-demo-src="resources/template/assets/img/icons/logos/nuclearjs.svg"
 															alt="">
 														<div class="media-content">
 															<h3>NuclearJs</h3>
@@ -2513,7 +2514,7 @@ $(function(){
 												<div class="dropdown-item">
 													<div class="media">
 														<img src="https://via.placeholder.com/150x150"
-															data-demo-src="assets/img/icons/logos/slicer.svg" alt="">
+															data-demo-src="resources/template/assets/img/icons/logos/slicer.svg" alt="">
 														<div class="media-content">
 															<h3>Slicer</h3>
 															<small>Share on Slicer.</small>
@@ -2528,7 +2529,7 @@ $(function(){
 
 								<div class="alias">
 									<img src="https://via.placeholder.com/150x150"
-										data-demo-src="assets/img/avatars/jenna.png" alt="">
+										data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 								</div>
 							</div>
 						</div>
@@ -2555,13 +2556,13 @@ $(function(){
 							<div class="featured-image">
 								<img id="share-modal-image"
 									src="https://via.placeholder.com/1600x900"
-									data-demo-src="assets/img/demo/unsplash/1.jpg" alt="">
+									data-demo-src="resources/template/assets/img/demo/unsplash/1.jpg" alt="">
 							</div>
 							<div class="publication-meta">
 								<div class="inner-flex">
 									<img id="share-modal-avatar"
 										src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/dan.jpg"
+										data-demo-src="resources/template/assets/img/avatars/dan.jpg"
 										data-user-popover="1" alt="">
 									<p id="share-modal-text">
 										Yesterday with <a href="#">@Karen Miller</a> and <a href="#">@Marvin
@@ -2698,7 +2699,7 @@ $(function(){
 					<div class="card-body has-text-centered">
 
 						<div class="image-wrap">
-							<img src="assets/img/illustrations/characters/no-stream.svg"
+							<img src="resources/template/assets/img/illustrations/characters/no-stream.svg"
 								alt="">
 						</div>
 
@@ -2730,7 +2731,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/dan.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
 						</div>
 						<div class="username">
 							<span>Dan Walker</span> <span><i data-feather="star"></i>
@@ -2886,9 +2887,9 @@ $(function(){
 			<div id="chat-sidebar" class="users-sidebar">
 				<!-- Header -->
 				<div class="header-item">
-					<img class="light-image" src="assets/img/logo/friendkit-bold.svg"
+					<img class="light-image" src="resources/template/assets/img/logo/friendkit-bold.svg"
 						alt=""> <img class="dark-image"
-						src="assets/img/logo/friendkit-white.svg" alt="">
+						src="resources/template/assets/img/logo/friendkit-white.svg" alt="">
 				</div>
 				<!-- User list -->
 				<div class="conversations-list has-slimscroll-xs">
@@ -2908,7 +2909,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/stella.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -2918,7 +2919,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
 							<div class="user-status is-away"></div>
 						</div>
 					</div>
@@ -2928,7 +2929,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/david.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -2938,7 +2939,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
 							<div class="user-status is-online"></div>
 						</div>
 					</div>
@@ -2948,7 +2949,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/elise.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
 							<div class="user-status is-away"></div>
 						</div>
 					</div>
@@ -2958,7 +2959,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/nelly.png" alt="">
+								data-demo-src="resources/template/assets/img/avatars/nelly.png" alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -2968,7 +2969,7 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/milly.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -2993,7 +2994,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/dan.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
 						<div class="message-block">
 							<span>8:03am</span>
 							<div class="message-text">Hi Jenna! I made a new design,
@@ -3003,7 +3004,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/dan.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
 						<div class="message-block">
 							<span>8:03am</span>
 							<div class="message-text">It's quite clean and it's
@@ -3013,7 +3014,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>8:12am</span>
 							<div class="message-text">Oh really??! I want to see that.</div>
@@ -3022,7 +3023,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/dan.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
 						<div class="message-block">
 							<span>8:13am</span>
 							<div class="message-text">FYI it was done in less than a
@@ -3032,7 +3033,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>8:17am</span>
 							<div class="message-text">Great to hear it. Just send me
@@ -3042,7 +3043,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>8:18am</span>
 							<div class="message-text">And if you have a prototype, you
@@ -3060,7 +3061,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>10:34am</span>
 							<div class="message-text">Hey Stella! Aren't we supposed to
@@ -3070,7 +3071,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>10:37am</span>
 							<div class="message-text">Just remembered it.</div>
@@ -3079,7 +3080,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/stella.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
 						<div class="message-block">
 							<span>11:22am</span>
 							<div class="message-text">Yeah you always do that, forget
@@ -3097,7 +3098,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>3:24pm</span>
 							<div class="message-text">Daniel, Amanda told me about your
@@ -3107,7 +3108,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
 						<div class="message-block">
 							<span>3:42pm</span>
 							<div class="message-text">Hey Jenna, thanks for answering
@@ -3117,7 +3118,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
 						<div class="message-block">
 							<span>3:43pm</span>
 							<div class="message-text">Can i borrow your car for a quick
@@ -3136,7 +3137,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>12:34pm</span>
 							<div class="message-text">Damn you! Why would you even
@@ -3146,7 +3147,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>12:32pm</span>
 							<div class="message-text">I just HATE aliens.</div>
@@ -3155,7 +3156,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/david.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
 						<div class="message-block">
 							<span>13:09pm</span>
 							<div class="message-text">C'mon, you just gotta learn the
@@ -3165,7 +3166,7 @@ $(function(){
 					</div>
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/david.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
 						<div class="message-block">
 							<span>13:11pm</span>
 							<div class="message-text">I checked the replay and for
@@ -3175,7 +3176,7 @@ $(function(){
 					</div>
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>13:12pm</span>
 							<div class="message-text">I know but i struggle when i have
@@ -3184,7 +3185,7 @@ $(function(){
 					</div>
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/david.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
 						<div class="message-block">
 							<span>13:17pm</span>
 							<div class="message-text">Join me in game, i'll show you.</div>
@@ -3200,7 +3201,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
 						<div class="message-block">
 							<span>4:55pm</span>
 							<div class="message-text">Hey Jenna, what's up?</div>
@@ -3209,7 +3210,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
 						<div class="message-block">
 							<span>4:56pm</span>
 							<div class="message-text">Iam coming to LA tomorrow.
@@ -3219,7 +3220,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>5:21pm</span>
 							<div class="message-text">Hey mate, it's been a while. Sure
@@ -3229,7 +3230,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
 						<div class="message-block">
 							<span>5:27pm</span>
 							<div class="message-text">Ok. Let's say i pick you up at
@@ -3239,7 +3240,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>5:43pm</span>
 							<div class="message-text">Yup, that works great.</div>
@@ -3248,7 +3249,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>5:44pm</span>
 							<div class="message-text">And yeah, don't forget to bring
@@ -3258,7 +3259,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
 						<div class="message-block">
 							<span>5:27pm</span>
 							<div class="message-text">No worries</div>
@@ -3275,7 +3276,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>11:53am</span>
 							<div class="message-text">Elise, i forgot my folder at your
@@ -3285,7 +3286,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>11:53am</span>
 							<div class="message-text">I need it badly, it's work stuff.</div>
@@ -3294,7 +3295,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/elise.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
 						<div class="message-block">
 							<span>12:19pm</span>
 							<div class="message-text">Yeah i noticed. I'll drop it in
@@ -3312,7 +3313,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>8:22pm</span>
 							<div class="message-text">So you watched the movie?</div>
@@ -3321,7 +3322,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>8:22pm</span>
 							<div class="message-text">Was it scary?</div>
@@ -3330,7 +3331,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/nelly.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/nelly.png" alt="">
 						<div class="message-block">
 							<span>9:03pm</span>
 							<div class="message-text">It was so frightening, i felt my
@@ -3347,7 +3348,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
 						<div class="message-block">
 							<span>2:01pm</span>
 							<div class="message-text">Hello Jenna, did you read my
@@ -3357,7 +3358,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
 						<div class="message-block">
 							<span>2:01pm</span>
 							<div class="message-text">Didn't hear from you since i sent
@@ -3367,7 +3368,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>2:02pm</span>
 							<div class="message-text">Hello Milly, Iam really sorry,
@@ -3377,7 +3378,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
 						<div class="message-block">
 							<span>2:04pm</span>
 							<div class="message-text">And what did you think about it?</div>
@@ -3386,7 +3387,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>2:05pm</span>
 							<div class="message-text">Actually it's quite good, there
@@ -3396,7 +3397,7 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
 						<div class="message-block">
 							<span>2:07pm</span>
 							<div class="message-text">I think that i can give it to my
@@ -3406,7 +3407,7 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
 						<div class="message-block">
 							<span>2:09pm</span>
 							<div class="message-text">Crossing fingers then</div>
@@ -4364,7 +4365,7 @@ $(function(){
 
 							<div class="details-avatar">
 								<img src="https://via.placeholder.com/300x300"
-									data-demo-src="assets/img/avatars/milly.jpg" alt="">
+									data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
 								<div class="call-me">
 									<i class="mdi mdi-phone"></i>
 								</div>
@@ -4438,7 +4439,7 @@ $(function(){
 				</div>
 				<div class="card-body">
 
-					<img src="assets/img/icons/chat/bubbles.svg" alt="">
+					<img src="resources/template/assets/img/icons/chat/bubbles.svg" alt="">
 
 					<div class="field is-autocomplete">
 						<div class="control has-icon">
@@ -4479,77 +4480,77 @@ $(function(){
 				<div class="explore-list has-slimscroll">
 					<!--item-->
 					<a href="/navbar-v1-feed.html" class="explore-item"> <img
-						src="assets/img/icons/explore/clover.svg" alt="">
+						src="resources/template/assets/img/icons/explore/clover.svg" alt="">
 						<h4>Feed</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-profile-friends.html" class="explore-item">
-						<img src="assets/img/icons/explore/friends.svg" alt="">
+						<img src="resources/template/assets/img/icons/explore/friends.svg" alt="">
 						<h4>Friends</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-videos-home.html" class="explore-item"> <img
-						src="assets/img/icons/explore/videos.svg" alt="">
+						src="resources/template/assets/img/icons/explore/videos.svg" alt="">
 						<h4>Videos</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-pages-main.html" class="explore-item"> <img
-						src="assets/img/icons/explore/tag-euro.svg" alt="">
+						src="resources/template/assets/img/icons/explore/tag-euro.svg" alt="">
 						<h4>Pages</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-ecommerce-products.html" class="explore-item">
-						<img src="assets/img/icons/explore/cart.svg" alt="">
+						<img src="resources/template/assets/img/icons/explore/cart.svg" alt="">
 						<h4>Commerce</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-groups.html" class="explore-item"> <img
-						src="assets/img/icons/explore/house.svg" alt="">
+						src="resources/template/assets/img/icons/explore/house.svg" alt="">
 						<h4>Interests</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-stories-main.html" class="explore-item"> <img
-						src="assets/img/icons/explore/chrono.svg" alt="">
+						src="resources/template/assets/img/icons/explore/chrono.svg" alt="">
 						<h4>Stories</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-questions-home.html" class="explore-item">
-						<img src="assets/img/icons/explore/question.svg" alt="">
+						<img src="resources/template/assets/img/icons/explore/question.svg" alt="">
 						<h4>Questions</h4>
 					</a>
 					<!--item-->
 					<a href="news.html" class="explore-item"> <img
-						src="assets/img/icons/explore/news.svg" alt="">
+						src="resources/template/assets/img/icons/explore/news.svg" alt="">
 						<h4>News</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-groups.html" class="explore-item"> <img
-						src="assets/img/icons/explore/cake.svg" alt="">
+						src="resources/template/assets/img/icons/explore/cake.svg" alt="">
 						<h4>Groups</h4>
 					</a>
 					<!--item-->
 					<a href="https://envato.com" class="explore-item"> <img
-						src="assets/img/icons/explore/envato.svg" alt="">
+						src="resources/template/assets/img/icons/explore/envato.svg" alt="">
 						<h4>Envato</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-events.html" class="explore-item"> <img
-						src="assets/img/icons/explore/calendar.svg" alt="">
+						src="resources/template/assets/img/icons/explore/calendar.svg" alt="">
 						<h4>Events</h4>
 					</a>
 					<!--item-->
 					<a href="https://cssninja.io" target="_blank" class="explore-item">
-						<img src="assets/img/icons/explore/pin.svg" alt="">
+						<img src="resources/template/assets/img/icons/explore/pin.svg" alt="">
 						<h4>Css Ninja</h4>
 					</a>
 					<!--item-->
 					<a href="/elements.html" class="explore-item"> <img
-						src="assets/img/icons/explore/idea.svg" alt="">
+						src="resources/template/assets/img/icons/explore/idea.svg" alt="">
 						<h4>Elements</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-settings.html" class="explore-item"> <img
-						src="assets/img/icons/explore/settings.svg" alt="">
+						src="resources/template/assets/img/icons/explore/settings.svg" alt="">
 						<h4>Settings</h4>
 					</a>
 				</div>
@@ -4574,7 +4575,7 @@ $(function(){
 				<div class="card-body has-text-centered">
 
 					<div class="image-wrap">
-						<img src="assets/img/logo/friendkit.svg" alt="">
+						<img src="resources/template/assets/img/logo/friendkit.svg" alt="">
 					</div>
 
 					<h3>That's all folks!</h3>

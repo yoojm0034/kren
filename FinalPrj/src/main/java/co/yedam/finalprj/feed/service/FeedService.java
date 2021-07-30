@@ -16,10 +16,10 @@ public interface FeedService {
 	 List<UsersVO> birthUser(FriendsVO vo);							//생일인유저
 	 List<TagVO> likeTag();											//인기있는태그
 	 List<UsersVO> sameTopicList(UsersVO vo); 						//나와일치하는관심사수
-	 int tagSelect(TagVO vo);									//태그체크
+	 int tagSelect(TagVO vo);										//태그체크
 	 int tagInsert(TagVO vo);										//태그등록
+	 int feedInsert(FeedVO vo);										//피드등록
 	 
-	 int feedInsert(FeedVO vo);
 	 int feedUpdate(FeedVO vo);
 	 int feedDelete(FeedVO vo);
 
