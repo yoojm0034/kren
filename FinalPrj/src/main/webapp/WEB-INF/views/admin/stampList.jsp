@@ -16,7 +16,7 @@
 		const dataSource = {
 				  contentType: 'application/json',
 				  api: {
-				    readData: {url:'${pageContext.request.contextPath}/admin/StampList.do',method: 'GET'},
+				    readData: {url:'${pageContext.request.contextPath}/admin/stampList.do',method: 'GET'},
 				    updateData: { url: '${pageContext.request.contextPath}/admin/stampUpdate.do', method: 'PUT' },
 				    createData: { url: '${pageContext.request.contextPath}/admin/stampInsert.do', method: 'POST' },
 				    deleteData: { url: '${pageContext.request.contextPath}/admin/stampDelete.do', method: 'PUT' }
@@ -185,10 +185,10 @@
 	                    </div>
 	            </div>  
 	            <div align="right" class="btn-wrapper">
-	            	<button id="prependBtn">행추가</button>
-	            	<button id="create">DB입력</button>
-					<button id="sync">수정</button>
-					<button id="delete">삭제</button>
+	            	<button id="prependBtn" class="button">행추가</button>
+	            	<button id="create" class="button">DB입력</button>
+					<button id="sync" class="button">수정</button>
+					<button id="delete" class="button">삭제</button>
 	            </div>
 	            <div class="stories-container">
                         <div class="container-inner">

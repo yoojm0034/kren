@@ -6,25 +6,49 @@
 
 <head>
 <!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta http-equiv="x-ua-compatible" content="ie=edge">
 
 <title>STAMP SHOP</title>
-<link rel="icon" type="image/png" href="assets/img/favicon.png" />
-<!-- Fonts -->
-<link
-	href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900"
-	rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500"
-	rel="stylesheet">
-<link
-	href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css"
-	rel="stylesheet">
-<!-- Core CSS -->
-<link rel="stylesheet" href="assets/css/app.css">
-<link rel="stylesheet" href="assets/css/core.css">
+<script type="text/javascript"
+	src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#check_module").click(function() {
+			var name = "${user.name}"
+			console.log("222")
+			var IMP = window.IMP; // 생략가능
+			IMP.init('imp86362495');
+			// 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+			// i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
+			IMP.request_pay({
+				pg : 'kakao',
+				pay_method : 'card',
+
+				merchant_uid : 'merchant_' + new Date().getTime(),
+
+				name : name,
+				//결제창에서 보여질 이름
+				amount : 1000,
+				//가격
+				buyer_name : name
+			}, function(rsp) {
+				console.log(rsp);
+				if (rsp.success) {
+					var msg = '결제가 완료되었습니다.';
+					msg += '고유ID : ' + rsp.imp_uid;
+					msg += '상점 거래ID : ' + rsp.merchant_uid;
+					msg += '결제 금액 : ' + rsp.paid_amount;
+					msg += '카드 승인번호 : ' + rsp.apply_num;
+					
+
+				} else {
+					var msg = '결제에 실패하였습니다.';
+					msg += '에러내용 : ' + rsp.error_msg;
+				}
+				alert(msg);
+			});
+		});
+	});
+</script>
 </head>
 
 <body>
@@ -60,10 +84,8 @@
 											<span class="has-price">${ vo.pay }</span>
 										</div>
 
-										<div class="discount">
-											<div class="buttons">
-												<a href="#" class="button is-solid accent-button raised">Buy</a>
-											</div>
+										<div>
+											<button id="check_module" class="button">Buy</button>
 										</div>
 
 
@@ -77,65 +99,6 @@
 		</div>
 	</div>
 
-	<!-- Concatenated js plugins and jQuery -->
-	<script src="assets/js/app.js"></script>
-	<script src="https://js.stripe.com/v3/"></script>
-	<script src="assets/data/tipuedrop_content.js"></script>
-
-	<!-- Core js -->
-	<script src="assets/js/global.js"></script>
-
-	<!-- Navigation options js -->
-	<script src="assets/js/navbar-v1.js"></script>
-	<script src="assets/js/navbar-v2.js"></script>
-	<script src="assets/js/navbar-mobile.js"></script>
-	<script src="assets/js/navbar-options.js"></script>
-	<script src="assets/js/sidebar-v1.js"></script>
-
-	<!-- Core instance js -->
-	<script src="assets/js/main.js"></script>
-	<script src="assets/js/chat.js"></script>
-	<script src="assets/js/touch.js"></script>
-	<script src="assets/js/tour.js"></script>
-
-	<!-- Components js -->
-	<script src="assets/js/explorer.js"></script>
-	<script src="assets/js/widgets.js"></script>
-	<script src="assets/js/modal-uploader.js"></script>
-	<script src="assets/js/popovers-users.js"></script>
-	<script src="assets/js/popovers-pages.js"></script>
-	<script src="assets/js/lightbox.js"></script>
-
-	<!-- Landing page js -->
-
-	<!-- Signup page js -->
-
-	<!-- Feed pages js -->
-
-	<!-- profile js -->
-
-	<!-- stories js -->
-
-	<!-- friends js -->
-
-	<!-- questions js -->
-
-	<!-- video js -->
-
-	<!-- events js -->
-
-	<!-- news js -->
-
-	<!-- shop js -->
-	<script src="assets/js/shop.js"></script>
-
-	<!-- inbox js -->
-
-	<!-- settings js -->
-
-	<!-- map page js -->
-
-	<!-- elements page js -->
 </body>
 
 </html>
