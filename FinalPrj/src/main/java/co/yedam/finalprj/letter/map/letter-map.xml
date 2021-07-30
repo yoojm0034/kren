@@ -55,7 +55,7 @@
 	</insert>
 
 	<!-- 편지교정 작성 -->
-	<insert id="insertLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+	<insert id="insertLetterC" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
 		INSERT INTO LETTERC
 			(LETTER_ID, LINE, ORIGIN, CORRECTING)
 		VALUES
