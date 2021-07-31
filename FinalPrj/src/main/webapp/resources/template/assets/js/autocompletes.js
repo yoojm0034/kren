@@ -260,20 +260,20 @@ $(document).ready(function () {
   } //Activities autocomplete
 
 
-  if ($('#activities-autocpl').length) {
+ /* if ($('#activities-autocpl').length) {
     var html = '';
     var activitiesOptions = {
-      url: "assets/data/api/activities/activity-autocpl.json",
+      url: "resources/template/assets/data/api/activities/activity-autocpl.json",
       getValue: "name",
       template: {
         type: "custom",
-        method: function method(value, item) {
-          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "<img class=" + 'autocpl-avatar' + " src='" + item.pic + "' /></div><div class=" + 'entry-text' + ">" + value + "<br><span>" + item.desc + "</span></div><div class=" + 'next-icon' + "><i class=" + 'mdi mdi-chevron-right' + "></i></div></div> ";
+        method: function method(value) {
+          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">" + value + "<br>" + "</div></div>";
         }
       },
       highlightPhrase: false,
       list: {
-        maxNumberOfElements: 6,
+        maxNumberOfElements: 5,
         showAnimation: {
           type: "fade",
           //normal|slide|fade
@@ -324,7 +324,7 @@ $(document).ready(function () {
       }
     };
     $("#activities-autocpl").easyAutocomplete(activitiesOptions);
-  } //Mood autocomplete
+  } //Mood autocomplete*/
 
 
   if ($('#mood-autocpl').length) {

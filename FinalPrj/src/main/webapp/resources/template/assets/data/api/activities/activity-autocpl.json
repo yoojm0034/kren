@@ -1,32 +1,20 @@
 [
     {
-        "name": "status",
-        "desc": "how do you feel?",
-        "pic": "assets/img/icons/activities/feeling.svg"
+        "name": "status"
     },
     {
-        "name": "drinking",
-        "desc": "What are you drinking?",
-        "pic": "assets/img/icons/activities/drinking.svg"
+        "name": "status2"
     },
     {
-        "name": "eating",
-        "desc": "What are you eating?",
-        "pic": "assets/img/icons/activities/eating.svg"
+        "name": "sating"
     },
     {
-        "name": "reading",
-        "desc": "What are you reading?",
-        "pic": "assets/img/icons/activities/reading.svg"
+        "name": "reading"
     },
     {
-        "name": "watching",
-        "desc": "What are you watching?",
-        "pic": "assets/img/icons/activities/watching.svg"
+        "name": "watching"
     },
     {
-        "name": "travelling",
-        "desc": "Where are you travelling to?",
-        "pic": "assets/img/icons/activities/travelling.svg"
+        "name": "travelling"
     }
 ]

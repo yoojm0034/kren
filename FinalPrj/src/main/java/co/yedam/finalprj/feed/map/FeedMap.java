@@ -11,7 +11,7 @@ import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface FeedMap {
 	List<Map<String,Object>> feedSelectList(FeedVO vo);			//피드리스트
-	List<Map<String,Object>> FeedLikeSelect(LikesVO vo);
+	List<Map<String,Object>> FeedLikeSelect(LikesVO vo);		
 	List<UsersVO> birthUser(FriendsVO vo);						//생일인유저
 	List<TagVO> likeTag();										//인기있는태그
 	List<UsersVO> sameTopicList(UsersVO vo); 					//나와일치하는관심사수

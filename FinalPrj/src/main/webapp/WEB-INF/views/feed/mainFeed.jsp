@@ -8,25 +8,17 @@
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<link rel="icon" type="image/png"
-	href="resources/template/assets/img/favicon.png" />
-<link
-	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
-	rel="stylesheet">
+<link rel="icon" type="image/png" href="resources/template/assets/img/favicon.png" />
+<link href="resources/template/assets/nicelabel/css/jquery-nicelabel.css" rel="stylesheet">
 <script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
-<link
-	href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900"
-	rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500"
-	rel="stylesheet">
-<link
-	href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css"
-	rel="stylesheet">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
+<!------------ 자동완성  autocomplete ------------>
+
+     
 <meta charset="UTF-8">
 <title>Main Feed</title>
 <style>
@@ -94,11 +86,15 @@ table {
 	margin-top: 6px;
 	margin-bottom: 5px;
 }
+.view-wrapper {
+    padding: 40px 12px;
+}
 </style>
 
 </head>
 <body>
-	<script>
+ <script>
+
 $(document).ready(function(){
 	//------------------- 생일 롤링 ---------------
 	var height =  $(".notice").height();
@@ -129,6 +125,7 @@ $(document).ready(function(){
 		noticeRollingOff = setInterval(noticeRolling,5000);
 		$(this).css("cursor", "default");
 	});
+	
 	//------------------- 태그 등록---------------
 	document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
 
@@ -163,13 +160,7 @@ $(document).ready(function(){
 		}
 	}
 	
-	
-});		
-
-</script>
-<script>
-//------------------- 피드 등록 -----------------
-$(function(){
+	//------------------- 피드 등록 -----------------
 	$('#publish-button').on('click', function(){
 		var tagval = $('#append_tag').text();
 		var fileNameval;
@@ -185,7 +176,36 @@ $(function(){
 		$('#feedInsert').submit();
 		
 	});
-});
+	
+	//------------------- 태그 자동완성 -----------------
+	if ($('#activities-autocpl').length) {
+	    var html = '';
+	    var activitiesOptions = {
+	      url: "responseBodyTest.do",
+	      getValue: "tag_name",
+ 	      template: {
+	        type: "custom",
+	        method: function method(value) {
+	          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+	        }
+	      }, 
+	      highlightPhrase: false,
+	      list: {
+	        maxNumberOfElements: 5,
+	        showAnimation: {
+	          type: "slide",
+	          //normal|slide|fade
+	          time: 400,
+	          callback: function callback() {}
+	        },
+	        match: {
+	          enabled: true
+	        }
+	      }
+	    };
+	    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
+	  } 
+});		
 </script>
 
 	<!-- Pageloader -->
@@ -541,7 +561,7 @@ $(function(){
 											<div id="activities-autocpl-wrapper"
 												class="control has-margin">
 												<input id="activities-autocpl" type="text" class="input" 
-													placeholder="태그를 입력해 주세요"
+													placeholder="태그를 입력해 주세용" 
 													>
 												<div class="icon">
 													<i data-feather="search"></i>
@@ -751,6 +771,13 @@ $(function(){
 							</div>
 						</div>
 					</form>
+					
+					<!-------------- 검색 태그 부분------------ -->
+		<!-- 				<label class="nicelabel-default-position">
+							<span class="tag-label">내 근처</span>
+							<span class="tag-label">친구</span>
+						</label> -->
+									
 						<!------------------------ 포스트 시작 ------------------------->
 						<c:forEach items="${feedList }" var="vo">
 							<div id="feed-post-1" class="card is-post">
@@ -785,7 +812,7 @@ $(function(){
 														<div class="media">
 															<i data-feather="bookmark"></i>
 															<div class="media-content">
-																<h3>Bookmark</h3>
+																<h3>번역</h3>
 																<small>Add this post to your bookmarks.</small>
 															</div>
 														</div>
@@ -793,21 +820,41 @@ $(function(){
 														<div class="media">
 															<i data-feather="bell"></i>
 															<div class="media-content">
-																<h3>Notify me</h3>
+																<h3>교정</h3>
 																<small>Send me the updates.</small>
 															</div>
 														</div>
 													</a>
+													<a class="dropdown-item">
+														<div class="media">
+															<i data-feather="bell"></i>
+															<div class="media-content">
+																<h3>신고</h3>
+																<small>Send me the updates.</small>
+															</div>
+														</div>
+													</a>
+													<a class="dropdown-item">
+														<div class="media">
+															<i data-feather="bell"></i>
+															<div class="media-content">
+																<h3>수정</h3>
+																<small>Send me the1 updates.</small>
+															</div>
+														</div>
+													</a>
+												
 													<hr class="dropdown-divider">
 													<a href="#" class="dropdown-item">
 														<div class="media">
 															<i data-feather="flag"></i>
 															<div class="media-content">
-																<h3>Flag</h3>
+																<h3>삭제</h3>
 																<small>In case of inappropriate content.</small>
 															</div>
 														</div>
 													</a>
+												
 												</div>
 											</div>
 										</div>
@@ -882,8 +929,9 @@ $(function(){
 										<div>
 											<input type="hidden" value="${vo.tags }">
 											<p>
-												<a></a>
-												<a>${vo.tags }</a>
+											<c:if test="${not empty vo.tags }">
+												<a>#${fn:replace(vo.tags,',','#')}</a>
+											</c:if>
 											</p>
 										</div>
 									</div>
