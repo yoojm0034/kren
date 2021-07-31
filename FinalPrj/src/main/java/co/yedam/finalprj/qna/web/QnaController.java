@@ -19,16 +19,17 @@ class QnaData {
 public class QnaController {
 	@Autowired
 	QnaService qnaDao;
-	
+	//문의목록리스트
 	@RequestMapping("admin/userQnaList.do")
 	public String qnaList(QnaVO vo , Model model) {
 		model.addAttribute("qnaList", qnaDao.qnaSelectList());
 		return "admin/qnaList";
 	}
-	
+	//답변메일작성폼
 	@RequestMapping("admin/mailForm.do")
 	public String mailForm(QnaVO vo, Model model) {
 		model.addAttribute("qna", qnaDao.qnaSelect(vo));
 		return "admin/mailForm";
 	}
+	
 }

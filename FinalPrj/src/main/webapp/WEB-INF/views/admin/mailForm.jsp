@@ -16,6 +16,8 @@
 							width : '100%'
 						});
 	});
+
+	
 </script>
 </head>
 <body>
@@ -109,31 +111,32 @@
 			</div>
 
 			<div class="stories-container" style="width:80%">
-				<form action="#" enctype="multipart/form-data" method="post">
+				<form action="${pageContext.request.contextPath}/admin/returnMail.do?qna_id=${qna.qna_id}" enctype="multipart/form-data" method="post" id="frm">
 					<div>
-						<label for="title">발신자 이름</label> 
-						<input type="text" id="name" name="name" value="KREN" class="input">
+						<label for="title">제목</label> 
+						<input type="text" id="title" name="title" value="KREN)" class="input">
 					</div>
 					<div>
 						<label for="title">받는사람 이메일</label> 
-						<input type="text" id="email" name="email" value="${qna.email}" class="input">
+						<input type="text" id="returnEmail" name="returnEmail" value="${qna.email}" class="input">
 					</div>
 					<div>
 						<label for="title">보내는사람 이메일</label> 
-						<input type="text" id="email" name="email" class="input">
+						<input type="text" id="sendEmail" name="sendEmail" class="input" value="KREN@mail.com">
+					</div>
+					<div>
+						<label for="job-title">문의내용</label>
+						<textarea style="width:100%;height:300px;" class="textarea" readonly="readonly">${qna.content}</textarea>
 					</div>
 					<div>
 						<label for="job-title">답변내용</label>
-						<textarea id="content" name="content"></textarea>
+						<textarea id="content" name="content">${qna.content}<br>
+						--------------------------------------------------------------------------------------------------------
+						</textarea>
 					</div>
-				<!-- 	<div>
-						<label for="company-website-tw d-block">파일 첨부</label> <input
-							type="file" id="file" name="file">
-					</div> -->
-
 					<div align="center">
 						<button type="reset" class="button">작성취소</button>
-						<button type="submit" class="button">메일작성</button>
+						<button type="submit" id="btnSubmit" class="button">메일작성</button>
 						<br>
 					</div>
 					<div align="right">

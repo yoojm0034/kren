@@ -5,6 +5,7 @@
 	<select id="qnaSelectList" resultType="co.yedam.finalprj.qna.vo.QnaVO">
 		select qna_id, email, content, qna_dt, answer
 		from qna
+		where answer = '답변대기'
 		order by qna_dt desc
 	</select>
 	<select id="qnaSelect" parameterType="co.yedam.finalprj.qna.vo.QnaVO" resultType="co.yedam.finalprj.qna.vo.QnaVO">
@@ -16,7 +17,7 @@
 	<!-- update -->
 	<update id="qnaUpdate" parameterType="co.yedam.finalprj.qna.vo.QnaVO">
 		update qna
-		set answer = #{answer}
+		set answer = '답변완료'
 		where qna_id = #{qna_id}
 	</update>
 		
