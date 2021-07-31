@@ -882,7 +882,7 @@ $(function(){
 										<div>
 											<input type="hidden" value="${vo.tags }">
 											<p>
-												<a>${fn:replace(fn:replace(vo.tags,',','#'))}</a>
+												<a></a>
 												<a>${vo.tags }</a>
 											</p>
 										</div>
