@@ -16,8 +16,9 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
-<!------------ 자동완성  autocomplete ------------>
-
+<!------------ 모달 ------------>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
      
 <meta charset="UTF-8">
 <title>Main Feed</title>
@@ -26,29 +27,24 @@ article, aside, details, figcaption, figure, footer, header, hgroup,
 	menu, nav, section {
 	display: block;
 }
-
 body {
 	line-height: 1;
 }
-
 ol, ul {
 	list-style: none;
 }
-
 blockquote, q {
 	quotes: none;
 }
-
 blockquote:before, blockquote:after, q:before, q:after {
 	content: '';
 	content: none;
 }
-
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-/* 또군css */
+/* 자동완성 css */
 .notice {
 	width: 100%;
 	height: 340px;
@@ -56,19 +52,16 @@ table {
 	margin-bottom: 24px;
 	border-radius: 6px;
 }
-
 .rolling {
 	position: relative;
 	width: 100%;
 	height: auto;
 }
-
 .rolling li {
 	width: 100%;
 	height: 340px;
 	line-height: 50px;
 }
-
 .tag-label {
 	display: inline-block;
 	font-size: 14px;
@@ -88,6 +81,79 @@ table {
 }
 .view-wrapper {
     padding: 40px 12px;
+}
+/* 모달 css */
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 10px;
+}
+.modal-content {
+    -webkit-box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+    box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
+    box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
+    outline: 0;
+}
+.modal-content, .modal-card {
+    margin: 0 auto;
+    max-height: calc(100vh - 40px);
+    /* width: 640px; */
+}
+.modal-content, .modal-card {
+    margin: 0 20px;
+    max-height: calc(100vh - 160px);
+    overflow: auto;
+    position: relative;
+    width: 100%;
+}
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+.modal-body {
+    position: relative;
+    padding: 15px;
+}
+.modal-footer {
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.modal-header .close {
+    margin-top: -2px;
+}
+button.close {
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
 }
 </style>
 
@@ -181,7 +247,7 @@ $(document).ready(function(){
 	if ($('#activities-autocpl').length) {
 	    var html = '';
 	    var activitiesOptions = {
-	      url: "responseBodyTest.do",
+	      url: "${pageContext.request.contextPath}/responseBodyTest.do",
 	      getValue: "tag_name",
  	      template: {
 	        type: "custom",
@@ -208,6 +274,33 @@ $(document).ready(function(){
 });		
 </script>
 
+<div class="container">
+  <h2>deModal Example</h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
 	<!-- Pageloader -->
 	<div class="pageloader"></div>
 	<div class="infraloader is-active"></div>
