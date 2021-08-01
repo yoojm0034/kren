@@ -53,7 +53,6 @@ tr:hover {
 	$('#btnNotice').on('click', function(){
 		location.href='${pageContext.request.contextPath}/admin/noticeForm.do'
 	})
-
  })	
 </script>
 </head>
