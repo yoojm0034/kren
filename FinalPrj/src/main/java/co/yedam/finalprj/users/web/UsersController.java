@@ -60,6 +60,7 @@ public class UsersController {
 	@ResponseBody
 	public int userIdCheck(HttpServletRequest request) {
 		String id = request.getParameter("id");
+		System.out.println(id);
 		int cnt = 0;
 		if(usersDao.idCheck(id) != null) {
 			cnt = 1;

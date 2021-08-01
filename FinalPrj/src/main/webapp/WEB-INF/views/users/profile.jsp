@@ -29,6 +29,22 @@ max-height: 200px;
     background: #e5e5e5;
     color: #393a4f;
 }
+
+a[href^="http://maps.google.com/maps"] {
+	display: none !important
+}
+
+a[href^="https://maps.google.com/maps"] {
+	display: none !important
+}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+	display: none;
+}
+
+.gmnoprint div {
+	background: none !important;
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
@@ -162,10 +178,13 @@ $(document).ready(function() {
                             <div class="subheader-start is-hidden-mobile">
                                 <span>3.4K</span>
                                 <span>Friends</span>
+                                <span>3.4K</span>
+                                <span>Friends</span>
+                                <span>3.4K</span>
+                                <span>Friends</span>
                             </div>
                             <div class="subheader-middle">
-                                <h2>Jenna Davis</h2>
-                                <span>Media Influencer</span>
+                                <h2>${user.name}</h2>
                             </div>
                             <div class="subheader-end is-hidden-mobile">
                                 <a class="button has-icon is-bold">

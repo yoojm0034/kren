@@ -33,7 +33,7 @@ $(document).ready(function () {
     }
   });
 
-	function page1() {
+/*	function page1() {
 		if ($('#idCheck').val() == 'unChecked') {
 			alert("ID 중복체크를 하세요.");
 			return false;
@@ -65,7 +65,7 @@ $(document).ready(function () {
 			return false;
 		}			
 		return true;	
-	};
+	};*/
 	
   $('.process-button').on('click', function () {
     var $this = $(this);
@@ -74,7 +74,7 @@ $(document).ready(function () {
 	var ret = true;
 	
 	if (id == 'step2') {
-		ret = page1();
+//		ret = page1();
 	} else if ( id == 'step3') {
 //		ret = page2();
 	}
