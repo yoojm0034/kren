@@ -369,7 +369,7 @@ body {
 					<div class="nav-drop is-account-dropdown">
 						<div class="inner">
 							<div class="nav-drop-header">
-								<span class="username">Jenna Davis</span> <label
+								<span class="username">${user.name }</span> <label
 									class="theme-toggle"> <input type="checkbox"> <span
 									class="toggler"> <span class="dark"> <i
 											data-feather="moon"></i>
@@ -379,7 +379,7 @@ body {
 								</label>
 							</div>
 							<div class="nav-drop-body account-items">
-								<a id="profile-link" href="/profile-main.html"
+								<a id="profile-link" href="profile.do"
 									class="account-item">
 									<div class="media">
 										<div class="media-left">
@@ -389,60 +389,10 @@ body {
 											</div>
 										</div>
 										<div class="media-content">
-											<h3>Jenna Davis</h3>
+											<h3>${user.name }</h3>
 											<small>Main account</small>
 										</div>
 										<div class="media-right">
-											<i data-feather="check"></i>
-										</div>
-									</div>
-								</a>
-								<hr class="account-divider">
-								<a href="/pages-main.html" class="account-item">
-									<div class="media">
-										<div class="media-left">
-											<div class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/hanzo.svg" alt="">
-											</div>
-										</div>
-										<div class="media-content">
-											<h3>Css Ninja</h3>
-											<small>Company page</small>
-										</div>
-										<div class="media-right is-hidden">
-											<i data-feather="check"></i>
-										</div>
-									</div>
-								</a> <a href="/pages-main.html" class="account-item">
-									<div class="media">
-										<div class="media-left">
-											<div class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-											</div>
-										</div>
-										<div class="media-content">
-											<h3>Fast Pizza</h3>
-											<small>Company page</small>
-										</div>
-										<div class="media-right is-hidden">
-											<i data-feather="check"></i>
-										</div>
-									</div>
-								</a> <a href="/pages-main.html" class="account-item">
-									<div class="media">
-										<div class="media-left">
-											<div class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/icons/logos/slicer.svg" alt="">
-											</div>
-										</div>
-										<div class="media-content">
-											<h3>Slicer</h3>
-											<small>Company page</small>
-										</div>
-										<div class="media-right is-hidden">
 											<i data-feather="check"></i>
 										</div>
 									</div>
