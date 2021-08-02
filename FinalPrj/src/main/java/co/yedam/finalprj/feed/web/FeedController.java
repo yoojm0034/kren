@@ -107,54 +107,99 @@ public class FeedController {
 		return "redirect:feed.do";
 	}
 	
-	// 피드 등록
+	// 피드 등록, 수정 
 	@RequestMapping("feedInsert.do")
 	public String feedInsert(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) throws IllegalStateException, IOException{
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
+		String feedId = request.getParameter("feedid");
+		MultipartFile file = vo.getFile();	
 		
-		vo.setUser_id("user1");
-		MultipartFile file = vo.getFile();
+		System.out.println(feedId);
+		vo.setUser_id(id);
 		
-		if(!file.isEmpty()) {
-			String fileName = file.getOriginalFilename();
-			int fileSize = (int) file.getSize();
-			String ext = null;
-			int dot = fileName.lastIndexOf(".");
-			
-			if(dot != -1) {
-				ext = fileName.substring(dot);
+		if(feedId == null) {
+			System.out.println("파일아이디 없음 등록");
+			if(!file.isEmpty()) {
+				String fileName = file.getOriginalFilename();
+				int fileSize = (int) file.getSize();
+				String ext = null;
+				int dot = fileName.lastIndexOf(".");
+				
+				if(dot != -1) {
+					ext = fileName.substring(dot);
+				}else {
+					ext = "";
+				}
+				
+				UUID uuid = UUID.randomUUID();
+				String fileUUID = uuid.toString() + ext;
+				String path = request.getServletContext().getRealPath("/resources/upload/");
+		
+				vo.setFile_size(fileSize);
+				vo.setDirectory(path);
+				vo.setUuid(fileUUID);
+				vo.setOriginal_name(fileName);
+				
+				file.transferTo(new File(path, fileUUID));//파일을 경로로 저장
+				
+				 feedDao.feedInsert(vo);
+				 
 			}else {
-				ext = "";
+				  feedDao.feedInsert(vo);
 			}
-			
-			UUID uuid = UUID.randomUUID();
-			String fileUUID = uuid.toString() + ext;
-			String path = request.getServletContext().getRealPath("/resources/upload/");
-	
-			vo.setFile_size(fileSize);
-			vo.setDirectory(path);
-			vo.setUuid(fileUUID);
-			vo.setOriginal_name(fileName);
-			
-			file.transferTo(new File(path, fileUUID));//파일을 경로로 저장
-			feedDao.feedInsert(vo);
 		}else {
-			feedDao.feedInsert(vo);
+			System.out.println("업데이트");
+			String feedid = request.getParameter("feedid");
+
+			vo.setFeed_id(feedid);
+			
+			System.out.println(vo.getFile());		//파일 .. 
+			System.out.println(vo.getContent());	//컨텐츠
+			System.out.println(vo.getPhoto());		//널 포토 아이디
+			System.out.println(vo.getTags());		//업으면 값 안뜸 ""
+			//System.out.println(feedid);				//피드아이디
+			
 		}
+//		
+//		
+
+		
 		return "redirect:feed.do";
 	}
 
 
 	
-	@RequestMapping("responseBodyTest.do")
+	@RequestMapping("autocpl.do")
 	@ResponseBody
-	public List<TagVO> responseBodyTest(@RequestParam Map<String, Object> params, HttpServletRequest request){
+	public List<TagVO> TagAutocplList(@RequestParam Map<String, Object> params, HttpServletRequest request){
 	    List<TagVO> result = new ArrayList<TagVO>();        
 	    result = tagDao.tagSelectList();
 	    return result;
 	}
-
+	
+	//피드 수정
+//	@RequestMapping("feedUpdate.do")
+//	public String feedUpdate(FeedVO vo, Model model, HttpServletRequest request) {
+//		String tag = request.getParameter("updateTags");
+//		String feedid = request.getParameter("feedid");
+//		vo.setTags(tag);
+//		vo.setFeed_id(feedid);
+//		System.out.println(vo.getFile());
+//		System.out.println(vo.getContent());
+//		System.out.println(vo.getPhoto());
+//		System.out.println(tag);
+//		System.out.println(feedid);
+//		return null;
+//	}
+	
+	//피드 삭제
+	@RequestMapping("feedDelete.do")
+	public String feedDelete(FeedVO vo, Model model) {
+		System.out.println(vo.getFeed_id());
+		feedDao.feedDelete(vo);
+		return "redirect:feed.do";
+	}
 	
 	
 }
