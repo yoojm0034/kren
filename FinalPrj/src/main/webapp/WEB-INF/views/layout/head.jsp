@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <style>
-
 @font-face {
     font-family: 'ONE-Mobile-Regular';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Regular.woff') format('woff');
@@ -81,9 +80,66 @@ body {
     stroke-width: 2px;
 }
 
-
 </style>
+<script type="text/javascript">
+	var socket = null;
 
+	$(document).ready(function() {
+		connectWs();
+	});
+
+	function connectWs() {
+		sock = new SockJS("<c:url value="/echo"/>");
+		//sock = new SockJS('/replyEcho');
+		socket = sock;
+		
+		sock.send
+		
+		sock.onopen = function() {
+			console.log('info: connection opened.');
+		};
+
+		sock.onmessage = function(evt) {
+			var data = evt.data;
+			console.log("ReceivMessage : " + data + "\n");
+
+			$.ajax({
+				url : '${pageContext.request.contextPath}/pushCount.do',
+				type : 'POST',
+				dataType : 'text',
+				success : function(data) {
+					if (data == '0') {
+					} else {
+						$('#alarmCountSpan').addClass(
+								'bell-badge-danger bell-badge')
+						$('#alarmCountSpan').text(data);
+					}
+				},
+				error : function(err) {
+					alert('err');
+				}
+			});
+
+			// 모달 알림
+			var toastTop = app.toast.create({
+				text : "알림 : " + data + "\n",
+				position : 'top',
+				closeButton : true,
+			});
+			toastTop.open();
+		};
+
+		sock.onclose = function() {
+			console.log('connect close');
+			/* setTimeout(function(){conntectWs();} , 1000); */
+		};
+
+		sock.onerror = function(err) {
+			console.log('Errors : ', err);
+		};
+
+	}
+</script>
 <!-- Pageloader -->
 <div class="pageloader"></div>
 <div class="infraloader is-active"></div>
