@@ -21,7 +21,8 @@ public class LetterVO {
 	private String from_delete;
 	private Date arrive_date;
 	private String send_yn;
-	private String letter_gubun;
+	private String gubun;
+	private String cor_yn;
 	
 	// 없는 필드
 	private String name;

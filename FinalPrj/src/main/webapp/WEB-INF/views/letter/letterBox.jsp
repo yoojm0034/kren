@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -355,7 +356,7 @@
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
-											<span class="msg-timestamp"> ${vo.arrive_date } <img
+											<span class="msg-timestamp"> <fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/>  <img
 												src="resources/template/assets/img/letter/stamp.png">
 											</span>
 											<div class="msg-header">
@@ -469,7 +470,7 @@
 									</div>
 									<div class="meta">
 										<div class="name">${vo.name }</div>
-										<div class="date">${vo.arrive_date }</div>
+										<div class="date"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/> </div>
 									</div>
 								</div>
 	

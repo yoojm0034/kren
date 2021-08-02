@@ -20,8 +20,8 @@ public class LettercServiceImpl implements LettercService {
 	}
 
 	@Override
-	public List<LettercVO> selectLetterC(LettercVO vo) {
-		return map.selectLetterC(vo);
+	public List<LettercVO> selectLetterC() {
+		return map.selectLetterC();
 	}
 
 }

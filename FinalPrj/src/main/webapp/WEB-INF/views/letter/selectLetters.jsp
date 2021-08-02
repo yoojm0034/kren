@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/template/assets/js/diffButty.js"></script>
 <style>
 .inbox-wrapper .inbox-wrapper-inner .inbox-left-sidebar .inbox-left-sidebar-inner
 	{
@@ -70,6 +72,16 @@
     table-layout: fixed;
     width: 100%;
     text-align: center;
+}
+
+.content table td {
+	text-align: left;
+}
+
+.content table textarea {
+	width: 100%;
+    height: 100%;
+    overflow-y: hidden;
 }
 </style>
 <script>
@@ -154,7 +166,7 @@
 		$("body").on('click', '#btnc',  function() {
 		    var btnc = $(this).data('btnc');
 			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
-			var tdRoad = $("button[data-btnc="+btnc+"]").parent().prev();
+			var tdRoad = $("button[data-btnc="+btnc+"]").parent();
 		    console.log(btnc, textRoad);
 			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
 			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
@@ -174,6 +186,12 @@
 		    letterc(num, frmbtn);
 		});
 		
+		$("body").on('click', '#dif',  function() {
+		    var line = $(this).data('diffb');			
+		    test_diff(line);
+		    console.log(line);
+		});
+		
 	});
 
 	// 교정테이블 추가
@@ -186,7 +204,7 @@
 		var tbl = $('<table>');
 
 		// 테이블 행제목
-		let thead = ['행','원문','기능']
+		let thead = ['','']
 		var head = $('<tr>');
 		for (var field in thead) {
 			var name = $('<td>').text(thead[field].trim());
@@ -202,13 +220,8 @@
 			if(result[i].length != 0) { // 리스트가 비어있지않으면
 				num = i;
 				var tr = $('<tr>');
-				tr.append($('<td>').append(rownum+i));
-				tr.append($('<td data-cont="'+i+'">').append(result[i]));				
-// 				tr.append($('<td>'));
-// 				tr.append($('<td>').append(
-// 						  $('<button id="btnc" data-btnc="'+i+'">').text('교정'),
-// 						  $('<button id="btnd" data-btnd="'+i+'">').text('삭제')
-// 						  ));
+// 				tr.append($('<td>').append(rownum+i)); //행번호
+				tr.append($('<td data-cont="'+i+'">').append(result[i]));
 				tr.append($('<td>').append($('<button type="button" id="btnc" data-btnc="'+i+'">').text('교정')));
 				tbl.append(tr);			
 			}
@@ -223,7 +236,7 @@
 		div.append(tbl);
 		var tblBtn = $('button[data-coridx="'+idx+'"]'); // 교정테이블 추가 버튼 삭제
 		tblBtn.remove();
-	}
+	} //function add
 	
 	function letterc(row, idx) {
 	    var corr = ""; // 교정문장
@@ -252,9 +265,12 @@
 			"letter_id":letter,
 			"line":rows,
 			"origin":cont,
-			"correcting":corr};
-			console.log(Data);
+			"correcting":corr
+		};
 			
+		console.log(Data);
+		
+		
 		$.ajax({
 			url:"insertCorLetter.do",
 			type:"post",
@@ -268,9 +284,20 @@
 				console.log(e);
 			}
 		});
+	} //function letterc
 
-	}
+	// 문자열 비교
+	function test_diff(dif)
+	{
+		var original = $('div[data-ori="'+dif+'"]').text;
+		var revised = $('div[data-cre="'+dif+'"]').text;
+		var output = $('div[data-diff="'+dif+'"]');
 	
+		var html = diffButty(original, revised);
+	
+		output.text = '<pre>'+html+'</pre>';
+	
+	} 
 
 </script>
 </head>
@@ -379,7 +406,7 @@
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
-											<span class="msg-timestamp"> ${vo.arrive_date } <img
+											<span class="msg-timestamp"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/>  <img
 												src="resources/template/assets/img/letter/stamp.png">
 											</span>
 											<div class="msg-header">
@@ -493,7 +520,7 @@
 									</div>
 									<div class="meta">
 										<div class="name">${vo.name }</div>
-										<div class="date">${vo.arrive_date }</div>
+										<div class="date"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/> </div>
 									</div>
 								</div>
 	
@@ -515,7 +542,9 @@
 												<option value="EN">Translate(EN)</option>
 											</select>
 										</button>
+										<c:if test="${vo.cor_yn eq 'N' }">
 										<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">교정</button>
+										</c:if>
 									</c:if>
 								</div>
 							</div>
@@ -540,7 +569,7 @@
 						</div>
 							<!-- 교정편지추가 -->
 							<c:choose>
-							<c:when test="${!empty lettercs}">
+							<c:when test="${!empty lettercs and vo.cor_yn eq 'Y'}">
 							<div class="message-preview-transition is-first">
 								<div class="mail">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -560,23 +589,28 @@
                                            <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="" data-user-popover="0">
                                        </div>
                                        <div class="meta">
-                                           <div class="name">{user.name}</div>
+                                           <div class="name">${user.name}</div>
                                        </div>
                                    </div>
                                    <hr>
                                    <div class="content">
                                	   <table>
                                	   	<tr>
-                               	   		<td>원문장</td>
-                               	   		<td>교정문장</td>
+                               	   		<td></td>
+                               	   		<td></td>
                                	   	</tr>
-                               	   	<c:forEach items="${lettercs}" var="vo"></c:forEach>
+                               	   	<c:forEach items="${lettercs}" var="cvo">
+                               	   	<c:if test="${cvo.letter_id eq vo.letter_id }">
                                	   	<tr>
-                               	   		<td>${vo.origin }</td>
-                               	   		<td>${vo.correcting }</td>
-                               	   	</tr>
-                               	   </table>    
+                               	   		<td><div data-ori="${cvo.line }">${cvo.origin }</div></td>
+                               	   		<td><div data-cre="${cvo.line }">${cvo.correcting }</div><br>
+                               	   		<div data-diff="${cvo.line }"></div><button id="dif" data-diffb="${cvo.line }">DIFF</button></td>
+                               	   	</tr>                               	   	
+                               	   	</c:if>
+                               	   	</c:forEach>
+                               	   </table>
                                    </div>
+                               	   <hr>    
                                </div>
                            	</div>	
                    			</c:when>

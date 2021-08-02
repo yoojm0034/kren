@@ -7,5 +7,5 @@ import co.yedam.finalprj.letterc.vo.LettercVO;
 
 public interface LettercMap {
 	public int insertLetterC(List<Map<String, Object>> vo);
-	public List<LettercVO> selectLetterC(LettercVO vo);
+	public List<LettercVO> selectLetterC();
 }

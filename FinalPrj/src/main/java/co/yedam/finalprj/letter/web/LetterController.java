@@ -42,7 +42,7 @@ public class LetterController {
 
 	// 해당친구편지목록
 	@RequestMapping("selectLetters.do")
-	public String selectLetters(Model model, LetterVO vo, LettercVO cvo, Authentication auth) {
+	public String selectLetters(Model model, LetterVO vo, Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		vo.setTo_id(id);
@@ -50,8 +50,7 @@ public class LetterController {
 		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo));
 		
 		// 교정편지 조회
-		cvo.setLetter_id(id);
-		model.addAttribute("lettercs", lettercDao.selectLetterC(cvo));
+		model.addAttribute("lettercs", lettercDao.selectLetterC());
 		return "letter/selectLetters";
 	}
 

@@ -12,9 +12,11 @@
 	   </foreach>
 	</insert>
 
-	<!-- 교정편지 조회 -->
-	<select id="selectLetterC" parameterType="co.yedam.finalprj.letterc.vo.LettercVO" resultType="co.yedam.finalprj.letterc.vo.LettercVO">
-		SELECT LETTER_ID, LINE, TRIM(ORIGIN) AS ORIGIN, TRIM(CORRECTING) AS CORRECTING FROM LETTERC
-		WHERE LETTER_ID=#{letter_id}
+	<!-- 교정편지 전체조회 -->
+	<select id="selectLetterC" resultType="co.yedam.finalprj.letterc.vo.LettercVO">
+		SELECT L.*, C.LINE, TRIM(C.ORIGIN) AS ORIGIN, TRIM(C.CORRECTING) AS CORRECTING
+		  FROM LETTER_FROM_V L, LETTERC C
+		 WHERE L.LETTER_ID=C.LETTER_ID
+		 ORDER BY L.SEND_DATE DESC, L.LETTER_ID, C.LINE
 	</select>
 </mapper>
