@@ -11,7 +11,6 @@ public interface LetterMap {
 	public List<LetterVO> selectFriendLetter(LetterVO vo);
 	public List<LetterVO> selectSaveLetter(LetterVO vo);
 	public int insertLetter(LetterVO vo);
-	public int insertLetterC(LetterVO vo);
 	public int updateLetter(LetterVO vo);
 	public int deleteLetter(LetterVO vo);
 }

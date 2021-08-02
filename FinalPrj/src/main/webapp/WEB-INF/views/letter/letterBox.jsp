@@ -37,32 +37,15 @@
 	font-size: .9rem;
 }
 
-.dropdown-menu {
-    display: none;
-    left: 0;
-    max-width: fit-content;
-    padding-top: 4px;
-    position: absolute;
-    top: 100%;
-    z-index: 20;
-}
-
-.dropdown.is-spaced .dropdown-menu {
-    box-shadow: 0px 5px 16px rgb(0 0 0 / 5%);
-    border-color: #e8e8e8;
-    padding-top: 0;
-    min-width: 0;
-}
-
-.dropdown.is-spaced .dropdown-menu .dropdown-content {
-    border: 1px solid #e8e8e8;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    max-width: fit-content;
-}
 .select {
     background-color: #f7f7f7;
     border: none;
+}
+
+.content table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
 }
 </style>
 <script>
@@ -121,19 +104,10 @@
 	}
 	
 	$(function() {
-		// 친구목록 클릭하면
+		// 친구목록 클릭하면 편지목록들 조회 
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
-		    console.log(aid);
-		    location.href='selectLetters.do?user_id='+aid; 
-		});		
-		
-		// 테이블 행 삭제 그룹이벤트
-		$("#con").on('click', '#btnd',  function() {
-		    var btnd = $(this).data('btnd');
-		    console.log(btnd);
-			var trDel = $("button[data-btnd="+btnd+"]").parent().parent();
-			trDel.remove();
+		    location.href='selectLetters.do?user_id='+aid;
 		});		
 
 		// 번역 그룹 이벤트
@@ -147,28 +121,52 @@
 			} else {
 				toen(transOpt);
 			}
-			
 		});		
+		
+		// 교정테이블 행 삭제 그룹 이벤트
+		$("body").on('click', '#btnd',  function() {
+		    var btnd = $(this).data('btnd');
+			var trDel = $("button[data-btnd="+btnd+"]").parent().parent();
+			trDel.remove();
+		});
 
+		// 교정테이블 td에 textarea 추가 그룹 이벤트
+		$("body").on('click', '#btnc',  function() {
+		    var btnc = $(this).data('btnc');
+			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
+			var tdRoad = $("button[data-btnc="+btnc+"]").parent().prev();
+		    console.log(btnc, textRoad);
+			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
+			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
+		});
+
+		// 교정테이블 추가 그룹 이벤트
+		$("body").on('click', '#corbtn',  function() {
+		    var corid = $(this).data('corid');		//letter_id; id
+		    var coridx = $(this).data('coridx');	//idx
+		    add(corid, coridx);
+		});
+		
+		// 폼의 버튼을 누르면 교정문장 전달
+		$("body").on('click', '#frmBtn',  function() {
+		    var num = $(this).data('num');			//row
+		    var frmbtn = $(this).data('frmbtn');	//idx
+		    letterc(num, frmbtn);
+		});
+		
 	});
 
-	
+	// 교정테이블 추가
 	function add(id, idx) {
-		var btnn = $('#btn'+idx);
 		var lid = $("#letter"+id).val();
-		
-		console.log(lid);		
-		lid.replace()
 	    var result = lid.split(".");
-
 	    console.log(result);
-
 		
 		var div = $('#tbl'+id);
-		var tbl = $('<table>').css('border','1');
+		var tbl = $('<table>');
 
 		// 테이블 행제목
-		let thead = ['행', '원문', '교정','추가','삭제']
+		let thead = ['행','원문','기능']
 		var head = $('<tr>');
 		for (var field in thead) {
 			var name = $('<td>').text(thead[field].trim());
@@ -177,23 +175,85 @@
 		tbl.append(head);
 		div.append(tbl);
 		
-		// 교정 테이블 출력		
+		// 교정 테이블 출력
+		var rownum = 1;
+		var num = 0;
 		for(var i=0; i < result.length; i++) {
-			var tr = $('<tr>');
-			tr.append($('<td>').append(i));
-			tr.append($('<td>').append(result[i]));
-			tr.append($('<td>'));
-			tr.append($('<td>').append($('<button id="btnc" data-btnc="'+i+'">').text('교정')));
-			tr.append($('<td>').append($('<button id="btnd" data-btnd="'+i+'">').text('삭제')));
-			tbl.append(tr);			
+			if(result[i].length != 0) { // 리스트가 비어있지않으면
+				num = i;
+				var tr = $('<tr>');
+				tr.append($('<td>').append(rownum+i));
+				tr.append($('<td data-cont="'+i+'">').append(result[i]));				
+// 				tr.append($('<td>'));
+// 				tr.append($('<td>').append(
+// 						  $('<button id="btnc" data-btnc="'+i+'">').text('교정'),
+// 						  $('<button id="btnd" data-btnd="'+i+'">').text('삭제')
+// 						  ));
+				tr.append($('<td>').append($('<button type="button" id="btnc" data-btnc="'+i+'">').text('교정')));
+				tbl.append(tr);			
+			}
 		}
-		div.append(tbl)
-		btnn.remove();
+		console.log('rnum:',rownum);
+		var tr2 = $('<tr>');
+		var col = $('<td colspan="3">');
+		var submit = $('<button type="button" id="frmBtn" data-num="'+num+'" data-frmbtn="'+idx+'">').text('전송');
+		col.append(submit);
+		tr2.append(col);
+		tbl.append(tr2)
+		div.append(tbl);
+		var tblBtn = $('button[data-coridx="'+idx+'"]'); // 교정테이블 추가 버튼 삭제
+		tblBtn.remove();
+	}
+	
+	function letterc(row, idx) {
+	    var corr = ""; // 교정문장
+	    var cont = ""; // 원문장
+		for (var i=0; i <= row; i++) {
+			if(i == row) {
+				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "");
+				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "");
+			} else {
+				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "")+".,";
+				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "")+".,";
+			}
+		}
+		var letter = $('input[data-leid="'+idx+'"]').val(); //편지번호
 		
+		var rows = ""; // 행숫자만큼 숫자를 리스트에 담아줌
+		for(var i=0; i<=row; i++) {
+			if(i != row) {
+				rows += i +",";	
+			} else {
+				rows += i;
+			}
+		}
+
+		var Data = {
+			"letter_id":letter,
+			"line":rows,
+			"origin":cont,
+			"correcting":corr};
+			console.log(Data);
+			
+		$.ajax({
+			url:"insertCorLetter.do",
+			type:"post",
+		    data: JSON.stringify(Data),
+		    contentType : "application/json; charset=UTF-8",
+			success:function(v){
+				alert("작성되었습니다!");
+				$('#tbl'+letter).remove(); // 교정 테이블 삭제
+				
+			},error:function(e){
+				console.log(e);
+			}
+		});
+
 	}
 </script>
 </head>
 <body>
+
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
 			<!-- LEFT SIDEBAR  -->
@@ -414,12 +474,12 @@
 								</div>
 	
 								<hr>
-								<div class="content" id="con">
+								<div class="content">
 									<p>${vo.content }</p>
 									<input type="hidden" id="trans${status.index }" value="${vo.content }">
 									<input type="hidden" id="letter${vo.letter_id }" value="${vo.content }">
-									<div id="en${status.index }"></div>
-									<div id="ko${status.index }"></div>
+									<div id="tdiv${status.index }"></div>
+									<input type="hidden" data-leid="${status.index}" value="${vo.letter_id }">
 									<div id="tbl${vo.letter_id }"></div>
 								</div>
 								<div class="has-text-right" id="btn">

@@ -53,11 +53,5 @@ public class LetterServiceImpl implements LetterService {
 	public int deleteLetter(LetterVO vo) {
 		return map.deleteLetter(vo);
 	}
-	@Override
-	public int insertLetterC(LetterVO vo) {
-		// TODO Auto-generated method stub 
-		return map.insertLetterC(vo);
-	}
-
 
 }
