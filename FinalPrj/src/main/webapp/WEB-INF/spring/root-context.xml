@@ -18,5 +18,5 @@
 			</props>
 		</property>
 	</bean>
-
+	<bean id="VisitService" class="co.yedam.finalprj.common.serviceImpl.VisitCountServiceImpl"/>
 </beans>
