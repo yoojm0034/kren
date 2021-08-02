@@ -215,13 +215,14 @@
 							</div>
                         </div>
                 </div>
-	            
+	            전체 방문자 수: ${totalCount}
+				오늘의 방문자 수: ${todayCount}
 	         </div>          
             <!-- 컨텐츠 종료 -->
-           
+           	
             
         </div>
-
+		
         
       
 					
