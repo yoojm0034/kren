@@ -264,7 +264,7 @@ function language() {
 
 // ------------------- TOPIC 체크 카운트 계산 ---------------------
 function fchk() {
-	var chk_obj = document.getElementsByName("topic");
+	var chk_obj = document.getElementsByName("topics");
 	var chk_leng = chk_obj.length;
 	var checked = 0;
 	for (i = 0; i < chk_leng; i++) {
@@ -308,7 +308,7 @@ $('#step5').click(function() {
 	
 	// topic 값 넣기
 	var topic = "";
-	$("input[name=topic]:checked").each(function() {
+	$("input[name=topics]:checked").each(function() {
 		topic += $(this).val() + ',';
 	});
 	topic = topic.substr(0, topic.length -1);
@@ -330,6 +330,9 @@ $('#step5').click(function() {
 	console.log('language2 : ' + $('#language2').val());
 	console.log('language2_level : ' + $('#language2_level option:selected').val());
 	console.log('topic : ' + $('#topic').val());								
+	
+	frm.submit();
+	
 	});
 });
 	
@@ -356,13 +359,13 @@ $('#step5').click(function() {
 						<i data-feather="lock"></i>
 					</div>
 					<div id="step-dot-2" class="dot is-second" data-step="25">
-						<i data-feather="image"></i>
-					</div>
-					<div id="step-dot-3" class="dot is-third" data-step="50">
 						<i data-feather="map"></i>
 					</div>
-					<div id="step-dot-4" class="dot is-fourth" data-step="75">
+					<div id="step-dot-3" class="dot is-third" data-step="50">
 						<i data-feather="user"></i>
+					</div>
+					<div id="step-dot-4" class="dot is-fourth" data-step="75">
+						<i data-feather="image"></i>
 					</div>
 					<div id="step-dot-5" class="dot is-fifth" data-step="100">
 						<i data-feather="flag"></i>
@@ -376,15 +379,14 @@ $('#step5').click(function() {
 				<div class="process-title">
 					<h2 id="step-title-1" class="step-title is-active"
 						style="margin-top: 5%">시작해볼까요?</h2>
-					<h2 id="step-title-2" class="step-title">당신을 표현할 사진을 골라주세요.</h2>
-					<h2 id="step-title-3" class="step-title">위치를 공유해주세요.</h2>
-					<h2 id="step-title-4" class="step-title" style="margin-top: 5%">관심있는
+					<h2 id="step-title-2" class="step-title">위치를 공유해주세요.</h2>
+					<h2 id="step-title-3" class="step-title" style="margin-top: 5%">관심있는
 						언어와 주제를 선택해주세요.</h2>
+					<h2 id="step-title-4" class="step-title">당신을 표현할 사진을 골라주세요.</h2>
 					<h2 id="step-title-5" class="step-title">환영합니다!</h2>
 				</div>
 
-				<form:form action="userJoin.do" modelAttribute="UsersVO"
-					enctype="multipart/form-data">
+				<form:form id="frm" action="userJoin.do" modelAttribute="UsersVO" method="post">
 
 					<!-------------- 페이지1 아이디/이메일 입력 ------------------->
 					<div id="signup-panel-1"
@@ -465,40 +467,12 @@ $('#step5').click(function() {
 							</div>
 						</div>
 						<div class="buttons">
-							<button onclick="frm(event)">제출</button>
 							<a class="button process-button" href="home.do">Home</a>
-							<button type="button" class="button process-button is-next"
-								id="step2" data-step="step-dot-2">Next</button>
+							<a class="button process-button is-next" data-step="step-dot-2" id="step2">Next</a>
 						</div>
 					</div>
 
-					<!-------------- 페이지2 사진 입력 ------------------->
-					<div id="signup-panel-2" class="process-panel-wrap is-narrow">
-						<div class="form-panel">
-							<div class="photo-upload">
-								<div class="preview">
-									<a class="upload-button"> <i data-feather="plus"></i>
-									</a> <img id="upload-preview"
-										src="https://via.placeholder.com/150x150"
-										data-demo-src="resources/template/assets/img/avatars/avatar-w.png"
-										alt="">
-									<form id="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
-								</div>
-								<div class="limitation">
-									<small>Only images with a size lower than 3MB are
-										allowed.</small>
-								</div>
-							</div>
-						</div>
-						<div class="buttons">
-							<a class="button process-button" data-step="step-dot-1">Back</a>
-							<a class="button process-button is-next" data-step="step-dot-3" id="step3">Next</a>
-
-						</div>
-					</div>
-
-
-					<!-------------- 페이지3 위치 입력 ------------------->
+					<!-------------- 페이지2 위치 입력 ------------------->
 					<script>
 						function getLocation() {
 							$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi",function(json) {
@@ -562,7 +536,7 @@ $('#step5').click(function() {
 						};
 					</script>
 
-					<div id="signup-panel-3" class="process-panel-wrap is-narrow">
+					<div id="signup-panel-2" class="process-panel-wrap is-narrow">
 						<div align="center">
 							<a class="button is-solid accent-button raised"
 								onclick="getLocation()">위치확인</a>
@@ -583,19 +557,19 @@ $('#step5').click(function() {
 							</div>
 						</div>
 						<div class="buttons">
-							<a class="button process-button" data-step="step-dot-2">Back</a>
-							<a class="button process-button is-next" data-step="step-dot-4" id="step4">Next</a>
+							<a class="button process-button" data-step="step-dot-1">Back</a>
+							<a class="button process-button is-next" data-step="step-dot-3" id="step3">Next</a>
 						</div>
 					</div>
 
-					<!-------------- 페이지4 언어/관심사 입력 ------------------->
-					<div id="signup-panel-4" class="process-panel-wrap is-narrow">
+					<!-------------- 페이지3 언어/관심사 입력 ------------------->
+					<div id="signup-panel-3" class="process-panel-wrap is-narrow">
 						<div class="form-panel">
 							<div class="dropbox" style="text-align: center;">
 								<div class="control" style="display: inline-grid; margin: 1rem;">
 									<b><label>Native</label></b> 
 									<select name="language1" id="language1" onchange="language()" style="width: 100px; font-size: 12pt;">
-										<option value="" disabled selected>Native</option>
+										<option value="" selected hidden="hidden">Native</option>
 										<option value="Korean">Korean</option>
 										<option value="English">English</option>
 									</select>
@@ -606,6 +580,7 @@ $('#step5').click(function() {
 										style="font-size: 12pt; width: 100px;" />
 									<select name="language2_level" id="language2_level"
 										style="width: 100px; font-size: 12pt;">
+										<option value="" selected hidden="hidden">Level</option>
 										<option value="Beginner">Beginner</option>
 										<option value="Elementary">Elementary</option>
 										<option value="Intermediate">Intermediate</option>
@@ -614,7 +589,7 @@ $('#step5').click(function() {
 									</select>
 								</div>
 							</div>
-							<div class="topic">
+							<div>
 								<br>
 								<div class="topic-label">
 									<div class="left">
@@ -625,8 +600,8 @@ $('#step5').click(function() {
 									</div>
 								</div>
 								<div class="topic-list">
-									<c:forEach items="${topic }" var="vo">
-										<input class="text-nicelabel" name="topic"
+									<c:forEach items="${topiclist }" var="vo">
+										<input class="text-nicelabel" name="topics"
 											data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
 											type="checkbox" value="${vo.topic_id }"
 											onclick="check(this,check_q1(this),30);">
@@ -638,13 +613,37 @@ $('#step5').click(function() {
 							</div>
 						</div>
 						<form:hidden path="topic"/>
+						<
 						<div class="buttons">
-							<button onclick="log()">log</button>
-							<a class="button process-button" data-step="step-dot-3">Back</a>
-							<a class="button process-button is-next" data-step="step-dot-5" id="step5">Next</a>
+							<a class="button process-button" data-step="step-dot-2">Back</a>
+							<a class="button process-button is-next" data-step="step-dot-4" id="step4">Next</a>
 						</div>
 					</div>
 				</form:form>
+				
+				
+					<!-------------- 페이지4 사진 입력 ------------------->
+					<div id="signup-panel-4" class="process-panel-wrap is-narrow">
+                    <div class="form-panel">
+                        <div class="photo-upload">
+                            <div class="preview">
+                                <a class="upload-button">
+                                    <i data-feather="plus"></i>
+                                </a>
+                                <img id="upload-preview" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/avatar-w.png" alt="">
+                                <form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
+                            </div>
+                            <div class="limitation">
+                                <small>Only images with a size lower than 3MB are allowed.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <a class="button process-button" data-step="step-dot-3">Back</a>
+                        <a class="button process-button is-next" data-step="step-dot-5">Next</a>
+                    </div>
+					</div>				
 
 				<!-------------- 페이지5 완료 ------------------->
 				<div id="signup-panel-5" class="process-panel-wrap is-narrow">
