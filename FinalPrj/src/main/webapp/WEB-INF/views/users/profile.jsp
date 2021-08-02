@@ -45,6 +45,25 @@ a[href^="https://maps.google.com/maps"] {
 .gmnoprint div {
 	background: none !important;
 }
+
+.cover-bg .avatar .avatar-flag {
+    position: absolute;
+    bottom: 0;
+    left: inherit;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    box-shadow: 0 14px 26px -12px rgb(61 112 178 / 42%), 0 4px 23px 0px rgb(0 0 0 / 12%), 0 8px 10px -5px rgb(61 112 178 / 20%) !important;
+    transform: rotate(0);
+    transition: all .3s;
+    cursor: pointer;
+    z-index: 1;
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
@@ -82,8 +101,8 @@ $(document).ready(function() {
                             <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
                             <div class="avatar">
                                 <img id="user-avatar" class="avatar-image" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
-                                <div class="avatar-button">
-                                    <i data-feather="plus"></i>
+                                <div class="avatar-flag">
+                                	<img src="${user.flag}">
                                 </div>
                                 <div class="pop-button is-far-left has-tooltip modal-trigger" data-modal="change-profile-pic-modal" data-placement="right" data-title="Change profile picture">
                                     <a class="inner">

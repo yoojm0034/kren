@@ -1,10 +1,6 @@
 package co.yedam.finalprj.letter.web;
 
-import java.net.http.HttpRequest;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,12 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.finalprj.letter.service.LetterService;
 import co.yedam.finalprj.letter.vo.LetterVO;
+import co.yedam.finalprj.letterc.service.LettercService;
+import co.yedam.finalprj.letterc.vo.LettercVO;
 
 @Controller
 public class LetterController {
-	@Autowired
-	LetterService letterDao;
-
+	@Autowired LetterService letterDao;
+	@Autowired LettercService lettercDao;
+	
 	// 답장안한편지 조회
 	@RequestMapping("letterBox.do")
 	public String letterBox(Model model, LetterVO vo, Authentication auth) {
@@ -50,6 +48,9 @@ public class LetterController {
 		vo.setTo_id(id);
 		model.addAttribute("friends", letterDao.selectAllFriend(vo));
 		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo));
+		
+		// 교정편지 조회
+		model.addAttribute("lettercs", lettercDao.selectLetterC());
 		return "letter/selectLetters";
 	}
 
@@ -63,15 +64,6 @@ public class LetterController {
 		model.addAttribute("save", letterDao.selectSaveLetter(vo));
 		return "letter/savedLetter";
 	}
-	
-	// 교정편지 입력
-	@RequestMapping("insertCorLetter.do")
-	public String insertCorLetter(Model model, LetterVO vo) {
-		model.addAttribute("save", letterDao.selectSaveLetter(vo));
-		return "selectLetters.do";
-	}
-	
-	
 
 	@RequestMapping("letterBox2.do")
 	public String letterBox2(Model model, LetterVO vo) {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.finalprj.common.map.VisitCountMap">
+	<insert id="insertVisitor" parameterType="co.yedam.finalprj.common.vo.VisitCountVO">
+          INSERT INTO TB_VISITOR (V_DATE) 
+          VALUES (SYSDATE)
+    </insert>
+	<select id="getVisitTotalCount" resultType="int">
+		select count(*) 
+		from TB_VISITOR
+	</select>
+	<select id="getVisitToday" resultType="int">
+		select count(*) 
+		from TB_VISITOR
+		where substr(to_char(v_date), 1, 9) = to_date(sysdate, 'yy/MM/dd')
+	</select>
+</mapper>

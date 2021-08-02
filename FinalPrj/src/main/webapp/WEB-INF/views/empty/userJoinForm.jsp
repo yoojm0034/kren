@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
@@ -109,198 +108,235 @@ a[href^="https://maps.google.com/maps"] {
 </style>
 </head>
 <script>
-	function frm(e) {
-	};
-
-	//--------------------아이디체크-----------------------
-	$(function() {
-		$('#idCheck').click(function() {
-			//공백체크
-			if ($('#user_id').val() == "") {
-				alert('아이디를 입력하세요.');
-				$('#user_id').focus();
-				return;
-			}
-			//유효성검사
-			var re = /^[a-zA-Z0-9]{4,12}$/;
-			if (!re.test($('#user_id').val())) {
-				alert("아이디는 4~12자의 영문 대소문자와 숫자로만 입력");
-				return;
-			}
-			//중복체크
-			$.ajax({
-				url : 'userIdCheck.do',
-				data : {
-					id : $('#user_id').val()
-				},
-				type : 'post',
-				success : function(data) {
-					if (data > 0) {
-						alert('이미 사용중입니다. 새로 입력해주세요.');
-						$('#user_id').val('');
-						$('#user_id').focus();
-					} else {
-						alert('사용가능합니다.');
-						$('#idCheck').val("checked");
-						$('#user_id').attr("readonly", true);
-						$('#name').focus();
-					}
-				},
-				error : function(err) {
-					alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
-				}
-			});
-		});
-	});
-
-	//--------------------닉네임 중복체크-----------------------
-	$(function() {
-		$('#nameCheck').click(function() {
-			//공백체크
-			if ($('#name').val() == "") {
-				alert('닉네임을 입력하세요.');
-				$('#name').focus();
-				return;
-			}
-			//유효성검사
-			var re = /^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,10}$/;
-			if (!re.test($('#name').val())) {
-				alert("영문 혹은 한글로 시작하는 2~10자의 닉네임을 입력하세요.");
-				return;
-			}
-			//중복체크
-			$.ajax({
-				url : 'userNameCheck.do',
-				data : {
-					name : $('#name').val()
-				},
-				type : 'post',
-				success : function(data) {
-					if (data > 0) {
-						alert('이미 사용중입니다. 새로 입력해주세요.');
-						$('#name').val('');
-						$('#name').focus();
-					} else {
-						alert('사용가능합니다.');
-						$('#nameCheck').val("checked");
-						$('#name').attr("readonly", true);
-						$('#email').focus();
-					}
-				},
-				error : function(err) {
-					alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
-				}
-			});
-		});
-	});
-
-	//------------------------이메일 체크------------------------
-	$(function() {
-		$('#emailCheck').click(function() {
-			if ($('#email').val() == "") {
-				alert('이메일을 입력하세요.');
-				$('#email').focus();
-				return false;
-			}
-			//email 중복확인 ajax
-			$.ajax({
-				url : 'userEmailCheck.do',
-				data : {
-					email : $('#email').val()
-				},
-				type : 'post',
-				success : function(data) {
-					if (data > 0) {
-						alert('이미 사용중입니다. 새로 입력해주세요.');
-						$('#email').val('');
-						$('#email').focus();
-					} else {
-						$('#email').attr("readonly", true);
-						$('#emailCheck').val('checked');
-						$('#codeCheck').focus();
-						//중복확인 통과후 인증코드 메일보내는 ajax
-						$.ajax({
-							url : 'sendEmail.do',
-							data : {
-								email : $('#email').val()
-							},
-							type : 'post',
-							success : function(code) {
-								alert('메일이 전송되었습니다.');
-								$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
-									if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
-										alert('이메일 인증이 완료되었습니다.');
-										$('#codeCheck').val("checked");
-									} else {
-										alert('인증번호가 틀립니다');
-									}
-								})
-							},
-							error : function(err) {
-								alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
-							}
-						});
-					}
-				},
-				error : function(err) {
-					console.log(err);
-				}
-			});
-		});
-	});
-
-	//--------------------------- 언어체크 -------------------------
-	function language() {
-		console.log($('#language1 option:selected').val());
-		if ($('#language1 option:selected').val() == 'Korean') {
-			$('input[name=language2]').attr('value', 'English');
-		} else {
-			$('input[name=language2]').attr('value', 'Korean');
-		}
-		console.log($('#language2').val());
-	};
-
-	// ------------------- TOPIC 체크 카운트 계산 ---------------------
-	function fchk() {
-		var chk_obj = document.getElementsByName("topic");
-		var chk_leng = chk_obj.length;
-		var checked = 0;
-		for (i = 0; i < chk_leng; i++) {
-			if (chk_obj[i].checked == true) {
-				checked += 1;
-			}
-		}
-		if (checked < 3) {
-			alert("항목을 3개 선택해주세요");
+//--------------------아이디체크-----------------------
+$(function() {
+	$('#idCheck').click(function() {
+		//공백체크
+		if ($('#user_id').val() == "") {
+			alert('아이디를 입력하세요.');
+			$('#user_id').focus();
 			return;
 		}
-	}
-
-	// 정해진 개수 이상 체크 불가.
-	var count = 0;
-	function check_q1(chk_obj) {
-		if (chk_obj.checked == true) {
-			count++;
-			$("#checked").text(count);
-		} else {
-			count--;
+		//유효성검사
+		var re = /^[a-zA-Z0-9]{4,12}$/;
+		if (!re.test($('#user_id').val())) {
+			alert("아이디는 4~12자의 영문 대소문자와 숫자로만 입력하세요.");
+			return;
 		}
-		if (count <= 30) {
-			return true;
-		} else {
-			count--;
+		//중복체크
+		$.ajax({
+			url : 'userIdCheck.do',
+			data : {
+				id : $('#user_id').val()
+			},
+			type : 'post',
+			success : function(data) {
+				if (data > 0) {
+					alert('이미 사용중입니다. 새로 입력해주세요.');
+					$('#user_id').val('');
+					$('#user_id').focus();
+				} else {
+					alert('사용가능합니다.');
+					$('#idCheck').val("checked");
+					$('#user_id').attr("readonly", true);
+					$('#name').focus();
+				}
+			},
+			error : function(err) {
+				alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+			}
+		});
+	});
+});
+
+//--------------------닉네임 중복체크-----------------------
+$(function() {
+	$('#nameCheck').click(function() {
+		
+		var name = $('#name').val();
+		var name = $.trim(name);
+		console.log(name);
+		
+		//공백체크
+		if (name == "") {
+			alert('닉네임을 입력하세요.');
+			$('#name').focus();
+			return;
+		}
+		//유효성검사
+		var re = /^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,10}$/;
+		if (!re.test(name)) {
+			alert("영문 혹은 한글로 시작하는 2~10자의 닉네임을 입력하세요.");
+			return;
+		}
+		//중복체크
+		$.ajax({
+			url : 'userNameCheck.do',
+			data : {
+				name : name
+			},
+			type : 'post',
+			success : function(data) {
+				if (data > 0) {
+					alert('이미 사용중입니다. 새로 입력해주세요.');
+					$('#name').val('');
+					$('#name').focus();
+				} else {
+					alert('사용가능합니다.');
+					$('#name').val(name);
+					$('#nameCheck').val("checked");
+					$('#name').attr("readonly", true);
+					$('#email').focus();
+				}
+			},
+			error : function(err) {
+				alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+			}
+		});
+	});
+});
+
+//------------------------이메일 체크------------------------
+$(function() {
+	$('#emailCheck').click(function() {
+		if ($('#email').val() == "") {
+			alert('이메일을 입력하세요.');
+			$('#email').focus();
 			return false;
 		}
-	}
+		//email 중복확인 ajax
+		$.ajax({
+			url : 'userEmailCheck.do',
+			data : {
+				email : $('#email').val()
+			},
+			type : 'post',
+			success : function(data) {
+				if (data > 0) {
+					alert('이미 사용중입니다. 새로 입력해주세요.');
+					$('#email').val('');
+					$('#email').focus();
+				} else {
+					$('#email').attr("readonly", true);
+					$('#emailCheck').val('checked');
+					$('#codeCheck').focus();
+					//중복확인 통과후 인증코드 메일보내는 ajax
+					$.ajax({
+						url : 'sendEmail.do',
+						data : {
+							email : $('#email').val()
+						},
+						type : 'post',
+						success : function(code) {
+							alert('메일이 전송되었습니다.');
+							$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
+								if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
+									alert('이메일 인증이 완료되었습니다.');
+									$('#codeCheck').val("checked");
+								} else {
+									alert('인증번호가 틀립니다');
+								}
+							})
+						},
+						error : function(err) {
+							alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+						}
+					});
+				}
+			},
+			error : function(err) {
+				console.log(err);
+			}
+		});
+	});
+});
 
-	function check(obj, condition, n) {
-		if (condition == false) {
-			obj.checked = false;
-			alert(n + "개를 초과 선택 불가합니다");
+//--------------------------- 언어체크 -------------------------
+function language() {
+	console.log($('#language1 option:selected').val());
+	if ($('#language1 option:selected').val() == 'Korean') {
+		$('input[name=language2]').attr('value', 'English');
+	} else {
+		$('input[name=language2]').attr('value', 'Korean');
+	}
+	console.log($('#language2').val());
+};
+
+// ------------------- TOPIC 체크 카운트 계산 ---------------------
+function fchk() {
+	var chk_obj = document.getElementsByName("topics");
+	var chk_leng = chk_obj.length;
+	var checked = 0;
+	for (i = 0; i < chk_leng; i++) {
+		if (chk_obj[i].checked == true) {
+			checked += 1;
 		}
 	}
+	if (checked < 3) {
+		alert("항목을 3개 선택해주세요.");
+		return;
+	}
+}
 
-	//------------------- TOPIC 체크 카운트 계산 끝 ---------------------
+// 정해진 개수 이상 체크 불가.
+var count = 0;
+function check_q1(chk_obj) {
+	if (chk_obj.checked == true) {
+		count++;
+		$("#checked").text(count);
+	} else {
+		count--;
+	}
+	if (count <= 30) {
+		return true;
+	} else {
+		count--;
+		return false;
+	}
+}
+
+function check(obj, condition, n) {
+	if (condition == false) {
+		obj.checked = false;
+		alert(n + "개를 초과 선택 불가합니다.");
+	}
+}
+
+//------------------- 마지막 NEXT 버튼 클릭 ---------------------
+$(function() {
+$('#step5').click(function() {
+	
+	// topic 값 넣기
+	var topic = "";
+	$("input[name=topics]:checked").each(function() {
+		topic += $(this).val() + ',';
+	});
+	topic = topic.substr(0, topic.length -1);
+	$('#topic').val(topic);
+
+	console.log('id : ' + $('input[name=user_id]').val());
+	console.log('name : ' + $('input[name=name]').val());
+	console.log('birth : ' + $('input[name=birth]').val());
+	console.log('gender : ' + $('input[name=gender]:checked').val());
+	console.log('password : ' + $('input[name=password]').val());
+	console.log('email : ' + $('input[name=email]').val());
+	console.log('photo : ');
+	console.log('country : ' + $('input[name=country]').val());
+	console.log('city : ' + $('input[name=city]').val());
+	console.log('lat : ' + $('input[name=lat]').val());
+	console.log('lon : ' + $('input[name=lon]').val());
+	console.log('flag : ' + $('input[name=flag]').val());
+	console.log('language1 : ' + $('#language1 option:selected').val());
+	console.log('language2 : ' + $('#language2').val());
+	console.log('language2_level : ' + $('#language2_level option:selected').val());
+	console.log('topic : ' + $('#topic').val());								
+	
+	frm.submit();
+	
+	});
+});
+	
+	
 </script>
 <body>
 	<!-- Pageloader -->
@@ -323,13 +359,13 @@ a[href^="https://maps.google.com/maps"] {
 						<i data-feather="lock"></i>
 					</div>
 					<div id="step-dot-2" class="dot is-second" data-step="25">
-						<i data-feather="image"></i>
-					</div>
-					<div id="step-dot-3" class="dot is-third" data-step="50">
 						<i data-feather="map"></i>
 					</div>
-					<div id="step-dot-4" class="dot is-fourth" data-step="75">
+					<div id="step-dot-3" class="dot is-third" data-step="50">
 						<i data-feather="user"></i>
+					</div>
+					<div id="step-dot-4" class="dot is-fourth" data-step="75">
+						<i data-feather="image"></i>
 					</div>
 					<div id="step-dot-5" class="dot is-fifth" data-step="100">
 						<i data-feather="flag"></i>
@@ -343,15 +379,14 @@ a[href^="https://maps.google.com/maps"] {
 				<div class="process-title">
 					<h2 id="step-title-1" class="step-title is-active"
 						style="margin-top: 5%">시작해볼까요?</h2>
-					<h2 id="step-title-2" class="step-title">당신을 표현할 사진을 골라주세요.</h2>
-					<h2 id="step-title-3" class="step-title">위치를 공유해주세요.</h2>
-					<h2 id="step-title-4" class="step-title" style="margin-top: 5%">관심있는
+					<h2 id="step-title-2" class="step-title">위치를 공유해주세요.</h2>
+					<h2 id="step-title-3" class="step-title" style="margin-top: 5%">관심있는
 						언어와 주제를 선택해주세요.</h2>
+					<h2 id="step-title-4" class="step-title">당신을 표현할 사진을 골라주세요.</h2>
 					<h2 id="step-title-5" class="step-title">환영합니다!</h2>
 				</div>
 
-				<form:form action="userJoin.do" modelAttribute="UsersVO"
-					enctype="multipart/form-data">
+				<form:form id="frm" action="userJoin.do" modelAttribute="UsersVO" method="post">
 
 					<!-------------- 페이지1 아이디/이메일 입력 ------------------->
 					<div id="signup-panel-1"
@@ -432,84 +467,53 @@ a[href^="https://maps.google.com/maps"] {
 							</div>
 						</div>
 						<div class="buttons">
-							<button onclick="frm(event)">제출</button>
 							<a class="button process-button" href="home.do">Home</a>
-							<button type="button" class="button process-button is-next"
-								id="step2" data-step="step-dot-2">Next</button>
+							<a class="button process-button is-next" data-step="step-dot-2" id="step2">Next</a>
 						</div>
 					</div>
 
-					<!-------------- 페이지2 사진 입력 ------------------->
-					<div id="signup-panel-2" class="process-panel-wrap is-narrow">
-						<div class="form-panel">
-							<div class="photo-upload">
-								<div class="preview">
-									<a class="upload-button"> <i data-feather="plus"></i>
-									</a> <img id="upload-preview"
-										src="https://via.placeholder.com/150x150"
-										data-demo-src="resources/template/assets/img/avatars/avatar-w.png"
-										alt="">
-									<form id="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
-								</div>
-								<div class="limitation">
-									<small>Only images with a size lower than 3MB are
-										allowed.</small>
-								</div>
-							</div>
-						</div>
-						<div class="buttons">
-							<a class="button process-button" data-step="step-dot-1">Back</a>
-							<a class="button process-button is-next" data-step="step-dot-3">Next</a>
-
-						</div>
-					</div>
-
-
-					<!-------------- 페이지3 위치 입력 ------------------->
+					<!-------------- 페이지2 위치 입력 ------------------->
 					<script>
 						function getLocation() {
-							$
-									.getJSON(
-											"https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi",
-											function(json) {
-												console.log(json);
+							$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi",function(json) {
+								console.log(json);
 
-												// 변수 담기
-												var country = json['location']['country']['name'];
-												var city = json['location']['region']['name'];
-												var time = json['time_zone']['current_time'];
-												var lat = json['location']['latitude'];
-												var lon = json['location']['longitude'];
-												var flag = json['location']['country']['flag']['emojitwo'];
+								// 변수 담기
+								var country = json['location']['country']['name'];
+								var city = json['location']['region']['name'];
+								var time = json['time_zone']['current_time'];
+								var lat = json['location']['latitude'];
+								var lon = json['location']['longitude'];
+								var flag = json['location']['country']['flag']['emojitwo'];
 
-												// input에 값 넣기
-												$("#country").val(country);
-												$("#city").val(city);
-												$("#lat").val(lat);
-												$("#lon").val(lon);
-												$("#flag").val(flag);
+								// input에 값 넣기
+								$("#country").val(country);
+								$("#city").val(city);
+								$("#lat").val(lat);
+								$("#lon").val(lon);
+								$("#flag").val(flag);
 
-												// 화면에 출력할 시간 계산
-												var hour = time.substr(11, 2);
-												var min = time.substr(14, 2);
-												var time2 = (hour % 12 || 12)
-														+ ':'
-														+ min.toString()
-																.padStart(2,
-																		'0')
-														+ (hour < 12 ? ' A'
-																: ' P') + 'M';
-												var gmt = time.substr(19, 6);
+								// 화면에 출력할 시간 계산
+								var hour = time.substr(11, 2);
+								var min = time.substr(14, 2);
+								var time2 = (hour % 12 || 12)
+										+ ':'
+										+ min.toString()
+												.padStart(2,
+														'0')
+										+ (hour < 12 ? ' A'
+												: ' P') + 'M';
+								var gmt = time.substr(19, 6);
 
-												$("#city2").text(city);
-												$("#country2").text(
-														', ' + country);
-												$("#time2").text(time2);
-												$("#gmt").text(
-														' (GMT' + gmt + ')');
+								$("#city2").text(city);
+								$("#country2").text(
+										', ' + country);
+								$("#time2").text(time2);
+								$("#gmt").text(
+										' (GMT' + gmt + ')');
 
-												initMap(lat, lon);
-											});
+								initMap(lat, lon);
+							});
 						};
 
 						// 지도
@@ -532,7 +536,7 @@ a[href^="https://maps.google.com/maps"] {
 						};
 					</script>
 
-					<div id="signup-panel-3" class="process-panel-wrap is-narrow">
+					<div id="signup-panel-2" class="process-panel-wrap is-narrow">
 						<div align="center">
 							<a class="button is-solid accent-button raised"
 								onclick="getLocation()">위치확인</a>
@@ -553,20 +557,19 @@ a[href^="https://maps.google.com/maps"] {
 							</div>
 						</div>
 						<div class="buttons">
-							<a class="button process-button" data-step="step-dot-2">Back</a>
-							<a class="button process-button is-next" data-step="step-dot-4">Next</a>
+							<a class="button process-button" data-step="step-dot-1">Back</a>
+							<a class="button process-button is-next" data-step="step-dot-3" id="step3">Next</a>
 						</div>
 					</div>
 
-					<!-------------- 페이지4 언어/관심사 입력 ------------------->
-					<div id="signup-panel-4" class="process-panel-wrap is-narrow">
+					<!-------------- 페이지3 언어/관심사 입력 ------------------->
+					<div id="signup-panel-3" class="process-panel-wrap is-narrow">
 						<div class="form-panel">
 							<div class="dropbox" style="text-align: center;">
 								<div class="control" style="display: inline-grid; margin: 1rem;">
-									<b><label>Native</label></b> <select name="language1"
-										id="language1" onchange="language()"
-										style="width: 100px; font-size: 12pt;">
-										<option value="Native" disabled selected>Native</option>
+									<b><label>Native</label></b> 
+									<select name="language1" id="language1" onchange="language()" style="width: 100px; font-size: 12pt;">
+										<option value="" selected hidden="hidden">Native</option>
 										<option value="Korean">Korean</option>
 										<option value="English">English</option>
 									</select>
@@ -577,6 +580,7 @@ a[href^="https://maps.google.com/maps"] {
 										style="font-size: 12pt; width: 100px;" />
 									<select name="language2_level" id="language2_level"
 										style="width: 100px; font-size: 12pt;">
+										<option value="" selected hidden="hidden">Level</option>
 										<option value="Beginner">Beginner</option>
 										<option value="Elementary">Elementary</option>
 										<option value="Intermediate">Intermediate</option>
@@ -585,7 +589,7 @@ a[href^="https://maps.google.com/maps"] {
 									</select>
 								</div>
 							</div>
-							<div class="topic">
+							<div>
 								<br>
 								<div class="topic-label">
 									<div class="left">
@@ -596,8 +600,8 @@ a[href^="https://maps.google.com/maps"] {
 									</div>
 								</div>
 								<div class="topic-list">
-									<c:forEach items="${topic }" var="vo">
-										<input class="text-nicelabel" name="topic"
+									<c:forEach items="${topiclist }" var="vo">
+										<input class="text-nicelabel" name="topics"
 											data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
 											type="checkbox" value="${vo.topic_id }"
 											onclick="check(this,check_q1(this),30);">
@@ -608,60 +612,38 @@ a[href^="https://maps.google.com/maps"] {
 								</div>
 							</div>
 						</div>
-
-						<script>
-							function log() {
-								var id = $('input[name=user_id]').val();
-								var name = $('input[name=name]').val();
-								var birth = $('input[name=birth]').val();
-								var gender = $('input[name=gender]:checked')
-										.val();
-								var password = $('input[name=password]').val();
-								var email = $('input[name=email]').val();
-								var photo = "";
-								var language1 = $('#language1 option:selected')
-										.val();
-								var language2 = $('#language2').val();
-								var language2_level = $(
-										'#language2_level option:selected')
-										.val();
-
-								console.log('id :' + id);
-								console.log('name :' + name);
-								console.log('birth :' + birth);
-								console.log('gender :' + gender);
-								console.log('password :' + password);
-								console.log('email :' + email);
-								console.log('photo :' + photo);
-								console.log('country :'
-										+ $('input[name=country]').val());
-								console.log('city :'
-										+ $('input[name=city]').val());
-								console.log('lat :'
-										+ $('input[name=lat]').val());
-								console.log('lon :'
-										+ $('input[name=lon]').val());
-								console.log('flag :'
-										+ $('input[name=flag]').val());
-								console.log('language1 :' + language1);
-								console.log('language2 :' + language2);
-								console.log('language2_level :'
-										+ language2_level);
-
-								$("input[name=topic]:checked").each(function() {
-									var test = $(this).val();
-									console.log(test);
-								});
-							}
-						</script>
-
+						<form:hidden path="topic"/>
+						<
 						<div class="buttons">
-							<button onclick="log()">log</button>
-							<a class="button process-button" data-step="step-dot-3">Back</a>
-							<a class="button process-button is-next" data-step="step-dot-5">Next</a>
+							<a class="button process-button" data-step="step-dot-2">Back</a>
+							<a class="button process-button is-next" data-step="step-dot-4" id="step4">Next</a>
 						</div>
 					</div>
 				</form:form>
+				
+				
+					<!-------------- 페이지4 사진 입력 ------------------->
+					<div id="signup-panel-4" class="process-panel-wrap is-narrow">
+                    <div class="form-panel">
+                        <div class="photo-upload">
+                            <div class="preview">
+                                <a class="upload-button">
+                                    <i data-feather="plus"></i>
+                                </a>
+                                <img id="upload-preview" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/avatar-w.png" alt="">
+                                <form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
+                            </div>
+                            <div class="limitation">
+                                <small>Only images with a size lower than 3MB are allowed.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <a class="button process-button" data-step="step-dot-3">Back</a>
+                        <a class="button process-button is-next" data-step="step-dot-5">Next</a>
+                    </div>
+					</div>				
 
 				<!-------------- 페이지5 완료 ------------------->
 				<div id="signup-panel-5" class="process-panel-wrap is-narrow">

@@ -6,16 +6,21 @@
 
 <head>
 <title>STAMP SHOP</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript"
 	src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-<script type="text/javascript">
+<script>
 	$(function() {
-		$("#check_module").click(function() {
-			var name = "${ user.name }"
-			var pName = "${ list.stamp_id }"
-			var pay = "${ list.pay }"
+		$(document).on("click","#check_module",function(){ 
+		//$("#check_module").on("click", function() { //최상단 버튼만 기능함
+			var name = "${user.name}"
+			var stamp = $(this).data('id');
+			var pay = $(this).data('pay');
 			
-			console.log("222")
+			console.log(name);
+			console.log(stamp);
+			console.log(pay);
 			
 			var IMP = window.IMP; // 생략가능
 			IMP.init('imp86362495');
@@ -26,35 +31,28 @@
 				pay_method : 'card',
 				merchant_uid : 'merchant_' + new Date().getTime(),
 				//상품명
-				name : name,
+				name : stamp,
 				//상품 가격
 				amount : pay,
 				//구매자명
-				buyer_name : pName
+				buyer_name : name
 			}, function(rsp) { //callback...
 				console.log(rsp);
 				if (rsp.success) {
 					//결제 성공 로직
+					console.log(rsp);
 					var msg = '결제가 완료되었습니다.';
-					//msg += '고유ID : ' + rsp.imp_uid;
-					//msg += '상점 거래ID : ' + rsp.merchant_uid;
 					msg += '결제 금액 : ' + rsp.paid_amount;
 					
-					//에이작스로 바로 서버에 입력...
-					//결제내역 table insert
-					$.ajax({
+	 				$.ajax({
 								url:'paymentInsert.do',
-								type: POST,
-								data: { pay: rsp.paid_amount; },         
-								dataType: 'text',
+								data: { 'price': rsp.paid_amount },
 								success: function(data){
 									console.log(data);
 									//성공하면 인트값 1보다 크면 ...입력 -> 페이지 이동
-								},
-								error function(error) {
-					        		console.error(error);
-					    		}
-								});
+										}
+							}); 
+	 			
 				} else {
 					//결제 실패 로직
 					var msg = '결제에 실패하였습니다.';
@@ -84,24 +82,25 @@
 					<div class="columns">
 						<div class="column is-8">
 							<!--Table-->
-							<c:forEach items="${ list }" var="vo">
+							<c:forEach items="${list}" var="vo">
 								<div class="flex-table">
-									<div class="flex-table-item" data-id="${ vo.stamp_id }">
+									<div class="flex-table-item" id="stampId">
 										<div class="product">
-											<img src="template/assets/img/letter/stamp.png"> <span
-												class="product-name"></span>
+											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png"> <span
+												class="product-name">마음을 담은 우표</span>
 										</div>
 
 										<div class="discount">
-											<span class="has-price">X${ vo.cnt }개</span>
+											<span class="has-price">X${vo.cnt}개</span>
 										</div>
 
 										<div class="price">
-											<span class="has-price">${ vo.pay }</span>
+											<span class="has-price" id="pay">${vo.pay}</span>
 										</div>
 
 										<div>
-											<button id="check_module" class="button is-solid accent-button raised">Buy</button>
+											<button id="check_module" data-id="${vo.stamp_id}" data-pay="${vo.pay}" 
+											class="button is-solid accent-button raised">Buy</button>
 										</div>
 
 

@@ -81,7 +81,7 @@
 													<button
 														class="button is-solid primary-button raised is-rounded"
 														style="border-color: #fff; background: #ffffff00; color: #fff"
-														onclick="location.href='userJoinForm.do'">Sign Up</button>
+														type="button" onclick="location.href='userJoinForm.do'">Sign Up</button>
 													<button
 														class="button is-solid primary-button raised is-rounded"
 														style="border-color: #fff; background: #ffffff00; color: #fff">forgot

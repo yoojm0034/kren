@@ -3,7 +3,12 @@ package co.yedam.finalprj.payment.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,10 +41,18 @@ public class PaymentController {
 	}
 	
 	//insert...
-	@RequestMapping("paymentInsert.do")
-	public String paymentInsert(Model model, PaymentVO vo) {
+	@ResponseBody
+	@RequestMapping(value="paymentInsert.do")
+	public PaymentVO paymentInsert(HttpServletRequest request, Authentication auth, PaymentVO vo, Model model) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setUser_id(id);
 		
-		return null;
+		paymentDao.paymentInsert(vo);
+		
+		
+		//결제 완료 후, 마이페이스나 우표 보유현황 페이지로 넘어가야함...
+		return vo;
 	}
 
 }

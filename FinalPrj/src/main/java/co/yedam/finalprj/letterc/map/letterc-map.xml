@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.letterc.map.LettercMap">
 
+	<!-- 편지교정 작성 -->
+	<insert id="insertLetterC" parameterType="java.util.List">
+	   <foreach collection="list" item="item" open="INSERT ALL" close="SELECT * FROM DUAL">
+		INTO LETTERC
+			(LETTER_ID, LINE, ORIGIN, CORRECTING)
+		VALUES
+			(#{item.letter_id}, #{item.line}, trim(#{item.origin}), trim(#{item.correcting}))		
+	   </foreach>
+	</insert>
+
+	<!-- 교정편지 전체조회 -->
+	<select id="selectLetterC" resultType="co.yedam.finalprj.letterc.vo.LettercVO">
+		SELECT L.*, C.LINE, TRIM(C.ORIGIN) AS ORIGIN, TRIM(C.CORRECTING) AS CORRECTING
+		  FROM LETTER_FROM_V L, LETTERC C
+		 WHERE L.LETTER_ID=C.LETTER_ID
+		 ORDER BY L.SEND_DATE DESC, L.LETTER_ID, C.LINE
+	</select>
 </mapper>

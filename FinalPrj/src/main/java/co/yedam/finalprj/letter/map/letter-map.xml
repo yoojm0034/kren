@@ -53,14 +53,6 @@
 		VALUES
 			('letter_'||letter_seq.nextval, #{to_id}, #{user_id}, #{content}, #{photo}, #{gubun})			
 	</insert>
-
-	<!-- 편지교정 작성 -->
-	<insert id="insertLetterC" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
-		INSERT INTO LETTERC
-			(LETTER_ID, LINE, ORIGIN, CORRECTING)
-		VALUES
-			(#{letter_id}, #{line}, #{origin}, #{correcting})		
-	</insert>
 	
 	<!-- 편지 삭제 -->
 	<update id="deleteLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">

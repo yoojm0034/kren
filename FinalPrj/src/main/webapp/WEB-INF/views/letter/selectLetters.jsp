@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/template/assets/js/diffButty.js"></script>
 <style>
 .inbox-wrapper .inbox-wrapper-inner .inbox-left-sidebar .inbox-left-sidebar-inner
 	{
@@ -71,13 +73,23 @@
     width: 100%;
     text-align: center;
 }
+
+.content table td {
+	text-align: left;
+}
+
+.content table textarea {
+	width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
 </style>
 <script>
 	// 영어 -> 한국어
 	function tokr(index){
 		var en = $("#trans"+index).val();
 		var Data = {english:en};
-		var div = $("#ko"+index);
+		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
 		console.log(en);
 		console.log(div);			
@@ -103,7 +115,7 @@
 	function toen(index){
 		var ko = $("#trans"+index).val();
 		var Data = {korean:ko};
-		var div = $("#en"+index);
+		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
 		console.log(ko);
 		$.ajax({
@@ -127,8 +139,7 @@
 		// 친구목록 클릭하면 편지목록들 조회 
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
-		    console.log(aid);
-		    location.href='selectLetters.do?user_id='+aid; 
+		    location.href='selectLetters.do?user_id='+aid;
 		});		
 
 		// 번역 그룹 이벤트
@@ -155,23 +166,30 @@
 		$("body").on('click', '#btnc',  function() {
 		    var btnc = $(this).data('btnc');
 			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
-			var tdRoad = $("button[data-btnc="+btnc+"]").parent().prev();
+			var tdRoad = $("button[data-btnc="+btnc+"]").parent();
 		    console.log(btnc, textRoad);
-			tdRoad.append($('<textarea id="correcting">').val(textRoad));
+			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
+			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
 		});
 
 		// 교정테이블 추가 그룹 이벤트
 		$("body").on('click', '#corbtn',  function() {
-		    var corid = $(this).data('corid');		//id
+		    var corid = $(this).data('corid');		//letter_id; id
 		    var coridx = $(this).data('coridx');	//idx
-		    console.log('letter_id:',corid,', idx: ',coridx)
 		    add(corid, coridx);
 		});
 		
-		//
-		$("body").on('click', '#frm',  function() {
-		    var frm = $(this).data('frm');			//idx
-		    console.log('idx: ',frm)
+		// 폼의 버튼을 누르면 교정문장 전달
+		$("body").on('click', '#frmBtn',  function() {
+		    var num = $(this).data('num');			//row
+		    var frmbtn = $(this).data('frmbtn');	//idx
+		    letterc(num, frmbtn);
+		});
+		
+		$("body").on('click', '#dif',  function() {
+		    var line = $(this).data('diffb');			
+		    test_diff(line);
+		    console.log(line);
 		});
 		
 	});
@@ -183,15 +201,10 @@
 	    console.log(result);
 		
 		var div = $('#tbl'+id);
-		var form = $('<form>').attr({
-			'action':'insertCorLetter.do',	
-			'id':'frm',
-			'data-frm':idx
-		});
 		var tbl = $('<table>');
 
 		// 테이블 행제목
-		let thead = ['행','원문','기능']
+		let thead = ['','']
 		var head = $('<tr>');
 		for (var field in thead) {
 			var name = $('<td>').text(thead[field].trim());
@@ -202,35 +215,96 @@
 		
 		// 교정 테이블 출력
 		var rownum = 1;
+		var num = 0;
 		for(var i=0; i < result.length; i++) {
 			if(result[i].length != 0) { // 리스트가 비어있지않으면
+				num = i;
 				var tr = $('<tr>');
-				tr.append($('<td>').append(rownum+i));
-				tr.append($('<td>').append(result[i]));				
-// 				tr.append($('<td>'));
-// 				tr.append($('<td>').append(
-// 						  $('<button id="btnc" data-btnc="'+i+'">').text('교정'),
-// 						  $('<button id="btnd" data-btnd="'+i+'">').text('삭제')
-// 						  ));
+// 				tr.append($('<td>').append(rownum+i)); //행번호
+				tr.append($('<td data-cont="'+i+'">').append(result[i]));
 				tr.append($('<td>').append($('<button type="button" id="btnc" data-btnc="'+i+'">').text('교정')));
 				tbl.append(tr);			
 			}
 		}
+		console.log('rnum:',rownum);
 		var tr2 = $('<tr>');
 		var col = $('<td colspan="3">');
-		var submit = $('<input type="submit">');
+		var submit = $('<button type="button" id="frmBtn" data-num="'+num+'" data-frmbtn="'+idx+'">').text('전송');
 		col.append(submit);
 		tr2.append(col);
 		tbl.append(tr2)
-		form.append(tbl);
-		div.append(form);
-	}
+		div.append(tbl);
+		var tblBtn = $('button[data-coridx="'+idx+'"]'); // 교정테이블 추가 버튼 삭제
+		tblBtn.remove();
+	} //function add
 	
+	function letterc(row, idx) {
+	    var corr = ""; // 교정문장
+	    var cont = ""; // 원문장
+		for (var i=0; i <= row; i++) {
+			if(i == row) {
+				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "");
+				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "");
+			} else {
+				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "")+".,";
+				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "")+".,";
+			}
+		}
+		var letter = $('input[data-leid="'+idx+'"]').val(); //편지번호
+		
+		var rows = ""; // 행숫자만큼 숫자를 리스트에 담아줌
+		for(var i=0; i<=row; i++) {
+			if(i != row) {
+				rows += i +",";	
+			} else {
+				rows += i;
+			}
+		}
+
+		var Data = {
+			"letter_id":letter,
+			"line":rows,
+			"origin":cont,
+			"correcting":corr
+		};
+			
+		console.log(Data);
+		
+		
+		$.ajax({
+			url:"insertCorLetter.do",
+			type:"post",
+		    data: JSON.stringify(Data),
+		    contentType : "application/json; charset=UTF-8",
+			success:function(v){
+				alert("작성되었습니다!");
+				$('#tbl'+letter).remove(); // 교정 테이블 삭제
+				
+			},error:function(e){
+				console.log(e);
+			}
+		});
+	} //function letterc
+
+	// 문자열 비교
+	function test_diff(dif)
+	{
+		var original = $('div[data-ori="'+dif+'"]').text;
+		var revised = $('div[data-cre="'+dif+'"]').text;
+		var output = $('div[data-diff="'+dif+'"]');
 	
+		var html = diffButty(original, revised);
+	
+		output.text = '<pre>'+html+'</pre>';
+	
+	} 
 
 </script>
 </head>
 <body>
+<form id="hfrm" action="selectLetters.do" method="post">
+	<input type="hidden" id="user_id">
+</form>
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
 			<!-- LEFT SIDEBAR  -->
@@ -248,7 +322,7 @@
 							<span class="name">Saved Letters</span>
 						</a>
 						<c:if test="${!empty friends }">
-						<c:forEach items="${friends }" var="vo">					
+						<c:forEach items="${friends }" var="vo">	
 							<a data-id="${vo.user_id}" class="item">
 								<span class="name">${vo.name }</span>
 							</a>
@@ -332,7 +406,7 @@
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
-											<span class="msg-timestamp"> ${vo.arrive_date } <img
+											<span class="msg-timestamp"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/>  <img
 												src="resources/template/assets/img/letter/stamp.png">
 											</span>
 											<div class="msg-header">
@@ -446,7 +520,7 @@
 									</div>
 									<div class="meta">
 										<div class="name">${vo.name }</div>
-										<div class="date">${vo.arrive_date }</div>
+										<div class="date"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/> </div>
 									</div>
 								</div>
 	
@@ -455,19 +529,23 @@
 									<p>${vo.content }</p>
 									<input type="hidden" id="trans${status.index }" value="${vo.content }">
 									<input type="hidden" id="letter${vo.letter_id }" value="${vo.content }">
-									<div id="en${status.index }"></div>
-									<div id="ko${status.index }"></div>
+									<div id="tdiv${status.index }"></div>
+									<input type="hidden" data-leid="${status.index}" value="${vo.letter_id }">
 									<div id="tbl${vo.letter_id }"></div>
 								</div>
 								<div class="has-text-right">
-									<button class="button is-solid grey-button is-bold raised">
-										<select id="transOpt" data-transopt="${status.index }" class="select">
-											<option value="" hidden="">Translate</option>
-											<option value="KR">Translate(KR)</option>
-											<option value="EN">Translate(EN)</option>
-										</select>
-									</button>
-									<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">교정</button>
+									<c:if test="${vo.user_id ne user.user_id }">
+										<button class="button is-solid grey-button is-bold raised">
+											<select id="transOpt" data-transopt="${status.index }" class="select">
+												<option value="" hidden="">Translate</option>
+												<option value="KR">Translate(KR)</option>
+												<option value="EN">Translate(EN)</option>
+											</select>
+										</button>
+										<c:if test="${vo.cor_yn eq 'N' }">
+										<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">교정</button>
+										</c:if>
+									</c:if>
 								</div>
 							</div>
 						</div>
@@ -490,6 +568,8 @@
 							</div>
 						</div>
 							<!-- 교정편지추가 -->
+							<c:choose>
+							<c:when test="${!empty lettercs and vo.cor_yn eq 'Y'}">
 							<div class="message-preview-transition is-first">
 								<div class="mail">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -509,31 +589,32 @@
                                            <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="" data-user-popover="0">
                                        </div>
                                        <div class="meta">
-                                           <div class="name">Jenna Davis</div>
-                                           <div class="date">oct 18 2018, 08:19pm</div>
-                                       </div>
-                                       <div class="meta-right">
-                                           <div>
-                                               <span class="tag is-important">Important</span>
-                                           </div>
-                                           <div class="is-vhidden">
-                                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-                                               <small>2 attachments</small>
-                                           </div>
+                                           <div class="name">${user.name}</div>
                                        </div>
                                    </div>
-
                                    <hr>
                                    <div class="content">
-                                       <p>Hello Nelly,</p>
-                                       <p>Corporis tempora id quae fuga. Perspiciatis quam magnam dolores ut quia. Neque vero non laudantium
-                                           animi omnis qui debitis minus molestias. Est ut minus est dolores quo harum illum suscipit cumque.
-                                       </p>
-                                       <p>Thanks, <br>Jenna.</p>
+                               	   <table>
+                               	   	<tr>
+                               	   		<td></td>
+                               	   		<td></td>
+                               	   	</tr>
+                               	   	<c:forEach items="${lettercs}" var="cvo">
+                               	   	<c:if test="${cvo.letter_id eq vo.letter_id }">
+                               	   	<tr>
+                               	   		<td><div data-ori="${cvo.line }">${cvo.origin }</div></td>
+                               	   		<td><div data-cre="${cvo.line }">${cvo.correcting }</div><br>
+                               	   		<div data-diff="${cvo.line }"></div><button id="dif" data-diffb="${cvo.line }">DIFF</button></td>
+                               	   	</tr>                               	   	
+                               	   	</c:if>
+                               	   	</c:forEach>
+                               	   </table>
                                    </div>
+                               	   <hr>    
                                </div>
                            	</div>	
-                           	
+                   			</c:when>
+							</c:choose>
                            	<!-- /교정편지추가 -->
                            	</div>
 					</c:forEach>

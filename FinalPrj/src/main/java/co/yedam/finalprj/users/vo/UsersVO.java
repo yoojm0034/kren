@@ -1,10 +1,11 @@
 package co.yedam.finalprj.users.vo;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,11 +22,13 @@ public class UsersVO {
 	private String email;
 	private String name;
 	private String password;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birth;
 	private String gender;
 	private String topic;
 	private String language1;
 	private String language2;
+	private String language2_level;
 	private String country;
 	private String city;
 	private String visited;
@@ -36,8 +39,8 @@ public class UsersVO {
 	private String photo;
 	private int report_cnt;
 	private String status;
-	private int lat;
-	private int lon;
+	private Double lat;
+	private Double lon;
 	private String timezone;
 	private String flag;
 	private int count; // 일치하는관심사 수
