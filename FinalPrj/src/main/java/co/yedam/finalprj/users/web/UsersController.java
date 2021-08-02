@@ -3,15 +3,19 @@ package co.yedam.finalprj.users.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +55,7 @@ public class UsersController {
 	// 회원가입
 	@RequestMapping("userJoinForm.do")
 	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model) {
-	model.addAttribute("topic", topicDao.topicSelectList());
+	model.addAttribute("topiclist", topicDao.topicSelectList());
 		return "empty/userJoinForm";
 	} 	
 	
@@ -93,11 +97,18 @@ public class UsersController {
 	}
 	
 	// 회원가입 폼 제출
-	@RequestMapping(value="userJoin.do", method = RequestMethod.GET)
-	public String userJoin(UsersVO vo, Model model) throws Exception {
-	    return "empty/home";
+	@RequestMapping("userJoin.do")
+	public String userJoin(@ModelAttribute("UsersVO") UsersVO vo, Model model, byte[] imageByte) throws Exception {
+//		ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
+//		BufferedImage bufferedImage = ImageIO.read(inputStream);
+//		ImageIO.write(bufferedImage, "png", new File("/resources/fileupload/image.png")); //저장하고자 하는 파일 경로를 입력합니다.
+		
+		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+		vo.setPassword(scpwd.encode(vo.getPassword()));
+		usersDao.usersInsert(vo);
+		System.out.println("유저 등록 완료");
+	    return "";
 	}
-
 	
 	
 	//관리자 
