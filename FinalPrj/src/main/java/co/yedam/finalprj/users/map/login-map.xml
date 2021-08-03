@@ -4,7 +4,7 @@
 	
 	<!-- 로그인 -->
 	<select id="usersSelect" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		SELECT USER_ID,	PASSWORD, NAME,
+		SELECT EMAIL, NAME, GENDER, BIRTH, TOPIC, LANGUAGE1, LANGUAGE2, COUNTRY, CITY, VISITED, REG_DATE, EDIT_DT, PROFILE, STAMP, PHOTO, USER_ID, LAT, LON, FLAG, LANGUAGE2_LEVEL, TIMEZONE, 
 			   CASE WHEN STATUS='관리자' THEN 'ROLE_ADMIN'
 				    ELSE 'ROLE_USER' END STATUS
 		FROM USERS

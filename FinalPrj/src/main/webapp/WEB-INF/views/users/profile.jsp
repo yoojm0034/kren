@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,32 +65,121 @@ a[href^="https://maps.google.com/maps"] {
     transition: all .3s;
     cursor: pointer;
     z-index: 1;
+}
+
+.location-info {
+    position: absolute;
+    right: 6%;
+    top: 75%;
+    text-align: right;
+    background-color: #797979c4;
+    padding: 6px;
+    border-radius: 0.5rem;
+    color: white;
+}
+
+.language_label { 
+	width: 150px;
+    text-align: left;
+    font-family: 'Montserrat';
+    color: #4a4a4a;
+}
+
+.language_label > span {
+	letter-spacing: -0.4rem;
+}
+
+.profile-subheader .subheader-start, .profile-subheader .subheader-end { width: auto; }
+
+.subheader-end > a {
+    font-size: 1rem;
+    margin: 0 0.5rem 0 0;
+}
+
+.profile-subheader .subheader-start span:nth-child(odd) {
+	display: table-cell;
+    font-family: "Montserrat",sans-serif;
+	text-transform: uppercase;
+    font-size: .8rem;
+    font-weight: 500;
+    color: #999;
+}
+
+.profile-subheader .subheader-start span:nth-child(even) {
+	display: table-cell;
+	font-size: 1.2rem;
+    font-family: "Montserrat",sans-serif;
+    color: #393a4f;
+    padding: 0 1rem 0 0.5rem;
+}
+
+.box-heading { min-height: 56px; }
+
+.info-row div { display: contents }
+
+.info { 
+    font-size: .9rem !important;
+    font-weight: 400;
+    color: #999 !important;
+}
 
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="resources/template/assets/js/moment.js"></script>
+<script src="resources/template/assets/js/moment-timezone-with-data.js"></script>
+
 <script>
 $(document).ready(function() {
 	initMap();
 	function initMap() {
-    const city = { lat: 35.73163,
-    		lng: 128.62216};
-    const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 9,
-      center: city,
-      mapTypeControl: false,
-      streetViewControl: false,
-    });
-    const marker = new google.maps.Marker({
-      position: city,
-      map: map,
-    });
-	};
+		var lat = Number($('#lat').val());
+		var lon = Number($('#lon').val());
+		const city = { lat: lat, lng: lon};
+	    const map = new google.maps.Map(document.getElementById("map"), {
+	      zoom: 7,
+	      center: city,
+	      mapTypeControl: false,
+	      streetViewControl: false,
+	    });
+	    const marker = new google.maps.Marker({
+	      position: city,
+	      map: map,
+	    });
+    
+		// 시간출력
+		var date = new Date();
+		var a = moment.tz(date, $('#timezone').val());
+		console.log(a.format('LT'));
+		$('#localTime').text(a.format('LT'));
+
+		// 언어 레벨 
+		var level = Number($('#level').val());
+		var result = "";
+			switch(level) {
+			  case 1 : 
+			    result = "◼◻◻◻◻";
+			    break;
+			  case 2 :
+				result = "◼◼◻◻◻";
+			    break;
+			  case 3 : 
+				result = "◼◼◼◻◻";
+			    break;
+			  case 4 : 
+				result = "◼◼◼◼◻";
+			    break;
+			  case 5 :
+				result = "◼◼◼◼◼";
+			    break;
+			}
+		$('#language2_level').text(result);
+		};
 });
+
 </script>
 <body>
         <!-- Container -->
         <div class="container is-custom">
-
             <!-- Profile page main wrapper -->
             <div id="profile-main" class="view-wrap is-headless">
                 <div class="columns is-multiline no-margin">
@@ -98,6 +189,13 @@ $(document).ready(function() {
                         <!-- html/partials/pages/profile/timeline/timeline-header.html -->
                         <div class="cover-bg">
                             <div id="map"></div>
+                            <div class="location-info is-hidden-mobile">
+                            	<span>${user.city }, ${user.country }&nbsp;</span><span id="localTime"></span>
+                            </div>
+                           	<input type="text" id="lat" value="${user.lat }" hidden="hidden" />
+                            <input type="text" id="lon" value="${user.lon }" hidden="hidden" />
+                            <input type="text" id="timezone" value="${user.timezone }" hidden="hidden" />
+                            <input type="text" id="level" value="${user.language2_level }" hidden="hidden" />
                             <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
                             <div class="avatar">
                                 <img id="user-avatar" class="avatar-image" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
@@ -132,84 +230,35 @@ $(document).ready(function() {
                                     </a>
                                 </div>
                             </div>
-                            <!--/html/partials/pages/profile/timeline/dropdowns/timeline-mobile-dropdown.html-->
-                            <div class="dropdown is-spaced is-right is-accent dropdown-trigger timeline-mobile-dropdown is-hidden-desktop">
-                                <div>
-                                    <div class="button">
-                                        <i data-feather="more-vertical"></i>
-                                    </div>
-                                </div>
-                                <div class="dropdown-menu" role="menu">
-                                    <div class="dropdown-content">
-                                        <a href="/profile-main.html" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="activity"></i>
-                                                <div class="media-content">
-                                                    <h3>Timeline</h3>
-                                                    <small>Open Timeline.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="/profile-about.html" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="align-right"></i>
-                                                <div class="media-content">
-                                                    <h3>About</h3>
-                                                    <small>See about info.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="/profile-friends.html" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="heart"></i>
-                                                <div class="media-content">
-                                                    <h3>Friends</h3>
-                                                    <small>See friends.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="/profile-photos.html" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="image"></i>
-                                                <div class="media-content">
-                                                    <h3>Photos</h3>
-                                                    <small>See all photos.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 						<div class="box-heading" style="display: block; margin-bottom: 15px;">
                         <div class="profile-menu is-hidden-mobile">
                             <div class="menu-start">
                                 <a href="profile-main.html"><img src="resources/template/assets/img/logo/stamp.png" style="width:35px; vertical-align: middle">
-                                Stamp <span class="menu-badge">10</span></a>
-                            </div>
-                            <div class="menu-end">
-                                <a id="profile-friends-link" href="profile-friends.html" class="button has-min-width">Friends</a>
-                                <a href="profile-photos.html" class="button has-min-width">Photos</a>
+                                Stamp <span class="menu-badge">${user.stamp }</span></a>
                             </div>
                         </div>
 
                         <div class="profile-subheader">
-                            <div class="subheader-start is-hidden-mobile">
-                                <span>3.4K</span>
-                                <span>Friends</span>
-                                <span>3.4K</span>
-                                <span>Friends</span>
-                                <span>3.4K</span>
-                                <span>Friends</span>
+                            <div class="subheader-start is-hidden-mobile" style="display: table">
+                                <span>Post</span>
+                                <span>15</span>
+                                <span>Following</span>
+                                <span>34</span>
+                                <span>Followers</span>
+                                <span>60</span>
                             </div>
-                            <div class="subheader-middle">
+                            <div class="subheader-middle" style="position: absolute; left: 50%; transform: translate(-50%);">
                                 <h2>${user.name}</h2>
                             </div>
-                            <div class="subheader-end is-hidden-mobile">
-                                <a class="button has-icon is-bold">
-                                    <i data-feather="clock"></i>
-                                    History
-                                </a>
+                            <div class="subheader-end is-hidden-mobile" style="display: flex">
+                            	<div class="language_label">
+	                            	<div>${user.language1}&nbsp;&nbsp;⇆&nbsp;&nbsp;${user.language2 }</div>
+    	                        	<span>◼◼◼◼◼</span>&nbsp;&nbsp;
+    	                        	<span id="language2_level"></span>
+                            	</div>
+                                <a class="button is-solid primary-button">✍🏻 Write a letter</a>
+                                <a class="button">Follow</a>
                             </div>
                             </div>
                         </div>
@@ -218,189 +267,57 @@ $(document).ready(function() {
                 </div>
 
                 <div class="columns">
-                    <div id="profile-timeline-widgets" class="column is-4">
+                    <div id="profile-timeline-widgets" class="column is-5">
 
                         <!-- Basic Infos widget -->
                         <!-- html/partials/pages/profile/timeline/widgets/basic-infos-widget.html -->
                         <div class="box-heading">
                             <h4>Basic Infos</h4>
-                            <div class="dropdown is-neutral is-spaced is-right dropdown-trigger">
-                                <div>
-                                    <div class="button">
-                                        <i data-feather="more-vertical"></i>
-                                    </div>
-                                </div>
-                                <div class="dropdown-menu" role="menu">
-                                    <div class="dropdown-content">
-                                        <a href="profile-about.html" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="eye"></i>
-                                                <div class="media-content">
-                                                    <h3>View</h3>
-                                                    <small>View user details.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="search"></i>
-                                                <div class="media-content">
-                                                    <h3>Related</h3>
-                                                    <small>Search for related users.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="basic-infos-wrapper">
                             <div class="card is-profile-info">
                                 <div class="info-row">
                                     <div>
-                                        <span>Studied at</span>
-                                        <a class="is-inverted">Georgetown University</a>
+                                        <span>가입일</span>
+                                        <span class="info"><fmt:formatDate value="${user.reg_date }" pattern="YYYY/MM/dd" /></span>
                                     </div>
-                                    <i class="mdi mdi-school"></i>
                                 </div>
                                 <div class="info-row">
                                     <div>
-                                        <span>Married to</span>
-                                        <a class="is-inverted">Dan Walker</a>
+                                        <span>프로필 수정일</span>
+                                        <span class="info"><fmt:formatDate value="${user.edit_dt }" pattern="YYYY/MM/dd" /></span>
                                     </div>
-                                    <i class="mdi mdi-heart"></i>
                                 </div>
                                 <div class="info-row">
                                     <div>
-                                        <span>From</span>
-                                        <a class="is-inverted">Melbourne, AU</a>
+                                        <span>생일</span>
+                                        <span class="info"><fmt:formatDate value="${user.birth }" pattern="YYYY/MM/dd" /></span>
                                     </div>
-                                    <i class="mdi mdi-earth"></i>
                                 </div>
                                 <div class="info-row">
                                     <div>
-                                        <span>Lives in</span>
-                                        <a class="is-inverted">Los Angeles, CA</a>
+                                        <span>성별</span>
+                                        <span class="info">${user.gender }</span>
                                     </div>
-                                    <i class="mdi mdi-map-marker"></i>
                                 </div>
-                                <div class="info-row">
+                                <div class="info-row" style="display: block">
                                     <div>
-                                        <span>Followers</span>
-                                        <a class="is-muted">258 followers</a>
+                                        <span>About me</span>
+										<span class="info">여기에 자기소개가 들어갑니다</span>
                                     </div>
-                                    <i class="mdi mdi-bell-ring"></i>
                                 </div>
                             </div>
                         </div>
-                        <!-- Photos widget -->
-                        <!-- html/partials/pages/profile/timeline/widgets/photos-widget.html -->
+                        <!-- 관심사 -->
                         <div class="box-heading">
-                            <h4>Photos</h4>
-                            <div class="dropdown is-neutral is-spaced is-right dropdown-trigger">
-                                <div>
-                                    <div class="button">
-                                        <i data-feather="more-vertical"></i>
-                                    </div>
-                                </div>
-                                <div class="dropdown-menu" role="menu">
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="image"></i>
-                                                <div class="media-content">
-                                                    <h3>View Photos</h3>
-                                                    <small>View all your photos</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="tag"></i>
-                                                <div class="media-content">
-                                                    <h3>Tagged</h3>
-                                                    <small>View photos you are tagged in.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="folder"></i>
-                                                <div class="media-content">
-                                                    <h3>Albums</h3>
-                                                    <small>Open my albums.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="is-photos-widget">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/1.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/2.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/3.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/4.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/5.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/6.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/7.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/8.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/9.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/10.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/11.jpg" alt="">
-                            <img src="https://via.placeholder.com/200x200" data-demo-src="assets/img/demo/widgets/photos/12.jpg" alt="">
-                        </div>
-                        <!-- Star friends widget -->
-                        <!-- html/partials/pages/profile/timeline/widgets/star-friends-widget.html -->
-                        <div class="box-heading">
-                            <h4>Friends</h4>
-                            <div class="dropdown is-neutral is-spaced is-right dropdown-trigger">
-                                <div>
-                                    <div class="button">
-                                        <i data-feather="more-vertical"></i>
-                                    </div>
-                                </div>
-                                <div class="dropdown-menu" role="menu">
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="users"></i>
-                                                <div class="media-content">
-                                                    <h3>All Friends</h3>
-                                                    <small>View all friends.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="heart"></i>
-                                                <div class="media-content">
-                                                    <h3>Family</h3>
-                                                    <small>View family members.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="briefcase"></i>
-                                                <div class="media-content">
-                                                    <h3>Work Relations</h3>
-                                                    <small>View work related friends.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <h4>Topics of Interest</h4>
                         </div>
 
                         <div class="friend-cards-list">
                             <div class="card is-friend-card">
 
                                 <div class="friend-item">
-                                    <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="" data-user-popover="1">
                                     <div class="text-content">
                                         <a>Dan Walker</a>
                                         <span>4 mutual friend(s)</span>
@@ -409,62 +326,6 @@ $(document).ready(function() {
                                         <i data-feather="star"></i>
                                     </div>
                                 </div>
-
-                                <div class="friend-item">
-                                    <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/milly.jpg" alt="" data-user-popover="7">
-                                    <div class="text-content">
-                                        <a>Milly Augustine</a>
-                                        <span>3 mutual friend(s)</span>
-                                    </div>
-                                    <div class="star-friend is-active">
-                                        <i data-feather="star"></i>
-                                    </div>
-                                </div>
-
-                                <div class="friend-item">
-                                    <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="" data-user-popover="5">
-                                    <div class="text-content">
-                                        <a>Edward Mayers</a>
-                                        <span>35 mutual friend(s)</span>
-                                    </div>
-                                    <div class="star-friend is-active">
-                                        <i data-feather="star"></i>
-                                    </div>
-                                </div>
-
-                                <div class="friend-item">
-                                    <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/stella.jpg" alt="" data-user-popover="2">
-                                    <div class="text-content">
-                                        <a>Stella Bergmann</a>
-                                        <span>48 mutual friend(s)</span>
-                                    </div>
-                                    <div class="star-friend">
-                                        <i data-feather="star"></i>
-                                    </div>
-                                </div>
-
-                                <div class="friend-item">
-                                    <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/elise.jpg" alt="" data-user-popover="6">
-                                    <div class="text-content">
-                                        <a>Elise Walker</a>
-                                        <span>1 mutual friend(s)</span>
-                                    </div>
-                                    <div class="star-friend">
-                                        <i data-feather="star"></i>
-                                    </div>
-                                </div>
-
-                                <div class="friend-item">
-                                    <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/nelly.png" alt="" data-user-popover="9">
-                                    <div class="text-content">
-                                        <a>Nelly Schwartz</a>
-                                        <span>11 mutual friend(s)</span>
-                                    </div>
-                                    <div class="star-friend">
-                                        <i data-feather="star"></i>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                         <!-- Trips widget -->
@@ -538,7 +399,7 @@ $(document).ready(function() {
                         </div>
                     </div>
 
-                    <div class="column is-8">
+                    <div class="column is-7">
                         <div id="profile-timeline-posts" class="box-heading">
                             <h4>Posts</h4>
                             <div class="button-wrap">
