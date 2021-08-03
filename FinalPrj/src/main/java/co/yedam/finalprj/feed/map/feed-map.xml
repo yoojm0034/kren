@@ -34,6 +34,9 @@
 						        FROM block
 							    WHERE USER_ID = #{user_id}
 							  )
+		<if test="tags != null">
+		AND tags like '%' || #{tags} || '%'
+  	    </if>
 		ORDER BY f.REG_DATE DESC
 	</select>
 

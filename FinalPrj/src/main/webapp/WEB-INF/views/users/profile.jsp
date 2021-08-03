@@ -298,13 +298,23 @@ $(document).ready(function() {
                                 <div class="info-row">
                                     <div>
                                         <span>성별</span>
-                                        <span class="info">${user.gender }</span>
+                                        <span class="info">
+                                        <c:if test="${user.gender == 'M'}">
+                                        	남성
+                                        </c:if>
+                                        <c:if test="${user.gender == 'W'}">
+                                        	여성
+                                        </c:if>
+                                        <c:if test="${user.gender == 'O'}">
+                                        	기타
+                                        </c:if>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="info-row" style="display: block">
                                     <div>
-                                        <span>About me</span>
-										<span class="info">여기에 자기소개가 들어갑니다</span>
+                                        <h4>About me</h4>
+										<span class="info">I'm here just for language practice and to make friends. If you're also into drawing/ tattoos, let's chat! :) but if you're not, let's chat too. and let me know what was the last picture you drew. :) AND Don't tell me to follow your Instagram. And you don't have to follow mine. Some people just want to increase their followers and after that we don't talk anymore, so I don't want to unfollow you later. My account isn't private, you can see what I've posted or text me there without following. I'm here to make new friends, not my new Instagram followers.</span>
                                     </div>
                                 </div>
                             </div>
@@ -319,11 +329,7 @@ $(document).ready(function() {
 
                                 <div class="friend-item">
                                     <div class="text-content">
-                                        <a>Dan Walker</a>
-                                        <span>4 mutual friend(s)</span>
-                                    </div>
-                                    <div class="star-friend">
-                                        <i data-feather="star"></i>
+									${user.topic }
                                     </div>
                                 </div>
                             </div>

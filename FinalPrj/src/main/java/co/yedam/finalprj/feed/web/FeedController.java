@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.yedam.finalprj.feed.service.FeedService;
+import co.yedam.finalprj.feed.service.LanguageService;
 import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.vo.FriendsVO;
+import co.yedam.finalprj.letter.service.TransService;
+import co.yedam.finalprj.letter.vo.TransVO;
 import co.yedam.finalprj.likes.vo.LikesVO;
 import co.yedam.finalprj.notice.service.NoticeService;
 import co.yedam.finalprj.tag.service.TagService;
@@ -41,7 +44,11 @@ public class FeedController {
 	@Autowired
 	TagService tagDao;
 	
+	@Autowired
+	TransService transDao;
 	
+	@Autowired
+	LanguageService lanDao;
 	@RequestMapping("feed.do")
 	public String feedList(FeedVO vo, Model model, HttpServletRequest request,Authentication auth) {
 		User user = (User) auth.getPrincipal();
@@ -248,6 +255,39 @@ public class FeedController {
 		return "redirect:feed.do";
 	}
 
+
 	
+	@RequestMapping(value="test10.do", produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String test3(@RequestParam(value = "korean", defaultValue = "-")String korean,
+						Model model) {	
+		TransVO vo = new TransVO();
+		vo.setKr(korean);
+	    String english= transDao.getEn(vo); // 서비스에서 일을 진행 할 예정
+		System.out.println(english);
+		return english;
+	}
+	
+	@RequestMapping(value="test11.do", produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String test4(@RequestParam(value = "korean", defaultValue = "-")String korean,
+						Model model) {	
+		FeedVO vo = new FeedVO();
+		vo.setFindLan(korean);		
+	    String english= lanDao.transLan(vo);// 서비스에서 일을 진행 할 예정
+	    TransVO tvo = new TransVO();
+	    String result="";
+	    english= english.substring(13, 15);
+	    
+	    if(english.equals("ko")) {
+	    	tvo.setKr(korean);
+	    	result = transDao.getEn(tvo);
+	    }else{
+	    	tvo.setEn(korean);
+	    	result = transDao.getKr(tvo);
+	    }
+	    
+		return result;
+	}
 	
 }

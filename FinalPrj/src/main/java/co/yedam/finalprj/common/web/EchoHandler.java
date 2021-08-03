@@ -46,6 +46,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		if(!StringUtils.isEmpty(msg)) {
 			String[] strs = msg.split(",");
 			
+			//댓글, 좋아요, 편지작성시
 			if(strs != null && strs.length == 4) {
 				String cmd = strs[0]; // 알람종류
 				String caller = strs[1];  //댓글작성자, 좋아요누른사람, 팔로우누른사람
@@ -73,11 +74,6 @@ public class EchoHandler extends TextWebSocketHandler {
 					//System.out.println(r + "건 입력");
 					
 					boardWriterSession.sendMessage(tmpMsg);
-				//팔로우누를시
-				}else if("follow".equals(cmd) && boardWriterSession != null) {
-					TextMessage tmpMsg = new TextMessage(caller + "님이 " + receiver +
-							 "님을 팔로우를 시작했습니다.");
-					boardWriterSession.sendMessage(tmpMsg);
 				//좋아요누를시	
 				}else if("like".equals(cmd) && boardWriterSession != null) {
 					TextMessage tmpMsg = new TextMessage(caller + "님이 " +
@@ -86,10 +82,26 @@ public class EchoHandler extends TextWebSocketHandler {
 				//편지작성시	
 				}else if("letter".equals(cmd) && boardWriterSession != null) {
 					TextMessage tmpMsg = new TextMessage(
-							caller + "님이 편지를 보냈습니다. " +"<a type='external' href='${pageContext.request.contextPath}/letterBox.do?letter_id="+ seq+"'>편지함 보기</a>");
+							caller + "님이 편지를 보냈습니다. " +"<a href=letterBox.do?letter_id="+ seq+">편지함 보기</a>");
 					boardWriterSession.sendMessage(tmpMsg);
 				}
 			}
+			//팔로우했을시
+			if(strs != null && strs.length == 3) {
+				String cmd = strs[0]; // 알람종류
+				String caller = strs[1];  //팔로우누른사람
+				String receiver = strs[2]; //팔로우당한사람
+				
+				System.out.println(users);
+				WebSocketSession boardWriterSession = users.get(receiver);
+				
+				if("follow".equals(cmd) && boardWriterSession != null) {
+					TextMessage tmpMsg = new TextMessage(caller + "님이 " + receiver +
+							 "님을 팔로우를 시작했습니다.");
+					boardWriterSession.sendMessage(tmpMsg);
+				}	
+			}
+			
 		}
 	}
 	

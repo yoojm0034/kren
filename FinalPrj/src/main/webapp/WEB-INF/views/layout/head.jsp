@@ -81,6 +81,8 @@ body {
 }
 
 </style>
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script type="text/javascript">
 	var sock = null;
 
@@ -100,6 +102,12 @@ body {
 			var data = evt.data;
 			console.log(data);
 			$('#test').html(data);
+			
+			toastr.options.escapeHtml = true;
+			toastr.options.closeButton = true;
+			toastr.options.newestOnTop = false;
+			toastr.options.progressBar = true;
+			toastr.info('새로운 알림이 도착했습니다.','알림', {timeOut: 7000});
 
 		};
 
@@ -137,9 +145,9 @@ body {
 			<!-- 네비바 왼쪽 -->
 			<div class="navbar-start">
 				<ul>
-					<li class="is-active"><a href="feed.do">피드</a></li>
+					<li class="is-active"><a href="${pageContext.request.contextPath}/feed.do">피드</a></li>
 					<li><a href="#">친구찾기</a></li>
-					<li><a href="letterBox.do">편지</a></li>
+					<li><a href="${pageContext.request.contextPath}/letterBox.do">편지</a></li>
 					<li><a href="#">ABOUT US</a></li>
 				</ul>
 			</div>
