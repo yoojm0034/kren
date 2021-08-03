@@ -23,4 +23,7 @@ public interface LoginMap {
 	public void findId(UsersVO vo);
 	public void findPw(UsersVO vo);
 	
+	//우표 구매시 보유 우표수 변경...
+	public Object stampUpdate(UsersVO vo);
+	
 }

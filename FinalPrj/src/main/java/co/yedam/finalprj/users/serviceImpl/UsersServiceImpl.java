@@ -91,4 +91,10 @@ public class UsersServiceImpl implements UsersService {
 		return map.emailCheck(email);
 	}
 
+	@Override
+	public Object stampUpdate(UsersVO vo) {
+		return loginmap.stampUpdate(vo);
+		
+	}
+
 }

@@ -21,5 +21,6 @@ public interface UsersMap {
 	//admin
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();
+
 	
 }

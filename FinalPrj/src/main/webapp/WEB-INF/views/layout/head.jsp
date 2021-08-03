@@ -82,7 +82,7 @@ body {
 
 </style>
 <script type="text/javascript">
-	var socket = null;
+	var sock = null;
 
 	$(document).ready(function() {
 		connectWs();
@@ -91,42 +91,16 @@ body {
 	function connectWs() {
 		sock = new SockJS("<c:url value="/echo"/>");
 		//sock = new SockJS('/replyEcho');
-		socket = sock;
-		
-		sock.send
 		
 		sock.onopen = function() {
 			console.log('info: connection opened.');
+			
 		};
-
 		sock.onmessage = function(evt) {
 			var data = evt.data;
-			console.log("ReceivMessage : " + data + "\n");
+			console.log(data);
+			$('#test').html(data);
 
-			$.ajax({
-				url : '${pageContext.request.contextPath}/pushCount.do',
-				type : 'POST',
-				dataType : 'text',
-				success : function(data) {
-					if (data == '0') {
-					} else {
-						$('#alarmCountSpan').addClass(
-								'bell-badge-danger bell-badge')
-						$('#alarmCountSpan').text(data);
-					}
-				},
-				error : function(err) {
-					alert('err');
-				}
-			});
-
-			// 모달 알림
-			var toastTop = app.toast.create({
-				text : "알림 : " + data + "\n",
-				position : 'top',
-				closeButton : true,
-			});
-			toastTop.open();
 		};
 
 		sock.onclose = function() {
@@ -139,6 +113,11 @@ body {
 		};
 
 	}
+	function sendText() {
+		sock.send('reply,admin,admin,feed_1');
+		
+	}
+	
 </script>
 <!-- Pageloader -->
 <div class="pageloader"></div>
@@ -204,9 +183,7 @@ body {
 											</p>
 										</figure>
 										<div class="media-content">
-											<span><a href="#">David Kim</a> commented on <a
-												href="#">your post</a>.</span> <span class="time">30 minutes
-												ago</span>
+											<span id=""></span>
 										</div>
 										<div class="media-right">
 											<div class="added-icon">
@@ -456,7 +433,7 @@ body {
 			<a class="icon-link" href="javascript:void(0);"> <i
 				data-feather="bell"></i> <span class="indicator"></span>
 			</a>
-
+			
 			<div class="nav-drop">
 				<div class="inner">
 					<div class="nav-drop-header">
