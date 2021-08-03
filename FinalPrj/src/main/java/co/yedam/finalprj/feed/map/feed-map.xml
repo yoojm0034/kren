@@ -20,7 +20,7 @@
 				f.REG_DATE "reg_date",
 				f.TAGS "tags",
 				d.ORIGINAL_NAME, 
-      			d.UUID,
+      			d.UUID "uuid",
         		d.DIRECTORY
 		FROM 	feed f JOIN users u
 				ON f.USER_ID = u.USER_ID
@@ -101,9 +101,13 @@
 	
 	<!-- 피드 등록 -->
 	<insert id="feedInsert" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
-		{ CALL fphoto_insert( #{user_id}, #{content}, #{photo}, #{original_name}, #{tags}, #{uuid}, #{file_size}, #{directory})} 
+		{ CALL fphoto_insert( #{user_id}, #{content}, #{photo}, #{original_name}, #{tags}, #{uuid}, #{file_size}, #{directory} )} 
 	</insert>
 	
+	<!-- 피드 삭제 -->
+	<delete id="feedDelete" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
+		{ CALL feed_delete( #{feed_id} )} 
+	</delete>
 	
 	<!--  아직 미완  -->
 	<select id="FeedLikeSelect"
@@ -114,7 +118,6 @@
 		FROM 	likes
 		WHERE 	feed_id = #{feed_id}
 	</select>
-	
 
 	
 </mapper>

@@ -19,8 +19,8 @@ public interface FeedService {
 	 int tagSelect(TagVO vo);										//태그체크
 	 int tagInsert(TagVO vo);										//태그등록
 	 int feedInsert(FeedVO vo);										//피드등록
+	 int feedDelete(FeedVO vo);										//피드삭제
 	 
 	 int feedUpdate(FeedVO vo);
-	 int feedDelete(FeedVO vo);
 
 }

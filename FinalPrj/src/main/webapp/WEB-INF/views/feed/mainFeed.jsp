@@ -82,79 +82,6 @@ table {
 .view-wrapper {
     padding: 40px 12px;
 }
-/* 모달 css */
-.modal-dialog {
-    position: relative;
-    width: auto;
-    margin: 10px;
-}
-.modal-content {
-    -webkit-box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
-    box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
-}
-.modal-content {
-    position: relative;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #999;
-    border: 1px solid rgba(0,0,0,.2);
-    border-radius: 6px;
-    -webkit-box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
-    box-shadow: 0 3px 9px rgb(0 0 0 / 50%);
-    outline: 0;
-}
-.modal-content, .modal-card {
-    margin: 0 auto;
-    max-height: calc(100vh - 40px);
-    /* width: 640px; */
-}
-.modal-content, .modal-card {
-    margin: 0 20px;
-    max-height: calc(100vh - 160px);
-    overflow: auto;
-    position: relative;
-    width: 100%;
-}
-.modal-title {
-    margin: 0;
-    line-height: 1.42857143;
-}
-.modal-body {
-    position: relative;
-    padding: 15px;
-}
-.modal-footer {
-    padding: 15px;
-    text-align: right;
-    border-top: 1px solid #e5e5e5;
-}
-.btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
-}
-.modal-header .close {
-    margin-top: -2px;
-}
-button.close {
-    padding: 0;
-    cursor: pointer;
-    background: 0 0;
-    border: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-.close {
-    float: right;
-    font-size: 21px;
-    font-weight: 700;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    filter: alpha(opacity=20);
-    opacity: .2;
-}
 </style>
 
 </head>
@@ -162,7 +89,7 @@ button.close {
  <script>
 
 $(document).ready(function(){
-	//------------------- 생일 롤링 ---------------
+//------------------- 생일 롤링 ---------------
 	var height =  $(".notice").height();
 	var num = $(".rolling li").length;
 	var max = height * num;
@@ -192,7 +119,7 @@ $(document).ready(function(){
 		$(this).css("cursor", "default");
 	});
 	
-	//------------------- 태그 등록---------------
+//------------------- 태그 등록---------------
 	document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
 
 	function tagFunction() {
@@ -225,29 +152,12 @@ $(document).ready(function(){
 			event.returnValue = false;
 		}
 	}
-	
-	//------------------- 피드 등록 -----------------
-	$('#publish-button').on('click', function(){
-		var tagval = $('#append_tag').text();
-		var fileNameval;
-		
-		if(tagval == ""){
-		}else{
-			tagval= tagval.replace("#","");
-			tagval= tagval.replace(/#/g,",");
-		}
-		
-		document.getElementById('tags').value = tagval;
-		
-		$('#feedInsert').submit();
-		
-	});
-	
-	//------------------- 태그 자동완성 -----------------
+
+//------------------- 태그 자동완성 -----------------
 	if ($('#activities-autocpl').length) {
 	    var html = '';
 	    var activitiesOptions = {
-	      url: "${pageContext.request.contextPath}/responseBodyTest.do",
+	      url: "${pageContext.request.contextPath}/autocpl.do",
 	      getValue: "tag_name",
  	      template: {
 	        type: "custom",
@@ -271,36 +181,81 @@ $(document).ready(function(){
 	    };
 	    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
 	  } 
-});		
+	  
+//------------------- 피드 수정 -----------------
+	$('.feedUpdate').on('click',function(){
+		$('.app-overlay').addClass('is-active');
+		$('.is-new-content').addClass('is-highlighted');
+		var feedId = this.id;
+		var tags = $('#'+feedId).children(1).children(":eq(0)").val();
+		var content = $('#'+feedId).children(1).children(":eq(1)").val();
+		var photo = $('#'+feedId).children(1).children(":eq(2)").val();
+		var retag = tags.replace(/,/g, "#");
+		$('#feedid').val(feedId);	
+		
+		if(retag != ""){
+			$('#append_tag').append("#"+retag);			
+		}
+		console.log(photo);
+		if(photo != ""){	
+		  var deleteIcon = feather.icons.x.toSvg();
+		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
+		  $('#feed-upload').append(template);
+		  $('');
+	      $('.remove-file').on('click', function () {
+	          $('#feed-upload-input-1, #feed-upload-input-2').val('').attr('disabled', false);
+	          $(this).closest('.upload-wrap').remove();
+	        });
+		}
+		
+		$('#publish').val(content);
+		//미리보기로 사진 append
+		//console.log("feedID : "+feedId);
+		//console.log("tags : "+retag);
+		//console.log("content : "+content);
+		//console.log("photo : "+photo);
+	});
+	
+//------------------- 피드 등록 -----------------
+	$('#publish-button').on('click', function(){
+		var feedId = $('#feedid').val();
+		var tagval = $('#append_tag').text();
+		if(tagval == ""){
+		}else{
+			tagval= tagval.replace("#","");
+			tagval= tagval.replace(/#/g,",");
+		}
+		
+		  document.getElementById('tags').value = tagval;					
+		  
+		if(feedId == ""){
+		  $('#feedInsert').submit();
+		}else{
+			var content = $('#publish').val();
+			console.log(feedId);
+			//document.getElementById('content').value = content;
+			 $('#feedInsert').submit();
+			//var content = 
+		    //console.log($('#publish').val());
+		    //console.log(tagval);
+			//console.log($('#photo').val());
+			//console.log("업데이트");
+		}
+	});
+	
+ 	$('.close-publish').on('click',function(){
+		$('#publish').val('');
+		$('#append_tag').text('');
+		
+		$('#feed-upload').empty();
+		$('#gubun').val('');
+	}); 
+	
+});
+
+
 </script>
 
-<div class="container">
-  <h2>deModal Example</h2>
-  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  
-</div>
 	<!-- Pageloader -->
 	<div class="pageloader"></div>
 	<div class="infraloader is-active"></div>
@@ -597,6 +552,8 @@ $(document).ready(function(){
 					<!-- Middle column -->
 					<div class="column is-6">
 						<form action="feedInsert.do" id="feedInsert" method="post" enctype="multipart/form-data">
+							<input type="hidden" id="tags" name="tags">
+							<input type="hidden" id="feedid" name="feedid">
 						<!-- Publishing Area -->
 						<!-- /partials/pages/feed/compose-card.html -->
 						<div id="compose-card" class="card is-new-content">
@@ -616,9 +573,6 @@ $(document).ready(function(){
 								<!-- Tab content -->
 								<!-- ----------글쓰는 부분 --------------->
 								<div class="tab-content">
-									<!-- Compose form -->
-										<input type="hidden" id="tags" name="tags">
-										<input type="hidden" id="photo" name="photo">
 									<div class="compose">
 										<div class="compose-form">
 											<img src="https://via.placeholder.com/300x300"
@@ -906,7 +860,6 @@ $(document).ready(function(){
 															<i data-feather="bookmark"></i>
 															<div class="media-content">
 																<h3>번역</h3>
-																<small>Add this post to your bookmarks.</small>
 															</div>
 														</div>
 													</a> <a class="dropdown-item">
@@ -914,40 +867,42 @@ $(document).ready(function(){
 															<i data-feather="bell"></i>
 															<div class="media-content">
 																<h3>교정</h3>
-																<small>Send me the updates.</small>
 															</div>
 														</div>
 													</a>
+												<c:if test="${vo.user_id ne user.user_id}">
+													<hr class="dropdown-divider">
 													<a class="dropdown-item">
 														<div class="media">
 															<i data-feather="bell"></i>
 															<div class="media-content">
 																<h3>신고</h3>
-																<small>Send me the updates.</small>
 															</div>
 														</div>
 													</a>
-													<a class="dropdown-item">
-														<div class="media">
-															<i data-feather="bell"></i>
-															<div class="media-content">
-																<h3>수정</h3>
-																<small>Send me the1 updates.</small>
-															</div>
-														</div>
-													</a>
-												
+												</c:if>													
+												<c:if test="${vo.user_id eq user.user_id}">
 													<hr class="dropdown-divider">
+													<a class="dropdown-item">
+														<div class="media feedUpdate" id="${vo.feed_id }">
+															<i data-feather="bell"></i>
+															<div class="media-content" >
+															<input type="hidden" id="update-tag" name="update-tag" value="${vo.tags }">
+															<input type="hidden" id="update-content" name="update-content" value="${vo.content }">
+															<input type="hidden" id="update-photo" name="update-photo" value="${vo.uuid }">
+															<input type="hidden" id="update-photoId" name="update-photoId" value="${vo.fphoto }">
+																<h3>수정</h3>
+															</div>
+														</div>
 													<a href="#" class="dropdown-item">
 														<div class="media">
 															<i data-feather="flag"></i>
-															<div class="media-content">
+															<div class="media-content" onclick="location.href='feedDelete.do?feed_id=${vo.feed_id }'">
 																<h3>삭제</h3>
-																<small>In case of inappropriate content.</small>
 															</div>
 														</div>
-													</a>
-												
+													</a>	
+												</c:if>
 												</div>
 											</div>
 										</div>
@@ -960,7 +915,6 @@ $(document).ready(function(){
 										<div class="post-text">
 											<p>${vo.content }</p>
 										</div>
-	
 										<!-- Featured image -->
 										<c:if test="${empty vo.fphoto}">
 											<div class="post-image"
@@ -993,8 +947,7 @@ $(document).ready(function(){
 										<c:if test="${not empty vo.fphoto}">
 											<div class="post-image">
 												 <img
-													src='<c:url value = "${vo.directory }" />'
-													data-demo-src ='<c:url value = "${vo.directory }" />' alt="">
+													src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}' alt=""/>
 												<!-- Action buttons -->
 												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 												<div class="like-wrapper">
@@ -1020,7 +973,6 @@ $(document).ready(function(){
 											</div>
 										</c:if>
 										<div>
-											<input type="hidden" value="${vo.tags }">
 											<p>
 											<c:if test="${not empty vo.tags }">
 												<a>#${fn:replace(vo.tags,',','#')}</a>
@@ -1608,7 +1560,7 @@ $(document).ready(function(){
 									<!------------------------ 친구추천 시작 ------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>친구 추천</h4>
+								<h4>친구 추천<button onclick="location.href='friendSearch.jsp'">친구 찾으러 가쟝 </button></h4>
 								<div class="dropdown is-spaced is-right dropdown-trigger">
 									<div>
 										<div class="button">
@@ -1651,17 +1603,19 @@ $(document).ready(function(){
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
 								<c:forEach items="${sameTopic }" var="vo">
-								<div class="add-friend-block transition-block">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/nelly.png"
-										data-user-popover="9" alt="">
-									<div class="page-meta">
-										<span>${vo.user_id }</span> <span>나와 일치하는 관심사 ${vo.count }개</span>
-									</div>
-									<div class="add-friend add-transition">
-										<i data-feather="user-plus"></i>
-									</div>
-								</div>
+									<c:if test="${vo.count ne  0 }">
+										<div class="add-friend-block transition-block">
+											<img src="https://via.placeholder.com/300x300"
+												data-demo-src="assets/img/avatars/nelly.png"
+												data-user-popover="9" alt="">
+											<div class="page-meta">
+												<span>${vo.user_id }</span> <span>나와 일치하는 관심사 ${vo.count }개</span>
+											</div>
+											<div class="add-friend add-transition">
+												<i data-feather="user-plus"></i>
+											</div>
+										</div>
+									</c:if>
 								</c:forEach>
 							</div>
 						</div>
