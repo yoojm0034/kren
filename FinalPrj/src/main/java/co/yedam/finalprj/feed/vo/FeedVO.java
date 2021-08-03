@@ -16,6 +16,8 @@ public class FeedVO {
 	private Date reg_date;
 	private String tags;
 	
+	private String findLan;
+	
 	//photo.vo
 	private String photo_id;
 	private String delete_yn;

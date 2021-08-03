@@ -1,7 +1,16 @@
 package co.yedam.finalprj.feed.serviceImpl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -68,11 +77,6 @@ public class FeedServiceImpl implements FeedService {
 		//피드 수정
 		return map.feedUpdate(vo);
 	}
-
-
-
-
-
 
 
 

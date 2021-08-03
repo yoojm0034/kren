@@ -82,13 +82,38 @@ table {
 .view-wrapper {
     padding: 40px 12px;
 }
+.search-label {
+    display: inline-block;
+    font-size: 14px;
+    padding: 6px 15px 10px 15px;
+    border-radius: 2rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    background-color: #6ba4e9;
+    color: white;
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+.tdiv {
+    font-weight: bold;
+    text-shadow: 0 0 black;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.card.is-post .content-wrap .post-image .fab-wrapper.is-comment, .shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .content-wrap .post-image .fab-wrapper.is-comment {
+    right: 60px;
+}
 </style>
 
 </head>
 <body>
  <script>
 $(document).ready(function(){
-//------------------- 생일 롤링 ---------------
+	//-------생일롤링---------
 	var height =  $(".notice").height();
 	var num = $(".rolling li").length;
 	var max = height * num;
@@ -105,21 +130,18 @@ $(document).ready(function(){
 	};
 	
 	noticeRollingOff = setInterval(noticeRolling,3000);
-	
 	$(".rolling").append($(".rolling li").first().clone());
-	
 	$(".notice").mouseover(function(){
 		clearInterval(noticeRollingOff);
 		$(this).css("cursor", "pointer");
 	});
-	
 	$(".notice").mouseout(function(){
 		noticeRollingOff = setInterval(noticeRolling,5000);
 		$(this).css("cursor", "default");
 	});
 	
 
-//------------------- 태그 등록---------------
+	//-------태그등록---------
 	var maxAppend = 0;
 	document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
 	function tagFunction() {
@@ -132,7 +154,6 @@ $(document).ready(function(){
 				$('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
 				$('#activities-autocpl').val('');
 				maxAppend++;
-				console.log(maxAppend);
 				$.ajax({
 					url: "tagInsert.do" ,
 					type: "POST",
@@ -140,7 +161,6 @@ $(document).ready(function(){
 					success: function(data){
 					},
 					error: function(err){
-						console.log(err);
 					}
 				}); 
 			}
@@ -158,7 +178,7 @@ $(document).ready(function(){
 	  });
 	}
 
-//------------------- 태그 자동완성 -----------------
+	//-------태그자동완성---------
 	if ($('#activities-autocpl').length) {
 	    var html = '';
 	    var activitiesOptions = {
@@ -175,7 +195,6 @@ $(document).ready(function(){
 	        maxNumberOfElements: 5,
 	        showAnimation: {
 	          type: "slide",
-	          //normal|slide|fade
 	          time: 400,
 	          callback: function callback() {}
 	        },
@@ -185,78 +204,63 @@ $(document).ready(function(){
 	      }
 	    };
 	    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
-	  } 
-});
-
-</script>
-<script>
-$(document).ready(function(){
-//------------------- 피드 수정 -----------------
-var maxCnt = 0;
-$('.feedUpdate').on('click',function(){
-	$('.app-overlay').addClass('is-active');
-	$('.is-new-content').addClass('is-highlighted');
-	// 기존 저장 값
-	var feedId = this.id;
-	var tags = $('#'+feedId).children(1).children(":eq(0)").val();
-	var content = $('#'+feedId).children(1).children(":eq(1)").val();
-	var photo = $('#'+feedId).children(1).children(":eq(2)").val(); // 기존 값UUID
-	var fphoto = $('#'+feedId).children(1).children(":eq(3)").val(); // 기존 값UUID
-	
-	var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
-	
-	var retag = tags.replace(/,/g, "#");
-	
-	$('#feedid').val(feedId);	
-	if(retag != ""){
-		$('#append_tag').append("#"+retag);			
-	}
-	
-	if(photo != ""){	
-		if(maxCnt >= 1 ) return;
-	  var deleteIcon = feather.icons.x.toSvg();
-	  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
-	  $('#feed-upload').append(template);
-	  maxCnt++;
-	  maxValue++;
+	  };
 	  
-	  $('.remove-file').on('click', function () {
-          $(this).closest('.upload-wrap').remove();
-          photoChk.val(1);
-          maxCnt--;
-          maxValue--;
-        });
-	}
-	
-	$('#publish').val(content);
-	document.getElementById('photo').value = fphoto;	
-	
-	//미리보기로 사진 append
-	console.log("feedID : "+feedId);
-	console.log("tags : "+retag);
-	console.log("content : "+content);
-	console.log("photo : "+photo);
-	console.log("photo : "+fphoto);
-	
-});
+	//-------피드 수정----------
+	var maxCnt = 0;
+	$('.feedUpdate').on('click',function(){
+		$('.app-overlay').addClass('is-active');
+		$('.is-new-content').addClass('is-highlighted');
+		
+		var feedId = this.id;
+		var tags = $('#'+feedId).children(1).children(":eq(0)").val();
+		var content = $('#'+feedId).children(1).children(":eq(1)").val();
+		var photo = $('#'+feedId).children(1).children(":eq(2)").val(); 
+		var fphoto = $('#'+feedId).children(1).children(":eq(3)").val(); 
+		var retag = tags.replace(/,/g, "#");	
+		var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
+		
+		$('#feedid').val(feedId);	
+		if(retag != ""){
+			$('#append_tag').append("#"+retag);			
+		}
+		
+		if(photo != ""){	
+		  if(maxCnt >= 1 ) return;
+		  var deleteIcon = feather.icons.x.toSvg();
+		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
+		  $('#feed-upload').append(template);
+		  maxCnt++;
+		  maxValue++;
+		 
+		  $('.remove-file').on('click', function () {
+		         $(this).closest('.upload-wrap').remove();
+		         photoChk.val(1);
+		         maxCnt--;
+		         maxValue--;
+		       });
+		}
+		
+		$('#publish').val(content);
+		document.getElementById('photo').value = fphoto;	
+	});
 
-//------------------- 피드 등록 -----------------
-$('#publish-button').on('click', function(){
-	var feedId = $('#feedid').val();
-	var tagval = $('#append_tag').text();
-	if(tagval == ""){
-	}else{
-		tagval= tagval.replace("#","");
-		tagval= tagval.replace(/#/g,",");
-	}
+	//-------피드 등록---------
+	$('#publish-button').on('click', function(){
+		var feedId = $('#feedid').val();
+		var tagval = $('#append_tag').text();
+		
+		if(tagval == ""){
+		}else{
+			tagval= tagval.replace("#","");
+			tagval= tagval.replace(/#/g,",");
+		}
+		
+		document.getElementById('tags').value = tagval;					
+		$('#feedInsert').submit();
+	});
 	
-	document.getElementById('tags').value = tagval;					
-
-		  $('#feedInsert').submit();
-
-	
-});
-
+	//-------피드 Reset---------
 	$('.close-publish').on('click',function(){
 		$('#publish').val('');
 		$('#append_tag').text('');
@@ -264,7 +268,32 @@ $('#publish-button').on('click', function(){
 		$('#feed-upload').empty();
 		$('#feedid').val('');
 	}); 
+	
+	//-------인기있는 주제검색---------
+	$('.tag-label').on('click',function(){
+		var tagName = this.id;
+		location.href="feed.do?tags=" + tagName
+	});
 });
+
+	//-------번역---------
+	function trans(id, text){
+		var div = $("#tdiv"+id);
+	 	$.ajax({
+			url:"${pageContext.request.contextPath}/test11.do",
+			type:"GET",
+			data:{korean:text},
+			success:function(v){
+				console.log(v);
+				var json = JSON.parse(v);
+				var english=json.message.result.translatedText;
+				div.append($('<p/>').html(english));
+			},
+			error:function(err){
+				console.log(err);
+			}
+		}); 
+	};
 </script>
 
 	<!-- Pageloader -->
@@ -335,7 +364,6 @@ $('#publish-button').on('click', function(){
 					</div>
 
 					<div class="column is-6">
-
 						<!-- Placeload element -->
 						<div class="placeload compose-placeload">
 							<div class="header">
@@ -534,7 +562,7 @@ $('#publish-button').on('click', function(){
 								<c:forEach var="vo" items="${likeTag }" end="9">
 									<!-- Recommended Page -->
 									<label class="nicelabel-default-position"> <span
-										class="tag-label">#${vo.tag_name }</span>
+										class="tag-label" id="${vo.tag_name }">#${vo.tag_name }</span>
 									</label>
 								</c:forEach>
 							</div>
@@ -832,10 +860,13 @@ $('#publish-button').on('click', function(){
 					</form>
 					
 					<!-------------- 검색 태그 부분------------ -->
-		<!-- 				<label class="nicelabel-default-position">
-							<span class="tag-label">내 근처</span>
-							<span class="tag-label">친구</span>
-						</label> -->
+		 				<label class="nicelabel-default-position">
+		 					<span class="search-label">최신글</span>
+							<span class="search-label">내 근처</span>
+							<span class="search-label">친구</span>
+							<span class="search-label">태그</span>
+							<span class="search-label">언어별</span>
+						</label> 
 									
 						<!------------------------ 포스트 시작 ------------------------->
 						<c:forEach items="${feedList }" var="vo">
@@ -870,7 +901,7 @@ $('#publish-button').on('click', function(){
 													<a href="#" class="dropdown-item">
 														<div class="media" >
 															<i data-feather="bookmark"></i>
-															<div class="media-content">
+															<div class="media-content test0101" id="${vo.content }" onclick="trans('${vo.feed_id }','${vo.content }')">
 																<h3>번역</h3>
 															</div>
 														</div>
@@ -920,12 +951,12 @@ $('#publish-button').on('click', function(){
 										</div>
 									</div>
 									<!-- /Post header -->
-
 									<!-- Post body -->
 									<div class="card-body">
 										<!-- Post body text -->
 										<div class="post-text">
 											<p>${vo.content }</p>
+											<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 										</div>
 										<!-- Featured image -->
 										<c:if test="${empty vo.fphoto}">
@@ -941,14 +972,6 @@ $('#publish-button').on('click', function(){
 														class="like-overlay"></span>
 													</a>
 												</div>
-
-												<div class="fab-wrapper is-share">
-													<a href="javascript:void(0);"
-														class="small-fab share-fab modal-trigger"
-														data-modal="share-modal"> <i data-feather="link-2"></i>
-													</a>
-												</div>
-
 												<div class="fab-wrapper is-comment">
 													<a href="javascript:void(0);" class="small-fab"> <i
 														data-feather="message-circle"></i>
@@ -969,14 +992,6 @@ $('#publish-button').on('click', function(){
 														class="like-overlay"></span>
 													</a>
 												</div>
-
-												<div class="fab-wrapper is-share">
-													<a href="javascript:void(0);"
-														class="small-fab share-fab modal-trigger"
-														data-modal="share-modal"> <i data-feather="link-2"></i>
-													</a>
-												</div>
-
 												<div class="fab-wrapper is-comment">
 													<a href="javascript:void(0);" class="small-fab"> <i
 														data-feather="message-circle"></i>
@@ -1028,9 +1043,6 @@ $('#publish-button').on('click', function(){
 										<div class="social-count">
 											<div class="likes-count">
 												<i data-feather="heart"></i> <span>27</span>
-											</div>
-											<div class="shares-count">
-												<i data-feather="link-2"></i> <span>9</span>
 											</div>
 											<div class="comments-count">
 												<i data-feather="message-circle"></i> <span>3</span>
@@ -4697,41 +4709,6 @@ $('#publish-button').on('click', function(){
 			</div>
 		</div>
 	</div>
-
-	<!-- Concatenated js plugins and jQuery -->
-
-
-	<!-- profile js -->
-
-	<!-- stories js -->
-
-	<!-- friends js -->
-
-	<!-- questions js -->
-
-	<!-- video js -->
-
-	<!-- events js -->
-
-	<!-- news js -->
-
-	<!-- shop js -->
-
-	<!-- inbox js -->
-
-	<!-- settings js -->
-
-	<!-- map page js -->
-
-	<!-- elements page js -->
-	
 </body>
-
 </html>
-
-
-
-
-
-
 
