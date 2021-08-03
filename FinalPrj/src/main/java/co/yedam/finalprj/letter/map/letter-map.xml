@@ -39,11 +39,15 @@
 	</select>
 	
 	<!-- 편지 작성 -->
+	<!-- 거리만큼 걸리는 시간+send_date = arrive_date 조건문 추가 필요-->
 	<insert id="insertLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		<selectKey keyProperty="distance" resultType="int" order="BEFORE">
+			SELECT TRUNC(CAL(#{to_id}, #{user_id}),0) FROM DUAL
+		</selectKey>
 		INSERT INTO LETTER
 			(LETTER_ID, TO_ID, USER_ID, CONTENT, PHOTO, GUBUN)
 		VALUES
-			('letter_'||letter_seq.nextval, #{to_id}, #{user_id}, #{content}, #{photo}, #{gubun})			
+			('letter_'||letter_seq.nextval, #{to_id}, #{user_id}, #{content}, #{photo, jdbcType=VARCHAR}, #{gubun})			
 	</insert>
 	
 	<!-- 편지 삭제 -->

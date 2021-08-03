@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <style>
 .inbox-wrapper .inbox-wrapper-inner .inbox-left-sidebar .inbox-left-sidebar-inner
 	{
@@ -38,30 +40,6 @@
 	font-size: .9rem;
 }
 
-.dropdown-menu {
-    display: none;
-    left: 0;
-    max-width: fit-content;
-    padding-top: 4px;
-    position: absolute;
-    top: 100%;
-    z-index: 20;
-}
-
-.dropdown.is-spaced .dropdown-menu {
-    box-shadow: 0px 5px 16px rgb(0 0 0 / 5%);
-    border-color: #e8e8e8;
-    padding-top: 0;
-    min-width: 0;
-}
-
-.dropdown.is-spaced .dropdown-menu .dropdown-content {
-    border: 1px solid #e8e8e8;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    max-width: fit-content;
-}
-
 .select {
     background-color: #f7f7f7;
     border: none;
@@ -82,6 +60,20 @@
     height: 100%;
     overflow-y: hidden;
 }
+
+.control  table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+}
+
+.control  textarea {
+    width: -webkit-fill-available;
+    border: none;
+    resize: none;
+    padding: revert;
+}
+
 </style>
 <script>
 	// 영어 -> 한국어
@@ -208,8 +200,60 @@
 		    	alert("취소되었습니다.");
 		    }
 		});
-
-
+		
+		// 편지 입력
+		$("body").on('click', '#send', function() {
+			var send = $(this).data('send'); //letter_id
+			var to = $(this).data('to'); //to_id
+			var sendbtn = $('button[data-send="'+send+'"]');
+			var txtarea = $('textarea[data-letter="'+send+'"]').val();
+			console.log(txtarea);
+			
+			if(confirm("편지를 전송하시겠습니까?") ) {
+			    $.ajax({
+			    	url:'insertLetter.do',
+			    	type:'post',
+			    	data:JSON.stringify({
+			    		letter_id:send,
+			    		to_id:to,
+			    		content:txtarea,
+			    		gubun:'일반'
+			    	}),
+				    contentType : "application/json; charset=UTF-8",
+			    	success: function(data) {
+			    		alert('전송되었습니다.');
+			    		location.reload(true);
+			    	},
+			    	error: function(e) {
+			    		alert('편지전송실패');
+			    	}
+			    });		    	
+		    } else {
+		    	if(confirm("편지를 저장하시겠습니까?") ) {
+				    $.ajax({
+				    	url:'insertLetter.do',
+				    	type:'post',
+				    	data:JSON.stringify({
+				    		letter_id:send,
+				    		to_id:to,
+				    		content:txtarea,
+				    		gubun:'임시저장'
+				    	}),
+					    contentType : "application/json; charset=UTF-8",
+				    	success: function(data) {
+				    		alert('편지가 저장되었습니다.');
+				    		location.reload(true);
+				    	},
+				    	error: function(e) {
+				    		alert('저장실패');
+				    	}
+				    });		    	
+			    } else {
+			    	alert("편지작성이 취소되었습니다.");
+			    }
+		    }
+		});
+		
 	});
 
 	// 교정테이블 추가
@@ -328,16 +372,18 @@
 						</a>
 						<c:if test="${!empty friends }">
 						<c:forEach items="${friends }" var="vo">
-							<c:if test="${param.user_id eq vo.user_id }">
-							<a data-id="${vo.user_id}" class="item is-active">
-								<span class="name">${vo.name }</span>
-							</a>
-							</c:if>
-							<c:if test="${param.user_id ne vo.user_id  }">
-							<a data-id="${vo.user_id}" class="item">
-								<span class="name">${vo.name }</span>
-							</a>							
-							</c:if>
+							<c:choose>
+							<c:when test="${param.user_id eq vo.user_id }">
+								<a data-id="${vo.user_id}" class="item is-active">
+									<span class="name">${vo.name }</span>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a data-id="${vo.user_id}" class="item">
+									<span class="name">${vo.name }</span>
+								</a>							
+							</c:otherwise>
+							</c:choose>
 						</c:forEach>
 						</c:if>						
 					</div>
@@ -419,9 +465,16 @@
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
+											<c:if test="${!empty vo.arrive_date }">
 											<span class="msg-timestamp"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/>  <img
 												src="resources/template/assets/img/letter/stamp.png">
 											</span>
+											</c:if>
+											<c:if test="${empty vo.arrive_date }">
+											<span class="msg-timestamp"> 시간계산중
+											  <img src="resources/template/assets/img/letter/stamp.png">
+											</span>
+											</c:if>
 											<div class="msg-header">
 												<div class="user-image">
 													<img
@@ -434,7 +487,12 @@
 											</div>
 											<br>
 											<div class="msg-snippet">
+											<c:if test="${!empty vo.arrive_date }">
 												<p>${vo.content }</p>
+											</c:if>
+											<c:if test="${empty vo.arrive_date }">
+												<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
+											</c:if>											
 											</div>
 										</div>
 									</div>
@@ -523,6 +581,7 @@
 					<div class="message-body has-slimscroll">
 					<c:forEach items="${friendLetter }" var="vo" varStatus="status">
 					<div id="message-preview-${status.index }" class="message-body-inner">
+						<c:if test="${!empty vo.arrive_date }">
 						<div class="box message-preview">
 							<div class="box-inner">
 								<div class="header">
@@ -563,7 +622,9 @@
 								</div>
 							</div>
 						</div>
-
+						</c:if>
+						<!-- 편지작성 -->
+						<c:if test="${!empty vo.arrive_date and vo.name ne user.name }">
 						<div class="reply-wrapper">
 							<div class="reply-title">
 							Write
@@ -571,19 +632,26 @@
 							<div class="reply-wrapper-inner">
 								<div class="flex-form">
 									<div class="control">
-										<div id="corText" class="reply-textarea"></div>
+										<table>
+										<tr>
+										<td>
+											<textarea data-letter="${vo.letter_id }" rows="20" cols="20" placeholder="Write your letter"></textarea>
+										</td>
+										</tr>
+										</table>
 									</div>
 								</div>
 								<div class="has-text-right">
-									<button data-text="${status.index }" type="button"
+									<button id="send" data-send="${vo.letter_id  }" data-to="${vo.user_id }" type="button"
 										class="button is-solid accent-button is-bold raised send-message">
 										Send Letter</button>
 								</div>
 							</div>
 						</div>
+						</c:if>
 							<!-- 교정편지추가 -->
 							<c:choose>
-							<c:when test="${!empty lettercs and vo.cor_yn eq 'Y'}">
+							<c:when test="${!empty vo.arrive_date and !empty lettercs and vo.cor_yn eq 'Y'}">
 							<div class="message-preview-transition is-first">
 								<div class="mail">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24"
