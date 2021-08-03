@@ -33,7 +33,7 @@ public class UsersVO {
 	private String city;
 	private String visited;
 	private Date reg_date;
-	private Date edit_date;
+	private Date edit_dt;
 	private String prifile;
 	private int stamp;
 	private String photo;

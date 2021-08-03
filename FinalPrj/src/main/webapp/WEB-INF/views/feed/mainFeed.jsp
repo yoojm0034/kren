@@ -87,7 +87,6 @@ table {
 </head>
 <body>
  <script>
-
 $(document).ready(function(){
 //------------------- 생일 롤링 ---------------
 	var height =  $(".notice").height();
@@ -119,20 +118,21 @@ $(document).ready(function(){
 		$(this).css("cursor", "default");
 	});
 	
-//------------------- 태그 등록---------------
-	document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
 
+//------------------- 태그 등록---------------
+	var maxAppend = 0;
+	document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
 	function tagFunction() {
 		if(event.keyCode==13){
 	    	var tagval = $('#activities-autocpl').val();
-			
 	    	if(!tagval) {
 				alert('태그를 입력해 주세요!');
 			}else{
-				
-				$('#append_tag').append('#' + tagval + ' ');
+				if (maxAppend >= 5) return; 
+				$('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
 				$('#activities-autocpl').val('');
-				
+				maxAppend++;
+				console.log(maxAppend);
 				$.ajax({
 					url: "tagInsert.do" ,
 					type: "POST",
@@ -151,6 +151,11 @@ $(document).ready(function(){
 			event.preventDefault();
 			event.returnValue = false;
 		}
+		
+	  $('.tagDelete').on('click', function () {
+      	$( this ).remove(); 
+      	maxAppend--;
+	  });
 	}
 
 //------------------- 태그 자동완성 -----------------
@@ -181,79 +186,85 @@ $(document).ready(function(){
 	    };
 	    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
 	  } 
-	  
+});
+
+</script>
+<script>
+$(document).ready(function(){
 //------------------- 피드 수정 -----------------
-	$('.feedUpdate').on('click',function(){
-		$('.app-overlay').addClass('is-active');
-		$('.is-new-content').addClass('is-highlighted');
-		var feedId = this.id;
-		var tags = $('#'+feedId).children(1).children(":eq(0)").val();
-		var content = $('#'+feedId).children(1).children(":eq(1)").val();
-		var photo = $('#'+feedId).children(1).children(":eq(2)").val();
-		var retag = tags.replace(/,/g, "#");
-		$('#feedid').val(feedId);	
-		
-		if(retag != ""){
-			$('#append_tag').append("#"+retag);			
-		}
-		console.log(photo);
-		if(photo != ""){	
-		  var deleteIcon = feather.icons.x.toSvg();
-		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
-		  $('#feed-upload').append(template);
-		  $('');
-	      $('.remove-file').on('click', function () {
-	          $('#feed-upload-input-1, #feed-upload-input-2').val('').attr('disabled', false);
-	          $(this).closest('.upload-wrap').remove();
-	        });
-		}
-		
-		$('#publish').val(content);
-		//미리보기로 사진 append
-		//console.log("feedID : "+feedId);
-		//console.log("tags : "+retag);
-		//console.log("content : "+content);
-		//console.log("photo : "+photo);
-	});
+var maxCnt = 0;
+$('.feedUpdate').on('click',function(){
+	$('.app-overlay').addClass('is-active');
+	$('.is-new-content').addClass('is-highlighted');
+	// 기존 저장 값
+	var feedId = this.id;
+	var tags = $('#'+feedId).children(1).children(":eq(0)").val();
+	var content = $('#'+feedId).children(1).children(":eq(1)").val();
+	var photo = $('#'+feedId).children(1).children(":eq(2)").val(); // 기존 값UUID
+	var fphoto = $('#'+feedId).children(1).children(":eq(3)").val(); // 기존 값UUID
 	
-//------------------- 피드 등록 -----------------
-	$('#publish-button').on('click', function(){
-		var feedId = $('#feedid').val();
-		var tagval = $('#append_tag').text();
-		if(tagval == ""){
-		}else{
-			tagval= tagval.replace("#","");
-			tagval= tagval.replace(/#/g,",");
-		}
-		
-		  document.getElementById('tags').value = tagval;					
-		  
-		if(feedId == ""){
-		  $('#feedInsert').submit();
-		}else{
-			var content = $('#publish').val();
-			console.log(feedId);
-			//document.getElementById('content').value = content;
-			 $('#feedInsert').submit();
-			//var content = 
-		    //console.log($('#publish').val());
-		    //console.log(tagval);
-			//console.log($('#photo').val());
-			//console.log("업데이트");
-		}
-	});
+	var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
 	
- 	$('.close-publish').on('click',function(){
-		$('#publish').val('');
-		$('#append_tag').text('');
-		
-		$('#feed-upload').empty();
-		$('#gubun').val('');
-	}); 
+	var retag = tags.replace(/,/g, "#");
+	
+	$('#feedid').val(feedId);	
+	if(retag != ""){
+		$('#append_tag').append("#"+retag);			
+	}
+	
+	if(photo != ""){	
+		if(maxCnt >= 1 ) return;
+	  var deleteIcon = feather.icons.x.toSvg();
+	  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
+	  $('#feed-upload').append(template);
+	  maxCnt++;
+	  maxValue++;
+	  
+	  $('.remove-file').on('click', function () {
+          $(this).closest('.upload-wrap').remove();
+          photoChk.val(1);
+          maxCnt--;
+          maxValue--;
+        });
+	}
+	
+	$('#publish').val(content);
+	document.getElementById('photo').value = fphoto;	
+	
+	//미리보기로 사진 append
+	console.log("feedID : "+feedId);
+	console.log("tags : "+retag);
+	console.log("content : "+content);
+	console.log("photo : "+photo);
+	console.log("photo : "+fphoto);
 	
 });
 
+//------------------- 피드 등록 -----------------
+$('#publish-button').on('click', function(){
+	var feedId = $('#feedid').val();
+	var tagval = $('#append_tag').text();
+	if(tagval == ""){
+	}else{
+		tagval= tagval.replace("#","");
+		tagval= tagval.replace(/#/g,",");
+	}
+	
+	document.getElementById('tags').value = tagval;					
 
+		  $('#feedInsert').submit();
+
+	
+});
+
+	$('.close-publish').on('click',function(){
+		$('#publish').val('');
+		$('#append_tag').text('');
+		$('#photoChk').val('');
+		$('#feed-upload').empty();
+		$('#feedid').val('');
+	}); 
+});
 </script>
 
 	<!-- Pageloader -->
@@ -548,12 +559,13 @@ $(document).ready(function(){
 					</div>
 					<!--------------------------- 왼쪽사이드바 끝 ------------------------------>
 
-
 					<!-- Middle column -->
 					<div class="column is-6">
 						<form action="feedInsert.do" id="feedInsert" method="post" enctype="multipart/form-data">
 							<input type="hidden" id="tags" name="tags">
 							<input type="hidden" id="feedid" name="feedid">
+							<input type="hidden" id="photo" name="photo">
+							<input type="hidden" id="photoChk" name="photoChk">
 						<!-- Publishing Area -->
 						<!-- /partials/pages/feed/compose-card.html -->
 						<div id="compose-card" class="card is-new-content">
@@ -608,7 +620,7 @@ $(document).ready(function(){
 											<div id="activities-autocpl-wrapper"
 												class="control has-margin">
 												<input id="activities-autocpl" type="text" class="input" 
-													placeholder="태그를 입력해 주세용" 
+													placeholder="태그를 입력해 주세요" 
 													>
 												<div class="icon">
 													<i data-feather="search"></i>
@@ -856,7 +868,7 @@ $(document).ready(function(){
 											<div class="dropdown-menu" role="menu">
 												<div class="dropdown-content">
 													<a href="#" class="dropdown-item">
-														<div class="media">
+														<div class="media" >
 															<i data-feather="bookmark"></i>
 															<div class="media-content">
 																<h3>번역</h3>
@@ -890,7 +902,7 @@ $(document).ready(function(){
 															<input type="hidden" id="update-tag" name="update-tag" value="${vo.tags }">
 															<input type="hidden" id="update-content" name="update-content" value="${vo.content }">
 															<input type="hidden" id="update-photo" name="update-photo" value="${vo.uuid }">
-															<input type="hidden" id="update-photoId" name="update-photoId" value="${vo.fphoto }">
+															<input type="hidden" id="update-fphoto" name="update-fphoto" value="${vo.fphoto }">
 																<h3>수정</h3>
 															</div>
 														</div>
@@ -1560,7 +1572,7 @@ $(document).ready(function(){
 									<!------------------------ 친구추천 시작 ------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>친구 추천<button onclick="location.href='friendSearch.jsp'">친구 찾으러 가쟝 </button></h4>
+								<h4>친구 추천<button onclick="location.href='friendSearch.do'">친구 찾으러 가쟝 </button></h4>
 								<div class="dropdown is-spaced is-right dropdown-trigger">
 									<div>
 										<div class="button">
@@ -1602,7 +1614,7 @@ $(document).ready(function(){
 							</div>
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
-								<c:forEach items="${sameTopic }" var="vo">
+								<c:forEach items="${sameTopic }" var="vo" end="10">
 									<c:if test="${vo.count ne  0 }">
 										<div class="add-friend-block transition-block">
 											<img src="https://via.placeholder.com/300x300"

@@ -323,6 +323,7 @@ $('#step5').click(function() {
 	console.log('photo : ');
 	console.log('country : ' + $('input[name=country]').val());
 	console.log('city : ' + $('input[name=city]').val());
+	console.log('timezone: ' + $('input[name=timezone]').val());
 	console.log('lat : ' + $('input[name=lat]').val());
 	console.log('lon : ' + $('input[name=lon]').val());
 	console.log('flag : ' + $('input[name=flag]').val());
@@ -331,7 +332,7 @@ $('#step5').click(function() {
 	console.log('language2_level : ' + $('#language2_level option:selected').val());
 	console.log('topic : ' + $('#topic').val());								
 	
-	frm.submit();
+	//frm.submit();
 	
 	});
 });
@@ -482,6 +483,7 @@ $('#step5').click(function() {
 								var country = json['location']['country']['name'];
 								var city = json['location']['region']['name'];
 								var time = json['time_zone']['current_time'];
+								var timezone = json['time_zone']['id'];
 								var lat = json['location']['latitude'];
 								var lon = json['location']['longitude'];
 								var flag = json['location']['country']['flag']['emojitwo'];
@@ -489,6 +491,7 @@ $('#step5').click(function() {
 								// input에 값 넣기
 								$("#country").val(country);
 								$("#city").val(city);
+								$("#timezone").val(timezone);
 								$("#lat").val(lat);
 								$("#lon").val(lon);
 								$("#flag").val(flag);
@@ -544,6 +547,7 @@ $('#step5').click(function() {
 						<br>
 						<form:hidden path="city" />
 						<form:hidden path="country" />
+						<form:hidden path="timezone" />
 						<form:hidden path="lat" />
 						<form:hidden path="lon" />
 						<form:hidden path="flag" />
@@ -570,8 +574,8 @@ $('#step5').click(function() {
 									<b><label>Native</label></b> 
 									<select name="language1" id="language1" onchange="language()" style="width: 100px; font-size: 12pt;">
 										<option value="" selected hidden="hidden">Native</option>
-										<option value="Korean">Korean</option>
-										<option value="English">English</option>
+										<option value="KR">Korean</option>
+										<option value="EN">English</option>
 									</select>
 								</div>
 								<div class="control" style="display: inline-grid; margin: 1rem;">
@@ -581,11 +585,11 @@ $('#step5').click(function() {
 									<select name="language2_level" id="language2_level"
 										style="width: 100px; font-size: 12pt;">
 										<option value="" selected hidden="hidden">Level</option>
-										<option value="Beginner">Beginner</option>
-										<option value="Elementary">Elementary</option>
-										<option value="Intermediate">Intermediate</option>
-										<option value="Advanced">Advanced</option>
-										<option value="Proficient">Proficient</option>
+										<option value="1">Beginner</option>
+										<option value="2">Elementary</option>
+										<option value="3">Intermediate</option>
+										<option value="4">Advanced</option>
+										<option value="5">Proficient</option>
 									</select>
 								</div>
 							</div>
@@ -641,7 +645,7 @@ $('#step5').click(function() {
 
                     <div class="buttons">
                         <a class="button process-button" data-step="step-dot-3">Back</a>
-                        <a class="button process-button is-next" data-step="step-dot-5">Next</a>
+                        <a class="button process-button is-next" data-step="step-dot-5" id="step5">Next</a>
                     </div>
 					</div>				
 

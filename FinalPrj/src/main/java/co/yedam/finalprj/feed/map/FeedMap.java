@@ -19,5 +19,6 @@ public interface FeedMap {
 	int tagInsert(TagVO vo);									//태그등록
 	int feedInsert(FeedVO vo);									//피드등록	
 	int feedDelete(FeedVO vo);									//피드삭제
+	int feedUpdate(FeedVO vo);									//피드수정
 }
 

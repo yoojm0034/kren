@@ -47,8 +47,10 @@ public class UsersController {
 		return "main/test3";
 	} 
 	
+	// 프로필화면
 	@RequestMapping("profile.do")
-	public String profile() {
+	public String profile(UsersVO vo, Model model) {
+	//model.addAttribute("user", usersDao.usersSelect(vo));
 		return "users/profile";
 	} 
 	
