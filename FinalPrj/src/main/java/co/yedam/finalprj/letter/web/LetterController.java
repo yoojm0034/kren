@@ -7,13 +7,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.finalprj.letter.service.LetterService;
 import co.yedam.finalprj.letter.vo.LetterVO;
 import co.yedam.finalprj.letterc.service.LettercService;
-import co.yedam.finalprj.letterc.vo.LettercVO;
 
 @Controller
 public class LetterController {
@@ -73,4 +74,12 @@ public class LetterController {
 		return "letter/letterBox2";
 	}
 
+	@RequestMapping(value="deleteLetter.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteLetter(@RequestBody LetterVO vo, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setUser_id(id);
+		letterDao.deleteLetter(vo);
+	}
 }

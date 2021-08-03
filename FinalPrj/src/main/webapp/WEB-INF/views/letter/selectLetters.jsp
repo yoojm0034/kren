@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/template/assets/js/diffButty.js"></script>
 <style>
 .inbox-wrapper .inbox-wrapper-inner .inbox-left-sidebar .inbox-left-sidebar-inner
 	{
@@ -162,16 +161,16 @@
 			trDel.remove();
 		});
 
-		// 교정테이블 td에 textarea 추가 그룹 이벤트
-		$("body").on('click', '#btnc',  function() {
-		    var btnc = $(this).data('btnc');
-			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
-			var tdRoad = $("button[data-btnc="+btnc+"]").parent();
-		    console.log(btnc, textRoad);
-			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
-			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
-		});
-
+// 		// 교정테이블 td에 textarea 추가 그룹 이벤트
+// 		$("body").on('click', '#btnc',  function() {
+// 		    var btnc = $(this).data('btnc');
+// 			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
+// 			var tdRoad = $("button[data-btnc="+btnc+"]").parent();
+// 		    console.log(btnc, textRoad);
+// 			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
+// 			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
+// 		});
+		
 		// 교정테이블 추가 그룹 이벤트
 		$("body").on('click', '#corbtn',  function() {
 		    var corid = $(this).data('corid');		//letter_id; id
@@ -179,19 +178,38 @@
 		    add(corid, coridx);
 		});
 		
-		// 폼의 버튼을 누르면 교정문장 전달
+		// 전송버튼을 누르면 교정문장 전달
 		$("body").on('click', '#frmBtn',  function() {
 		    var num = $(this).data('num');			//row
 		    var frmbtn = $(this).data('frmbtn');	//idx
 		    letterc(num, frmbtn);
 		});
 		
-		$("body").on('click', '#dif',  function() {
-		    var line = $(this).data('diffb');			
-		    test_diff(line);
-		    console.log(line);
+		// 삭제버튼을 누르면 편지목록에서 삭제
+		$("body").on('click', '#delbtn',  function() {
+		    var delid = $(this).data('delid');	//letter_id
+		    console.log(delid);
+		    
+		    if(confirm("편지를 삭제하시겠습니까?") ) {
+			    $.ajax({
+			    	url:'deleteLetter.do',
+			    	type:'post',
+			    	data:JSON.stringify({letter_id:delid}),
+				    contentType : "application/json; charset=UTF-8",
+			    	success: function(data) {
+			    		alert('삭제되었습니다.');
+			    		location.reload(true);
+			    	},
+			    	error: function(e) {
+			    		alert('삭제실패');
+			    	}
+			    });		    	
+		    } else {
+		    	alert("취소되었습니다.");
+		    }
 		});
-		
+
+
 	});
 
 	// 교정테이블 추가
@@ -222,7 +240,8 @@
 				var tr = $('<tr>');
 // 				tr.append($('<td>').append(rownum+i)); //행번호
 				tr.append($('<td data-cont="'+i+'">').append(result[i]));
-				tr.append($('<td>').append($('<button type="button" id="btnc" data-btnc="'+i+'">').text('교정')));
+// 				tr.append($('<td>').append($('<button type="button" id="btnc" data-btnc="'+i+'">').text('교정')));
+				tr.append($('<td>').append($('<textarea id="correcting" data-corr="'+i+'">').val(result[i])));
 				tbl.append(tr);			
 			}
 		}
@@ -279,26 +298,12 @@
 			success:function(v){
 				alert("작성되었습니다!");
 				$('#tbl'+letter).remove(); // 교정 테이블 삭제
-				
+				location.reload(true);
 			},error:function(e){
 				console.log(e);
 			}
 		});
 	} //function letterc
-
-	// 문자열 비교
-	function test_diff(dif)
-	{
-		var original = $('div[data-ori="'+dif+'"]').text;
-		var revised = $('div[data-cre="'+dif+'"]').text;
-		var output = $('div[data-diff="'+dif+'"]');
-	
-		var html = diffButty(original, revised);
-	
-		output.text = '<pre>'+html+'</pre>';
-	
-	} 
-
 </script>
 </head>
 <body>
@@ -322,10 +327,17 @@
 							<span class="name">Saved Letters</span>
 						</a>
 						<c:if test="${!empty friends }">
-						<c:forEach items="${friends }" var="vo">	
-							<a data-id="${vo.user_id}" class="item">
+						<c:forEach items="${friends }" var="vo">
+							<c:if test="${param.user_id eq vo.user_id }">
+							<a data-id="${vo.user_id}" class="item is-active">
 								<span class="name">${vo.name }</span>
 							</a>
+							</c:if>
+							<c:if test="${param.user_id ne vo.user_id  }">
+							<a data-id="${vo.user_id}" class="item">
+								<span class="name">${vo.name }</span>
+							</a>							
+							</c:if>
 						</c:forEach>
 						</c:if>						
 					</div>
@@ -403,6 +415,7 @@
 							<div id="inbox-messages" class="inbox-messages has-slimscroll">
 								<div class="inbox-messages-inner">
 								<c:forEach items="${friendLetter }" var="vo" varStatus="status">
+								
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
@@ -546,6 +559,7 @@
 										<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">교정</button>
 										</c:if>
 									</c:if>
+									<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">삭제</button>
 								</div>
 							</div>
 						</div>
@@ -593,7 +607,7 @@
                                        </div>
                                    </div>
                                    <hr>
-                                   <div class="content">
+                                   <div class="content" id="diff">
                                	   <table>
                                	   	<tr>
                                	   		<td></td>
@@ -602,9 +616,8 @@
                                	   	<c:forEach items="${lettercs}" var="cvo">
                                	   	<c:if test="${cvo.letter_id eq vo.letter_id }">
                                	   	<tr>
-                               	   		<td><div data-ori="${cvo.line }">${cvo.origin }</div></td>
-                               	   		<td><div data-cre="${cvo.line }">${cvo.correcting }</div><br>
-                               	   		<div data-diff="${cvo.line }"></div><button id="dif" data-diffb="${cvo.line }">DIFF</button></td>
+                               	   		<td>${cvo.origin }</td>
+                               	   		<td>${cvo.correcting }<br>
                                	   	</tr>                               	   	
                                	   	</c:if>
                                	   	</c:forEach>

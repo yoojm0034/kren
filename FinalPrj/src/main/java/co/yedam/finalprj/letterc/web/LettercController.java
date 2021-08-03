@@ -46,15 +46,16 @@ public class LettercController {
 	    	staffList.add(staffMap);
 	    }
 	    
-	    for(int i=0; i<line.length; i++) {
-	    	if(correcting[i] != null) {
-	    		System.out.println(line[i]);
-	    		System.out.println(origin[i]);
-	    		System.out.println(correcting[i]);	    		
-	    	}
-	    }
-		return 0;
-//		return lettercDao.insertLetterC(staffList);
+// 넘어오는 값 확인
+//	    for(int i=0; i<line.length; i++) {
+//	    	if(correcting[i] != null) {
+//	    		System.out.println(line[i]);
+//	    		System.out.println(origin[i]);
+//	    		System.out.println(correcting[i]);	    		
+//	    	}
+//	    }
+	    
+		return lettercDao.insertLetterC(staffList);
 	}
 	
 }

@@ -15,11 +15,6 @@ public class LetterServiceImpl implements LetterService {
 	LetterMap map;
 	
 	@Override
-	public List<LetterVO> selectAllLetter() {
-		return map.selectAllLetter();
-	}
-	
-	@Override
 	public List<LetterVO> selectAllFriend(LetterVO vo) {
 		return map.selectAllFriend(vo);
 	}
@@ -42,11 +37,6 @@ public class LetterServiceImpl implements LetterService {
 	@Override
 	public int insertLetter(LetterVO vo) {
 		return map.insertLetter(vo);
-	}
-
-	@Override
-	public int updateLetter(LetterVO vo) {
-		return map.updateLetter(vo);
 	}
 
 	@Override

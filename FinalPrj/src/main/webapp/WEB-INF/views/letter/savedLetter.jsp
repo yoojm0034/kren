@@ -36,161 +36,15 @@
 	color: #999;
 	font-size: .9rem;
 }
-
-.dropdown-menu {
-    display: none;
-    left: 0;
-    max-width: fit-content;
-    padding-top: 4px;
-    position: absolute;
-    top: 100%;
-    z-index: 20;
-}
-
-.dropdown.is-spaced .dropdown-menu {
-    box-shadow: 0px 5px 16px rgb(0 0 0 / 5%);
-    border-color: #e8e8e8;
-    padding-top: 0;
-    min-width: 0;
-}
-
-.dropdown.is-spaced .dropdown-menu .dropdown-content {
-    border: 1px solid #e8e8e8;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    max-width: fit-content;
-}
-.select {
-    background-color: #f7f7f7;
-    border: none;
-}
 </style>
 <script>
-	// 영어 -> 한국어
-	function tokr(index){
-		var en = $("#trans"+index).val();
-		var Data = {english:en};
-		var div = $("#ko"+index);
-		var opt = $("select[data-transopt="+index+"]");
-		console.log(en);
-		console.log(div);			
-			$.ajax({
-				url:"korean",
-				type:"GET",
-				data: Data,
-			    contentType : "application/json; charset:UTF-8",
-				success:function(v){
-					console.log(v);
-					var json = JSON.parse(v);
-					console.log("json"+json);
-					var korean=json.message.result.translatedText;
-					console.log(korean);
-					div.append($('<p/>').html(korean));
-					opt.prop('disabled',true);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
-	}
-		
-	// 한국어 -> 영어
-	function toen(index){
-		var ko = $("#trans"+index).val();
-		var Data = {korean:ko};
-		var div = $("#en"+index);
-		var opt = $("select[data-transopt="+index+"]");
-		console.log(ko);
-		$.ajax({
-			url:"english",
-			type:"GET",
-			data: Data,
-		    contentType : "application/json; charset:UTF-8",
-			success:function(v){
-				console.log(v);
-				var json = JSON.parse(v);
-				console.log("json"+json);
-				var english=json.message.result.translatedText;
-				console.log(english);
-				div.append($('<p/>').html(english));
-				opt.prop('disabled',true);
-			},error:function(e){
-				console.log(e);
-			}
-		});
-	}
-	
-	$(function() {
-		// 친구목록 클릭하면
-		$('a.item').on('click', function() {
-		    var aid = $(this).data('id');
-		    console.log(aid);
-		    location.href='selectLetters.do?user_id='+aid; 
-		});		
-		
-		// 테이블 행 삭제 그룹이벤트
-		$("#con").on('click', '#btnd',  function() {
-		    var btnd = $(this).data('btnd');
-		    console.log(btnd);
-			var trDel = $("button[data-btnd="+btnd+"]").parent().parent();
-			trDel.remove();
-		});		
-
-		// 번역 그룹 이벤트
-		$('body').on('change', '#transOpt',  function() {
-		    var transOpt = $(this).data('transopt');
-			var opt = $("select[data-transopt="+transOpt+"] option:selected").val();
-			console.log(opt);
-			
-			if(opt == 'KR') {
-				tokr(transOpt);
-			} else {
-				toen(transOpt);
-			}
-			
-		});		
-
+$(function() {
+	// 친구목록 클릭하면 편지목록들 조회 
+	$('a.item').on('click', function() {
+	    var aid = $(this).data('id');
+	    location.href='selectLetters.do?user_id='+aid;
 	});
-
-	
-	function add(id, idx) {
-		var btnn = $('#btn'+idx);
-		var lid = $("#letter"+id).val();
-		
-		console.log(lid);		
-		lid.replace()
-	    var result = lid.split(".");
-
-	    console.log(result);
-
-		
-		var div = $('#tbl'+id);
-		var tbl = $('<table>').css('border','1');
-
-		// 테이블 행제목
-		let thead = ['행', '원문', '교정','추가','삭제']
-		var head = $('<tr>');
-		for (var field in thead) {
-			var name = $('<td>').text(thead[field].trim());
-			head.append(name);
-		}
-		tbl.append(head);
-		div.append(tbl);
-		
-		// 교정 테이블 출력		
-		for(var i=0; i < result.length; i++) {
-			var tr = $('<tr>');
-			tr.append($('<td>').append(i));
-			tr.append($('<td>').append(result[i]));
-			tr.append($('<td>'));
-			tr.append($('<td>').append($('<button id="btnc" data-btnc="'+i+'">').text('교정')));
-			tr.append($('<td>').append($('<button id="btnd" data-btnd="'+i+'">').text('삭제')));
-			tbl.append(tr);			
-		}
-		div.append(tbl)
-		btnn.remove();
-		
-	}
+});
 </script>
 </head>
 <body>
@@ -417,20 +271,7 @@
 								<hr>
 								<div class="content" id="con">
 									<p>${vo.content }</p>
-									<input type="hidden" id="korean${status.index }" value="${vo.content }">
-									<input type="hidden" id="english${status.index }" value="${vo.content }">
-									<div id="en${status.index }"></div>
-									<div id="ko${status.index }"></div>
 								</div>
-								<div class="has-text-right" id="btn">
-									<button class="button is-solid grey-button is-bold raised">
-										<select id="transOpt" data-transopt="${status.index }" class="select">
-											<option value="" hidden="">Translate</option>
-											<option value="KR">Translate(KR)</option>
-											<option value="EN">Translate(EN)</option>
-										</select>
-									</button>
-							</div>
 						</div>
 
 						<div class="reply-wrapper">

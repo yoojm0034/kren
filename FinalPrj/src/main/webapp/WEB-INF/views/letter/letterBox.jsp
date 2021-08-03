@@ -48,13 +48,23 @@
     width: 100%;
     text-align: center;
 }
+
+.content table td {
+	text-align: left;
+}
+
+.content table textarea {
+	width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
 </style>
 <script>
 	// 영어 -> 한국어
 	function tokr(index){
 		var en = $("#trans"+index).val();
 		var Data = {english:en};
-		var div = $("#ko"+index);
+		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
 		console.log(en);
 		console.log(div);			
@@ -64,9 +74,7 @@
 				data: Data,
 			    contentType : "application/json; charset:UTF-8",
 				success:function(v){
-					console.log(v);
 					var json = JSON.parse(v);
-					console.log("json"+json);
 					var korean=json.message.result.translatedText;
 					console.log(korean);
 					div.append($('<p/>').html(korean));
@@ -82,7 +90,7 @@
 	function toen(index){
 		var ko = $("#trans"+index).val();
 		var Data = {korean:ko};
-		var div = $("#en"+index);
+		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
 		console.log(ko);
 		$.ajax({
@@ -91,9 +99,7 @@
 			data: Data,
 		    contentType : "application/json; charset:UTF-8",
 			success:function(v){
-				console.log(v);
 				var json = JSON.parse(v);
-				console.log("json"+json);
 				var english=json.message.result.translatedText;
 				console.log(english);
 				div.append($('<p/>').html(english));
@@ -131,16 +137,16 @@
 			trDel.remove();
 		});
 
-		// 교정테이블 td에 textarea 추가 그룹 이벤트
-		$("body").on('click', '#btnc',  function() {
-		    var btnc = $(this).data('btnc');
-			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
-			var tdRoad = $("button[data-btnc="+btnc+"]").parent().prev();
-		    console.log(btnc, textRoad);
-			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
-			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
-		});
-
+// 		// 교정테이블 td에 textarea 추가 그룹 이벤트
+// 		$("body").on('click', '#btnc',  function() {
+// 		    var btnc = $(this).data('btnc');
+// 			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
+// 			var tdRoad = $("button[data-btnc="+btnc+"]").parent();
+// 		    console.log(btnc, textRoad);
+// 			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
+// 			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
+// 		});
+		
 		// 교정테이블 추가 그룹 이벤트
 		$("body").on('click', '#corbtn',  function() {
 		    var corid = $(this).data('corid');		//letter_id; id
@@ -148,13 +154,37 @@
 		    add(corid, coridx);
 		});
 		
-		// 폼의 버튼을 누르면 교정문장 전달
+		// 전송버튼을 누르면 교정문장 전달
 		$("body").on('click', '#frmBtn',  function() {
 		    var num = $(this).data('num');			//row
 		    var frmbtn = $(this).data('frmbtn');	//idx
 		    letterc(num, frmbtn);
 		});
-		
+
+		// 삭제버튼을 누르면 편지목록에서 삭제
+		$("body").on('click', '#delbtn',  function() {
+		    var delid = $(this).data('delid');	//letter_id
+		    console.log(delid);
+		    
+		    if(confirm("편지를 삭제하시겠습니까?") ) {
+			    $.ajax({
+			    	url:'deleteLetter.do',
+			    	type:'post',
+			    	data:JSON.stringify({letter_id:delid}),
+				    contentType : "application/json; charset=UTF-8",
+			    	success: function(data) {
+			    		alert('삭제되었습니다.');
+			    		location.reload(true);
+			    	},
+			    	error: function(e) {
+			    		alert('삭제실패');
+			    	}
+			    });		    	
+		    } else {
+		    	alert("취소되었습니다.");
+		    }
+		});
+
 	});
 
 	// 교정테이블 추가
@@ -167,7 +197,7 @@
 		var tbl = $('<table>');
 
 		// 테이블 행제목
-		let thead = ['행','원문','기능']
+		let thead = ['','']
 		var head = $('<tr>');
 		for (var field in thead) {
 			var name = $('<td>').text(thead[field].trim());
@@ -183,14 +213,10 @@
 			if(result[i].length != 0) { // 리스트가 비어있지않으면
 				num = i;
 				var tr = $('<tr>');
-				tr.append($('<td>').append(rownum+i));
-				tr.append($('<td data-cont="'+i+'">').append(result[i]));				
-// 				tr.append($('<td>'));
-// 				tr.append($('<td>').append(
-// 						  $('<button id="btnc" data-btnc="'+i+'">').text('교정'),
-// 						  $('<button id="btnd" data-btnd="'+i+'">').text('삭제')
-// 						  ));
-				tr.append($('<td>').append($('<button type="button" id="btnc" data-btnc="'+i+'">').text('교정')));
+// 				tr.append($('<td>').append(rownum+i)); //행번호
+				tr.append($('<td data-cont="'+i+'">').append(result[i]));
+// 				tr.append($('<td>').append($('<button type="button" id="btnc" data-btnc="'+i+'">').text('교정')));
+				tr.append($('<td>').append($('<textarea id="correcting" data-corr="'+i+'">').val(result[i])));
 				tbl.append(tr);			
 			}
 		}
@@ -204,7 +230,7 @@
 		div.append(tbl);
 		var tblBtn = $('button[data-coridx="'+idx+'"]'); // 교정테이블 추가 버튼 삭제
 		tblBtn.remove();
-	}
+	} //function add
 	
 	function letterc(row, idx) {
 	    var corr = ""; // 교정문장
@@ -233,9 +259,12 @@
 			"letter_id":letter,
 			"line":rows,
 			"origin":cont,
-			"correcting":corr};
-			console.log(Data);
+			"correcting":corr
+		};
 			
+		console.log(Data);
+		
+		
 		$.ajax({
 			url:"insertCorLetter.do",
 			type:"post",
@@ -244,13 +273,13 @@
 			success:function(v){
 				alert("작성되었습니다!");
 				$('#tbl'+letter).remove(); // 교정 테이블 삭제
-				
+				location.reload(true);
 			},error:function(e){
 				console.log(e);
 			}
 		});
-
-	}
+	} //function letterc
+	
 </script>
 </head>
 <body>
@@ -492,7 +521,8 @@
 										</select>
 									</button>
 									<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">교정</button>
-							</div>
+									<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">삭제</button>
+								</div>
 						</div>
 						</div>
 
