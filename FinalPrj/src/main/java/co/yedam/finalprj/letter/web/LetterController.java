@@ -82,4 +82,13 @@ public class LetterController {
 		vo.setUser_id(id);
 		letterDao.deleteLetter(vo);
 	}
+	
+	@RequestMapping(value="insertLetter.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void insertLetter(@RequestBody LetterVO vo, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setUser_id(id);
+		letterDao.insertLetter(vo);
+	}
 }

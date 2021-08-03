@@ -65,7 +65,8 @@ public class FeedServiceImpl implements FeedService {
 	}
 	@Override
 	public int feedUpdate(FeedVO vo) {
-		return 0;
+		//피드 수정
+		return map.feedUpdate(vo);
 	}
 
 

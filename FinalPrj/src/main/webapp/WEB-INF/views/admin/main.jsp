@@ -85,7 +85,7 @@
 			  });
 			  
 		}) ;
-	
+		
 	});
 </script>
 </head>
@@ -217,6 +217,8 @@
                 </div>
 	            전체 방문자 수: ${totalCount}
 				오늘의 방문자 수: ${todayCount}
+				<button id="btnPushTest" onclick="sendText()" type="button">test</button>
+				<div id="test"></div>
 	         </div>          
             <!-- 컨텐츠 종료 -->
            	

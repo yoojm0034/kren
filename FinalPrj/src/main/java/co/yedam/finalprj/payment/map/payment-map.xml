@@ -11,7 +11,12 @@
 	
 	<!-- 결제 정보 서버 insert -->
 	<insert id="paymentInsert" parameterType="co.yedam.finalprj.payment.vo.PaymentVO">
-		insert into payment
-		values('payment_'||payment_seq.nextval, #{user_id}, #{price}, sysdate)
+		insert all
+			into PAYMENT(PAY_ID, USER_ID, price, pay_dt)
+				 values('payment_'||payment_seq.nextval, #{user_id}, #{price}, sysdate)
+			into STAMPH(USER_ID, sh_type, sh_dt, STAMPh_ID) 
+				 values(#{user_id}, '구매', sysdate, 'stamph_'||stamph_seq.nextval)
+		select *
+		from dual
 	</insert>
 </mapper>

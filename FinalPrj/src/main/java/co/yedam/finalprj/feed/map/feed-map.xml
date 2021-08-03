@@ -21,7 +21,8 @@
 				f.TAGS "tags",
 				d.ORIGINAL_NAME, 
       			d.UUID "uuid",
-        		d.DIRECTORY
+        		d.DIRECTORY,
+        		p.DELETE_YN "delete_yn"
 		FROM 	feed f JOIN users u
 				ON f.USER_ID = u.USER_ID
         		left outer join photo p
@@ -101,13 +102,19 @@
 	
 	<!-- 피드 등록 -->
 	<insert id="feedInsert" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
-		{ CALL fphoto_insert( #{user_id}, #{content}, #{photo}, #{original_name}, #{tags}, #{uuid}, #{file_size}, #{directory} )} 
+		{ CALL fphoto_insert( #{user_id}, #{content}, #{original_name}, #{tags}, #{uuid}, #{file_size}, #{directory} )} 
 	</insert>
 	
 	<!-- 피드 삭제 -->
 	<delete id="feedDelete" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
 		{ CALL feed_delete( #{feed_id} )} 
 	</delete>
+	
+	<!-- 피드 수정 -->
+	<update id="feedUpdate" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
+		{ CALL feed_update( #{feed_id}, #{content}, #{photo} ,#{tags}, #{original_name}, #{uuid}, #{file_size}, #{directory} )} 
+	</update>
+	
 	
 	<!--  아직 미완  -->
 	<select id="FeedLikeSelect"
