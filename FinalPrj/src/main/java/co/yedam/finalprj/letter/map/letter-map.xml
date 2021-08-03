@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.letter.map.LetterMap">
-	<!-- 전체 편지 -->
-	<select id="selectAllLetter" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT * FROM LETTER
-		 WHERE ARRIVE_DATE IS NOT NULL
-		   AND TO_ID =#{to_id}
-		   AND GUBUN IN ('일반','교정')
-		 ORDER BY ARRIVE_DATE DESC
-	</select>
-
 	<!-- 나에게 편지를 보낸 친구목록 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT  L.USER_ID, U.NAME, L.SEND_DATE, L.ARRIVE_DATE FROM LETTER L, USERS U
@@ -24,6 +15,7 @@
 		SELECT L.*, U.NAME FROM LETTER L, USERS U
 		 WHERE L.USER_ID=U.USER_ID
     	   AND SEND_YN ='N'
+    	   AND TO_DELETE='N'
 		   AND TO_ID =#{to_id}
 		   AND ARRIVE_DATE IS NOT NULL
 		 ORDER BY ARRIVE_DATE DESC
@@ -32,8 +24,8 @@
 	<!-- 해당친구이름과 해당편지목록 -->
 	<select id="selectFriendLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
  		SELECT * FROM LETTER_FROM_V
-		 WHERE TO_ID =#{to_id} AND USER_ID =#{user_id}
-		    OR TO_ID =#{user_id} AND USER_ID =#{to_id}
+		 WHERE TO_ID =#{to_id} AND USER_ID =#{user_id} AND TO_DELETE='N'
+		    OR TO_ID =#{user_id} AND USER_ID =#{to_id} AND FROM_DELETE='N'
 		 ORDER BY ARRIVE_DATE DESC
 	</select>
 	
@@ -55,10 +47,24 @@
 	</insert>
 	
 	<!-- 편지 삭제 -->
+	<!-- 내가 작성자라면 FROM_DELETE / 작성자가 아니라면 TO_DATE -->	
 	<update id="deleteLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
-		UPDATE LETTER SET TO_DELETE = 'Y' 
+		<selectKey keyProperty="uid" resultType="String" order="BEFORE">
+			SELECT USER_ID FROM LETTER
+			 WHERE LETTER_ID =#{letter_id} 
+		</selectKey>
+		<choose>
+		<when test='user_id == uid'>
+		UPDATE LETTER SET FROM_DELETE = 'Y' 
 		 WHERE LETTER_ID =#{letter_id}
 		   AND USER_ID =#{user_id}
+		</when>
+		<otherwise>
+		UPDATE LETTER SET TO_DELETE = 'Y' 
+		 WHERE LETTER_ID =#{letter_id}
+		   AND TO_ID =#{user_id}
+		</otherwise>
+		</choose>
 	</update>
 
 </mapper>
