@@ -3,11 +3,11 @@
 <mapper namespace="co.yedam.finalprj.letter.map.LetterMap">
 	<!-- 나에게 편지를 보낸 친구목록 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT  L.USER_ID, U.NAME, L.SEND_DATE, L.ARRIVE_DATE FROM LETTER L, USERS U
-		 WHERE L.USER_ID=U.USER_ID
-    	   AND L.TO_ID =#{to_id}
-    	   AND L.USER_ID IN (SELECT DISTINCT USER_ID FROM LETTER WHERE USER_ID NOT IN #{to_id})
-		 ORDER BY ARRIVE_DATE DESC
+		SELECT F.USER_ID, U.NAME FROM (SELECT DISTINCT USER_ID
+								         FROM LETTER
+								        WHERE TO_ID = #{to_id}) F, USERS U
+		 WHERE F.USER_ID = U.USER_ID
+	     ORDER BY NAME
 	</select>
 	
 	<!-- 답장 안한 편지목록 -->
@@ -19,6 +19,15 @@
 		   AND TO_ID =#{to_id}
 		   AND ARRIVE_DATE IS NOT NULL
 		 ORDER BY ARRIVE_DATE DESC
+	</select>
+	
+	<!-- 받는이(TO_ID)가 답장해야할 차례 / 해당하는 유저아이디 한건 조회 -->
+	<select id="replyLetter" parameterType="co.yedam.finalprj.letterc.vo.LettercVO" resultType="co.yedam.finalprj.letterc.vo.LettercVO">
+	SELECT DISTINCT FIRST_VALUE(TO_ID) OVER(ORDER BY SEND_DATE DESC) AS USER_ID
+	  FROM (SELECT * FROM LETTER_FROM_V
+		     WHERE TO_ID =#{to_id} AND USER_ID =#{user_id} 
+		        OR TO_ID =#{user_id} AND USER_ID =#{to_id}
+		  ORDER BY ARRIVE_DATE DESC)
 	</select>
 	
 	<!-- 해당친구이름과 해당편지목록 -->
@@ -39,7 +48,7 @@
 	</select>
 	
 	<!-- 편지 작성 -->
-	<!-- 거리만큼 걸리는 시간+send_date = arrive_date 조건문 추가 필요-->
+	<!-- 거리KM만큼 걸리는 시간+send_date = arrive_date 조건문 추가 필요-->
 	<insert id="insertLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
 		<selectKey keyProperty="distance" resultType="int" order="BEFORE">
 			SELECT TRUNC(CAL(#{to_id}, #{user_id}),0) FROM DUAL

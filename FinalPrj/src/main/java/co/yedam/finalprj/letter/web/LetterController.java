@@ -47,9 +47,10 @@ public class LetterController {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		vo.setTo_id(id);
-		model.addAttribute("friends", letterDao.selectAllFriend(vo));
-		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo));
-		
+		model.addAttribute("friends", letterDao.selectAllFriend(vo)); //친구목록
+		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo)); //해당친구와의 편지들
+		model.addAttribute("replyLetter", letterDao.replyLetter(vo)); //마지막으로 편지를 보낸 회원
+		System.out.println(letterDao.replyLetter(vo));
 		// 교정편지 조회
 		model.addAttribute("lettercs", lettercDao.selectLetterC());
 		return "letter/selectLetters";

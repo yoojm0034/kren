@@ -35,6 +35,11 @@ public class LetterServiceImpl implements LetterService {
 	}
 
 	@Override
+	public LetterVO replyLetter(LetterVO vo) {
+		return map.replyLetter(vo);
+	}
+
+	@Override
 	public int insertLetter(LetterVO vo) {
 		return map.insertLetter(vo);
 	}
@@ -43,5 +48,6 @@ public class LetterServiceImpl implements LetterService {
 	public int deleteLetter(LetterVO vo) {
 		return map.deleteLetter(vo);
 	}
+
 
 }

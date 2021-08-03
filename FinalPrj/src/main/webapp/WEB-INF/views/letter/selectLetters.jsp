@@ -376,6 +376,10 @@
 							<c:when test="${param.user_id eq vo.user_id }">
 								<a data-id="${vo.user_id}" class="item is-active">
 									<span class="name">${vo.name }</span>
+									<c:if test="${!empty replyLetter }">
+										<span>↙</span>									
+										<span>↗</span>									
+									</c:if>
 								</a>
 							</c:when>
 							<c:otherwise>

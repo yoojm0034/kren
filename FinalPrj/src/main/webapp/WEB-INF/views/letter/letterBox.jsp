@@ -58,6 +58,20 @@
     height: 100%;
     overflow-y: hidden;
 }
+
+.control  table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+}
+
+.control  textarea {
+    width: -webkit-fill-available;
+    border: none;
+    resize: none;
+    padding: revert;
+}
+
 </style>
 <script>
 	// 영어 -> 한국어
@@ -185,6 +199,59 @@
 		    }
 		});
 
+		// 편지 입력
+		$("body").on('click', '#send', function() {
+			var send = $(this).data('send'); //letter_id
+			var to = $(this).data('to'); //to_id
+			var sendbtn = $('button[data-send="'+send+'"]');
+			var txtarea = $('textarea[data-letter="'+send+'"]').val();
+			console.log(txtarea);
+			
+			if(confirm("편지를 전송하시겠습니까?") ) {
+			    $.ajax({
+			    	url:'insertLetter.do',
+			    	type:'post',
+			    	data:JSON.stringify({
+			    		letter_id:send,
+			    		to_id:to,
+			    		content:txtarea,
+			    		gubun:'일반'
+			    	}),
+				    contentType : "application/json; charset=UTF-8",
+			    	success: function(data) {
+			    		alert('전송되었습니다.');
+			    		location.reload(true);
+			    	},
+			    	error: function(e) {
+			    		alert('편지전송실패');
+			    	}
+			    });		    	
+		    } else {
+		    	if(confirm("편지를 저장하시겠습니까?") ) {
+				    $.ajax({
+				    	url:'insertLetter.do',
+				    	type:'post',
+				    	data:JSON.stringify({
+				    		letter_id:send,
+				    		to_id:to,
+				    		content:txtarea,
+				    		gubun:'임시저장'
+				    	}),
+					    contentType : "application/json; charset=UTF-8",
+				    	success: function(data) {
+				    		alert('편지가 저장되었습니다.');
+				    		location.reload(true);
+				    	},
+				    	error: function(e) {
+				    		alert('저장실패');
+				    	}
+				    });		    	
+			    } else {
+			    	alert("편지작성이 취소되었습니다.");
+			    }
+		    }
+		});
+		
 	});
 
 	// 교정테이블 추가
@@ -525,26 +592,79 @@
 								</div>
 						</div>
 						</div>
-
+						<c:if test="${!empty vo.arrive_date and vo.name ne user.name }">
 						<div class="reply-wrapper">
 							<div class="reply-title">
-							Reply to correcting
+							Write
 							</div>
 							<div class="reply-wrapper-inner">
 								<div class="flex-form">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/jenna.png" alt="">
 									<div class="control">
-										<div id="corText" class="reply-textarea"></div>
+										<table>
+										<tr>
+										<td>
+											<textarea data-letter="${vo.letter_id }" rows="20" cols="20" placeholder="Write your letter"></textarea>
+										</td>
+										</tr>
+										</table>
 									</div>
 								</div>
 								<div class="has-text-right">
-									<button type="button"
-										class="button is-solid accent-button is-bold raised send-message">Send
-										Message</button>
+									<button id="send" data-send="${vo.letter_id  }" data-to="${vo.user_id }" type="button"
+										class="button is-solid accent-button is-bold raised send-message">
+										Send Letter</button>
 								</div>
 							</div>
 						</div>
+						</c:if>
+						<!-- 교정편지추가 -->
+							<c:choose>
+							<c:when test="${!empty vo.arrive_date and !empty lettercs and vo.cor_yn eq 'Y'}">
+							<div class="message-preview-transition is-first">
+								<div class="mail">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24"
+										height="24" viewBox="0 0 24 24" fill="none"
+										stroke="currentColor" stroke-width="2"
+										stroke-linecap="round" stroke-linejoin="round"
+										class="feather feather-mail">
+										<path
+											d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+										<polyline points="22,6 12,13 2,6"></polyline></svg>
+								</div>
+							</div>
+                           	<div class="box message-preview">
+                               <div class="box-inner">
+                                   <div class="header">
+                                       <div class="avatar">
+                                           <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="" data-user-popover="0">
+                                       </div>
+                                       <div class="meta">
+                                           <div class="name">${user.name}</div>
+                                       </div>
+                                   </div>
+                                   <hr>
+                                   <div class="content" id="diff">
+                               	   <table>
+                               	   	<tr>
+                               	   		<td></td>
+                               	   		<td></td>
+                               	   	</tr>
+                               	   	<c:forEach items="${lettercs}" var="cvo">
+                               	   	<c:if test="${cvo.letter_id eq vo.letter_id }">
+                               	   	<tr>
+                               	   		<td>${cvo.origin }</td>
+                               	   		<td>${cvo.correcting }<br>
+                               	   	</tr>                               	   	
+                               	   	</c:if>
+                               	   	</c:forEach>
+                               	   </table>
+                                   </div>
+                               	   <hr>    
+                               </div>
+                           	</div>	
+                   			</c:when>
+							</c:choose>
+                           	<!-- /교정편지추가 -->
 						</div>				
 					</c:forEach>
 					</div>
