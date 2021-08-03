@@ -80,6 +80,9 @@
 	
 	<!-- inbox js -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/inbox.js"></script>
+	 
+	<!-- friends js -->
+    <script src="${pageContext.request.contextPath}/resources/template/assets/js/friends.js"></script>
 	
 	<!-- DATATABLES PLUGINS -->
 	<script src="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/jquery.dataTables.js"></script>
