@@ -34,10 +34,6 @@ public class FeedServiceImpl implements FeedService {
 		return map.feedSelectList(vo);
 	}
 	@Override
-	public List<Map<String,Object>> FeedLikeSelect(LikesVO vo) {
-		return map.FeedLikeSelect(vo);
-	}
-	@Override
 	public List<UsersVO> birthUser(FriendsVO vo) {
 		//생일인유저
 		return map.birthUser(vo);
@@ -76,6 +72,11 @@ public class FeedServiceImpl implements FeedService {
 	public int feedUpdate(FeedVO vo) {
 		//피드 수정
 		return map.feedUpdate(vo);
+	}
+	@Override
+	public int likeCntUPdate(LikesVO vo) {
+		//좋아요 좋아요 갯수
+		return map.likeCntUPdate(vo);
 	}
 
 

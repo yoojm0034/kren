@@ -5,40 +5,46 @@
 	<!-- 일반회원 글만, 탈퇴한 회원, 정지당한 회원 글 보이지 않음 , 블락한 회원의 글 제외 -->
 	<select id="feedSelectList"
 		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
-		SELECT
-				u.USER_ID "user_id",
-				u.EMAIL "email",
-				u.NAME "name",
-				u.PHOTO "photo",
-				u.STATUS "status",
-				u.LAT "lat",
-				u.LON "lon",
-				u.TIMEZONE "time_zone",
-				f.FEED_ID "feed_id",
-				f.CONTENT "content",
-				f.PHOTO "fphoto",
-				f.REG_DATE "reg_date",
-				f.TAGS "tags",
-				f.WRITE_LAN "write_lan",
-				d.ORIGINAL_NAME, 
-      			d.UUID "uuid",
-        		d.DIRECTORY,
-        		p.DELETE_YN "delete_yn"
-		FROM 	feed f JOIN users u
-				ON f.USER_ID = u.USER_ID
-        		left outer join photo p
-        		on  f.PHOTO = p.PHOTO_ID
-        		left outer join photo_detail d
-       			on p.PHOTO_ID=  d.PHOTO_ID
-		WHERE   u.STATUS = '일반회원'
-		AND NOT f.USER_ID IN (  SELECT BLOCKED
-						        FROM block
-							    WHERE USER_ID = #{user_id}
-							  )
-		<if test="tags != null">
-		AND tags like '%' || #{tags} || '%'
-  	    </if>
-		ORDER BY f.REG_DATE DESC
+		
+		SELECT *
+	    FROM (SELECT
+						u.USER_ID 	"user_id",
+						u.EMAIL 	"email",
+						u.NAME 		"name",
+						u.PHOTO 	"photo",
+						u.STATUS 	"status",
+						u.LAT 		"lat",
+						u.LON 		"lon",
+						u.TIMEZONE 	"time_zone",
+						f.FEED_ID 	"feed_id",
+						f.CONTENT 	"content",
+						f.PHOTO 	"fphoto",
+						f.REG_DATE 	"reg_date",
+						f.TAGS 		"tags",
+						f.WRITE_LAN "write_lan",
+						d.ORIGINAL_NAME, 
+	      				d.UUID 		"uuid",
+	        			d.DIRECTORY,
+	        			p.DELETE_YN "delete_yn"
+			  FROM 		feed f JOIN users u
+						ON f.USER_ID = u.USER_ID
+	        			left outer join photo p
+	        			on  f.PHOTO = p.PHOTO_ID
+	        			left outer join photo_detail d
+	       				on p.PHOTO_ID=  d.PHOTO_ID
+			  WHERE  	u.STATUS = '일반회원'
+			  AND NOT   f.USER_ID IN (  SELECT BLOCKED
+							        	FROM block
+								    	WHERE USER_ID = #{user_id}
+								      )
+			<if test="tags != null">
+			AND tags like '%' || #{tags} || '%'
+	  	    </if>
+	  	    <if test="write_lan != null">
+			AND write_lan = #{write_lan}
+	  	    </if>
+			ORDER BY f.REG_DATE DESC)
+		WHERE ROWNUM <![CDATA[<=]]> 4
 	</select>
 
 	<!--오늘 생일인 친구 조회 , 블릭한 친구 제외-->
@@ -98,7 +104,11 @@
   		FROM   tag 
 		WHERE  tag_name IN (#{tag_name})
 	</select>
-	
+	<!-- 좋아요 존재하면 삭제, 존재하지 않으면 추가 -->
+	<select id="likeCntUPdate" parameterType="co.yedam.finalprj.likes.vo.LikesVO" resultType="int">
+		SELECT f_likeInsert(#{feed_id},#{userId})
+		FROM dual
+	</select>
 	<!-- 태그 등록 존재하지 않을 시 추가  -->
 	<insert id="tagInsert" parameterType="co.yedam.finalprj.tag.vo.TagVO">
 		INSERT INTO tag(tag_name) VALUES( #{tag_name} )	
@@ -119,16 +129,7 @@
 		{ CALL feed_update( #{feed_id}, #{content}, #{photo} ,#{tags}, #{original_name}, #{uuid}, #{file_size}, #{directory}, #{write_lan} )} 
 	</update>
 	
-	
-	<!--  아직 미완  -->
-	<select id="FeedLikeSelect"
-		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
-		SELECT  
-				feed_id ,
-				user_id
-		FROM 	likes
-		WHERE 	feed_id = #{feed_id}
-	</select>
+
 
 	
 </mapper>

@@ -12,7 +12,6 @@ import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface FeedService {
 	 List<Map<String,Object>> feedSelectList(FeedVO vo);			//피드리스트
-	 List<Map<String, Object>> FeedLikeSelect(LikesVO vo);			//
 	 List<UsersVO> birthUser(FriendsVO vo);							//생일인유저
 	 List<TagVO> likeTag();											//인기있는태그
 	 List<UsersVO> sameTopicList(UsersVO vo); 						//나와일치하는관심사수
@@ -21,5 +20,6 @@ public interface FeedService {
 	 int feedInsert(FeedVO vo);										//피드등록
 	 int feedDelete(FeedVO vo);										//피드삭제
 	 int feedUpdate(FeedVO vo);										//피드수정
+	 int likeCntUPdate(LikesVO vo);
 
 }
