@@ -2,8 +2,6 @@ package co.yedam.finalprj.letter.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -49,12 +47,13 @@ public class LetterController {
 	public String selectLetters(@PathVariable String id, Model model, LetterVO vo, Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String sid = (String) user.getUsername();
-		vo.setTo_id(sid);
-		vo.setUser_id(id);
+		vo.setTo_id(sid); //세션아이디
+		vo.setUser_id(id); //친구아이디
 		model.addAttribute("friends", letterDao.selectAllFriend(vo)); //친구목록
 		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo)); //해당친구와의 편지들
 		model.addAttribute("replyLetter", letterDao.replyLetter(vo)); //마지막으로 편지를 보낸 회원
-		System.out.println(letterDao.replyLetter(vo));
+
+		System.out.println("누가답장?"+letterDao.replyLetter(vo));
 		// 교정편지 조회
 		model.addAttribute("lettercs", lettercDao.selectLetterC());
 		return "letter/selectLetters";

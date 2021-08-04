@@ -26,6 +26,7 @@ public class LetterVO {
 	
 	// 없는 필드
 	private String name;
+	private String to_name;
 	private String cate;
 	private String uid;
 	private int distance;

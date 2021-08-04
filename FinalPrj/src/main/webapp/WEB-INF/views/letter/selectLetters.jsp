@@ -184,7 +184,7 @@
 		    
 		    if(confirm("편지를 삭제하시겠습니까?") ) {
 			    $.ajax({
-			    	url:'deleteLetter.do',
+			    	url:'${pageContext.request.contextPath}/deleteLetter.do',
 			    	type:'post',
 			    	data:JSON.stringify({letter_id:delid}),
 				    contentType : "application/json; charset=UTF-8",
@@ -211,7 +211,7 @@
 			
 			//우표수량 체크
 			$.ajax({
-				url : 'stampLetterCheck.do',
+				url : '${pageContext.request.contextPath}/stampLetterCheck.do',
 				type : 'post',
 				data : JSON.stringify({
 					user_id : $('#user_id').val()
@@ -221,7 +221,7 @@
 					if (data > 0) { //우표가 있으면
 						if(confirm("편지를 전송하시겠습니까?") ) {
 						    $.ajax({
-						    	url:'insertLetter.do',
+						    	url:'${pageContext.request.contextPath}/insertLetter.do',
 						    	type:'post',
 						    	data:JSON.stringify({
 						    		letter_id:send,
@@ -241,7 +241,7 @@
 					    } else {
 					    	if(confirm("편지를 저장하시겠습니까?") ) {
 							    $.ajax({
-							    	url:'insertLetter.do',
+							    	url:'${pageContext.request.contextPath}/insertLetter.do',
 							    	type:'post',
 							    	data:JSON.stringify({
 							    		letter_id:send,
@@ -355,7 +355,7 @@
 		
 		
 		$.ajax({
-			url:"insertCorLetter.do",
+			url:"${pageContext.request.contextPath}/insertCorLetter.do",
 			type:"post",
 		    data: JSON.stringify(Data),
 		    contentType : "application/json; charset=UTF-8",
@@ -658,7 +658,7 @@
 						</div>
 						</c:if>
 						<!-- 편지작성 -->
-						<c:if test="${arrive_dt <= today and vo.name ne user.name }">
+						<c:if test="${arrive_dt <= today and vo.name ne user.name and vo.send_yn eq 'N' }">
 						<div class="reply-wrapper">
 							<div class="reply-title">
 							Write
@@ -687,17 +687,9 @@
 							<!-- 교정편지추가 -->
 							<c:choose>
 							<c:when test="${arrive_dt <= today and !empty lettercs and vo.cor_yn eq 'Y'}">
+							<div class="reply-wrapper"></div>
 							<div class="message-preview-transition is-first">
-								<div class="mail">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24"
-										height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2"
-										stroke-linecap="round" stroke-linejoin="round"
-										class="feather feather-mail">
-										<path
-											d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-										<polyline points="22,6 12,13 2,6"></polyline></svg>
-								</div>
+							<p>교정내역</p>
 							</div>
                            	<div class="box message-preview">
                                <div class="box-inner">
@@ -706,7 +698,7 @@
                                            <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="" data-user-popover="0">
                                        </div>
                                        <div class="meta">
-                                           <div class="name">${user.name}</div>
+                                           <div class="name">${vo.to_name}</div>
                                        </div>
                                    </div>
                                    <hr>

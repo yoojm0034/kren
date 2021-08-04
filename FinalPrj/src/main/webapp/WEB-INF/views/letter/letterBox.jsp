@@ -373,6 +373,7 @@
 						<c:forEach items="${friends }" var="vo">					
 							<a data-id="${vo.user_id}" class="item">
 								<span class="name">${vo.name }</span>
+
 							</a>
 						</c:forEach>
 						</c:if>						

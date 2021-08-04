@@ -36,11 +36,15 @@
 	
 	<!-- 해당친구이름과 해당편지목록 -->
 	<select id="selectFriendLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
- 		WITH L AS (
- 					SELECT * FROM LETTER_FROM_V
- 					 WHERE GUBUN != '임시저장'
- 				  )
- 		SELECT * FROM L	   
+ 		WITH TEST AS (SELECT U.NAME AS TO_NAME, T.*
+ 		 				FROM (
+ 						     SELECT U.NAME, L.LETTER_ID, L.TO_ID, L.USER_ID, L.SEND_DATE, L.CONTENT, L.PHOTO,
+ 						     	 	L.READ_DATE, L.TO_DELETE, L.FROM_DELETE, L.ARRIVE_DATE, L.SEND_YN, L.GUBUN, L.COR_YN
+ 						       FROM LETTER L, USERS U
+  							  WHERE L.USER_ID = U.USER_ID) T, USERS U
+  					   WHERE T.TO_ID=U.USER_ID
+  						 AND GUBUN != '임시저장')
+		SELECT * FROM TEST
 		 WHERE TO_ID =#{to_id} AND USER_ID =#{user_id} AND TO_DELETE='N'
 		    OR TO_ID =#{user_id} AND USER_ID =#{to_id} AND FROM_DELETE='N'
 		 ORDER BY ARRIVE_DATE DESC
