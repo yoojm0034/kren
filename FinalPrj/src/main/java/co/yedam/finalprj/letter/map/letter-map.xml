@@ -18,21 +18,29 @@
     	   AND TO_DELETE='N'
 		   AND TO_ID =#{to_id}
 		   AND ARRIVE_DATE IS NOT NULL
+		   AND GUBUN !='임시저장'
 		 ORDER BY ARRIVE_DATE DESC
 	</select>
 	
-	<!-- 받는이(TO_ID)가 답장해야할 차례 / 해당하는 유저아이디 한건 조회 -->
+	<!-- 받는이(TO_ID)가 답장해야할 차례 / 답장해야하는 유저아이디 한건 조회 -->
 	<select id="replyLetter" parameterType="co.yedam.finalprj.letterc.vo.LettercVO" resultType="co.yedam.finalprj.letterc.vo.LettercVO">
-	SELECT DISTINCT FIRST_VALUE(TO_ID) OVER(ORDER BY SEND_DATE DESC) AS USER_ID
-	  FROM (SELECT * FROM LETTER_FROM_V
-		     WHERE TO_ID =#{to_id} AND USER_ID =#{user_id} 
-		        OR TO_ID =#{user_id} AND USER_ID =#{to_id}
-		  ORDER BY ARRIVE_DATE DESC)
-	</select>
+		WITH R AS (
+	 				SELECT * FROM LETTER_FROM_V
+		     		 WHERE TO_ID =#{to_id} AND USER_ID =#{user_id} AND GUBUN != '임시저장'
+		        		OR TO_ID =#{user_id} AND USER_ID =#{to_id} AND GUBUN != '임시저장'
+		  	         ORDER BY ARRIVE_DATE DESC
+	 			  )
+		SELECT DISTINCT FIRST_VALUE(TO_ID) OVER(ORDER BY SEND_DATE DESC) AS USER_ID
+	  	  FROM R
+ 	</select>
 	
 	<!-- 해당친구이름과 해당편지목록 -->
 	<select id="selectFriendLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
- 		SELECT * FROM LETTER_FROM_V
+ 		WITH L AS (
+ 					SELECT * FROM LETTER_FROM_V
+ 					 WHERE GUBUN != '임시저장'
+ 				  )
+ 		SELECT * FROM L	   
 		 WHERE TO_ID =#{to_id} AND USER_ID =#{user_id} AND TO_DELETE='N'
 		    OR TO_ID =#{user_id} AND USER_ID =#{to_id} AND FROM_DELETE='N'
 		 ORDER BY ARRIVE_DATE DESC
@@ -40,11 +48,17 @@
 	
 	<!-- 임시저장한 편지조회 -->
 	<select id="selectSaveLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT L.*, U.NAME FROM LETTER L, USERS U
+		SELECT U.NAME, L.* FROM LETTER L, USERS U
 		 WHERE L.USER_ID=U.USER_ID
 		   AND L.USER_ID =#{user_id}
 		   AND GUBUN ='임시저장'
 		 ORDER BY SEND_DATE DESC
+	</select>
+	
+	<!-- 우표 체크 -->
+	<select id="stampLetterCheck" parameterType="co.yedam.finalprj.letterc.vo.LettercVO" resultType="int">
+		SELECT STAMP FROM USERS
+		 WHERE USER_ID =#{user_id}
 	</select>
 	
 	<!-- 편지 작성 -->

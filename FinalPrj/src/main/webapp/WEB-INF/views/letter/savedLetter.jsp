@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,13 +37,25 @@
 	color: #999;
 	font-size: .9rem;
 }
+.content  table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+}
+
+.content  textarea {
+    width: -webkit-fill-available;
+    border: none;
+    resize: none;
+    padding: revert;
+}
 </style>
 <script>
 $(function() {
 	// 친구목록 클릭하면 편지목록들 조회 
 	$('a.item').on('click', function() {
 	    var aid = $(this).data('id');
-	    location.href='selectLetters.do?user_id='+aid;
+	    location.href= '${pageContext.request.contextPath}/'+'selectLetters.do/'+aid;
 	});
 });
 </script>
@@ -58,10 +71,10 @@ $(function() {
 					</div>
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
-						<a href="letterBox.do" class="item">
+						<a href="${pageContext.request.contextPath}/letterBox.do" class="item">
 							<span class="name">New Letters</span>
 						</a>
-						<a href="savedLetter.do" class="item is-active">
+						<a href="${pageContext.request.contextPath}/savedLetter.do" class="item is-active">
 							<span class="name">Saved Letters</span>
 						</a>
 						<c:if test="${!empty friends }">
@@ -150,7 +163,7 @@ $(function() {
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
-											<span class="msg-timestamp"> ${vo.arrive_date } <img
+											<span class="msg-timestamp"> <fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd HH:mm"/> <img
 												src="resources/template/assets/img/letter/stamp.png">
 											</span>
 											<div class="msg-header">
@@ -264,36 +277,28 @@ $(function() {
 									</div>
 									<div class="meta">
 										<div class="name">${vo.name }</div>
-										<div class="date">${vo.arrive_date }</div>
+										<div class="date"><fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd HH:mm"/></div>
 									</div>
 								</div>
 	
 								<hr>
-								<div class="content" id="con">
-									<p>${vo.content }</p>
+								<div class="content">
+									<table>
+									<tr>
+									<td>
+										<textarea data-letter="${vo.letter_id }" rows="20" cols="20" placeholder="Write your letter">${vo.content }</textarea>
+									</td>
+									</tr>
+									</table>
 								</div>
 						</div>
 
-						<div class="reply-wrapper">
-							<div class="reply-title">
-							Reply to correcting
-							</div>
-							<div class="reply-wrapper-inner">
-								<div class="flex-form">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/jenna.png" alt="">
-									<div class="control">
-										<div id="corText" class="reply-textarea"></div>
-									</div>
-								</div>
-								<div class="has-text-right">
-									<button type="button"
-										class="button is-solid accent-button is-bold raised send-message">Send
-										Message</button>
-								</div>
-							</div>
+						<div class="has-text-right">
+							<button type="button" class="button is-solid accent-button is-bold raised send-message">Send Letter</button>
 						</div>
-						</div>				
+
+						</div>	
+						</div>			
 					</c:forEach>
 					</div>
 					</c:when>

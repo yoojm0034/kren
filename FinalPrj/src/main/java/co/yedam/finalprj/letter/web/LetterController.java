@@ -2,11 +2,14 @@ package co.yedam.finalprj.letter.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,11 +45,12 @@ public class LetterController {
 	}
 
 	// 해당친구편지목록
-	@RequestMapping("selectLetters.do")
-	public String selectLetters(Model model, LetterVO vo, Authentication auth) {
+	@RequestMapping("selectLetters.do/{id}")
+	public String selectLetters(@PathVariable String id, Model model, LetterVO vo, Authentication auth) {
 		User user = (User) auth.getPrincipal();
-		String id = (String) user.getUsername();
-		vo.setTo_id(id);
+		String sid = (String) user.getUsername();
+		vo.setTo_id(sid);
+		vo.setUser_id(id);
 		model.addAttribute("friends", letterDao.selectAllFriend(vo)); //친구목록
 		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo)); //해당친구와의 편지들
 		model.addAttribute("replyLetter", letterDao.replyLetter(vo)); //마지막으로 편지를 보낸 회원
@@ -62,6 +66,7 @@ public class LetterController {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		vo.setTo_id(id);
+		vo.setUser_id(id);
 		model.addAttribute("friends", letterDao.selectAllFriend(vo));
 		model.addAttribute("save", letterDao.selectSaveLetter(vo));
 		return "letter/savedLetter";
@@ -92,4 +97,16 @@ public class LetterController {
 		vo.setUser_id(id);
 		letterDao.insertLetter(vo);
 	}
+
+	@RequestMapping("stampLetterCheck.do")
+	@ResponseBody
+	public int stampLetterCheck(@RequestBody LetterVO vo) {
+		int cnt = letterDao.stampLetterCheck(vo);
+		if(letterDao.stampLetterCheck(vo) == 0) {
+			cnt = 0;
+		}
+		return cnt;
+	}
+	
+	
 }

@@ -10,6 +10,7 @@ public interface LetterService {
 	public List<LetterVO> selectFriendLetter(LetterVO vo);
 	public List<LetterVO> selectSaveLetter(LetterVO vo);
 	public LetterVO replyLetter(LetterVO vo);
+	public int stampLetterCheck(LetterVO vo);
 	public int insertLetter(LetterVO vo);
 	public int deleteLetter(LetterVO vo);
 }

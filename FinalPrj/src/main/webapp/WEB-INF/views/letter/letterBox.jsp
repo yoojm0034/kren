@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate value="${now}" pattern="yyyy/MM/dd HH:mm" var="today" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -128,7 +130,7 @@
 		// 친구목록 클릭하면 편지목록들 조회 
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
-		    location.href='selectLetters.do?user_id='+aid;
+		    location.href= '${pageContext.request.contextPath}/'+'selectLetters.do/'+aid;
 		});		
 
 		// 번역 그룹 이벤트
@@ -361,10 +363,10 @@
 					</div>
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
-						<a href="letterBox.do" class="item is-active">
+						<a href="${pageContext.request.contextPath}/letterBox.do" class="item is-active">
 							<span class="name">New Letters</span>
 						</a>
-						<a href="savedLetter.do" class="item">
+						<a href="${pageContext.request.contextPath}/savedLetter.do" class="item">
 							<span class="name">Saved Letters</span>
 						</a>
 						<c:if test="${!empty friends }">
@@ -449,12 +451,31 @@
 							<div id="inbox-messages" class="inbox-messages has-slimscroll">
 								<div class="inbox-messages-inner">
 								<c:forEach items="${newLetter }" var="vo" varStatus="status">
+								<fmt:formatDate value="${vo.arrive_date }" pattern="yyyy/MM/dd HH:mm" var="arrive_dt"/>
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
+											<c:if test="${ arrive_dt <= today }">
 											<span class="msg-timestamp"> <fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/>  <img
-												src="resources/template/assets/img/letter/stamp.png">
+												src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>
+											</c:if>
+											<c:if test="${ arrive_dt > today }">
+											<!-- 날짜형식변환 -->
+											<fmt:parseDate var="startDate_D" value="${arrive_dt }" pattern="yy/MM/dd HH:mm"/>
+											<fmt:parseDate var="endDate_D" value="${today }"  pattern="yy/MM/dd HH:mm"/>
+											<fmt:parseNumber var="startDate_N" value="${startDate_D.time}" integerOnly="true" />
+											<fmt:parseNumber var="endDate_N" value="${endDate_D.time}" integerOnly="true" /> 
+											
+											<!-- 날짜계산 -->
+											<c:set var="datetime" value="${ (startDate_N - endDate_N)/( 60 * 60 * 1000 ) }" />
+											<fmt:parseNumber var="percent" value="${datetime }" integerOnly="true" />
+											<fmt:parseNumber var="percent2" value="${ datetime + ((1-(datetime%1))%1) }" integerOnly="true" /><!-- 올림 -->								
+											
+											<span class="msg-timestamp">${percent }시간 후 도착
+											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
+											</span>
+											</c:if>
 											<div class="msg-header">
 												<div class="user-image">
 													<img
@@ -467,7 +488,12 @@
 											</div>
 											<br>
 											<div class="msg-snippet">
+											<c:if test="${arrive_dt <= today }">
 												<p>${vo.content }</p>
+											</c:if>
+											<c:if test="${arrive_dt > today }">
+												<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
+											</c:if>		
 											</div>
 										</div>
 									</div>
@@ -555,7 +581,9 @@
 					<c:when test="${!empty newLetter }">
 					<div class="message-body has-slimscroll">
 					<c:forEach items="${newLetter }" var="vo" varStatus="status">
+					<fmt:formatDate value="${vo.arrive_date }" pattern="yyyy/MM/dd HH:mm" var="arrive_dt"/>
 					<div id="message-preview-${status.index }" class="message-body-inner">
+						<c:if test="${arrive_dt <= today }">
 						<div class="box message-preview">
 							<div class="box-inner">
 								<div class="header">
@@ -592,7 +620,9 @@
 								</div>
 						</div>
 						</div>
-						<c:if test="${!empty vo.arrive_date and vo.name ne user.name }">
+						</c:if>
+						<!-- 편지작성 -->
+						<c:if test="${arrive_dt <= today and vo.name ne user.name }">
 						<div class="reply-wrapper">
 							<div class="reply-title">
 							Write
@@ -617,9 +647,10 @@
 							</div>
 						</div>
 						</c:if>
+						<!-- /편지작성 -->
 						<!-- 교정편지추가 -->
 							<c:choose>
-							<c:when test="${!empty vo.arrive_date and !empty lettercs and vo.cor_yn eq 'Y'}">
+							<c:when test="${arrive_dt <= today and !empty lettercs and vo.cor_yn eq 'Y'}">
 							<div class="message-preview-transition is-first">
 								<div class="mail">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24"

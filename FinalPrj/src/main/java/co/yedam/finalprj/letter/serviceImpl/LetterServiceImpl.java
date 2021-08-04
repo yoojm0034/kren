@@ -49,5 +49,10 @@ public class LetterServiceImpl implements LetterService {
 		return map.deleteLetter(vo);
 	}
 
+	@Override
+	public int stampLetterCheck(LetterVO vo) {
+		return map.stampLetterCheck(vo);
+	}
+
 
 }

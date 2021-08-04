@@ -2,11 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate value="${now}" pattern="yyyy/MM/dd HH:mm" var="today" />
 <!DOCTYPE html>
 <html>
 <head>
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <style>
 .inbox-wrapper .inbox-wrapper-inner .inbox-left-sidebar .inbox-left-sidebar-inner
 	{
@@ -130,7 +130,7 @@
 		// 친구목록 클릭하면 편지목록들 조회 
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
-		    location.href='selectLetters.do?user_id='+aid;
+		    location.href= '${pageContext.request.contextPath}/'+'selectLetters.do/'+aid;
 		});		
 
 		// 번역 그룹 이벤트
@@ -209,49 +209,69 @@
 			var txtarea = $('textarea[data-letter="'+send+'"]').val();
 			console.log(txtarea);
 			
-			if(confirm("편지를 전송하시겠습니까?") ) {
-			    $.ajax({
-			    	url:'insertLetter.do',
-			    	type:'post',
-			    	data:JSON.stringify({
-			    		letter_id:send,
-			    		to_id:to,
-			    		content:txtarea,
-			    		gubun:'일반'
-			    	}),
-				    contentType : "application/json; charset=UTF-8",
-			    	success: function(data) {
-			    		alert('전송되었습니다.');
-			    		location.reload(true);
-			    	},
-			    	error: function(e) {
-			    		alert('편지전송실패');
-			    	}
-			    });		    	
-		    } else {
-		    	if(confirm("편지를 저장하시겠습니까?") ) {
-				    $.ajax({
-				    	url:'insertLetter.do',
-				    	type:'post',
-				    	data:JSON.stringify({
-				    		letter_id:send,
-				    		to_id:to,
-				    		content:txtarea,
-				    		gubun:'임시저장'
-				    	}),
-					    contentType : "application/json; charset=UTF-8",
-				    	success: function(data) {
-				    		alert('편지가 저장되었습니다.');
-				    		location.reload(true);
-				    	},
-				    	error: function(e) {
-				    		alert('저장실패');
-				    	}
-				    });		    	
-			    } else {
-			    	alert("편지작성이 취소되었습니다.");
-			    }
-		    }
+			//우표수량 체크
+			$.ajax({
+				url : 'stampLetterCheck.do',
+				type : 'post',
+				data : JSON.stringify({
+					user_id : $('#user_id').val()
+				}),
+				contentType : "application/json; charset=UTF-8",
+				success : function(data) {
+					if (data > 0) { //우표가 있으면
+						if(confirm("편지를 전송하시겠습니까?") ) {
+						    $.ajax({
+						    	url:'insertLetter.do',
+						    	type:'post',
+						    	data:JSON.stringify({
+						    		letter_id:send,
+						    		to_id:to,
+						    		content:txtarea,
+						    		gubun:'일반'
+						    	}),
+							    contentType : "application/json; charset=UTF-8",
+						    	success: function(data) {
+						    		alert('전송되었습니다.');
+						    		location.reload(true);
+						    	},
+						    	error: function(e) {
+						    		alert('편지전송실패');
+						    	}
+						    });		    	
+					    } else {
+					    	if(confirm("편지를 저장하시겠습니까?") ) {
+							    $.ajax({
+							    	url:'insertLetter.do',
+							    	type:'post',
+							    	data:JSON.stringify({
+							    		letter_id:send,
+							    		to_id:to,
+							    		content:txtarea,
+							    		gubun:'임시저장'
+							    	}),
+								    contentType : "application/json; charset=UTF-8",
+							    	success: function(data) {
+							    		alert('편지가 저장되었습니다.');
+							    		location.reload(true);
+							    	},
+							    	error: function(e) {
+							    		alert('저장실패');
+							    	}
+							    });		    	
+						    } else {
+						    	alert("편지작성이 취소되었습니다.");
+						    }
+					    }
+					} else { //우표가 없으면
+						alert('우표수량을 확인해주세요.');
+					}
+				},
+				error : function(e) {
+					alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+				}
+			});
+			
+
 		});
 		
 	});
@@ -351,9 +371,7 @@
 </script>
 </head>
 <body>
-<form id="hfrm" action="selectLetters.do" method="post">
-	<input type="hidden" id="user_id">
-</form>
+<input type="hidden" id="user_id" value="${user.user_id }">
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
 			<!-- LEFT SIDEBAR  -->
@@ -364,10 +382,10 @@
 					</div>
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
-						<a href="letterBox.do" class="item">
+						<a href="${pageContext.request.contextPath}/letterBox.do" class="item">
 							<span class="name">New Letters</span>
 						</a>
-						<a href="savedLetter.do" class="item">
+						<a href="${pageContext.request.contextPath}/savedLetter.do" class="item">
 							<span class="name">Saved Letters</span>
 						</a>
 						<c:if test="${!empty friends }">
@@ -465,18 +483,29 @@
 							<div id="inbox-messages" class="inbox-messages has-slimscroll">
 								<div class="inbox-messages-inner">
 								<c:forEach items="${friendLetter }" var="vo" varStatus="status">
-								
+								<fmt:formatDate value="${vo.arrive_date }" pattern="yyyy/MM/dd HH:mm" var="arrive_dt"/>
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
-											<c:if test="${!empty vo.arrive_date }">
-											<span class="msg-timestamp"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/>  <img
-												src="resources/template/assets/img/letter/stamp.png">
+											<c:if test="${ arrive_dt <= today }">
+											<span class="msg-timestamp"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/>
+											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>
 											</c:if>
-											<c:if test="${empty vo.arrive_date }">
-											<span class="msg-timestamp"> 시간계산중
-											  <img src="resources/template/assets/img/letter/stamp.png">
+											<c:if test="${ arrive_dt > today }">
+											<!-- 날짜형식변환 -->
+											<fmt:parseDate var="startDate_D" value="${arrive_dt }" pattern="yy/MM/dd HH:mm"/>
+											<fmt:parseDate var="endDate_D" value="${today }"  pattern="yy/MM/dd HH:mm"/>
+											<fmt:parseNumber var="startDate_N" value="${startDate_D.time}" integerOnly="true" />
+											<fmt:parseNumber var="endDate_N" value="${endDate_D.time}" integerOnly="true" /> 
+											
+											<!-- 날짜계산 -->
+											<c:set var="datetime" value="${ (startDate_N - endDate_N)/( 60 * 60 * 1000 ) }" />
+											<fmt:parseNumber var="percent" value="${datetime }" integerOnly="true" />
+											<fmt:parseNumber var="percent2" value="${ datetime + ((1-(datetime%1))%1) }" integerOnly="true" /><!-- 올림 -->								
+											
+											<span class="msg-timestamp">${percent }시간 후 도착
+											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>
 											</c:if>
 											<div class="msg-header">
@@ -491,10 +520,10 @@
 											</div>
 											<br>
 											<div class="msg-snippet">
-											<c:if test="${!empty vo.arrive_date }">
+											<c:if test="${arrive_dt <= today }">
 												<p>${vo.content }</p>
 											</c:if>
-											<c:if test="${empty vo.arrive_date }">
+											<c:if test="${arrive_dt > today }">
 												<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
 											</c:if>											
 											</div>
@@ -584,8 +613,9 @@
 					<c:when test="${!empty friendLetter }">
 					<div class="message-body has-slimscroll">
 					<c:forEach items="${friendLetter }" var="vo" varStatus="status">
+					<fmt:formatDate value="${vo.arrive_date }" pattern="yyyy/MM/dd HH:mm" var="arrive_dt"/>
 					<div id="message-preview-${status.index }" class="message-body-inner">
-						<c:if test="${!empty vo.arrive_date }">
+						<c:if test="${arrive_dt <= today }">
 						<div class="box message-preview">
 							<div class="box-inner">
 								<div class="header">
@@ -628,7 +658,7 @@
 						</div>
 						</c:if>
 						<!-- 편지작성 -->
-						<c:if test="${!empty vo.arrive_date and vo.name ne user.name }">
+						<c:if test="${arrive_dt <= today and vo.name ne user.name }">
 						<div class="reply-wrapper">
 							<div class="reply-title">
 							Write
@@ -653,9 +683,10 @@
 							</div>
 						</div>
 						</c:if>
+						<!-- /편지작성 -->
 							<!-- 교정편지추가 -->
 							<c:choose>
-							<c:when test="${!empty vo.arrive_date and !empty lettercs and vo.cor_yn eq 'Y'}">
+							<c:when test="${arrive_dt <= today and !empty lettercs and vo.cor_yn eq 'Y'}">
 							<div class="message-preview-transition is-first">
 								<div class="mail">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -706,7 +737,7 @@
 					</div>
 					</c:when>
 					<c:otherwise>
-						<p>해당 편지를 조회할 수 없습니다.</p>
+						<p>-</p>
 					</c:otherwise>
 					</c:choose>
 					<!-- /MESSAGE PREVIEWS -->
