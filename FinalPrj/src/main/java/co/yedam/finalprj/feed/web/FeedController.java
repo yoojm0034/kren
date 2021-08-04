@@ -26,6 +26,7 @@ import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.TransService;
 import co.yedam.finalprj.letter.vo.TransVO;
+import co.yedam.finalprj.likes.service.LikesService;
 import co.yedam.finalprj.likes.vo.LikesVO;
 import co.yedam.finalprj.notice.service.NoticeService;
 import co.yedam.finalprj.tag.service.TagService;
@@ -54,17 +55,14 @@ public class FeedController {
 	@Autowired
 	UsersService userDao;
 	
-	
 	//메인피드
 	@RequestMapping("feed.do")
-	public String feedList(@RequestParam(value = "feed_id", defaultValue = "-")String feedId,
-			FeedVO vo, Model model, HttpServletRequest request,Authentication auth) {
+	public String feedList(FeedVO vo, Model model, HttpServletRequest request,Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		
 		UsersVO uvo = new UsersVO();
 		FriendsVO fvo = new FriendsVO();
-		LikesVO lvo = new LikesVO();
 		
 		vo.setUser_id(id);
 		Map<String, Object> datas = new HashMap<String, Object>();
@@ -73,16 +71,14 @@ public class FeedController {
 		uvo.setUser_id(id);
 		uvo = userDao.usersSelect(uvo);		
 		uvo.setTopic(uvo.getTopic());
-		System.out.println("유저 토픽 : "+ uvo.getTopic());
-		System.out.println("유저 토픽 : "+ uvo.getUser_id());
 		fvo.setUser_id(id);
-		lvo.setFeed_id(feedId);
-
+		
 		model.addAttribute("sameTopic",feedDao.sameTopicList(uvo));		
 		model.addAttribute("likeTag",feedDao.likeTag());				
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
 		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
-		model.addAttribute("feedList",feedDao.feedSelectList(vo));		
+		model.addAttribute("feedList",feedDao.feedSelectList(vo));
+		
 		return "feed/mainFeed";
 	}
 	

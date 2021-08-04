@@ -9,4 +9,7 @@ public class LikesVO {
 	private String feed_id;
 	private String user_id;
 	private Date like_date;
+
+	
+	
 }

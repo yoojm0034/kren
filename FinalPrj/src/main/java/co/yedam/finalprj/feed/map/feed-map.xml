@@ -44,7 +44,7 @@
 			AND write_lan = #{write_lan}
 	  	    </if>
 			ORDER BY f.REG_DATE DESC)
-		WHERE ROWNUM <![CDATA[<=]]> 4
+	<!-- 	WHERE ROWNUM <![CDATA[<=]]> 4 -->
 	</select>
 
 	<!--오늘 생일인 친구 조회 , 블릭한 친구 제외-->
@@ -104,11 +104,13 @@
   		FROM   tag 
 		WHERE  tag_name IN (#{tag_name})
 	</select>
+	
 	<!-- 좋아요 존재하면 삭제, 존재하지 않으면 추가 -->
 	<select id="likeCntUPdate" parameterType="co.yedam.finalprj.likes.vo.LikesVO" resultType="int">
-		SELECT f_likeInsert(#{feed_id},#{userId})
+		SELECT f_likeInsert(#{feed_id},#{user_id})
 		FROM dual
 	</select>
+	
 	<!-- 태그 등록 존재하지 않을 시 추가  -->
 	<insert id="tagInsert" parameterType="co.yedam.finalprj.tag.vo.TagVO">
 		INSERT INTO tag(tag_name) VALUES( #{tag_name} )	
