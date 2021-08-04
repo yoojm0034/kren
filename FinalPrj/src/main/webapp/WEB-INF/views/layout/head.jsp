@@ -133,7 +133,7 @@ body {
 
 	function connectWs() {
 		sock = new SockJS("http://192.168.0.76/FinalPrj/echo");
-		//sock = new SockJS('/replyEcho');
+		//sock = new SockJS("http://192.168.0.76/FinalPrj/echo");
 		
 		sock.onopen = function() {
 			console.log('info: connection opened.');
@@ -249,16 +249,16 @@ body {
 						</a>
 
 						<div class="nav-drop is-account-dropdown">
-							<div class="inner">
+							<div class="inner" >
 								<div class="nav-drop-header">
 									<span>Notifications</span> <a href="#"> <i
 										data-feather="bell"></i>
 									</a>
 								</div>
-								<div class="nav-drop-body is-notifications">
+								<div class="nav-drop-body is-notifications" >
 									<!-- Notification -->
-											<div class="media">
-												<div class="media-content" id="replyA">
+											<div class="media" id="replyA">
+												<div class="media-content" >
 												</div>
 											</div>
 									<!-- Notification -->
