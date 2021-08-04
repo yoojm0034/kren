@@ -193,6 +193,16 @@ $(document).ready(function() {
 		$('#language2_level').text(result);
 		};
 });
+$(function() {
+	$('#follow').click(function(){
+		frm.submit();
+		$this.addClass('is-loading');
+		setTimeout(function () {
+	      $this.removeClass('is-loading');
+	    }, 800);	
+		$this.innerText = 'Unfollow';
+	});
+});
 
 </script>
 <body>
@@ -261,9 +271,9 @@ $(document).ready(function() {
                             </div>
                         </div>
                         
-						<form:form id="frm" action="follow.do" modelAttribute="UsersVO" method="post">
-							<form:hidden path="user_id" value=${user.user_id }/>
-							<form:hidden path="following" value=${profile.user_id }/>
+						<form:form id="frm" action="follow.do" modelAttribute="FriendsVO" method="post">
+							<form:hidden path="user_id" value="${user.user_id }"/>
+							<form:hidden path="following" value="${profile.user_id }"/>
 						</form:form>
 						
                         <div class="profile-subheader">

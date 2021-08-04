@@ -1,9 +1,9 @@
 package co.yedam.finalprj.friends.map;
 
-import co.yedam.finalprj.users.vo.UsersVO;
+import co.yedam.finalprj.friends.vo.FriendsVO;
 
 public interface FriendsMap {
-	int follow(UsersVO vo);
-	int unfollow(UsersVO vo);
+	int follow(FriendsVO vo);
+	int unfollow(FriendsVO vo);
 	
 }

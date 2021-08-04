@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
@@ -52,7 +53,8 @@ public class UsersController {
 	
 	// 프로필화면
 	@RequestMapping("profile.do")
-	public String profile(@RequestParam("user_id") String user_id, UsersVO vo, Model model, Authentication auth, HttpServletRequest request) {
+	public String profile(@ModelAttribute("FriendsVO") FriendsVO fvo, UsersVO vo,
+			@RequestParam("user_id") String user_id, Model model, Authentication auth, HttpServletRequest request) {
 		
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();

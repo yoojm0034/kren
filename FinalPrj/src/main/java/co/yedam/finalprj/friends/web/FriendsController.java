@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import co.yedam.finalprj.friends.service.FriendsService;
+import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 @Controller
@@ -24,18 +25,19 @@ public class FriendsController {
 	}
 	
 	@RequestMapping("follow.do")
-	public String follow(@RequestParam("user_id") String user_id, UsersVO vo, Model model, Authentication auth, HttpServletRequest request) {
-		
+	public String follow(FriendsVO vo, Model model, Authentication auth, HttpServletRequest request) {
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
-		vo.setSession_id(Sessionid);
-		vo.setUser_id(user_id);
+		String following = request.getParameter("following");
+		vo.setUser_id(Sessionid);
+		vo.setFollowing(following);
 		
-		System.out.println("Session : " + Sessionid);
-		System.out.println("UserID : "+ user_id);
+		int r = FriendsDao.follow(vo);
+		System.out.println(r);
+		if (r>0) {
+		System.out.println("[" + Sessionid + "]유저가 [" + following + "]를 팔로잉 했습니다.");
+		}
 		
-		FriendsDao.follow(vo);
-		
-		return "users/profile";
+		return "";
 	} 
 }

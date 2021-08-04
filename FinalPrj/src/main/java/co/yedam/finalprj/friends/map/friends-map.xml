@@ -3,7 +3,7 @@
 <mapper namespace="co.yedam.finalprj.friends.map.FriendsMap">
 
 	<!-- 팔로잉 -->
-	<insert id="follow" parameterType="co.yedam.finalprj.users.vo.UsersVO">
-	insert into friends values(#{session_id}, #{user_id});
+	<insert id="follow" parameterType="co.yedam.finalprj.friends.vo.FriendsVO">
+	insert into friends(user_id, following) values(#{user_id}, #{following})
 	</insert>
 </mapper>

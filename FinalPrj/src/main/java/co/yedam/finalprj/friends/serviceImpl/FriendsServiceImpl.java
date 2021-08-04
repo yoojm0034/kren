@@ -22,12 +22,12 @@ public class FriendsServiceImpl implements FriendsService {
 	}
 
 	@Override
-	public int follow(UsersVO vo) {
+	public int follow(FriendsVO vo) {
 		return map.follow(vo);
 	}
 
 	@Override
-	public int unfollow(UsersVO vo) {
+	public int unfollow(FriendsVO vo) {
 		return map.unfollow(vo);
 	}
 

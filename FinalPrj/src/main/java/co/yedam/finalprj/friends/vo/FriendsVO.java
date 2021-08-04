@@ -6,5 +6,4 @@ import lombok.Data;
 public class FriendsVO {
 	private String user_id;
 	private String following;
-	private String age;
 }
