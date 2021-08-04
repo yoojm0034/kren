@@ -13,25 +13,32 @@ public interface UsersService {
 	int usersUpdate(UsersVO vo);
 	int usersDelete(UsersVO vo);
 	
-	//회원가입
+	//------------------회원가입-------------------
 	public UsersVO idCheck(String id);
 	public UsersVO nameCheck(String name);
 	public UsersVO emailCheck(String email);
 	
-	//admin
-	int adminUsersUpdate(UsersVO vo);
-	List<UsersVO> adminUsersSelectList();
+	//------------------프로필---------------------
+	//우표 구매시 보유 우표수 변경...
+	public Object stampUpdate(UsersVO vo);
 	
-	//login
+	//관심사 리스트
+	List<UsersVO> myTopicList(UsersVO vo);	
+
+	//방문한 곳
+	List<UsersVO> myTripList(UsersVO vo);	
+	
+	
+	//-----------------로그인 로그아웃---------------
 	public int loginCheck(UsersVO vo);
-	
-	//logout
 	public void logout(HttpSession session);
 	
 	//아이디 비밀번호 찾기...
 	public void findId(UsersVO vo);
 	public void findPw(UsersVO vo);
 	
-	//우표 구매시 보유 우표수 변경...
-	public Object stampUpdate(UsersVO vo);
+	
+	//-----------------관리자-----------------------
+	int adminUsersUpdate(UsersVO vo);
+	List<UsersVO> adminUsersSelectList();
 }

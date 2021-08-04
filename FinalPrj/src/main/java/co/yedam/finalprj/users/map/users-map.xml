@@ -17,15 +17,14 @@
 		WHERE status = '일반회원'
 		AND report_cnt > 0
 		ORDER BY report_cnt DESC
-	</select>
-	
+	</select>	
 	<!-- update -->
 	<update id="adminUsersUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
 		update users
 		set status = #{status}
 		where user_id = #{user_id}
 	</update>
-
+	
 	<!-- 아이디 중복체크 -->	
 	<select id="idCheck" parameterType="string" resultType="co.yedam.finalprj.users.vo.UsersVO" >
 		select * from users where user_id = #{user_id}
@@ -41,11 +40,34 @@
 		select * from users where email = #{email}
 	</select>
 	
-	<!-- 회원가입 -->
+	<!-- 회원가입 insert -->
 	<insert id="usersInsert" parameterType="co.yedam.finalprj.users.vo.UsersVO"> 
-		insert into users (email, name, password, birth, gender, topic, language1, language2, country, city, user_id, lat, lon, flag, language2_level, timezone)
-		values (#{email}, #{name}, #{password}, #{birth}, #{gender}, #{topic}, #{language1}, #{language2}, #{country}, #{city}, #{user_id}, #{lat}, #{lon}, #{flag}, #{language2_level}, #{timezone})
+		insert into users 
+			(email, name, password, birth, gender, topic, language1, language2, country, city, user_id, lat, lon, flag, language2_level, timezone)
+		values 
+			(#{email}, #{name}, #{password}, #{birth}, #{gender}, #{topic}, #{language1}, #{language2}, #{country}, #{city}, #{user_id}, #{lat}, #{lon}, #{flag}, #{language2_level}, #{timezone})
 	</insert>
 	
-
+	<!-- 프로필 topic list -->
+	<select id="myTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.topic.vo.TopicVO" >
+		with mytopic as (Select Regexp_Substr((select topic 
+	                      						from users 
+	                      						where user_id = #{user_id}),'[^,]+', 1, Level) topic_id From Dual
+						Connect By Regexp_Substr((select topic 
+	                          from users 
+	                          where user_id = #{user_id}), '[^,]+', 1, Level) Is Not Null)
+		select t.*
+		from topic t, mytopic m
+		where t.topic_id = m.topic_id
+	</select>	
+	
+	<!-- 프로필 trip list -->
+	<select id="myTripList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+		Select Regexp_Substr((select visited 
+		                      from users 
+		                      where user_id = #{user_id}),'[^,]+', 1, Level) visited From Dual
+		Connect By Regexp_Substr((select visited
+		                          from users 
+		                          where user_id = #{user_id}), '[^,]+', 1, Level) Is Not Null
+	</select>	
 </mapper>

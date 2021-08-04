@@ -97,4 +97,14 @@ public class UsersServiceImpl implements UsersService {
 		
 	}
 
+	@Override
+	public List<UsersVO> myTopicList(UsersVO vo) {
+		return map.myTopicList(vo);
+	}
+
+	@Override
+	public List<UsersVO> myTripList(UsersVO vo) {
+		return map.myTripList(vo);
+	}
+
 }

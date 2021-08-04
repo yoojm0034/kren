@@ -3,6 +3,7 @@ package co.yedam.finalprj.users.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -15,6 +16,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,8 +52,20 @@ public class UsersController {
 	
 	// 프로필화면
 	@RequestMapping("profile.do")
-	public String profile(UsersVO vo, Model model) {
-	//model.addAttribute("user", usersDao.usersSelect(vo));
+	public String profile(@RequestParam("user_id") String user_id, UsersVO vo, Model model, Authentication auth, HttpServletRequest request) {
+		
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setSession_id(Sessionid);
+		vo.setUser_id(user_id);
+		
+		System.out.println("Session : " + Sessionid);
+		System.out.println("UserID : "+ user_id);
+		
+		model.addAttribute("profile", usersDao.usersSelect(vo));
+		model.addAttribute("mytopic", usersDao.myTopicList(vo));
+		model.addAttribute("mytrip", usersDao.myTripList(vo));
+		
 		return "users/profile";
 	} 
 	

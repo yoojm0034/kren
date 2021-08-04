@@ -18,6 +18,10 @@ public interface UsersMap {
 	public UsersVO nameCheck(String name);
 	public UsersVO emailCheck(String email);
 	
+	//프로필
+	List<UsersVO> myTopicList(UsersVO vo);	
+	List<UsersVO> myTripList(UsersVO vo);	
+	
 	//admin
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();

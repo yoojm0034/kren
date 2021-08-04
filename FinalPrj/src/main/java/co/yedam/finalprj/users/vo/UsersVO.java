@@ -34,7 +34,7 @@ public class UsersVO {
 	private String visited;
 	private Date reg_date;
 	private Date edit_dt;
-	private String prifile;
+	private String profile;
 	private int stamp;
 	private String photo;
 	private int report_cnt;
@@ -44,5 +44,6 @@ public class UsersVO {
 	private String timezone;
 	private String flag;
 	private int count; // 일치하는관심사 수
+	private String session_id; // 일치하는관심사 수
 
 }

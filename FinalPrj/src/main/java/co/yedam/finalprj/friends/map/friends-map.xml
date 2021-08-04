@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.friends.map.FriendsMap">
 
+	<!-- 팔로잉 -->
+	<insert id="follow" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+	insert into friends values(#{session_id}, #{user_id});
+	</insert>
 </mapper>
