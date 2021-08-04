@@ -16,10 +16,6 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
-<!------------ 모달 ------------>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-     
 <meta charset="UTF-8">
 <title>Main Feed</title>
 <style>
@@ -155,7 +151,7 @@ $(document).ready(function(){
 				$('#activities-autocpl').val('');
 				maxAppend++;
 				$.ajax({
-					url: "tagInsert.do" ,
+					url: "${pageContext.request.contextPath}/tagInsert.do" ,
 					type: "POST",
 					data:{ tag_name : tagval } ,
 					success: function(data){
@@ -272,28 +268,17 @@ $(document).ready(function(){
 	//-------인기있는 주제검색---------
 	$('.tag-label').on('click',function(){
 		var tagName = this.id;
-		location.href="feed.do?tags=" + tagName
+		location.href="${pageContext.request.contextPath}/feed.do?tags=" + tagName
 	});
 	
 	//-------최신글---------
 	$('#allSearch').on('click',function(){
-		location.href="feed.do"
-	});
-	
-	//-------내근처---------아직
-	$('#searchNear').on('click',function(){
-		location.href="feed.do"
-	});
-	
-	//-------친구---------아직
-	$('#searchFriend').on('click',function(){
-		location.href="feed.do"
+		location.href="${pageContext.request.contextPath}/feed.do"
 	});
 	
 	//-------태그---------
 	$('#searchTag').on('click',function(){
 		var display = $("#SearchDiv").css('display');
-		
 		
 		if(display == "none"){
 			$("#SearchDiv").css('display', 'block'); 
@@ -329,11 +314,11 @@ $(document).ready(function(){
 			
 				function tagsFunction() {
 					if(event.keyCode==13){
-				    	var tagval = $('#tagInput').val();
+				    	var tagval=$('#tagInput').val();
 				    	if(!tagval) {
 							alert('태그를 입력해 주세요!');
 						}else{
-						location.href="feed.do?tags=" + tagval
+							location.href="${pageContext.request.contextPath}/feed.do?tags=" + tagval
 						}
 					}
 				};
@@ -342,33 +327,66 @@ $(document).ready(function(){
 		}
 	});
 	
+
 	//-------언어별---------
 	$('#searchLan').on('click',function(){
-		
-		//location.href="feed.do"
+		var para = document.location.href.split("="); 
+		if(para[1]=="en"){
+			location.href="${pageContext.request.contextPath}/feed.do?write_lan=" + "ko"		
+		}else{
+			location.href="${pageContext.request.contextPath}/feed.do?write_lan=" +"en"
+		}
 	});
 	
-	
+	//-------내근처--------- 아직, 내위치 조회 상대방 위치와 비교 
+	$('#searchNear').on('click',function(){
+		location.href="${pageContext.request.contextPath}/feed.do"
+	});
 });
-
-	//-------번역---------
-	function trans(id, text){
-		var div = $("#tdiv"+id);
-	 	$.ajax({
-			url:"${pageContext.request.contextPath}/test11.do",
-			type:"GET",
-			data:{korean:text},
-			success:function(v){
-				console.log(v);
-				var json = JSON.parse(v);
-				var english=json.message.result.translatedText;
-				div.append($('<p/>').html(english));
+	//-------좋아요--------
+	function likeIt(feedId){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feed.do",
+			type:"POST",
+			data:{feed_id:feedId},
+			success:function(data){
+				//console.log(data);
 			},
 			error:function(err){
 				console.log(err);
 			}
-		}); 
+		})
 	};
+	//-------번역---------
+	function trans(id, text){
+		var div = $("#tdiv"+id);
+		var lan = div.next().attr('id');
+		
+ 	 	$.ajax({
+			url:"${pageContext.request.contextPath}/transContent.do",
+			type:"GET",
+			data:{	korean:text,
+					write_lan: lan},
+			success:function(v){
+				var json = JSON.parse(v);
+				var transval = json.message.result.translatedText;
+				div.append($('<p/>').html(transval));
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});  
+	};
+	//무한 스크롤 
+	$(window).scroll(function() { if($(window).scrollTop() == $(document).height() - $(window).height()){ 
+		var limit =3;
+		var offset=0;
+		
+		const res = await fetch('http://api.com/restaurants?limit='+limit+'&offset='+offset);
+		console.log("또잉또잉"); 
+		
+	} });
+	
 </script>
 
 	<!-- Pageloader -->
@@ -938,7 +956,6 @@ $(document).ready(function(){
 		 				<label class="nicelabel-default-position">
 		 					<span class="search-label" id="allSearch">최신글</span>
 							<span class="search-label" id="searchNear">내 근처</span>
-							<span class="search-label" id="searchFriend">친구</span>
 							<span class="search-label" id="searchTag">태그</span>
 							<span class="search-label" id="searchLan">언어별</span>
 						</label> 
@@ -969,7 +986,7 @@ $(document).ready(function(){
 													data-user-popover="1" alt="">
 											</div>
 											<div class="user-info">
-												<a href="#">!!!!!!!!${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a> <span
+												<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a> <span
 													class="time">${vo.reg_date } : ${vo.time_zone }</span>
 											</div>
 										</div>
@@ -1043,6 +1060,7 @@ $(document).ready(function(){
 										<div class="post-text">
 											<p>${vo.content }</p>
 											<div class="tdiv" id="tdiv${vo.feed_id }"></div>
+											<div class="twdiv" id="${vo.write_lan }"></div>
 										</div>
 										<!-- Featured image -->
 										<c:if test="${empty vo.fphoto}">
@@ -1052,7 +1070,7 @@ $(document).ready(function(){
 												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 												<div class="like-wrapper">
 													<a href="javascript:void(0);" class="like-button"
-														onclick="likeIt()"> <i
+														onclick="likeIt('${vo.feed_id }')"> <i
 														class="mdi mdi-heart not-liked bouncy"></i> <i
 														class="mdi mdi-heart is-liked bouncy"></i> <span
 														class="like-overlay"></span>

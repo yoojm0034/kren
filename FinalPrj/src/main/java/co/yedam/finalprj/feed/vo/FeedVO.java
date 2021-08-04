@@ -15,7 +15,6 @@ public class FeedVO {
 	private String photo;
 	private Date reg_date;
 	private String tags;
-	
 	private String write_lan;
 	
 	//photo.vo
@@ -30,4 +29,5 @@ public class FeedVO {
 	private String directory;
 	
 	private MultipartFile file;
+	
 }
