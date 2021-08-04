@@ -94,35 +94,63 @@ body {
 		    dataType:'json',
 		    success: function (data) {
 		    	console.log(data)
-		    	var tbl = $('<table>').attr("border", 1);
-		    	for(i=0 ; i <= data.length ; i++) {
+		    	for(i=0 ; i < data.length ; i++) {
 							    		
 		    		 if(data[i].type == 'reply') {
 					        var rep = "<a href='"+"${pageContext.request.contextPath}"+data[i].url + data[i].content_id+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글에 댓글을 남겼습니다.</a>"
-					        var tr = $('<tr>');
-					        var td = $('<td>');
-					        td.append(rep);
-					        tr.append(td);
-					        tbl.append(tr);
-					        $('#replyA').append(tbl);
+					        var div = $('<div class="media"></div>');
+					        var div2 = $('<div class="media-content"></div>');
+					        var div3 = $('<div class="media-right is-centered"></div>');
+					        var div4 = $('<div class="added-icon"></div>');
+					        var icon = $('<i data-feather="mail"></i>'); //아이콘적용이안됨 댓글아이콘
+					        div4.append(icon);
+					        div3.append(div4);
+					        div2.append(rep);
+					        div.append(div2);
+					        div.append(div3);
+					        $('#replyA').append(div);
 				     }
 		    		 else if(data[i].type == 'follow') {
 					     	var fol = "<a href='"+"${pageContext.request.contextPath}/profile.do?user_id="+data[i].user_id+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님을 팔로우합니다.</a>"
-					        var tr = $('<tr>');
-					        var td = $('<td>');
-					        td.append(fol);
-					        tr.append(td);
-					        tbl.append(tr);
-					        $('#replyA').append(tbl);
+					     	var div = $('<div class="media"></div>');
+					        var div2 = $('<div class="media-content"></div>');
+					        var div3 = $('<div class="media-right is-centered"></div>');
+					        var div4 = $('<div class="added-icon"></div>');
+					        var icon = $('<i data-feather="bell"></i>');
+					        div4.append(icon);
+					        div3.append(div4);
+					        div2.append(fol);
+					        div.append(div2);
+					        div.append(div3);
+					        $('#replyA').append(div);
 					 }
 		    		 else if(data[i].type == 'like') {
 					     	var lik = "<a href='"+"${pageContext.request.contextPath}"+data[i].url + data[i].content_id+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글을 좋아합니다.</a>"
-					        var tr = $('<tr>');
-					        var td = $('<td>');
-					        td.append(lik);
-					        tr.append(td);
-					        tbl.append(tr);
-					        $('#replyA').append(tbl);
+					     	var div = $('<div class="media"></div>');
+					        var div2 = $('<div class="media-content"></div>');
+					        var div3 = $('<div class="media-right is-centered"></div>');
+					        var div4 = $('<div class="added-icon"></div>');
+					        var icon = $('<i data-feather="heart"></i>');
+					        div4.append(icon);
+					        div3.append(div4);
+					        div2.append(lik);
+					        div.append(div2);
+					        div.append(div3);
+					        $('#replyA').append(div);
+					 }
+		    		 else if(data[i].type == 'letter') {
+					     	var letter = "<a href='"+"${pageContext.request.contextPath}"+data[i].url + data[i].content_id+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님에게 편지를 보냈습니다.</a>"
+					     	var div = $('<div class="media"></div>');
+					        var div2 = $('<div class="media-content"></div>');
+					        var div3 = $('<div class="media-right is-centered"></div>');
+					        var div4 = $('<div class="added-icon"></div>');
+					        var icon = $('<i data-feather="heart"></i>');
+					        div4.append(icon);
+					        div3.append(div4);
+					        div2.append(letter);
+					        div.append(div2);
+					        div.append(div3);
+					        $('#replyB').append(div);
 					 }
 		    	}
 		        
@@ -130,9 +158,13 @@ body {
 		});
 
 	});
+	function clickTest() {
+		console("클릭실험");
+		return true;
+	}
 
 	function connectWs() {
-		sock = new SockJS("http://192.168.0.76/FinalPrj/echo");
+		sock = new SockJS("${pageContext.request.contextPath}/echo");
 		//sock = new SockJS("http://192.168.0.76/FinalPrj/echo");
 		
 		sock.onopen = function() {
@@ -148,8 +180,6 @@ body {
 			toastr.options.closeButton = true;
 			toastr.options.newestOnTop = false;
 			toastr.options.progressBar = true;
-			/* toastr.options.onclick = function() { 
-			} */
 			toastr.info(data,'알림', {timeOut: 6000});
 		};
 
@@ -209,19 +239,27 @@ body {
 	class="navbar navbar-v1 is-inline-flex is-transparent no-shadow is-hidden-mobile">
 	<div class="container is-fluid">
 		<div class="navbar-brand">
-			<a href="home.do" class="navbar-item"> 
-				<img class="logo light-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png"> 
-				<img class="logo dark-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png">
-			</a>
+			<c:if test="${empty user.user_id}">
+				<a href="${pageContext.request.contextPath}/home.do" class="navbar-item"> 
+					<img class="logo light-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png"> 
+					<img class="logo dark-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png">
+				</a>
+			</c:if>
+			<c:if test="${not empty user.user_id}">
+				<a href="${pageContext.request.contextPath}/feed.do" class="navbar-item"> 
+					<img class="logo light-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png"> 
+					<img class="logo dark-image" src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png">
+				</a>
+			</c:if>
 		</div>
 		<div class="navbar-menu">
 			<!-- 네비바 왼쪽 -->
 			<div class="navbar-start">
 				<ul>
 					<li class="is-active"><a href="${pageContext.request.contextPath}/feed.do">피드</a></li>
-					<li><a href="#">친구찾기</a></li>
+					<li><a href="${pageContext.request.contextPath}/friendSearch.do">친구찾기</a></li>
 					<li><a href="${pageContext.request.contextPath}/letterBox.do">편지</a></li>
-					<li><a href="#">ABOUT US</a></li>
+					<li><a href="${pageContext.request.contextPath}/aboutus.do">ABOUT US</a></li>
 				</ul>
 			</div>
 			<div class="navbar-end">
@@ -255,13 +293,7 @@ body {
 										data-feather="bell"></i>
 									</a>
 								</div>
-								<div class="nav-drop-body is-notifications" >
-									<!-- Notification -->
-											<div class="media" id="replyA">
-												<div class="media-content" >
-												</div>
-											</div>
-									<!-- Notification -->
+								<div class="nav-drop-body is-notifications" id="replyA">
 								</div>
 								<div class="nav-drop-footer">
 									<a href="#">View All</a>
@@ -278,68 +310,9 @@ body {
 						<div class="nav-drop is-account-dropdown">
 							<div class="inner">
 								<div class="nav-drop-header">
-									<span>Messages</span> <a href="messages-inbox.html">Inbox</a>
+									<span>Messages</span> <a href="${pageContext.request.contextPath}/letterBox.do">Inbox</a>
 								</div>
-								<div class="nav-drop-body is-friend-requests">
-									<!-- Message -->
-									<div class="media">
-										<figure class="media-left">
-											<p class="image">
-												<img src="https://via.placeholder.com/150x150"
-													data-demo-src="assets/img/avatars/nelly.png"
-													data-user-popover="9" alt="">
-											</p>
-										</figure>
-										<div class="media-content">
-											<a href="#">Nelly Schwartz</a> <span>I think we should
-												meet near the Starbucks so we can get...</span> <span class="time">Yesterday</span>
-										</div>
-										<div class="media-right is-centered">
-											<div class="added-icon">
-												<i data-feather="message-square"></i>
-											</div>
-										</div>
-									</div>
-									<!-- Message -->
-									<div class="media">
-										<figure class="media-left">
-											<p class="image">
-												<img src="https://via.placeholder.com/150x150"
-													data-demo-src="assets/img/avatars/edward.jpeg"
-													data-user-popover="5" alt="">
-											</p>
-										</figure>
-										<div class="media-content">
-											<a href="#">Edward Mayers</a> <span>That was a real
-												pleasure seeing you last time we really should...</span> <span
-												class="time">last week</span>
-										</div>
-										<div class="media-right is-centered">
-											<div class="added-icon">
-												<i data-feather="message-square"></i>
-											</div>
-										</div>
-									</div>
-									<!-- Message -->
-									<div class="media">
-										<figure class="media-left">
-											<p class="image">
-												<img src="https://via.placeholder.com/150x150"
-													data-demo-src="assets/img/avatars/dan.jpg"
-													data-user-popover="1" alt="">
-											</p>
-										</figure>
-										<div class="media-content">
-											<a href="#">Dan Walker</a> <span>Hey there, would it
-												be possible to borrow your bicycle, i really need...</span> <span
-												class="time">Jun 03 2018</span>
-										</div>
-										<div class="media-right is-centered">
-											<div class="added-icon">
-												<i data-feather="message-square"></i>
-											</div>
-										</div>
-									</div>
+								<div class="nav-drop-body is-friend-requests" id="replyB">
 								</div>
 								<div class="nav-drop-footer">
 									<a href="#">Clear All</a>
@@ -397,13 +370,12 @@ body {
 									<div class="media">
 										<div class="media-left">
 											<div class="image">
-												<img src="https://via.placeholder.com/400x400"
-													data-demo-src="assets/img/avatars/jenna.png" alt="">
+												<img src="https://via.placeholder.com/400x400" alt="">
 											</div>
 										</div>
 										<div class="media-content">
 											<h3>${user.name }</h3>
-											<small>Main account</small>
+											<small>Admin Page</small>
 										</div>
 										<div class="media-right">
 											<i data-feather="check"></i>

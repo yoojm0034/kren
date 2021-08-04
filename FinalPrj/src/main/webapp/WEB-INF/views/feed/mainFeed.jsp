@@ -344,24 +344,54 @@ $(document).ready(function(){
 	});
 });
 	//-------좋아요--------
-	function likeIt(feedId){
+ 	function likeIt(feedId){
 		$.ajax({
-			url:"${pageContext.request.contextPath}/feed.do",
+			url:"${pageContext.request.contextPath}/likeCnt.do",
 			type:"POST",
 			data:{feed_id:feedId},
-			success:function(data){
-				//console.log(data);
+			success:function(result){
+				console.log(result);
+				if(result==0){
+					alert('좋아요!');
+				}else{
+					alert('좋아요 취소');
+				}
+				recCount(feedId);
 			},
 			error:function(err){
 				console.log(err);
 			}
-		})
-	};
+		}) 
+	}; 
+	 
+	//-------좋아요 카운트,유저--------
+	function recCount(feedId) {
+		var div = $('#likers-text'+feedId);
+		var cnt = $('#like-count'+feedId);
+			$.ajax({
+				url: "${pageContext.request.contextPath}/likeSelectList.do",
+                type: "POST",
+                data: {feed_id: feedId},
+                dataType:"JSON",
+                success: function(data) {
+                	var result= data.json;
+                	var i =0;
+                	$.each(data, function(idx, val) {
+                		//console.log(idx + " " + val.user_id);
+        				i++;
+                		div.append($('<p/>').html(val.user_id));
+        				cnt.append($('<p/>').html(i));
+        				//console.log(i);
+                	});
+    			console.log(result);
+                },
+			}) 
+	 };
+	 
 	//-------번역---------
 	function trans(id, text){
 		var div = $("#tdiv"+id);
 		var lan = div.next().attr('id');
-		
  	 	$.ajax({
 			url:"${pageContext.request.contextPath}/transContent.do",
 			type:"GET",
@@ -377,7 +407,7 @@ $(document).ready(function(){
 			}
 		});  
 	};
-	//무한 스크롤 
+/* 	//무한 스크롤 
 	$(window).scroll(function() { if($(window).scrollTop() == $(document).height() - $(window).height()){ 
 		var limit =3;
 		var offset=0;
@@ -385,10 +415,36 @@ $(document).ready(function(){
 		const res = await fetch('http://api.com/restaurants?limit='+limit+'&offset='+offset);
 		console.log("또잉또잉"); 
 		
-	} });
+	} }); */
 	
 </script>
+<script type="text/javascript">
 
+	function timeForToday(value) {
+		console.log(value);
+    const today = new Date();
+    const timeValue = new Date(value);
+
+    const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+    if (betweenTime < 1) return '방금전';
+    if (betweenTime < 60) {
+        return `${betweenTime}분전`;
+    }
+
+    const betweenTimeHour = Math.floor(betweenTime / 60);
+    if (betweenTimeHour < 24) {
+        return `${betweenTimeHour}시간전`;
+    }
+
+    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+    if (betweenTimeDay < 365) {
+        return `${betweenTimeDay}일전`;
+    }
+
+    return `${Math.floor(betweenTimeDay / 365)}년전`;
+}
+
+</script>
 	<!-- Pageloader -->
 	<div class="pageloader"></div>
 	<div class="infraloader is-active"></div>
@@ -1004,7 +1060,7 @@ $(document).ready(function(){
 													<a href="#" class="dropdown-item">
 														<div class="media" >
 															<i data-feather="bookmark"></i>
-															<div class="media-content test0101" id="${vo.content }" onclick="trans('${vo.feed_id }','${vo.content }')">
+															<div class="media-content" id="${vo.content }" onclick="trans('${vo.feed_id }','${vo.content }')">
 																<h3>번역</h3>
 															</div>
 														</div>
@@ -1069,8 +1125,7 @@ $(document).ready(function(){
 												<!-- Action buttons -->
 												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 												<div class="like-wrapper">
-													<a href="javascript:void(0);" class="like-button"
-														onclick="likeIt('${vo.feed_id }')"> <i
+													<a class="like-button" onclick="likeIt('${vo.feed_id}'); return false;"> <i
 														class="mdi mdi-heart not-liked bouncy"></i> <i
 														class="mdi mdi-heart is-liked bouncy"></i> <span
 														class="like-overlay"></span>
@@ -1090,7 +1145,7 @@ $(document).ready(function(){
 												<!-- Action buttons -->
 												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 												<div class="like-wrapper">
-													<a href="javascript:void(0);" class="like-button"> <i
+													<a  class="like-button" onclick="likeIt('${vo.feed_id}'); return false;"> <i
 														class="mdi mdi-heart not-liked bouncy"></i> <i
 														class="mdi mdi-heart is-liked bouncy"></i> <span
 														class="like-overlay"></span>
@@ -1132,23 +1187,18 @@ $(document).ready(function(){
 										</div>
 
 										<!-- Followers text -->
-										<div class="likers-text">
-
+										<div class="likers-text" id="likers-text${vo.feed_id }">
 											<p>
 												<a href="#">Milly</a>, <a href="#">David</a>
 											</p>
-											<%-- 							<c:forEach items="${feedLike }" var="likevo">
-												<p>and ${likevo.feed_id } .+. ${likevo.user_id } more
-													liked this</p>
-											</c:forEach> --%>
 										</div>
 
 										<!-- Post statistics -->
 										<div class="social-count">
-											<div class="likes-count">
+											<div class="likes-count" id="like-count${vo.feed_id }">
 												<i data-feather="heart"></i> <span>27</span>
 											</div>
-											<div class="comments-count">
+											<div class="comments-count" >
 												<i data-feather="message-circle"></i> <span>3</span>
 											</div>
 										</div>

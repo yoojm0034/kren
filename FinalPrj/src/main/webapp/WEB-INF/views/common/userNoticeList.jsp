@@ -50,7 +50,7 @@ tr:hover {
 	$('#dataTable tbody tr').on('click', function(){
 		location.href='${pageContext.request.contextPath}/userSelectNotice.do?notice_id='+$(this).data('id')
 	})
-	$('#btnNotice').on('click', function(){
+	$('#btnHome').on('click', function(){
 		location.href='${pageContext.request.contextPath}/feed.do'
 	})
  })	

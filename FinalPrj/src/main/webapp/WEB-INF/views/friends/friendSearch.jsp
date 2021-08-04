@@ -1,17 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>친구 찾기</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>친구찾기 / Friends</title>
+    <link rel="icon" type="image/png" href="resources/template/assets/img/favicon.png" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
+</head>
 <style>
 .options-nav {
     position: fixed;
-    top: 58px;
+    top: 70px;
     left: 0;
     width: 100%;
-    height: 80px;
+    height: 50px;
     background: #fff;
     border-bottom: 1px solid #e8e8e8;
     -webkit-box-shadow: 0 0 8px 0 rgb(0 0 0 / 12%);
@@ -20,38 +30,117 @@
     -webkit-transition: all .3s;
     transition: all .3s;
 }
-
-.options-nav .nav-inner {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    margin-top: 15px;
-}
-
-.material-radio .dot {
-    position: absolute;
-    top: calc(50% - 8px);
-    left: 42.5px;
-    height: 7px;
-    width: 6px;
-    border-radius: 50%;
-    background: #3d70b2;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    z-index: 5;
+.filters-panel {
+    position: fixed;
+    top: 107px;
+    left: 0;
+    height: calc(100% - 107px);
+    width: 420px;
+    background: #fff;
+    border-right: 1px solid #e0e0e0;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
     -webkit-transition: all .3s;
     transition: all .3s;
+    z-index: 2;
+}
+.friends-wrapper {
+    position: relative;
+    margin: 0 auto;
+    top: 0px;
+    padding: 0 6%;
+    min-height: calc(100vh - 280px);
 }
 
+.main-container.has-sidebar {
+    width: calc(98% - 150px);
+    margin-left: 300px;
+}
+
+.friends-wrapper.has-sidebar .card-row .friend-card {
+    width: calc(25.3% - 16px);
+	margin-left: 0;
+}
+.friends-wrapper .card-row {
+    margin-top: 20px;
+    margin-left: 20px;
+    padding-bottom: 60px;
+}
+.friends-wrapper {
+    position: relative;
+    margin: 0 0%;
+    top: 0px;
+    padding: 0 6%;
+    min-height: calc(100vh - 280px);
+}
+.filters-panel .panel-inner .filter-block {
+    padding: 5px;
+    margin-left: 15px;
+}
+.search-label{
+	font-size: .7rem;
+    font-weight: 500;
+}
 </style>
-</head>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+      	$('#friendSearch').on('click',function(){
+	        //검색
+			var age1 = $('#age1').val();
+			var age2 = $('#age2').val();
+			var gender = $('input[name=gender]:checked').val();
+			var country = $("#country option:selected").val();
+			var lan = $("#lan option:selected").val();
+			var topic;
+			
+		
+	        console.log('검색값');
+			console.log(age1);
+			console.log(age2);
+			console.log(gender);
+			console.log(country);
+			console.log(lan);
+			
+	        //제외
+ 			var disage1 = $('#dis-age1').val();
+			var disage2 = $('#dis-age2').val();
+			var disgender = $('input[name=dis-gender]:checked').val();
+			var discountry = $("#dis-country option:selected").val();
+			var dislan = $("#dis-lan option:selected").val();
+			var distopic;
+			console.log('제외');
+			console.log(disage1);
+			console.log(disage2);
+			console.log(disgender);
+			console.log(discountry);
+			console.log(dislan); 
+			
+/* 			$('#ageVal1').val = ;
+			$('#ageVal2').val = ;
+			$('#ageVal1').val = ;
+			$('#ageVal2').val = ;
+        	<input type="hidden" id="ageVal" 			name="ageVal1,2" >
+        	<input type="hidden" id="dis-ageVal" 		name="dia-ageVal" >
+        	<input type="hidden" id="genderVal" 		name="genderVal" >
+        	<input type="hidden" id="dis-genderVal" 	name="dis-genderVal" >
+        	<input type="hidden" id="countryVal" 		name="countryVal" >
+        	<input type="hidden" id="dis-countryVal" 	name="dis-countryVal" >
+        	<input type="hidden" id="lanVal" 			name="lanVal" >
+        	<input type="hidden" id="dis-lanVal" 		name="dis-lanVal" >
+        	<input type="hidden" id="topicVal" 			name="topicVal" >
+        	<input type="hidden" id="dis-topicVal" 		name="dis-topicVal" > */
+			
+      	});
+});
+</script>
 <body>
     <!-- Pageloader -->
     <div class="pageloader"></div>
     <div class="infraloader is-active"></div>
     <div class="app-overlay"></div>
     <div class="view-wrapper">
-
+ 
         <!-- /partials/global/options-nav/friends-options-nav.html -->
         <div class="options-nav no-shadow">
             <div class="container is-fluid">
@@ -64,13 +153,13 @@
                     </a>
                     <div class="option-tabs is-friends">
                         <a class="option-tab is-active" data-tab="all-friends">
-                            <span>All</span>
+                            <span>Search</span>
                         </a>
                         <a class="option-tab" data-tab="starred-friends">
-                            <span>Starred</span>
+                            <span>New</span>
                         </a>
                         <a class="option-tab" data-tab="new-friends">
-                            <span>New</span>
+                            <span>My</span>
                         </a>
                         <div class="option-naver"></div>
                     </div>
@@ -91,313 +180,99 @@
                 </div>
             </div>
         </div>
-        <!-- 친구 찾기 필터-->
+        <!-- 친구 찾기-->
+        <form id="frm" name="frm" method="post" action="SearchFriend.do">
+        	<input type="hidden" id="ageVal" 			name="ageVal1" >
+        	<input type="hidden" id="ageVal" 			name="ageVal2" >
+        	<input type="hidden" id="dis-ageVal" 		name="dia-ageVal1" >
+        	<input type="hidden" id="dis-ageVal" 		name="dia-ageVal2" >
+        	<input type="hidden" id="genderVal" 		name="genderVal" >
+        	<input type="hidden" id="dis-genderVal" 	name="dis-genderVal" >
+        	<input type="hidden" id="countryVal" 		name="countryVal" >
+        	<input type="hidden" id="dis-countryVal" 	name="dis-countryVal" >
+        	<input type="hidden" id="lanVal" 			name="lanVal" >
+        	<input type="hidden" id="dis-lanVal" 		name="dis-lanVal" >
+        	<input type="hidden" id="topicVal" 			name="topicVal" >
+        	<input type="hidden" id="dis-topicVal" 		name="dis-topicVal" >
         <div class="filters-panel">
             <div class="panel-inner">
                 <h3 class="panel-title">검색조건</h3>
-                <div class="filter-block">
-                    <label>Aged between</label>
-                    <div class="age-wrap">
-                        <div class="field">
-                            <div class="control">
-                                <input type="text" class="input is-rounded" value="1">
-                            </div>
-                        </div>
-                        <div class="separator">And</div>
-                        <div class="field">
-                            <div class="control">
-                                <input type="text" class="input is-rounded" value="99">
-                            </div>
-                        </div>
-                        <div class="separator">Years</div>
-                    </div>
-                </div>
-                <div class="filter-block">
-                    <label>Gender</label>
-                    <div class="age-wrap">
-					    <label class="material-radio">
-					        <span class="radio-label">남</span>
-					        <input type="radio" name="group-demo1" checked>
-					        <span class="dot"></span>
-  						</label>
-  						<label class="material-radio">
-					        <span class="radio-label">여</span>
-					        <input type="radio" name="group-demo1" checked>
-					        <span class="dot"></span>
-  						</label>
-                    </div>
-                </div>
-            <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Country</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">All Country</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">Korea</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                 <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Country</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">Any country</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">Korea</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Languages</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">Any Language</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">En</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Level</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">Languags Level</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">En</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                 <h3 class="panel-title">제외조건</h3>
-                   <div class="filter-block">
-                    <label>Gender</label>
-                    <div class="age-wrap">
-					    <label class="material-radio">
-					        <span class="radio-label">남</span>
-					        <input type="radio" name="group-demo1" checked>
-					        <span class="dot"></span>
-  						</label>
-  						<label class="material-radio">
-					        <span class="radio-label">여</span>
-					        <input type="radio" name="group-demo1" checked>
-					        <span class="dot"></span>
-  						</label>
-                    </div>
-                </div>
-            <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Country</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">All Country</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">Korea</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                 <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Country</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">Any country</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">Korea</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Languages</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">Any Language</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">En</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-block">
-                    <div class="control is-combo">
-                        <div class="combo-label">Level</div>
-                        <div class="image-combo-box has-rounded-images is-scrollable">
-                            <div class="box-inner">
-                                <div class="combo-item">
-                                    <img src="assets/img/icons/friendkit-placeholder.svg" alt="">
-                                    <span class="selected-item">Languags Level</span>
-                                </div>
-                            </div>
-                            <div class="box-chevron">
-                                <i data-feather="chevron-down"></i>
-                            </div>
-                            <div class="box-dropdown">
-                                <div class="dropdown-inner has-slimscroll">
-                                    <ul>
-                                        <li>
-                                            <span class="item-icon">
-                                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/icons/logos/fastpizza.svg" alt="">
-                                                </span>
-                                            <span class="item-name">En</span>
-                                            <span class="checkmark">
-                                                    <i data-feather="check"></i>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				<div>
+					<label class="search-label">나이</label>
+					  <input type="text" value="1" id="age1"> AND
+					  <input type="text" value="1" id="age2">
+				</div>
+				<div>
+					<label class="search-label">성별</label>
+						남<input type="radio" name="gender" value="M" checked="checked">
+						여<input type="radio" name="gender" value="W">
+				</div>
+				<div>
+					<label class="search-label" >국가</label>
+						<select id="country">
+						    <option value="All">All</option>
+						    <option value="Kor">한국</option>
+						    <option value="America">미국</option>
+						</select>
+				</div>
+				<div>
+					<label class="search-label" >언어</label>
+						<select id="lan">
+						    <option value="All">All</option>
+						    <option value="ko">한국어</option>
+						    <option value="en">영어</option>
+						</select>
+				</div>
+				<div>
+					<label class="search-label" id="topic">관심사</label>
+						<span class="tag-label">관심사</span>
+						<span class="tag-label">관심사</span>
+						<span class="tag-label">관심사</span>
+				</div>
+                <h3 class="panel-title">제외조건</h3>
+                <div>
+					<label class="search-label" id="dis-age">나이</label>
+					  <input type="text" value="1" id="dis-age1"> AND
+					  <input type="text" value="1" id="dis-age2">
+				</div>
+				<div>
+					<label class="search-label" id="dis-gender">성별</label>
+						남<input type="radio"  name="dis-gender" value="M"  checked="checked">
+						여<input type="radio"  name="dis-gender" value="W">
+				</div>
+				<div>
+					<label class="search-label" >국가</label>
+						<select id="dis-country">
+						    <option value="All">All</option>
+						    <option value="kor">한국</option>
+						    <option value="america">미국</option>
+						</select>
+				</div>
+				<div>
+					<label class="search-label" >언어</label>
+						<select id="dis-lan">
+						    <option value="All">All</option>
+						    <option value="ko">한국어</option>
+						    <option value="en">영어</option>
+						</select>
+				</div>
+				<div>
+					<label class="search-label" id="dis-topic">관심사</label>
+						<span class="tag-label">관심사</span>
+						<span class="tag-label">관심사</span>
+						<span class="tag-label">관심사</span>
+				</div>
             </div>
-        </div><!-- /partials/global/pageloader/subloaders/grey-subloader.html -->
+            <button id="friendSearch" type="button">검색</button>
+        </div>
+      </form>
+
+        <!-- /partials/global/pageloader/subloaders/grey-subloader.html -->
         <div class="subloader is-grey is-active">
             <div class="loader is-loading"></div>
         </div>
 
-        <div id="friends-page" class="main-container">
+        <div id="friends-page" class="friends-wrapper main-container">
 
             <!--First tab-->
             <div id="all-friends" class="card-row-wrap is-active">
@@ -440,6 +315,142 @@
                             </div>
                         </div>
                     </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend is-active">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/david.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>David Kim</h3>
+                            <p>Senior Developer</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    642
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    112
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    468
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/bob.png" alt="">
+                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Bob Barker</h3>
+                            <p>Software Engineer</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    428
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    531
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    663
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/lana.jpeg" alt="">
+                            <img class="country" src="assets/img/icons/flags/finland.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Lana Henrikssen</h3>
+                            <p>Fashion Designer</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    1.2k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    632
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    2.8k
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/brian.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Brian Stevenson</h3>
+                            <p>Accountant</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    274
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    51
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    223
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -456,30 +467,166 @@
                             <i data-feather="star"></i>
                         </div>
                         <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/stella.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/germany.svg" alt="">
                         </div>
                         <div class="friend-info">
-                            <h3>Dan Walker</h3>
-                            <p>WordPress Developer</p>
+                            <h3>Stella Bergmann</h3>
+                            <p>Social Influencer</p>
                         </div>
                         <div class="friend-stats">
                             <div class="stat-block">
                                 <label>Friends</label>
                                 <div class="stat-number">
-                                    478
+                                    8.7k
                                 </div>
                             </div>
                             <div class="stat-block">
                                 <label>Posts</label>
                                 <div class="stat-number">
-                                    293
+                                    528
                                 </div>
                             </div>
                             <div class="stat-block">
                                 <label>Likes</label>
                                 <div class="stat-number">
-                                    899
+                                    25.4k
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend is-active">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+                            <img class="country" src="assets/img/icons/flags/ireland.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Edward Mayers</h3>
+                            <p>Data Scientist</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    612
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    58
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    82
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend is-active">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/nelly.png" alt="">
+                            <img class="country" src="assets/img/icons/flags/australia.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Nelly Schwartz</h3>
+                            <p>Student</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    874
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    1.2k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    890
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend is-active">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/rolf.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/germany.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Rolf Krupp</h3>
+                            <p>Fashion Designer</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    2.3k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    351
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    6.7k
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend is-active">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/elise.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/united-kingdom.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Elise Walker</h3>
+                            <p>Social Influencer</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    15.7k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    857
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    22.9k
                                 </div>
                             </div>
                         </div>
@@ -500,30 +647,166 @@
                             <i data-feather="star"></i>
                         </div>
                         <div class="img-container">
-                            <img class="avatar is-placeholder" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/placeholder-f.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/amadou.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/senegal.svg" alt="">
                         </div>
                         <div class="friend-info">
-                            <h3>Emily Statterfield</h3>
-                            <p>Teacher</p>
+                            <h3>Amadou Diop</h3>
+                            <p>Sales Manager</p>
                         </div>
                         <div class="friend-stats">
                             <div class="stat-block">
                                 <label>Friends</label>
                                 <div class="stat-number">
-                                    72
+                                    728
                                 </div>
                             </div>
                             <div class="stat-block">
                                 <label>Posts</label>
                                 <div class="stat-number">
-                                    3
+                                    184
                                 </div>
                             </div>
                             <div class="stat-block">
                                 <label>Likes</label>
                                 <div class="stat-number">
-                                    25
+                                    226
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/roxane.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/france.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Roxane Blanchart</h3>
+                            <p>Head of Marketing</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    1.5k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    551
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    2.5k
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar is-placeholder" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/placeholder-m.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/canada.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>John Stanley</h3>
+                            <p>Accountant</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    412
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    95
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    168
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/luis.png" alt="">
+                            <img class="country" src="assets/img/icons/flags/spain.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Luis Carrillo Estrella</h3>
+                            <p>Graphic Designer</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    3k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    378
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    1.1k
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Friend-->
+                    <div class="card-flex friend-card">
+                        <div class="star-friend">
+                            <i data-feather="star"></i>
+                        </div>
+                        <div class="img-container">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/hisashi.jpg" alt="">
+                            <img class="country" src="assets/img/icons/flags/japan.svg" alt="">
+                        </div>
+                        <div class="friend-info">
+                            <h3>Hisashi Yokida</h3>
+                            <p>Scientist</p>
+                        </div>
+                        <div class="friend-stats">
+                            <div class="stat-block">
+                                <label>Friends</label>
+                                <div class="stat-number">
+                                    8k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Posts</label>
+                                <div class="stat-number">
+                                    1.2k
+                                </div>
+                            </div>
+                            <div class="stat-block">
+                                <label>Likes</label>
+                                <div class="stat-number">
+                                    28.2k
                                 </div>
                             </div>
                         </div>
