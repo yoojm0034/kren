@@ -274,6 +274,81 @@ $(document).ready(function(){
 		var tagName = this.id;
 		location.href="feed.do?tags=" + tagName
 	});
+	
+	//-------최신글---------
+	$('#allSearch').on('click',function(){
+		location.href="feed.do"
+	});
+	
+	//-------내근처---------아직
+	$('#searchNear').on('click',function(){
+		location.href="feed.do"
+	});
+	
+	//-------친구---------아직
+	$('#searchFriend').on('click',function(){
+		location.href="feed.do"
+	});
+	
+	//-------태그---------
+	$('#searchTag').on('click',function(){
+		var display = $("#SearchDiv").css('display');
+		
+		
+		if(display == "none"){
+			$("#SearchDiv").css('display', 'block'); 
+			
+			if ($('#tagInput').length) {
+			    var html = '';
+			    var activitiesOptions = {
+			      url: "${pageContext.request.contextPath}/autocpl.do",
+			      getValue: "tag_name",
+		 	      template: {
+			        type: "custom",
+			        method: function method(value) {
+			          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+			        }
+			      }, 
+			      highlightPhrase: false,
+			      list: {
+			        maxNumberOfElements: 5,
+			        showAnimation: {
+			          type: "slide",
+			          time: 400,
+			          callback: function callback() {}
+			        },
+			        match: {
+			          enabled: true
+			        }
+			      }
+			    };
+			    $("#tagInput").easyAutocomplete(activitiesOptions);
+			  };
+			  
+			document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
+			
+				function tagsFunction() {
+					if(event.keyCode==13){
+				    	var tagval = $('#tagInput').val();
+				    	if(!tagval) {
+							alert('태그를 입력해 주세요!');
+						}else{
+						location.href="feed.do?tags=" + tagval
+						}
+					}
+				};
+		}else{
+			$("#SearchDiv").css('display', 'none'); 
+		}
+	});
+	
+	//-------언어별---------
+	$('#searchLan').on('click',function(){
+		
+		//location.href="feed.do"
+	});
+	
+	
 });
 
 	//-------번역---------
@@ -630,7 +705,7 @@ $(document).ready(function(){
 											<!-- Tag friends suboption -->
 											<div id="tag-list" class="tag-list"></div>
 											<div class="control">
-												<input id="users-autocpl" type="text" class="input"
+												<input id="tags-autocpl" type="text" class="input"
 													placeholder="Who are you with?">
 												<div class="icon">
 													<i data-feather="search"></i>
@@ -861,13 +936,24 @@ $(document).ready(function(){
 					
 					<!-------------- 검색 태그 부분------------ -->
 		 				<label class="nicelabel-default-position">
-		 					<span class="search-label">최신글</span>
-							<span class="search-label">내 근처</span>
-							<span class="search-label">친구</span>
-							<span class="search-label">태그</span>
-							<span class="search-label">언어별</span>
+		 					<span class="search-label" id="allSearch">최신글</span>
+							<span class="search-label" id="searchNear">내 근처</span>
+							<span class="search-label" id="searchFriend">친구</span>
+							<span class="search-label" id="searchTag">태그</span>
+							<span class="search-label" id="searchLan">언어별</span>
 						</label> 
-									
+						
+						<div id="SearchDiv"
+								class="control has-margin" style="display: none;">
+								<input  type="text" id="tagInput" class="input" placeholder="태그를 입력해 주세요">
+								<div class="icon">
+									<i data-feather="search"></i>
+								</div>
+								<div class="close-icon is-main">
+									<i data-feather="x"></i>
+								</div>
+						</div>
+							
 						<!------------------------ 포스트 시작 ------------------------->
 						<c:forEach items="${feedList }" var="vo">
 							<div id="feed-post-1" class="card is-post">
@@ -883,7 +969,7 @@ $(document).ready(function(){
 													data-user-popover="1" alt="">
 											</div>
 											<div class="user-info">
-												<a href="#">${vo.feed_id } : ${vo.name } </a> <span
+												<a href="#">!!!!!!!!${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a> <span
 													class="time">${vo.reg_date } : ${vo.time_zone }</span>
 											</div>
 										</div>

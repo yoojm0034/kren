@@ -19,6 +19,7 @@
 				f.PHOTO "fphoto",
 				f.REG_DATE "reg_date",
 				f.TAGS "tags",
+				f.WRITE_LAN "write_lan",
 				d.ORIGINAL_NAME, 
       			d.UUID "uuid",
         		d.DIRECTORY,
@@ -105,7 +106,7 @@
 	
 	<!-- 피드 등록 -->
 	<insert id="feedInsert" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
-		{ CALL fphoto_insert( #{user_id}, #{content}, #{original_name}, #{tags}, #{uuid}, #{file_size}, #{directory} )} 
+		{ CALL fphoto_insert( #{user_id}, #{content}, #{original_name}, #{tags}, #{uuid}, #{file_size}, #{directory}, #{write_lan} )} 
 	</insert>
 	
 	<!-- 피드 삭제 -->
@@ -115,7 +116,7 @@
 	
 	<!-- 피드 수정 -->
 	<update id="feedUpdate" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
-		{ CALL feed_update( #{feed_id}, #{content}, #{photo} ,#{tags}, #{original_name}, #{uuid}, #{file_size}, #{directory} )} 
+		{ CALL feed_update( #{feed_id}, #{content}, #{photo} ,#{tags}, #{original_name}, #{uuid}, #{file_size}, #{directory}, #{write_lan} )} 
 	</update>
 	
 	
