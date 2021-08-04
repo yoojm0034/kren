@@ -88,10 +88,51 @@ body {
 
 	$(document).ready(function() {
 		connectWs();
+		$.ajax({
+		    url: '${pageContext.request.contextPath}/pushSelectList.do',
+		    type: 'POST',
+		    dataType:'json',
+		    success: function (data) {
+		    	console.log(data)
+		    	var tbl = $('<table>').attr("border", 1);
+		    	for(i=0 ; i <= data.length ; i++) {
+							    		
+		    		 if(data[i].type == 'reply') {
+					        var rep = "<a href='"+"${pageContext.request.contextPath}"+data[i].url + data[i].content_id+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글에 댓글을 남겼습니다.</a>"
+					        var tr = $('<tr>');
+					        var td = $('<td>');
+					        td.append(rep);
+					        tr.append(td);
+					        tbl.append(tr);
+					        $('#replyA').append(tbl);
+				     }
+		    		 else if(data[i].type == 'follow') {
+					     	var fol = "<a href='"+"${pageContext.request.contextPath}/profile.do?user_id="+data[i].user_id+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님을 팔로우합니다.</a>"
+					        var tr = $('<tr>');
+					        var td = $('<td>');
+					        td.append(fol);
+					        tr.append(td);
+					        tbl.append(tr);
+					        $('#replyA').append(tbl);
+					 }
+		    		 else if(data[i].type == 'like') {
+					     	var lik = "<a href='"+"${pageContext.request.contextPath}"+data[i].url + data[i].content_id+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글을 좋아합니다.</a>"
+					        var tr = $('<tr>');
+					        var td = $('<td>');
+					        td.append(lik);
+					        tr.append(td);
+					        tbl.append(tr);
+					        $('#replyA').append(tbl);
+					 }
+		    	}
+		        
+		    }
+		});
+
 	});
 
 	function connectWs() {
-		sock = new SockJS("<c:url value="/echo"/>");
+		sock = new SockJS("http://192.168.0.76/FinalPrj/echo");
 		//sock = new SockJS('/replyEcho');
 		
 		sock.onopen = function() {
@@ -107,8 +148,9 @@ body {
 			toastr.options.closeButton = true;
 			toastr.options.newestOnTop = false;
 			toastr.options.progressBar = true;
-			toastr.info('새로운 알림이 도착했습니다.','알림', {timeOut: 7000});
-
+			/* toastr.options.onclick = function() { 
+			} */
+			toastr.info(data,'알림', {timeOut: 6000});
 		};
 
 		sock.onclose = function() {
@@ -121,8 +163,39 @@ body {
 		};
 
 	}
-	function sendText() {
-		sock.send('reply,admin,admin,feed_1');
+	function sendTextPush() {
+		//댓글
+		var user = "${user.user_id}";
+		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
+		var seq = 'feed_2'; //나중에 작성피드번호저장 
+		var sendData = 'reply,'+user+','+target+','+seq ;
+		console.log(sendData)
+		sock.send(sendData);
+	}
+	function sendLetterPush() {
+		//편지
+		var user = "${user.user_id}";
+		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
+		var seq = 'feed_2'; //나중에 작성피드번호저장 
+		var sendData = 'letter,'+user+','+target+','+seq ;
+		console.log(sendData)
+		sock.send(sendData);
+	}
+	function sendLikePush() {
+		//좋아요 누를시 작동
+		var user = "${user.user_id}";
+		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
+		var seq = 'feed_2'; //나중에 작성피드번호저장 
+		var sendData = 'like,'+user+','+target+','+seq ;
+		console.log(sendData)
+		sock.send(sendData);
+	}
+	function sendFollowPush() {
+		var user = "${user.user_id}";
+		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
+		var sendData = 'follow,'+user+','+target ;
+		console.log(sendData)
+		sock.send(sendData);
 		
 	}
 	
@@ -170,8 +243,9 @@ body {
 					<!-- Navbar Search -->
 					<!-- 알람아이콘 -->
 					<div class="navbar-item is-icon drop-trigger">
-						<a class="icon-link" href="javascript:void(0);"> <i
-							data-feather="bell"></i> <span class="indicator"></span>
+						<a class="icon-link" href="javascript:void(0);">
+						 <i data-feather="bell"></i> 
+						 <span class="indicator"></span>
 						</a>
 
 						<div class="nav-drop is-account-dropdown">
@@ -183,78 +257,11 @@ body {
 								</div>
 								<div class="nav-drop-body is-notifications">
 									<!-- Notification -->
-									<div class="media">
-										<figure class="media-left">
-											<p class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/david.jpg" alt="">
-											</p>
-										</figure>
-										<div class="media-content">
-											<span id=""></span>
-										</div>
-										<div class="media-right">
-											<div class="added-icon">
-												<i data-feather="message-square"></i>
+											<div class="media">
+												<div class="media-content" id="replyA">
+												</div>
 											</div>
-										</div>
-									</div>
 									<!-- Notification -->
-									<div class="media">
-										<figure class="media-left">
-											<p class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/daniel.jpg" alt="">
-											</p>
-										</figure>
-										<div class="media-content">
-											<span><a href="#">Daniel Wellington</a> liked your <a
-												href="#">profile.</a></span> <span class="time">43 minutes
-												ago</span>
-										</div>
-										<div class="media-right">
-											<div class="added-icon">
-												<i data-feather="heart"></i>
-											</div>
-										</div>
-									</div>
-									<!-- Notification -->
-									<div class="media">
-										<figure class="media-left">
-											<p class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/stella.jpg" alt="">
-											</p>
-										</figure>
-										<div class="media-content">
-											<span><a href="#">Stella Bergmann</a> shared a <a
-												href="#">New video</a> on your wall.</span> <span class="time">Yesterday</span>
-										</div>
-										<div class="media-right">
-											<div class="added-icon">
-												<i data-feather="youtube"></i>
-											</div>
-										</div>
-									</div>
-									<!-- Notification -->
-									<div class="media">
-										<figure class="media-left">
-											<p class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/elise.jpg" alt="">
-											</p>
-										</figure>
-										<div class="media-content">
-											<span><a href="#">Elise Walker</a> shared an <a
-												href="#">Image</a> with you an 2 other people.</span> <span
-												class="time">2 days ago</span>
-										</div>
-										<div class="media-right">
-											<div class="added-icon">
-												<i data-feather="image"></i>
-											</div>
-										</div>
-									</div>
 								</div>
 								<div class="nav-drop-footer">
 									<a href="#">View All</a>
@@ -364,7 +371,8 @@ body {
 								</label>
 							</div>
 							<div class="nav-drop-body account-items">
-								<a id="profile-link" href="profile.do"
+								<c:if test="${user.user_id ne 'admin'}">								
+								<a id="profile-link" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}"
 									class="account-item">
 									<div class="media">
 										<div class="media-left">
@@ -382,6 +390,27 @@ body {
 										</div>
 									</div>
 								</a>
+								</c:if>
+								<c:if test="${user.user_id eq 'admin'}">
+								<a id="profile-link" href="${pageContext.request.contextPath}/admin/admin.do"
+									class="account-item">
+									<div class="media">
+										<div class="media-left">
+											<div class="image">
+												<img src="https://via.placeholder.com/400x400"
+													data-demo-src="assets/img/avatars/jenna.png" alt="">
+											</div>
+										</div>
+										<div class="media-content">
+											<h3>${user.name }</h3>
+											<small>Main account</small>
+										</div>
+										<div class="media-right">
+											<i data-feather="check"></i>
+										</div>
+									</div>
+								</a>
+								</c:if>
 								<hr class="account-divider">
 								<a href="/options-settings.html" class="account-item">
 									<div class="media">
@@ -389,7 +418,6 @@ body {
 											<i data-feather="settings"></i>
 										</div>
 										<div class="media-content">
-											<h3>Settings</h3>
 											<small>Access widget settings.</small>
 										</div>
 									</div>
@@ -409,7 +437,7 @@ body {
 											<i data-feather="power"></i>
 										</div>
 										<div class="media-content">
-											<a href="logout"><h3>Log out</h3></a>
+											<a href="${pageContext.request.contextPath}/logout"><h3>Log out</h3></a>
 											<small>Log out from your account.</small>
 										</div>
 									</div>

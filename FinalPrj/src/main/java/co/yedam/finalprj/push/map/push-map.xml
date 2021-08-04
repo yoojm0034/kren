@@ -5,4 +5,12 @@
 		insert into push
 		values ('push_'||push_seq.nextval, #{to_id}, #{user_id}, #{type}, #{content_id}, #{msg}, #{url}, sysdate, NULL)
 	</insert>
+	
+	<select id="pushSelectList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.push.vo.PushVO">
+		select * 
+		from push
+		where check_dt is null
+		and to_id = #{user_id}
+		order by push_dt DESC
+	</select>
 </mapper>

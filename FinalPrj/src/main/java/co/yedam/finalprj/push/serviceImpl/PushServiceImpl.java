@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import co.yedam.finalprj.push.map.PushMap;
 import co.yedam.finalprj.push.service.PushService;
 import co.yedam.finalprj.push.vo.PushVO;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 @Service
 public class PushServiceImpl implements PushService {
@@ -15,9 +16,9 @@ public class PushServiceImpl implements PushService {
 	PushMap map;
 	
 	@Override
-	public List<PushVO> pushSelectList() {
+	public List<PushVO> pushSelectList(UsersVO vo) {
 		// TODO Auto-generated method stub
-		return map.pushSelectList();
+		return map.pushSelectList(vo);
 	}
 
 	@Override

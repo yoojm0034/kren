@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -26,6 +27,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	// 로그인중인 개별유저
 	Map<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
 	//서버에 접속이 성공 했을때
+
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		String senderEmail = getEmail(session);
@@ -46,6 +48,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		if(!StringUtils.isEmpty(msg)) {
 			String[] strs = msg.split(",");
 			
+			PushVO vo = new PushVO();
 			//댓글, 좋아요, 편지작성시
 			if(strs != null && strs.length == 4) {
 				String cmd = strs[0]; // 알람종류
@@ -56,18 +59,17 @@ public class EchoHandler extends TextWebSocketHandler {
 				//작성자가 로그인 해서 있다면
 				System.out.println(users);
 				WebSocketSession boardWriterSession = users.get(receiver);
+				
+				
 				//댓글작성시
 				if("reply".equals(cmd) && boardWriterSession != null) {
-					TextMessage tmpMsg = new TextMessage(caller + "님이 " + 
-										"<a href=feed.do?feed_id="+seq+">" + seq + "</a> 번 게시글에 댓글을 남겼습니다.");
-					
-					PushVO vo = new PushVO();
+					TextMessage tmpMsg = new TextMessage(caller + "님이 " + seq + " 번 게시글에 댓글을 남겼습니다.");
 					
 					vo.setTo_id(receiver);
 					vo.setUser_id(caller);
-					vo.setMsg("댓글알림");
+					vo.setMsg("게시물에 댓글을 달았습니다.");
 					vo.setType(cmd);
-					vo.setUrl("");
+					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
 					//int r = pushDao.insertPush(vo);
@@ -76,14 +78,68 @@ public class EchoHandler extends TextWebSocketHandler {
 					boardWriterSession.sendMessage(tmpMsg);
 				//좋아요누를시	
 				}else if("like".equals(cmd) && boardWriterSession != null) {
-					TextMessage tmpMsg = new TextMessage(caller + "님이 " +
-										"<a type='external' href='${pageContext.request.contextPath}/feed.do?feed_id="+seq+"&mentors="+ receiver +"'>" + seq + "</a>를 좋아합니다.");
+					TextMessage tmpMsg = new TextMessage(caller + "님이 " +receiver +"님의 게시물" + seq + "를 좋아합니다.");
+					vo.setTo_id(receiver);
+					vo.setUser_id(caller);
+					vo.setMsg("좋아요를 눌렀습니다.");
+					vo.setType(cmd);
+					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
+					vo.setContent_id(seq);
+					System.out.println(vo);
+					//int r = pushDao.insertPush(vo);
+					//System.out.println(r + "건 입력");
+					
 					boardWriterSession.sendMessage(tmpMsg);
 				//편지작성시	
 				}else if("letter".equals(cmd) && boardWriterSession != null) {
-					TextMessage tmpMsg = new TextMessage(
-							caller + "님이 편지를 보냈습니다. " +"<a href=letterBox.do?letter_id="+ seq+">편지함 보기</a>");
+					TextMessage tmpMsg = new TextMessage(caller + "님이 편지를 보냈습니다. ");
+					
+					vo.setTo_id(receiver);
+					vo.setUser_id(caller);
+					vo.setMsg("편지가 도착 예정입니다.");
+					vo.setType(cmd);
+					vo.setUrl("${pageContext.request.contextPath}/letter.do");
+					vo.setContent_id(seq);
+					System.out.println(vo);
+					//int r = pushDao.insertPush(vo);
+					//System.out.println(r + "건 입력");
+					
 					boardWriterSession.sendMessage(tmpMsg);
+				//상대가 접속안되었을때 DB에만 입력	
+				}else if("reply".equals(cmd) && boardWriterSession == null) {
+					
+					vo.setTo_id(receiver);
+					vo.setUser_id(caller);
+					vo.setMsg("게시물에 댓글을 달았습니다.");
+					vo.setType(cmd);
+					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
+					vo.setContent_id(seq);
+					System.out.println(vo);
+					//int r = pushDao.insertPush(vo);
+					//System.out.println(r + "건 입력");
+				}else if("like".equals(cmd) && boardWriterSession == null) {
+					
+					vo.setTo_id(receiver);
+					vo.setUser_id(caller);
+					vo.setMsg("좋아요를 눌렀습니다.");
+					vo.setType(cmd);
+					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
+					vo.setContent_id(seq);
+					System.out.println(vo);
+					//int r = pushDao.insertPush(vo);
+					//System.out.println(r + "건 입력");
+				}else if("letter".equals(cmd) && boardWriterSession == null) {
+					
+					vo.setTo_id(receiver);
+					vo.setUser_id(caller);
+					vo.setMsg("편지가 도착 예정입니다.");
+					vo.setType(cmd);
+					vo.setUrl("${pageContext.request.contextPath}/letter.do");
+					vo.setContent_id(seq);
+					System.out.println(vo);
+					//int r = pushDao.insertPush(vo);
+					//System.out.println(r + "건 입력");
+					
 				}
 			}
 			//팔로우했을시
@@ -96,10 +152,26 @@ public class EchoHandler extends TextWebSocketHandler {
 				WebSocketSession boardWriterSession = users.get(receiver);
 				
 				if("follow".equals(cmd) && boardWriterSession != null) {
-					TextMessage tmpMsg = new TextMessage(caller + "님이 " + receiver +
-							 "님을 팔로우를 시작했습니다.");
+					TextMessage tmpMsg = new TextMessage(caller + "님이 " + receiver + "님을 팔로우를 시작했습니다.");
+					
+					vo.setTo_id(receiver);
+					vo.setUser_id(caller);
+					vo.setMsg("팔로우를 시작했습니다.");
+					vo.setType(cmd);
+					System.out.println(vo);
+					//int r = pushDao.insertPush(vo);
+					//System.out.println(r + "건 입력");
+					
 					boardWriterSession.sendMessage(tmpMsg);
-				}	
+				}else if("follow".equals(cmd) && boardWriterSession == null) {
+					vo.setTo_id(receiver);
+					vo.setUser_id(caller);
+					vo.setMsg("팔로우를 시작했습니다.");
+					vo.setType(cmd);
+					System.out.println(vo);
+					//int r = pushDao.insertPush(vo);
+					//System.out.println(r + "건 입력");
+				}
 			}
 			
 		}
