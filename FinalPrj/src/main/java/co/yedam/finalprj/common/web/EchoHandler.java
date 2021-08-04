@@ -69,7 +69,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUser_id(caller);
 					vo.setMsg("게시물에 댓글을 달았습니다.");
 					vo.setType(cmd);
-					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
+					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
 					//int r = pushDao.insertPush(vo);
@@ -83,7 +83,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUser_id(caller);
 					vo.setMsg("좋아요를 눌렀습니다.");
 					vo.setType(cmd);
-					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
+					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
 					//int r = pushDao.insertPush(vo);
@@ -98,7 +98,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUser_id(caller);
 					vo.setMsg("편지가 도착 예정입니다.");
 					vo.setType(cmd);
-					vo.setUrl("${pageContext.request.contextPath}/letter.do");
+					vo.setUrl("/letter.do");
 					vo.setContent_id(seq);
 					System.out.println(vo);
 					//int r = pushDao.insertPush(vo);
@@ -112,7 +112,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUser_id(caller);
 					vo.setMsg("게시물에 댓글을 달았습니다.");
 					vo.setType(cmd);
-					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
+					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
 					//int r = pushDao.insertPush(vo);
@@ -123,7 +123,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUser_id(caller);
 					vo.setMsg("좋아요를 눌렀습니다.");
 					vo.setType(cmd);
-					vo.setUrl("${pageContext.request.contextPath}/feed.do?feed_id=");
+					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
 					//int r = pushDao.insertPush(vo);
@@ -134,7 +134,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUser_id(caller);
 					vo.setMsg("편지가 도착 예정입니다.");
 					vo.setType(cmd);
-					vo.setUrl("${pageContext.request.contextPath}/letter.do");
+					vo.setUrl("/letter.do");
 					vo.setContent_id(seq);
 					System.out.println(vo);
 					//int r = pushDao.insertPush(vo);
