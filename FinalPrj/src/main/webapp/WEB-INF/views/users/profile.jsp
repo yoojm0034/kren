@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -258,7 +260,12 @@ $(document).ready(function() {
                            		</c:if>
                             </div>
                         </div>
-
+                        
+						<form:form id="frm" action="follow.do" modelAttribute="UsersVO" method="post">
+							<form:hidden path="user_id" value=${user.user_id }/>
+							<form:hidden path="following" value=${profile.user_id }/>
+						</form:form>
+						
                         <div class="profile-subheader">
                             <div class="subheader-start is-hidden-mobile" style="display: table">
                                 <span>Post</span>
@@ -283,7 +290,7 @@ $(document).ready(function() {
                             		</c:when>
                             		<c:otherwise>
 		                                <a class="button is-solid primary-button">✍🏻 Write a letter</a>
-		                                <button class="button">Follow</button>
+		                                <a class="button" id="follow">Follow</a>
                             		</c:otherwise>
                             	</c:choose>
                             </div>
