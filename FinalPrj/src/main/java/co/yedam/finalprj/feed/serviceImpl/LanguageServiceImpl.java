@@ -26,7 +26,7 @@ public class LanguageServiceImpl implements LanguageService{
         String apiURL = "https://openapi.naver.com/v1/papago/detectLangs";
         String text;
         
-		String una  = vo.getFindLan();
+		String una  = vo.getWrite_lan();
         String result = "";
 		String line = "";
 		
@@ -54,7 +54,6 @@ public class LanguageServiceImpl implements LanguageService{
 			// 여긴 출력
 			while ((line = br.readLine()) != null) {
 				result += line + "\n";
-				System.out.println("line"+line);
 			}
 			br.close();
 			

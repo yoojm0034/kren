@@ -70,7 +70,6 @@ public class FeedController {
 		FriendsVO fvo = new FriendsVO();
 		fvo.setUser_id(id);
 		
-		
 		//-------------- 피드 좋아요 --------------------------------
 		Map<String, Object> fdatas = new HashMap<String, Object>();
 		List list = new ArrayList();
@@ -120,27 +119,22 @@ public class FeedController {
 		String feedId = request.getParameter("feedid");
 		String updateChk = request.getParameter("photoChk");
 		
-		System.out.println("1"+feedId);
-		System.out.println("2"+vo.getContent());
-		System.out.println("updateChk : "+updateChk);
-		System.out.println("vo.getphoto : "+vo.getPhoto());
 		MultipartFile file = vo.getFile();	
 		
-		System.out.println("3"+vo.getFile());
-		
-		System.out.println("3.1"+vo.getPhoto());
-		vo.setUser_id(id);
-		System.out.println("4"+vo.getUser_id());
-		System.out.println("5"+vo.getTags());
-		
+		vo.setWrite_lan(vo.getContent());
+		String findLan= lanDao.transLan(vo);// 서비스에서 일을 진행 할 예정
+		findLan= findLan.substring(13, 15);
+
+	    vo.setWrite_lan(findLan);
+	    vo.setUser_id(id);
+	    
 		if(feedId.equals("")) {
-			System.out.println("7등록");
 			
 			if(!file.isEmpty()) {
-				System.out.println("요기");
 				String fileName = file.getOriginalFilename();
-				int fileSize = (int) file.getSize();
 				String ext = null;
+
+				int fileSize = (int) file.getSize();
 				int dot = fileName.lastIndexOf(".");
 				
 				if(dot != -1) {
@@ -148,40 +142,31 @@ public class FeedController {
 				}else {
 					ext = "";
 				}
-				System.out.println("요기");
+
 				UUID uuid = UUID.randomUUID();
 				String fileUUID = uuid.toString() + ext;
 				String path = request.getServletContext().getRealPath("/resources/upload/");
-				System.out.println("요기");
+				
+				vo.setOriginal_name(fileName);
 				vo.setFile_size(fileSize);
 				vo.setDirectory(path);
 				vo.setUuid(fileUUID);
-				vo.setOriginal_name(fileName);
-				
-				file.transferTo(new File(path, fileUUID));//파일을 경로로 저장
-				
-				 feedDao.feedInsert(vo);
-				 
+				file.transferTo(new File(path, fileUUID));
+				feedDao.feedInsert(vo);
 			}else {
 				  feedDao.feedInsert(vo);
 			}
+			
 		}else {
+			
 			String feedid = request.getParameter("feedid");
 			String photo = request.getParameter("photo");
 			vo.setFeed_id(feedid);
-			System.out.println("==========업데이트 시작 비교 ==============");
-			System.out.println("업데이트");
-			System.out.println("파일 : "+vo.getFile());		//파일 .. 
-		//	System.out.println("request포토 : "+photo);				//5df51f9d-6519-4f96-b358-a622da3f7846.png
-			System.out.println("content : "+vo.getContent());	//컨텐츠
-			System.out.println("get1 포토 : "+vo.getPhoto());		//널 포토 아이디5df51f9d-6519-4f96-b358-a622da3f7846.png
-			System.out.println("tag1 : "+vo.getTags());		//업으면 값 안뜸 ""
-			//원래의 사진은 넣지 않는다 
+			
 			if(!file.isEmpty()) {
-				String fileName = file.getOriginalFilename();
-				System.out.println(fileName);			
-				int fileSize = (int) file.getSize();
+				String fileName = file.getOriginalFilename();		
 				String ext = null;
+				int fileSize = (int) file.getSize();
 				int dot = fileName.lastIndexOf(".");
 	
 				if(dot != -1) {
@@ -198,43 +183,20 @@ public class FeedController {
 				vo.setDirectory(path);
 				vo.setUuid(fileUUID);
 				vo.setOriginal_name(fileName);
-				System.out.println("========== 사진이 있으면 ==============");
-				System.out.println(vo.getUuid());
-				System.out.println(vo.getOriginal_name());
-				System.out.println("업데이트");
-				System.out.println("파일 : "+vo.getFile());		//파일 .. 
-			//	System.out.println("request포토 : "+photo);				//5df51f9d-6519-4f96-b358-a622da3f7846.png
-				System.out.println("content : "+vo.getContent());	//컨텐츠
-				System.out.println("get2 포토 : "+vo.getPhoto());		//널 포토 아이디5df51f9d-6519-4f96-b358-a622da3f7846.png
-				System.out.println("tag2 : "+vo.getTags());		//업으면 값 안뜸 ""
-
-				file.transferTo(new File(path, fileUUID));//파일을 경로로 저장
 				
-				 feedDao.feedUpdate(vo);
+				file.transferTo(new File(path, fileUUID));
+				feedDao.feedUpdate(vo);
 				 
 			}else {
-				 //사진이 없으면 
+				
 				if(updateChk.equals("")) {
-					System.out.println("변경하지 않음 사진이 있어요");
 					vo.setPhoto(photo);
-					System.out.println(vo.getPhoto());
-					 feedDao.feedUpdate(vo);		
+					feedDao.feedUpdate(vo);		
 				}else {
 					vo.setPhoto(null);
-					System.out.println(vo.getPhoto());
-					 feedDao.feedUpdate(vo);
+					feedDao.feedUpdate(vo);
 				}
-//				System.out.println("========== 사진이 없으면 ==============");
-//				System.out.println("업데이트");
-//				System.out.println("파일 : "+vo.getFile());		//파일 .. 
-////				System.out.println("request포토 : "+photo);				//5df51f9d-6519-4f96-b358-a622da3f7846.png
-//				System.out.println("content : "+vo.getContent());	//컨텐츠
-//				System.out.println("get3 포토 : "+vo.getPhoto());		//널 포토 아이디5df51f9d-6519-4f96-b358-a622da3f7846.png
-//				System.out.println("tag3 : "+vo.getTags());		//업으면 값 안뜸 ""
-//				
-//				feedDao.feedUpdate(vo);
 			}
-			
 		}
 		
 		return "redirect:feed.do";
@@ -254,26 +216,14 @@ public class FeedController {
 		feedDao.feedDelete(vo);
 		return "redirect:feed.do";
 	}
-
-
 	
-	@RequestMapping(value="test10.do", produces = "application/text; charset=UTF-8")
-	@ResponseBody
-	public String test3(@RequestParam(value = "korean", defaultValue = "-")String korean,
-						Model model) {	
-		TransVO vo = new TransVO();
-		vo.setKr(korean);
-	    String english= transDao.getEn(vo); // 서비스에서 일을 진행 할 예정
-		System.out.println(english);
-		return english;
-	}
-	
+	//번역 
 	@RequestMapping(value="test11.do", produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String test4(@RequestParam(value = "korean", defaultValue = "-")String korean,
 						Model model) {	
 		FeedVO vo = new FeedVO();
-		vo.setFindLan(korean);		
+		vo.setWrite_lan(korean);		
 	    String english= lanDao.transLan(vo);// 서비스에서 일을 진행 할 예정
 	    TransVO tvo = new TransVO();
 	    String result="";
@@ -287,6 +237,7 @@ public class FeedController {
 	    	result = transDao.getKr(tvo);
 	    }
 	    
+	    model.addAttribute("launguge", english);
 		return result;
 	}
 	
