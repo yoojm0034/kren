@@ -202,12 +202,10 @@ body {
 		console.log(sendData)
 		sock.send(sendData);
 	}
-	function sendLetterPush() {
+	function sendLetterPush(target) {
 		//편지
 		var user = "${user.user_id}";
-		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
-		var seq = 'feed_2'; //나중에 작성피드번호저장 
-		var sendData = 'letter,'+user+','+target+','+seq ;
+		var sendData = 'letter,'+user+','+target;
 		console.log(sendData)
 		sock.send(sendData);
 	}
