@@ -209,49 +209,69 @@
 			var txtarea = $('textarea[data-letter="'+send+'"]').val();
 			console.log(txtarea);
 			
-			if(confirm("편지를 전송하시겠습니까?") ) {
-			    $.ajax({
-			    	url:'insertLetter.do',
-			    	type:'post',
-			    	data:JSON.stringify({
-			    		letter_id:send,
-			    		to_id:to,
-			    		content:txtarea,
-			    		gubun:'일반'
-			    	}),
-				    contentType : "application/json; charset=UTF-8",
-			    	success: function(data) {
-			    		alert('전송되었습니다.');
-			    		location.reload(true);
-			    	},
-			    	error: function(e) {
-			    		alert('편지전송실패');
-			    	}
-			    });		    	
-		    } else {
-		    	if(confirm("편지를 저장하시겠습니까?") ) {
-				    $.ajax({
-				    	url:'insertLetter.do',
-				    	type:'post',
-				    	data:JSON.stringify({
-				    		letter_id:send,
-				    		to_id:to,
-				    		content:txtarea,
-				    		gubun:'임시저장'
-				    	}),
-					    contentType : "application/json; charset=UTF-8",
-				    	success: function(data) {
-				    		alert('편지가 저장되었습니다.');
-				    		location.reload(true);
-				    	},
-				    	error: function(e) {
-				    		alert('저장실패');
-				    	}
-				    });		    	
-			    } else {
-			    	alert("편지작성이 취소되었습니다.");
-			    }
-		    }
+			//우표수량 체크
+			$.ajax({
+				url : '${pageContext.request.contextPath}/stampLetterCheck.do',
+				type : 'post',
+				data : JSON.stringify({
+					user_id : $('#user_id').val()
+				}),
+				contentType : "application/json; charset=UTF-8",
+				success : function(data) {
+					if (data > 0) { //우표가 있으면
+						if(confirm("편지를 전송하시겠습니까?") ) {
+						    $.ajax({
+						    	url:'${pageContext.request.contextPath}/insertLetter.do',
+						    	type:'post',
+						    	data:JSON.stringify({
+						    		letter_id:send,
+						    		to_id:to,
+						    		content:txtarea,
+						    		gubun:'일반'
+						    	}),
+							    contentType : "application/json; charset=UTF-8",
+						    	success: function(data) {
+						    		alert('전송되었습니다.');
+						    		location.reload(true);
+						    	},
+						    	error: function(e) {
+						    		alert('편지전송실패');
+						    	}
+						    });		    	
+					    } else {
+					    	if(confirm("편지를 저장하시겠습니까?") ) {
+							    $.ajax({
+							    	url:'${pageContext.request.contextPath}/insertLetter.do',
+							    	type:'post',
+							    	data:JSON.stringify({
+							    		letter_id:send,
+							    		to_id:to,
+							    		content:txtarea,
+							    		gubun:'임시저장'
+							    	}),
+								    contentType : "application/json; charset=UTF-8",
+							    	success: function(data) {
+							    		alert('편지가 저장되었습니다.');
+							    		location.reload(true);
+							    	},
+							    	error: function(e) {
+							    		alert('저장실패');
+							    	}
+							    });		    	
+						    } else {
+						    	alert("편지작성이 취소되었습니다.");
+						    }
+					    }
+					} else { //우표가 없으면
+						alert('우표수량을 확인해주세요.');
+					}
+				},
+				error : function(e) {
+					alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+				}
+			});
+			
+
 		});
 		
 	});

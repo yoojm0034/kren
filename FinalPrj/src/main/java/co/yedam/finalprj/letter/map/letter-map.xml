@@ -101,6 +101,30 @@
 		</choose>
 	</insert>
 	
+	<!-- 답장내역 업데이트 -->
+	<update id="updateLetterSendYN" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		<selectKey keyProperty="lid" resultType="java.lang.String" order="BEFORE">
+			SELECT F_WHAT_SEND(#{to_id}, #{user_id}) FROM DUAL
+		</selectKey>
+		UPDATE LETTER SET SEND_YN = 'Y'
+		 WHERE LETTER_ID = #{lid}
+	</update>
+	
+	<!-- 우표개수 차감 -->
+	<update id="updateLetterStampMinus" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		UPDATE USERS SET STAMP = STAMP - 1
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 우표사용내역 등록 -->
+	<insert id="insertLetterStamph" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		INSERT INTO STAMPH
+			(STAMPH_ID, SH_TYPE, SH_DT, TO_ID, USER_ID, CNT)
+		VALUES
+			('stamph_'||stamph_seq.nextval, '편지작성', SYSDATE, #{to_id}, #{user_id}, 1)
+	</insert>
+	<!-- /편지 작성 -->
+	
 	<!-- 편지 삭제 -->
 	<!-- 내가 작성자라면 FROM_DELETE / 작성자가 아니라면 TO_DATE -->	
 	<update id="deleteLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">

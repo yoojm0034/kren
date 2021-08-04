@@ -29,6 +29,7 @@ public class LetterVO {
 	private String to_name;
 	private String cate;
 	private String uid;
+	private String lid;
 	private int distance;
 
 }

@@ -12,5 +12,8 @@ public interface LetterService {
 	public LetterVO replyLetter(LetterVO vo);
 	public int stampLetterCheck(LetterVO vo);
 	public int insertLetter(LetterVO vo);
+	public int updateLetterSendYN(LetterVO vo);
+	public int updateLetterStampMinus(LetterVO vo);
+	public int insertLetterStamph(LetterVO vo);
 	public int deleteLetter(LetterVO vo);
 }

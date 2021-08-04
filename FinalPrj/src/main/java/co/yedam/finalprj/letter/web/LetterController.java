@@ -94,7 +94,19 @@ public class LetterController {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		vo.setUser_id(id);
-		letterDao.insertLetter(vo);
+		int n = letterDao.insertLetter(vo);
+		if(n!=0) {
+			System.out.println(vo);
+			letterDao.updateLetterSendYN(vo);
+			letterDao.updateLetterStampMinus(vo);
+			letterDao.insertLetterStamph(vo);
+			System.out.println(letterDao.updateLetterSendYN(vo));
+			System.out.println(letterDao.updateLetterStampMinus(vo));
+			System.out.println(letterDao.insertLetterStamph(vo));
+		} else {
+			System.out.println("편지작성실패");
+		}
+		
 	}
 
 	@RequestMapping("stampLetterCheck.do")

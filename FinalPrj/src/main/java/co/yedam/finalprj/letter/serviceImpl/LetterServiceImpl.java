@@ -54,5 +54,20 @@ public class LetterServiceImpl implements LetterService {
 		return map.stampLetterCheck(vo);
 	}
 
+	@Override
+	public int updateLetterStampMinus(LetterVO vo) {
+		return map.updateLetterStampMinus(vo);
+	}
+
+	@Override
+	public int insertLetterStamph(LetterVO vo) {
+		return map.insertLetterStamph(vo);
+	}
+
+	@Override
+	public int updateLetterSendYN(LetterVO vo) {
+		return map.updateLetterSendYN(vo);
+	}
+
 
 }
