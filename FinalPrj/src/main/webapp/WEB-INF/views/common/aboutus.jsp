@@ -62,7 +62,7 @@
 										<div class="wrapper">
 											<div class="demo-title">공지사항</div>
 											<div class="demo-link" data-theme="light">
-												<a class="is-dm" href="userNoticeList.do" target="_blank">Go
+												<a class="is-dm" href="${pageContext.request.contextPath}/userNoticeList.do">Go
 													to demo <i data-feather="chevron-right"></i>
 												</a>
 											</div>
@@ -80,7 +80,7 @@
 										<div class="wrapper">
 											<div class="demo-title">Q&A 작성</div>
 											<div class="demo-link" data-theme="dark">
-												<a class="is-dm" href="/navbar-v1-feed.html" target="_blank">Go
+												<a class="is-dm" href="/navbar-v1-feed.html">Go
 													to demo <i data-feather="chevron-right"></i>
 												</a>
 											</div>
