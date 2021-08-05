@@ -23,5 +23,11 @@ public interface FeedMap {
 	int feedDelete(FeedVO vo);									//피드삭제
 	int feedUpdate(FeedVO vo);									//피드수정
 	int likeCntUPdate(LikesVO vo);
+	
+	//친구
+	
+	List<FriendsVO> allUser(FriendsVO vo);
+	List<FriendsVO> newUser(FriendsVO vo);
+	List<FriendsVO> myUser(FriendsVO vo);
 }
 

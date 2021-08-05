@@ -141,6 +141,11 @@ a[href^="https://maps.google.com/maps"] {
 	color: #FFF !important;
 }
 
+.follow-area a{
+	font-size: 1rem !important;
+}
+
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="resources/template/assets/js/moment.js"></script>
@@ -149,6 +154,7 @@ a[href^="https://maps.google.com/maps"] {
 <script>
 $(document).ready(function() {
 	initMap();
+	//지도 출력
 	function initMap() {
 		var lat = Number($('#lat').val());
 		var lon = Number($('#lon').val());
@@ -167,7 +173,6 @@ $(document).ready(function() {
 		// 시간출력
 		var date = new Date();
 		var a = moment.tz(date, $('#timezone').val());
-		console.log(a.format('LT'));
 		$('#localTime').text(a.format('LT'));
 
 		// 언어 레벨 
@@ -193,16 +198,67 @@ $(document).ready(function() {
 		$('#language2_level').text(result);
 		};
 });
-$(function() {
-	$('#follow').click(function(){
-		frm.submit();
-		$this.addClass('is-loading');
-		setTimeout(function () {
-	      $this.removeClass('is-loading');
-	    }, 800);	
-		$this.innerText = 'Unfollow';
+
+// 팔로잉 리스트 ajax
+$(function(){
+	$('#followingList').on('click', function (){
+		$.ajax({
+			url: '${pageContext.request.contextPath}/followingList.do',
+			success: function(result) {
+				$('.profile-contents').html(result);
+			}
+		});
 	});
 });
+
+
+// 팔로우 언팔로우 버튼
+$('body').on('click', '#follow-btn',  function() {
+	follow(true);
+});
+
+$('body').on('click', '#unfollow-btn',  function() {
+	follow(false);
+});
+
+
+let followerCnt = ${followerCnt}
+function follow(check) {
+	var profile_id = $('#user_id').val();
+	if(check) {
+    	$.ajax({
+	    	url:'${pageContext.request.contextPath}/follow.do',
+	    	type:'post',
+	    	data:JSON.stringify({following : profile_id}),
+		    contentType : "application/json; charset=UTF-8",
+	    	success: function(result) {
+	    		console.log("result : " + result);
+	    		if(result === "FollowOK") {
+	    			$(".follow-area").remove("#follow-btn");
+	    			$(".follow-area").html('<a class="button" id="unfollow-btn">Unfollow</a>');
+	    			followerCnt = followerCnt + 1
+	    			$("#followerCnt").html(followerCnt);
+	    		}
+	    	}
+		}); // end of follow ajax
+	} else {
+    	$.ajax({
+	    	url:'${pageContext.request.contextPath}/unfollow.do',
+	    	type:'post',
+	    	data:JSON.stringify({following : profile_id}),
+		    contentType : "application/json; charset=UTF-8",
+	    	success: function(result) {
+	    		console.log("result : " + result);
+	    		if(result === "UnFollowOK") {
+	    			$(".follow-area").remove("#unfollow-btn");
+	    			$(".follow-area").html('<a class="button" id="follow-btn">Follow</a>');
+	    			followerCnt = followerCnt - 1
+	    			$("#followerCnt").html(followerCnt);
+	    		}
+	    	}
+		}); // end of unfollow ajax
+	}; // end of if
+};
 
 </script>
 <body>
@@ -224,6 +280,7 @@ $(function() {
                             <input type="text" id="lon" value="${profile.lon }" hidden="hidden" />
                             <input type="text" id="timezone" value="${profile.timezone }" hidden="hidden" />
                             <input type="text" id="level" value="${profile.language2_level }" hidden="hidden" />
+                            <input type="text" id="user_id" value="${profile.user_id }" hidden="hidden" />
                             <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
                             <div class="avatar">
                                 <img id="user-avatar" class="avatar-image" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
@@ -271,19 +328,18 @@ $(function() {
                             </div>
                         </div>
                         
-						<form:form id="frm" action="follow.do" modelAttribute="FriendsVO" method="post">
-							<form:hidden path="user_id" value="${user.user_id }"/>
-							<form:hidden path="following" value="${profile.user_id }"/>
-						</form:form>
-						
                         <div class="profile-subheader">
                             <div class="subheader-start is-hidden-mobile" style="display: table">
                                 <span>Post</span>
-                                <span>15</span>
-                                <span>Following</span>
-                                <span>34</span>
-                                <span>Followers</span>
-                                <span>60</span>
+                                <span>${postCnt }</span>
+                                <a id="followingList">
+	                                <span>Following</span>
+	                                <span id="followingCnt">${followingCnt }</span>
+                                </a>
+                                <a id="follwerList">
+                                	<span>Followers</span>
+                                	<span id="followerCnt">${followerCnt }</span>
+                                </a>
                             </div>
                             <div class="subheader-middle" style="position: absolute; left: 50%; transform: translate(-50%);">
                                 <h2>${profile.name}</h2>
@@ -300,16 +356,25 @@ $(function() {
                             		</c:when>
                             		<c:otherwise>
 		                                <a class="button is-solid primary-button">✍🏻 Write a letter</a>
-		                                <a class="button" id="follow">Follow</a>
+		                                <div class="follow-area">
+		                                	<c:choose>
+			                                	<c:when test="${followCheck > 0}">
+				                               		<a class="button" id="unfollow-btn">Unfollow</a>
+			                               		</c:when>
+		                                		<c:otherwise>
+				                               		<a class="button" id="follow-btn">Follow</a>
+		                                		</c:otherwise>
+		                                	</c:choose>
+		                                </div>
                             		</c:otherwise>
                             	</c:choose>
                             </div>
-                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="columns">
+                <div class="columns profile-contents">
                     <div id="profile-timeline-widgets" class="column is-5">
 
                         <!-- Basic Infos widget -->
@@ -400,7 +465,6 @@ $(function() {
                             </div>
                         </div>
                     </div>
-
 					<!---------------------피드영역--------------------------->
                     <div class="column is-7">
                         <div id="profile-timeline-posts" class="box-heading">

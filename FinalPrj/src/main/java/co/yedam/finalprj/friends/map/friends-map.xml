@@ -4,6 +4,27 @@
 
 	<!-- 팔로잉 -->
 	<insert id="follow" parameterType="co.yedam.finalprj.friends.vo.FriendsVO">
-	insert into friends(user_id, following) values(#{user_id}, #{following})
+		insert into friends(user_id, following) values(#{user_id}, #{following})
 	</insert>
+
+	<!-- 언팔로잉 -->
+	<insert id="unfollow" parameterType="co.yedam.finalprj.friends.vo.FriendsVO">
+		delete from friends where user_id=#{user_id} and following=#{following}
+	</insert>
+
+	<!-- 팔로잉여부 체크 -->
+	<select id="followCheck" parameterType="co.yedam.finalprj.friends.vo.FriendsVO" resultType="int">
+		select count(*) from friends where user_id=#{user_id} and following=#{following}
+	</select>
+
+	<!-- 팔로워 카운트 -->
+	<select id="followerCnt" parameterType="co.yedam.finalprj.friends.vo.FriendsVO" resultType="int">
+		select count(*) from friends where following=#{following}
+	</select>
+
+	<!-- 팔로잉 카운트 -->
+	<select id="followingCnt" parameterType="co.yedam.finalprj.friends.vo.FriendsVO" resultType="int">
+		select count(*) from friends where user_id=#{following}
+	</select>
+	
 </mapper>

@@ -45,4 +45,10 @@ public class PushServiceImpl implements PushService {
 		return map.deletePush(vo);
 	}
 
+	@Override
+	public PushVO pushSelect2(PushVO vo) {
+		// TODO Auto-generated method stub
+		return map.pushSelect2(vo);
+	}
+
 }

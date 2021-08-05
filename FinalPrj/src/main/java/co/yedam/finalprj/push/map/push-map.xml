@@ -20,4 +20,22 @@
 		where push_id = #{push_id}
 		
 	</update>
+	
+	<select id="pushSelect" parameterType="co.yedam.finalprj.push.vo.PushVO" resultType="co.yedam.finalprj.push.vo.PushVO">
+			SELECT DISTINCT FIRST_VALUE(push_id) OVER(ORDER BY push_dt DESC) AS push_id, USER_ID, TO_ID,CONTENT_ID,TYPE
+			FROM push    
+			WHERE user_id =#{user_id} 
+			    AND to_id = #{to_id}
+			    AND TYPE = #{type}
+			    AND content_id = #{content_id}  
+	</select>
+	
+	<select id="pushSelect2" parameterType="co.yedam.finalprj.push.vo.PushVO" resultType="co.yedam.finalprj.push.vo.PushVO">
+			SELECT DISTINCT FIRST_VALUE(push_id) OVER(ORDER BY push_dt DESC) AS push_id, USER_ID, TO_ID,TYPE
+			FROM push    
+			WHERE user_id =#{user_id} 
+			    AND to_id = #{to_id}
+			    AND TYPE = #{type}
+	</select>
+	
 </mapper>

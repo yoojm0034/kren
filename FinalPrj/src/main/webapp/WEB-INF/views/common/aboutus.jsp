@@ -16,7 +16,9 @@
 				<div class="container is-desktop">
 					<div class="columns landing-caption is-vcentered">
 						<div class="column is-7">
-							<img src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/characters/friends.svg" alt="">
+							<img
+								src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/characters/friends.svg"
+								alt="">
 						</div>
 						<div class="column is-5">
 							<h2>KREN</h2>
@@ -33,7 +35,9 @@
 		<div id="demos-section" class="section demos-wrapper">
 			<div class="container is-desktop">
 				<div class="header-logo">
-					<img src="${pageContext.request.contextPath}/resources/template/assets/img/logo/friendkit-white.svg" alt="">
+					<img
+						src="${pageContext.request.contextPath}/resources/template/assets/img/logo/friendkit-white.svg"
+						alt="">
 				</div>
 				<div class="demos-title has-text-centered">
 					<h3>Prebuilt pages to start with</h3>
@@ -44,7 +48,9 @@
 					<!--Navbar v1-->
 					<div class="demo-section">
 						<div class="demo-section-title">
-							<img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/layouts/layout-navbar.svg" alt="">
+							<img
+								src="${pageContext.request.contextPath}/resources/template/assets/img/icons/layouts/layout-navbar.svg"
+								alt="">
 							<div class="title-meta">
 								<h3>바로가기</h3>
 								<p>With a top navigation</p>
@@ -55,14 +61,16 @@
 							<!-- Demo item -->
 							<div class="column is-4 has-text-centered">
 								<figure class="demo-wrapper">
-									<img data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/blogging.svg" alt=""
-										data-lazy-load />
+									<img
+										data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/blogging.svg"
+										alt="" data-lazy-load />
 									<div class="circle-overlay"></div>
 									<div class="demo-info has-text-centered">
 										<div class="wrapper">
 											<div class="demo-title">공지사항</div>
 											<div class="demo-link" data-theme="light">
-												<a class="is-dm" href="${pageContext.request.contextPath}/userNoticeList.do">Go
+												<a class="is-dm"
+													href="${pageContext.request.contextPath}/userNoticeList.do">Go
 													to demo <i data-feather="chevron-right"></i>
 												</a>
 											</div>
@@ -73,15 +81,16 @@
 							<!-- Demo item -->
 							<div class="column is-4 has-text-centered">
 								<figure class="demo-wrapper">
-									<img data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/automotive.svg" alt=""
-										data-lazy-load />
+									<img
+										data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/automotive.svg"
+										alt="" data-lazy-load />
 									<div class="circle-overlay"></div>
 									<div class="demo-info has-text-centered">
 										<div class="wrapper">
 											<div class="demo-title">Q&A 작성</div>
 											<div class="demo-link" data-theme="dark">
-												<a class="is-dm" href="/navbar-v1-feed.html">Go
-													to demo <i data-feather="chevron-right"></i>
+												<a class="is-dm" href="/navbar-v1-feed.html">Go to demo
+													<i data-feather="chevron-right"></i>
 												</a>
 											</div>
 										</div>
@@ -91,8 +100,9 @@
 							<!-- Demo item -->
 							<div class="column is-4 has-text-centered">
 								<figure class="demo-wrapper">
-									<img data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/business.svg" alt=""
-										data-lazy-load />
+									<img
+										data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/business.svg"
+										alt="" data-lazy-load />
 									<div class="circle-overlay"></div>
 									<div class="demo-info has-text-centered">
 										<div class="wrapper">
@@ -111,7 +121,10 @@
 				</div>
 			</div>
 		</div>
-
+		<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
+		<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
+		<button onclick="sendLetterPush('admin')" type="button">편지</button>
+		<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
 
 
 

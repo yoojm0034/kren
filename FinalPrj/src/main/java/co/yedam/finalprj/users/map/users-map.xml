@@ -18,6 +18,7 @@
 		AND report_cnt > 0
 		ORDER BY report_cnt DESC
 	</select>	
+	
 	<!-- update -->
 	<update id="adminUsersUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
 		update users
@@ -70,4 +71,10 @@
 		                          from users 
 		                          where user_id = #{user_id}), '[^,]+', 1, Level) Is Not Null
 	</select>	
+	
+	<!-- 작성글 카운트 -->
+	<select id="postCnt" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="int">
+		select count(*) from feed where user_id=#{user_id}
+	</select>
+	
 </mapper>

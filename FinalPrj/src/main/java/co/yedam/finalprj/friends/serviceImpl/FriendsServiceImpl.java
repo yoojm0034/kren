@@ -31,4 +31,20 @@ public class FriendsServiceImpl implements FriendsService {
 		return map.unfollow(vo);
 	}
 
+	@Override
+	public int followCheck(FriendsVO vo) {
+		int r = map.followCheck(vo);
+		return r;
+	}
+
+	@Override
+	public int followingCnt(FriendsVO vo) {
+		return map.followingCnt(vo);
+	}
+
+	@Override
+	public int followerCnt(FriendsVO vo) {
+		return map.followerCnt(vo);
+	}
+
 }

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +12,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>친구찾기 / Friends</title>
+    <!-- Core CSS -->
+ <script src="https://unpkg.com/feather-icons"></script>
+<link rel="stylesheet" href="resources/template/assets/css/app.css">
+<link rel="stylesheet" href="resources/template/assets/css/core.css">
     <link rel="icon" type="image/png" href="resources/template/assets/img/favicon.png" />
+    <link
+	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
+	rel="stylesheet">
+<script src="resources/template/assets/nicelabel/js/jquery.min.js"></script>
+<script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
@@ -81,6 +93,34 @@
 	font-size: .7rem;
     font-weight: 500;
 }
+
+.topic-label>.left {
+	float: left;
+}
+
+.topic-label>.right {
+	float: right;
+	display: inline-block;
+	margin-bottom: 15px;
+}
+
+.topic-list {
+	display: inline-block
+}
+.text-nicelabel + label {
+    display: inline-block;
+    font-size: 14px;
+    padding: 1px 4px 5px 6px;
+    background-color: rgba(0,140,186,1);
+    color: #b3b3b3;
+    border-radius: 2rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -92,46 +132,52 @@ $(document).ready(function(){
 			var gender = $('input[name=gender]:checked').val();
 			var country = $("#country option:selected").val();
 			var lan = $("#lan option:selected").val();
-			var topic;
-			
-		
-	        console.log('검색값');
-			console.log(age1);
-			console.log(age2);
-			console.log(gender);
-			console.log(country);
-			console.log(lan);
-			
+			var topic = "";
 	        //제외
  			var disage1 = $('#dis-age1').val();
 			var disage2 = $('#dis-age2').val();
 			var disgender = $('input[name=dis-gender]:checked').val();
 			var discountry = $("#dis-country option:selected").val();
 			var dislan = $("#dis-lan option:selected").val();
-			var distopic;
-			console.log('제외');
-			console.log(disage1);
-			console.log(disage2);
-			console.log(disgender);
-			console.log(discountry);
-			console.log(dislan); 
+			var distopic = "";
 			
-/* 			$('#ageVal1').val = ;
-			$('#ageVal2').val = ;
-			$('#ageVal1').val = ;
-			$('#ageVal2').val = ;
-        	<input type="hidden" id="ageVal" 			name="ageVal1,2" >
-        	<input type="hidden" id="dis-ageVal" 		name="dia-ageVal" >
-        	<input type="hidden" id="genderVal" 		name="genderVal" >
-        	<input type="hidden" id="dis-genderVal" 	name="dis-genderVal" >
-        	<input type="hidden" id="countryVal" 		name="countryVal" >
-        	<input type="hidden" id="dis-countryVal" 	name="dis-countryVal" >
-        	<input type="hidden" id="lanVal" 			name="lanVal" >
-        	<input type="hidden" id="dis-lanVal" 		name="dis-lanVal" >
-        	<input type="hidden" id="topicVal" 			name="topicVal" >
-        	<input type="hidden" id="dis-topicVal" 		name="dis-topicVal" > */
+	    	topic = topic.substr(0, topic.length -1);
+	    	distopic = distopic.substr(0, topic.length -1); 
+
+	    	$("input[name=topic]:checked").each(function() {
+	    		topic += $(this).val();	    			
+	    	});
+	
+	    	$("input[name=dis-topics]:checked").each(function() {
+	    		distopic += $(this).val();
+	    	});
+	    	
+ 			$('#ageVal1').val(age1);
+			$('#ageVal2').val(age2);
+			$('#dis-ageVal1').val(disage1);
+			$('#dis-ageVal2').val(disage2);
+			$('#genderVal').val(gender);
+			$('#countryVal').val(country);
+			$('#dis-countryVal').val(discountry);
+			$('#lanVal').val(lan);
+			$('#topicVal').val(topic);
+			$('#dis-topicVal').val(distopic);
+			
+			$('#frm').submit();
 			
       	});
+      	
+      	$('#show-filters').on('click',function(){
+      	  var url = '${pageContext.request.contextPath}/resources/template/assets/data/country.json';
+          $.getJSON(url, function (data) {
+	 	        $.each(data, function (key, value) {
+	 	          $('#country').append('<option value="' + value.CountryNameEN + '">' + value.CountryNameKR + '</option>');
+	 	         $('#dis-country').append('<option value="' + value.CountryNameEN + '">' + value.CountryNameKR + '</option>');
+	 	        });
+          });
+          
+      	});
+
 });
 </script>
 <body>
@@ -146,7 +192,7 @@ $(document).ready(function(){
             <div class="container is-fluid">
                 <div class="nav-inner is-friends">
                     <a id="show-filters" class="nav-item is-icon">
-                        <i data-feather="filter"></i>
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                     </a>
                     <a id="hide-filters" class="nav-item is-icon is-hidden">
                         <i data-feather="x"></i>
@@ -158,40 +204,35 @@ $(document).ready(function(){
                         <a class="option-tab" data-tab="starred-friends">
                             <span>New</span>
                         </a>
-                        <a class="option-tab" data-tab="new-friends">
-                            <span>My</span>
-                        </a>
                         <div class="option-naver"></div>
                     </div>
                     <div class="end-group">
-                        <div class="nav-item is-friend-count">979 friends</div>
+                        <div class="nav-item is-friend-count">${fn:length(allList) } friends</div>
                         <div id="subsearch" class="nav-item is-search is-hidden">
                             <div class="control">
-                                <input type="text" class="input textFilter-input" placeholder="Search your friends">
+                                <input type="text" class="input textFilter-input" placeholder="친구를 검색해 보세요">
                             </div>
                         </div>
                         <a id="show-subsearch" class="nav-item is-icon">
-                            <i data-feather="search"></i>
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </a>
                         <a id="hide-subsearch" class="nav-item is-icon is-hidden">
-                            <i data-feather="x"></i>
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- 친구 찾기-->
-        <form id="frm" name="frm" method="post" action="SearchFriend.do">
-        	<input type="hidden" id="ageVal" 			name="ageVal1" >
-        	<input type="hidden" id="ageVal" 			name="ageVal2" >
-        	<input type="hidden" id="dis-ageVal" 		name="dia-ageVal1" >
-        	<input type="hidden" id="dis-ageVal" 		name="dia-ageVal2" >
+        <form id="frm" name="frm" method="post" action="searchList.do">
+        	<input type="hidden" id="ageVal1" 			name="ageVal1" >
+        	<input type="hidden" id="ageVal2" 			name="ageVal2" >
+        	<input type="hidden" id="dis-ageVal1" 		name="dis-ageVal1" >
+        	<input type="hidden" id="dis-ageVal2" 		name="dis-ageVal2" >
         	<input type="hidden" id="genderVal" 		name="genderVal" >
-        	<input type="hidden" id="dis-genderVal" 	name="dis-genderVal" >
         	<input type="hidden" id="countryVal" 		name="countryVal" >
         	<input type="hidden" id="dis-countryVal" 	name="dis-countryVal" >
         	<input type="hidden" id="lanVal" 			name="lanVal" >
-        	<input type="hidden" id="dis-lanVal" 		name="dis-lanVal" >
         	<input type="hidden" id="topicVal" 			name="topicVal" >
         	<input type="hidden" id="dis-topicVal" 		name="dis-topicVal" >
         <div class="filters-panel">
@@ -199,8 +240,8 @@ $(document).ready(function(){
                 <h3 class="panel-title">검색조건</h3>
 				<div>
 					<label class="search-label">나이</label>
-					  <input type="text" value="1" id="age1"> AND
-					  <input type="text" value="1" id="age2">
+					  <input type="text" value="" id="age1"> AND
+					  <input type="text" value="" id="age2">
 				</div>
 				<div>
 					<label class="search-label">성별</label>
@@ -210,57 +251,51 @@ $(document).ready(function(){
 				<div>
 					<label class="search-label" >국가</label>
 						<select id="country">
-						    <option value="All">All</option>
-						    <option value="Kor">한국</option>
-						    <option value="America">미국</option>
+						    <option value="">All</option>
 						</select>
 				</div>
 				<div>
 					<label class="search-label" >언어</label>
 						<select id="lan">
-						    <option value="All">All</option>
+						    <option value="">All</option>
 						    <option value="ko">한국어</option>
 						    <option value="en">영어</option>
 						</select>
 				</div>
 				<div>
-					<label class="search-label" id="topic">관심사</label>
-						<span class="tag-label">관심사</span>
-						<span class="tag-label">관심사</span>
-						<span class="tag-label">관심사</span>
+					<label class="search-label">관심사</label>
+						<div class="topic-list">
+						<c:forEach items="${topicList }" var="vo" end="8">
+							<input class="text-nicelabel" name="topic"
+								data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
+								type="checkbox" value="${vo.topic_id }">
+						</c:forEach>
+					</div>
 				</div>
                 <h3 class="panel-title">제외조건</h3>
                 <div>
 					<label class="search-label" id="dis-age">나이</label>
-					  <input type="text" value="1" id="dis-age1"> AND
-					  <input type="text" value="1" id="dis-age2">
-				</div>
-				<div>
-					<label class="search-label" id="dis-gender">성별</label>
-						남<input type="radio"  name="dis-gender" value="M"  checked="checked">
-						여<input type="radio"  name="dis-gender" value="W">
+					  <input type="text" value="" id="dis-age1"> AND
+					  <input type="text" value="" id="dis-age2">
 				</div>
 				<div>
 					<label class="search-label" >국가</label>
 						<select id="dis-country">
-						    <option value="All">All</option>
-						    <option value="kor">한국</option>
-						    <option value="america">미국</option>
+						    <option value="">All</option>
 						</select>
 				</div>
 				<div>
-					<label class="search-label" >언어</label>
-						<select id="dis-lan">
-						    <option value="All">All</option>
-						    <option value="ko">한국어</option>
-						    <option value="en">영어</option>
-						</select>
-				</div>
-				<div>
-					<label class="search-label" id="dis-topic">관심사</label>
-						<span class="tag-label">관심사</span>
-						<span class="tag-label">관심사</span>
-						<span class="tag-label">관심사</span>
+					<label class="search-label">관심사</label>
+						<div class="topic-list">
+						<c:forEach items="${topicList }" var="vo" end="8">
+							<input class="text-nicelabel" name="dis-topics"
+								data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
+								type="checkbox" value="${vo.topic_id }">
+						</c:forEach>
+						<script>
+							$('input').nicelabel({});
+						</script>
+					</div>
 				</div>
             </div>
             <button id="friendSearch" type="button">검색</button>
@@ -282,50 +317,17 @@ $(document).ready(function(){
                 <div class="card-row">
                     <!-- /partials/pages/friends/friend-lists/all-friends.html -->
                     <!--Friend-->
+                   <c:forEach items="${allList }" var="vo">
                     <div class="card-flex friend-card">
                         <div class="star-friend is-active">
                             <i data-feather="star"></i>
                         </div>
                         <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
+                            <img class="country" src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg" alt="">
                         </div>
                         <div class="friend-info">
-                            <h3>Dan Walker</h3>
-                            <p>WordPress Developer</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    478
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    293
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    899
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend is-active">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/david.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>David Kim</h3>
+                            <h3>${vo.name }</h3>
                             <p>Senior Developer</p>
                         </div>
                         <div class="friend-stats">
@@ -349,82 +351,15 @@ $(document).ready(function(){
                             </div>
                         </div>
                     </div>
+                   </c:forEach>
                     <!--Friend-->
                     <div class="card-flex friend-card">
                         <div class="star-friend">
                             <i data-feather="star"></i>
                         </div>
                         <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/bob.png" alt="">
-                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Bob Barker</h3>
-                            <p>Software Engineer</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    428
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    531
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    663
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/lana.jpeg" alt="">
-                            <img class="country" src="assets/img/icons/flags/finland.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Lana Henrikssen</h3>
-                            <p>Fashion Designer</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    1.2k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    632
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    2.8k
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/brian.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/united-states-of-america.svg" alt="">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/brian.jpg" alt="">
+                            <img class="country" src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}svg" alt="">
                         </div>
                         <div class="friend-info">
                             <h3>Brian Stevenson</h3>
@@ -462,16 +397,17 @@ $(document).ready(function(){
                 <div class="card-row">
                     <!-- /partials/pages/friends/friend-lists/starred-friends.html -->
                     <!--Friend-->
+                    <c:forEach items="${newList }" var="vo">
                     <div class="card-flex friend-card">
                         <div class="star-friend is-active">
                             <i data-feather="star"></i>
                         </div>
                         <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/stella.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/germany.svg" alt="">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
+                            <img class="country" src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg" alt="">
                         </div>
                         <div class="friend-info">
-                            <h3>Stella Bergmann</h3>
+                            <h3>${vo.name }</h3>
                             <p>Social Influencer</p>
                         </div>
                         <div class="friend-stats">
@@ -495,116 +431,15 @@ $(document).ready(function(){
                             </div>
                         </div>
                     </div>
+                   </c:forEach>
                     <!--Friend-->
                     <div class="card-flex friend-card">
                         <div class="star-friend is-active">
                             <i data-feather="star"></i>
                         </div>
                         <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
-                            <img class="country" src="assets/img/icons/flags/ireland.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Edward Mayers</h3>
-                            <p>Data Scientist</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    612
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    58
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    82
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend is-active">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/nelly.png" alt="">
-                            <img class="country" src="assets/img/icons/flags/australia.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Nelly Schwartz</h3>
-                            <p>Student</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    874
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    1.2k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    890
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend is-active">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/rolf.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/germany.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Rolf Krupp</h3>
-                            <p>Fashion Designer</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    2.3k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    351
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    6.7k
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend is-active">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/elise.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/united-kingdom.svg" alt="">
+                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
+                            <img class="country" src="resources/template/assets/img/icons/flags/korea.svg" alt="">
                         </div>
                         <div class="friend-info">
                             <h3>Elise Walker</h3>
@@ -633,186 +468,6 @@ $(document).ready(function(){
                     </div>
                 </div>
             </div>
-
-            <!--third tab-->
-            <div id="new-friends" class="card-row-wrap">
-                <div class="card-row-placeholder is-hidden">
-                    No matching results
-                </div>
-                <div class="card-row">
-                    <!-- /partials/pages/friends/friend-lists/new-friends.html -->
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/amadou.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/senegal.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Amadou Diop</h3>
-                            <p>Sales Manager</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    728
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    184
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    226
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/roxane.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/france.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Roxane Blanchart</h3>
-                            <p>Head of Marketing</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    1.5k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    551
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    2.5k
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar is-placeholder" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/placeholder-m.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/canada.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>John Stanley</h3>
-                            <p>Accountant</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    412
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    95
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    168
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/luis.png" alt="">
-                            <img class="country" src="assets/img/icons/flags/spain.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Luis Carrillo Estrella</h3>
-                            <p>Graphic Designer</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    3k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    378
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    1.1k
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/hisashi.jpg" alt="">
-                            <img class="country" src="assets/img/icons/flags/japan.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Hisashi Yokida</h3>
-                            <p>Scientist</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    8k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    1.2k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    28.2k
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -825,7 +480,7 @@ $(document).ready(function(){
                 <div class="nav-start">
                     <div class="recipient-block">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
                         </div>
                         <div class="username">
                             <span>Dan Walker</span>
@@ -986,64 +641,64 @@ $(document).ready(function(){
             <div id="chat-sidebar" class="users-sidebar">
                 <!-- Header -->
                 <div class="header-item">
-                    <img class="light-image" src="assets/img/logo/friendkit-bold.svg" alt="">
-                    <img class="dark-image" src="assets/img/logo/friendkit-white.svg" alt="">
+                    <img class="light-image" src="resources/template/assets/img/logo/friendkit-bold.svg" alt="">
+                    <img class="dark-image" src="resources/template/assets/img/logo/friendkit-white.svg" alt="">
                 </div>
                 <!-- User list -->
                 <div class="conversations-list has-slimscroll-xs">
                     <!-- User -->
                     <div class="user-item is-active" data-chat-user="dan" data-full-name="Dan Walker" data-status="Online">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
                             <div class="user-status is-online"></div>
                         </div>
                     </div>
                     <!-- User -->
                     <div class="user-item" data-chat-user="stella" data-full-name="Stella Bergmann" data-status="Busy">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/stella.jpg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
                             <div class="user-status is-busy"></div>
                         </div>
                     </div>
                     <!-- User -->
                     <div class="user-item" data-chat-user="daniel" data-full-name="Daniel Wellington" data-status="Away">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
                             <div class="user-status is-away"></div>
                         </div>
                     </div>
                     <!-- User -->
                     <div class="user-item" data-chat-user="david" data-full-name="David Kim" data-status="Busy">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/david.jpg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
                             <div class="user-status is-busy"></div>
                         </div>
                     </div>
                     <!-- User -->
                     <div class="user-item" data-chat-user="edward" data-full-name="Edward Mayers" data-status="Online">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
                             <div class="user-status is-online"></div>
                         </div>
                     </div>
                     <!-- User -->
                     <div class="user-item" data-chat-user="elise" data-full-name="Elise Walker" data-status="Away">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/elise.jpg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
                             <div class="user-status is-away"></div>
                         </div>
                     </div>
                     <!-- User -->
                     <div class="user-item" data-chat-user="nelly" data-full-name="Nelly Schwartz" data-status="Busy">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/nelly.png" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/nelly.png" alt="">
                             <div class="user-status is-busy"></div>
                         </div>
                     </div>
                     <!-- User -->
                     <div class="user-item" data-chat-user="milly" data-full-name="Milly Augustine" data-status="Busy">
                         <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/milly.jpg" alt="">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
                             <div class="user-status is-busy"></div>
                         </div>
                     </div>
@@ -1064,7 +719,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
                         <div class="message-block">
                             <span>8:03am</span>
                             <div class="message-text">Hi Jenna! I made a new design, and i wanted to show it to you.</div>
@@ -1072,7 +727,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
                         <div class="message-block">
                             <span>8:03am</span>
                             <div class="message-text">It's quite clean and it's inspired from Bulkit.</div>
@@ -1080,7 +735,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>8:12am</span>
                             <div class="message-text">Oh really??! I want to see that.</div>
@@ -1088,7 +743,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
                         <div class="message-block">
                             <span>8:13am</span>
                             <div class="message-text">FYI it was done in less than a day.</div>
@@ -1096,7 +751,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>8:17am</span>
                             <div class="message-text">Great to hear it. Just send me the PSD files so i can have a look at it.</div>
@@ -1104,7 +759,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>8:18am</span>
                             <div class="message-text">And if you have a prototype, you can also send me the link to it.</div>
@@ -1119,7 +774,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>10:34am</span>
                             <div class="message-text">Hey Stella! Aren't we supposed to go the theatre after work?.</div>
@@ -1127,7 +782,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>10:37am</span>
                             <div class="message-text">Just remembered it.</div>
@@ -1135,7 +790,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/stella.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
                         <div class="message-block">
                             <span>11:22am</span>
                             <div class="message-text">Yeah you always do that, forget about everything.</div>
@@ -1150,7 +805,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>3:24pm</span>
                             <div class="message-text">Daniel, Amanda told me about your issue, how can I help?</div>
@@ -1158,7 +813,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
                         <div class="message-block">
                             <span>3:42pm</span>
                             <div class="message-text">Hey Jenna, thanks for answering so quickly. Iam stuck, i need a car.</div>
@@ -1166,7 +821,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
                         <div class="message-block">
                             <span>3:43pm</span>
                             <div class="message-text">Can i borrow your car for a quick ride to San Fransisco? Iam running behind and
@@ -1182,7 +837,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>12:34pm</span>
                             <div class="message-text">Damn you! Why would you even implement this in the game?.</div>
@@ -1190,7 +845,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>12:32pm</span>
                             <div class="message-text">I just HATE aliens.</div>
@@ -1198,7 +853,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/david.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
                         <div class="message-block">
                             <span>13:09pm</span>
                             <div class="message-text">C'mon, you just gotta learn the tricks. You can't expect aliens to behave like
@@ -1206,7 +861,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/david.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
                         <div class="message-block">
                             <span>13:11pm</span>
                             <div class="message-text">I checked the replay and for example, you always get supply blocked. That's not
@@ -1214,14 +869,14 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>13:12pm</span>
                             <div class="message-text">I know but i struggle when i have to decide what to make from larvas.</div>
                         </div>
                     </div>
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/david.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
                         <div class="message-block">
                             <span>13:17pm</span>
                             <div class="message-text">Join me in game, i'll show you.</div>
@@ -1236,7 +891,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
                         <div class="message-block">
                             <span>4:55pm</span>
                             <div class="message-text">Hey Jenna, what's up?</div>
@@ -1244,7 +899,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
                         <div class="message-block">
                             <span>4:56pm</span>
                             <div class="message-text">Iam coming to LA tomorrow. Interested in having lunch?</div>
@@ -1252,7 +907,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>5:21pm</span>
                             <div class="message-text">Hey mate, it's been a while. Sure I would love to.</div>
@@ -1260,7 +915,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
                         <div class="message-block">
                             <span>5:27pm</span>
                             <div class="message-text">Ok. Let's say i pick you up at 12:30 at work, works?</div>
@@ -1268,7 +923,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>5:43pm</span>
                             <div class="message-text">Yup, that works great.</div>
@@ -1276,7 +931,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>5:44pm</span>
                             <div class="message-text">And yeah, don't forget to bring some of my favourite cheese cake.</div>
@@ -1284,7 +939,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
                         <div class="message-block">
                             <span>5:27pm</span>
                             <div class="message-text">No worries</div>
@@ -1299,7 +954,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>11:53am</span>
                             <div class="message-text">Elise, i forgot my folder at your place yesterday.</div>
@@ -1307,7 +962,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>11:53am</span>
                             <div class="message-text">I need it badly, it's work stuff.</div>
@@ -1315,7 +970,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/elise.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
                         <div class="message-block">
                             <span>12:19pm</span>
                             <div class="message-text">Yeah i noticed. I'll drop it in half an hour at your office.</div>
@@ -1330,7 +985,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>8:22pm</span>
                             <div class="message-text">So you watched the movie?</div>
@@ -1338,7 +993,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>8:22pm</span>
                             <div class="message-text">Was it scary?</div>
@@ -1346,7 +1001,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/nelly.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/nelly.png" alt="">
                         <div class="message-block">
                             <span>9:03pm</span>
                             <div class="message-text">It was so frightening, i felt my heart was about to blow inside my chest.</div>
@@ -1361,7 +1016,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/milly.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
                         <div class="message-block">
                             <span>2:01pm</span>
                             <div class="message-text">Hello Jenna, did you read my proposal?</div>
@@ -1369,7 +1024,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/milly.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
                         <div class="message-block">
                             <span>2:01pm</span>
                             <div class="message-text">Didn't hear from you since i sent it.</div>
@@ -1377,7 +1032,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>2:02pm</span>
                             <div class="message-text">Hello Milly, Iam really sorry, Iam so busy recently, but i had the time to read
@@ -1386,7 +1041,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/milly.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
                         <div class="message-block">
                             <span>2:04pm</span>
                             <div class="message-text">And what did you think about it?</div>
@@ -1394,7 +1049,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>2:05pm</span>
                             <div class="message-text">Actually it's quite good, there might be some small changes but overall it's
@@ -1403,7 +1058,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
                         <div class="message-block">
                             <span>2:07pm</span>
                             <div class="message-text">I think that i can give it to my boss at this stage.</div>
@@ -1411,7 +1066,7 @@ $(document).ready(function(){
                     </div>
 
                     <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/milly.jpg" alt="">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
                         <div class="message-block">
                             <span>2:09pm</span>
                             <div class="message-text">Crossing fingers then</div>
@@ -1553,7 +1208,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/dan.jpg" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -1672,7 +1327,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/stella.jpg" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -1786,7 +1441,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -1905,7 +1560,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/david.jpg" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -2024,7 +1679,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/edward.jpeg" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -2138,7 +1793,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/elise.jpg" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -2247,7 +1902,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/nelly.png" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/nelly.png" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -2366,7 +2021,7 @@ $(document).ready(function(){
                             </div>
 
                             <div class="details-avatar">
-                                <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/milly.jpg" alt="">
+                                <img src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
                                 <div class="call-me">
                                     <i class="mdi mdi-phone"></i>
                                 </div>
@@ -2441,7 +2096,7 @@ $(document).ready(function(){
                 </div>
                 <div class="card-body">
 
-                    <img src="assets/img/icons/chat/bubbles.svg" alt="">
+                    <img src="resources/template/assets/img/icons/chat/bubbles.svg" alt="">
 
                     <div class="field is-autocomplete">
                         <div class="control has-icon">
@@ -2480,77 +2135,77 @@ $(document).ready(function(){
                 <div class="explore-list has-slimscroll">
                     <!--item-->
                     <a href="/navbar-v1-feed.html" class="explore-item">
-                        <img src="assets/img/icons/explore/clover.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/clover.svg" alt="">
                         <h4>Feed</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-profile-friends.html" class="explore-item">
-                        <img src="assets/img/icons/explore/friends.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/friends.svg" alt="">
                         <h4>Friends</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-videos-home.html" class="explore-item">
-                        <img src="assets/img/icons/explore/videos.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/videos.svg" alt="">
                         <h4>Videos</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-pages-main.html" class="explore-item">
-                        <img src="assets/img/icons/explore/tag-euro.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/tag-euro.svg" alt="">
                         <h4>Pages</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-ecommerce-products.html" class="explore-item">
-                        <img src="assets/img/icons/explore/cart.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/cart.svg" alt="">
                         <h4>Commerce</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-groups.html" class="explore-item">
-                        <img src="assets/img/icons/explore/house.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/house.svg" alt="">
                         <h4>Interests</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-stories-main.html" class="explore-item">
-                        <img src="assets/img/icons/explore/chrono.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/chrono.svg" alt="">
                         <h4>Stories</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-questions-home.html" class="explore-item">
-                        <img src="assets/img/icons/explore/question.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/question.svg" alt="">
                         <h4>Questions</h4>
                     </a>
                     <!--item-->
                     <a href="news.html" class="explore-item">
-                        <img src="assets/img/icons/explore/news.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/news.svg" alt="">
                         <h4>News</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-groups.html" class="explore-item">
-                        <img src="assets/img/icons/explore/cake.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/cake.svg" alt="">
                         <h4>Groups</h4>
                     </a>
                     <!--item-->
                     <a href="https://envato.com" class="explore-item">
-                        <img src="assets/img/icons/explore/envato.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/envato.svg" alt="">
                         <h4>Envato</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-events.html" class="explore-item">
-                        <img src="assets/img/icons/explore/calendar.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/calendar.svg" alt="">
                         <h4>Events</h4>
                     </a>
                     <!--item-->
                     <a href="https://cssninja.io" target="_blank" class="explore-item">
-                        <img src="assets/img/icons/explore/pin.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/pin.svg" alt="">
                         <h4>Css Ninja</h4>
                     </a>
                     <!--item-->
                     <a href="/elements.html" class="explore-item">
-                        <img src="assets/img/icons/explore/idea.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/idea.svg" alt="">
                         <h4>Elements</h4>
                     </a>
                     <!--item-->
                     <a href="/navbar-v1-settings.html" class="explore-item">
-                        <img src="assets/img/icons/explore/settings.svg" alt="">
+                        <img src="resources/template/assets/img/icons/explore/settings.svg" alt="">
                         <h4>Settings</h4>
                     </a>
                 </div>
@@ -2574,7 +2229,7 @@ $(document).ready(function(){
                 <div class="card-body has-text-centered">
 
                     <div class="image-wrap">
-                        <img src="assets/img/logo/friendkit.svg" alt="">
+                        <img src="resources/template/assets/img/logo/friendkit.svg" alt="">
                     </div>
 
                     <h3>That's all folks!</h3>
@@ -2589,5 +2244,7 @@ $(document).ready(function(){
     </div>
 
 </body>
-
+   <script>
+      feather.replace()
+    </script>
 </html>

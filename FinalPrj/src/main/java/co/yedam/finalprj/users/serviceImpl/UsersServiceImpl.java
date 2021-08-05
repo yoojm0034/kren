@@ -92,7 +92,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Object stampUpdate(UsersVO vo) {
+	public int stampUpdate(UsersVO vo) {
 		return loginmap.stampUpdate(vo);
 		
 	}
@@ -105,6 +105,11 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public List<UsersVO> myTripList(UsersVO vo) {
 		return map.myTripList(vo);
+	}
+
+	@Override
+	public int postCnt(UsersVO vo) {
+		return map.postCnt(vo);
 	}
 
 }
