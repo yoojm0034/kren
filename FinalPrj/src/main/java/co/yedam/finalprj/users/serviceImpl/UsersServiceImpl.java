@@ -107,4 +107,9 @@ public class UsersServiceImpl implements UsersService {
 		return map.myTripList(vo);
 	}
 
+	@Override
+	public int postCnt(UsersVO vo) {
+		return map.postCnt(vo);
+	}
+
 }

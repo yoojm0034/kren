@@ -21,6 +21,7 @@ public interface UsersMap {
 	//프로필
 	List<UsersVO> myTopicList(UsersVO vo);	
 	List<UsersVO> myTripList(UsersVO vo);	
+	int postCnt(UsersVO vo);
 	
 	//admin
 	int adminUsersUpdate(UsersVO vo);

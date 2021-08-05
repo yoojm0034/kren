@@ -28,6 +28,9 @@ public interface UsersService {
 	//방문한 곳
 	List<UsersVO> myTripList(UsersVO vo);	
 	
+	//작성글 카운트
+	int postCnt(UsersVO vo);
+	
 	
 	//-----------------로그인 로그아웃---------------
 	public int loginCheck(UsersVO vo);

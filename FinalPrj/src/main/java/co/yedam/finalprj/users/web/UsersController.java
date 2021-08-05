@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.finalprj.friends.service.FriendsService;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
@@ -39,12 +40,9 @@ class MemberData {
 
 @Controller
 public class UsersController {
-	@Autowired
-	UsersService usersDao;
-	
-	@Autowired
-	TopicService topicDao;
-
+	@Autowired UsersService usersDao;
+	@Autowired TopicService topicDao;
+	@Autowired FriendsService friendsDao;
 
 	@RequestMapping("test3.do")
 	public String test3() {
@@ -53,23 +51,41 @@ public class UsersController {
 	
 	// 프로필화면
 	@RequestMapping("profile.do")
-	public String profile(@ModelAttribute("FriendsVO") FriendsVO fvo, UsersVO vo,
-			@RequestParam("user_id") String user_id, Model model, Authentication auth, HttpServletRequest request) {
+	public String profile(@RequestParam("user_id") String user_id, UsersVO vo, FriendsVO fvo, Model model, Authentication auth, HttpServletRequest request) {
 		
+		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
-		vo.setSession_id(Sessionid);
-		vo.setUser_id(user_id);
 		
 		System.out.println("Session : " + Sessionid);
 		System.out.println("UserID : "+ user_id);
 		
+		vo.setSession_id(Sessionid);
+		vo.setUser_id(user_id);
+		
+		fvo.setUser_id(Sessionid);
+		fvo.setFollowing(user_id);
+		
+		model.addAttribute("followCheck", friendsDao.followCheck(fvo));
+		model.addAttribute("followingCnt", friendsDao.followingCnt(fvo));
+		model.addAttribute("followerCnt", friendsDao.followerCnt(fvo));
+		
+		
 		model.addAttribute("profile", usersDao.usersSelect(vo));
+		model.addAttribute("postCnt", usersDao.postCnt(vo));
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
 		model.addAttribute("mytrip", usersDao.myTripList(vo));
 		
 		return "users/profile";
 	} 
+	
+	// 팔로잉 리스트
+	@RequestMapping("followingList.do")
+	public String followingList() {
+		return "no/users/followingList";
+	}
+	
+	
 	
 	// 회원가입
 	@RequestMapping("userJoinForm.do")
