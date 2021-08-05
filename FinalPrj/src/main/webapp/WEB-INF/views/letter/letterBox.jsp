@@ -386,10 +386,35 @@
 			}
 		});
 	} //function letterc
+	function writePopup() {
+		var winWidth = 860;
+	    var winHeight = 580;
+	    var popupOption= "width="+winWidth+", height="+winHeight;
+		
+		var target ='pop';
+		var url = '${pageContext.request.contextPath}/writeLetter.do';
+		window.open('',target,popupOption);
+	
+		var letterform = document.letterform;
+		letterform.action=url;
+		letterform.target=target;
+		letterform.to_id.value='user1';
+		letterform.user_id.value='user3';
+		letterform.to_name.value='강사랑';
+		letterform.name.value='유참깨';
+		letterform.submit();	
+	}
 	
 </script>
 </head>
 <body>
+<form id="letterform" name="letterform" method="post">
+<input type="hidden" id="to_id" name="to_id">
+<input type="hidden" id="user_id" value="${user.user_id }">
+<input type="hidden" id="to_name" name="to_name">
+<input type="hidden" id="name" name="name">
+</form>
+
 <input type="hidden" id="user_id" value="${user.user_id }">
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
@@ -511,9 +536,17 @@
 											<fmt:parseNumber var="percent" value="${datetime }" integerOnly="true" />
 											<fmt:parseNumber var="percent2" value="${ datetime + ((1-(datetime%1))%1) }" integerOnly="true" /><!-- 올림 -->								
 											
+											<c:if test="${percent ne 0}">
 											<span class="msg-timestamp">${percent }시간 후 도착
 											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>
+											</c:if>
+											
+											<c:if test="${percent eq 0}">
+											<span class="msg-timestamp">한 시간 이내 도착
+											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
+											</span>											
+											</c:if>
 											</c:if>
 											<div class="msg-header">
 												<div class="user-image">

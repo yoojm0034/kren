@@ -443,212 +443,34 @@
 	} //function letterc
 	
 	function writePopup() {
-		var url= '${pageContext.request.contextPath}/writeLetter.do';
 		var winWidth = 860;
 	    var winHeight = 580;
 	    var popupOption= "width="+winWidth+", height="+winHeight;
-		window.open(url,"",popupOption);
+		
+		var target ='pop';
+		var url = '${pageContext.request.contextPath}/writeLetter.do';
+		window.open('',target,popupOption);
+	
+		var letterform = document.letterform;
+		letterform.action=url;
+		letterform.target=target;
+		letterform.to_id.value='user1';
+		letterform.user_id.value='user3';
+		letterform.to_name.value='강사랑';
+		letterform.name.value='유참깨';
+		letterform.submit();	
 	}
+	
 </script>
 </head>
 <body>
-		<div id="create-group-modal"
-			class="modal create-group-modal is-light-bg">
-			<div class="modal-background"></div>
-			<div class="modal-content">
-
-				<div class="card">
-					<div class="card-heading">
-						<h3>Create group</h3>
-						<!-- Close X button -->
-						<div class="close-wrap">
-							<span class="close-modal"> <i data-feather="x"></i>
-							</span>
-						</div>
-					</div>
-					<!-- Modal subheading -->
-					<div class="subheading">
-						<!-- Group avatar -->
-						<div class="group-avatar">
-							<input id="group-avatar-upload">
-							<div class="add-photo">
-								<i data-feather="plus"></i>
-							</div>
-						</div>
-						<!-- Group name -->
-						<div class="control">
-							<input type="text" class="input"
-								placeholder="Give the group a name">
-						</div>
-					</div>
-					<div class="card-body">
-						<div class="inner">
-							<div class="left-section">
-								<div class="search-subheader">
-									<div class="control">
-										<input type="text" class="input"
-											placeholder="Search for friends to add"> <span
-											class="icon"> <i data-feather="search"></i>
-										</span>
-									</div>
-								</div>
-								<div id="new-group-list" class="user-list has-slimscroll">
-
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-1">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/dan.jpg" alt="">
-										<div class="friend-name">Dan Walker</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-1"> <label
-													for="checkbox-group-1"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-2">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/daniel.jpg" alt="">
-										<div class="friend-name">Daniel Wellington</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-2"> <label
-													for="checkbox-group-2"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-3">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/stella.jpg" alt="">
-										<div class="friend-name">Stella Bergmann</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-3"> <label
-													for="checkbox-group-3"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-4">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/david.jpg" alt="">
-										<div class="friend-name">David Kim</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-4"> <label
-													for="checkbox-group-4"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-5">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/nelly.png" alt="">
-										<div class="friend-name">Nelly Schwartz</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-5"> <label
-													for="checkbox-group-5"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-6">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/elise.jpg" alt="">
-										<div class="friend-name">Elise Walker</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-6"> <label
-													for="checkbox-group-6"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-7">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/bobby.jpg" alt="">
-										<div class="friend-name">Bobby Brown</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-7"> <label
-													for="checkbox-group-7"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-8">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/lana.jpeg" alt="">
-										<div class="friend-name">Lana Henrikssen</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-8"> <label
-													for="checkbox-group-8"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-9">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/gaelle.jpeg" alt="">
-										<div class="friend-name">Gaelle Morris</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-9"> <label
-													for="checkbox-group-9"></label>
-											</div>
-										</div>
-									</div>
-									<!-- Friend -->
-									<div class="friend-block" data-ref="ref-10">
-										<img class="friend-avatar"
-											src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/mike.jpg" alt="">
-										<div class="friend-name">Mike Lasalle</div>
-										<div class="round-checkbox is-small">
-											<div>
-												<input type="checkbox" id="checkbox-group-10"> <label
-													for="checkbox-group-10"></label>
-											</div>
-										</div>
-									</div>
-
-								</div>
-							</div>
-							<div class="right-section has-slimscroll">
-								<div class="selected-count">
-									<span>Selected</span> <span id="selected-friends-count">0</span>
-								</div>
-
-								<div id="selected-list" class="selected-list"></div>
-
-							</div>
-						</div>
-					</div>
-					<div class="card-footer">
-						<button type="button"
-							class="button is-solid grey-button close-modal">Cancel</button>
-						<button type="button"
-							class="button is-solid accent-button close-modal">Create
-							a Group</button>
-					</div>
-				</div>
-
-			</div>
-		</div>
+<form id="letterform" name="letterform" method="post">
+<input type="hidden" id="to_id" name="to_id">
 <input type="hidden" id="user_id" value="${user.user_id }">
+<input type="hidden" id="to_name" name="to_name">
+<input type="hidden" id="name" name="name">
+</form>
+
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
 			<!-- LEFT SIDEBAR  -->
@@ -781,9 +603,18 @@
 											<fmt:parseNumber var="percent" value="${datetime }" integerOnly="true" />
 											<fmt:parseNumber var="percent2" value="${ datetime + ((1-(datetime%1))%1) }" integerOnly="true" /><!-- 올림 -->								
 											
+											<c:if test="${percent ne 0}">
 											<span class="msg-timestamp">${percent }시간 후 도착
 											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>
+											</c:if>
+											
+											<c:if test="${percent eq 0}">
+											<span class="msg-timestamp">한 시간 이내 도착
+											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
+											</span>											
+											</c:if>
+											
 											</c:if>
 											<div class="msg-header">
 												<div class="user-image">

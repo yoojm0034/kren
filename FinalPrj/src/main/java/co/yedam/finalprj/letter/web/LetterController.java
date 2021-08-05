@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.finalprj.friends.service.FriendsService;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.LetterService;
 import co.yedam.finalprj.letter.vo.LetterVO;
@@ -104,27 +105,38 @@ public class LetterController {
 		return "empty/letterBox2";
 	}
 	
-	@Autowired
-	UsersService usersDao;
-	@RequestMapping("profileLetter.do")
-	public String profileLetter(@ModelAttribute("FriendsVO") FriendsVO fvo, UsersVO vo,
-			@RequestParam("user_id") String user_id, Model model, Authentication auth, HttpServletRequest request) {
+	@Autowired UsersService usersDao;
+	@Autowired TopicService topicDao;
+	@Autowired FriendsService friendsDao;
+	@RequestMapping("profileTest.do")
+	public String profileTest(@RequestParam("user_id") String user_id, UsersVO vo, FriendsVO fvo, Model model, Authentication auth, HttpServletRequest request) {
 		
+		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
-		vo.setSession_id(Sessionid);
-		vo.setUser_id(user_id);
 		
 		System.out.println("Session : " + Sessionid);
 		System.out.println("UserID : "+ user_id);
 		
+		vo.setSession_id(Sessionid);
+		vo.setUser_id(user_id);
+		
+		fvo.setUser_id(Sessionid);
+		fvo.setFollowing(user_id);
+		
+		model.addAttribute("followCheck", friendsDao.followCheck(fvo));
+		model.addAttribute("followingCnt", friendsDao.followingCnt(fvo));
+		model.addAttribute("followerCnt", friendsDao.followerCnt(fvo));
+		
+		
 		model.addAttribute("profile", usersDao.usersSelect(vo));
+		model.addAttribute("postCnt", usersDao.postCnt(vo));
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
 		model.addAttribute("mytrip", usersDao.myTripList(vo));
-	
-		return "letter/profileLetter";
+		return "letter/profileTest";
 	}
-
+	
+	
 	@RequestMapping("writeLetter.do")
 	public String writeLetter2(Authentication auth) {
 		return "empty/writeLetter";
@@ -156,6 +168,15 @@ public class LetterController {
 		}
 	}
 
+	@RequestMapping(value="insertSavedLetter.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void insertSavedLetter(@RequestBody LetterVO vo, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setUser_id(id);
+
+	}
+	
 	@RequestMapping("stampLetterCheck.do")
 	@ResponseBody
 	public int stampLetterCheck(@RequestBody LetterVO vo) {

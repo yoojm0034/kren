@@ -123,7 +123,8 @@
 	</insert>
 	<!-- /편지 작성 -->
 	
-	<!-- 임시편지 전송 -->
+	<!-- 임시편지 -->
+	<!-- 수정 -->
 	<update id="updateSavedLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
 		<selectKey keyProperty="distance" resultType="int" order="BEFORE">
 			SELECT TRUNC(CAL(#{to_id}, #{user_id}),0) FROM DUAL
@@ -165,6 +166,7 @@
 		UPDATE LETTER SET SEND_YN = 'Y'
 		 WHERE LETTER_ID = #{lid}
 	</update>
+	<!-- /임시편지 -->
 	
 	<!-- 편지 삭제 -->
 	<!-- 내가 작성자라면 FROM_DELETE / 작성자가 아니라면 TO_DATE -->	
