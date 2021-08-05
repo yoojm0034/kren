@@ -78,6 +78,21 @@ public class FeedServiceImpl implements FeedService {
 		//좋아요 좋아요 갯수
 		return map.likeCntUPdate(vo);
 	}
+	@Override
+	public List<FriendsVO> allUser(FriendsVO vo) {
+		// TODO Auto-generated method stub
+		return map.allUser(vo);
+	}
+	@Override
+	public List<FriendsVO> newUser(FriendsVO vo) {
+
+		return map.newUser(vo);
+	}
+	@Override
+	public List<FriendsVO> myUser(FriendsVO vo) {
+		// TODO Auto-generated method stub
+		return map.myUser(vo);
+	}
 
 
 

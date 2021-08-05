@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.service.LanguageService;
 import co.yedam.finalprj.feed.vo.FeedVO;
+import co.yedam.finalprj.friends.service.FriendsService;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.TransService;
 import co.yedam.finalprj.letter.vo.TransVO;
@@ -31,6 +34,7 @@ import co.yedam.finalprj.likes.vo.LikesVO;
 import co.yedam.finalprj.notice.service.NoticeService;
 import co.yedam.finalprj.tag.service.TagService;
 import co.yedam.finalprj.tag.vo.TagVO;
+import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 
@@ -55,9 +59,19 @@ public class FeedController {
 	@Autowired
 	UsersService userDao;
 	
+	@Autowired
+	LikesService likeDao;
+	
+	@Autowired
+	FriendsService friendDao;
+	
+	@Autowired
+	TopicService topicDao;
+	
 	//메인피드
 	@RequestMapping("feed.do")
 	public String feedList(FeedVO vo, Model model, HttpServletRequest request,Authentication auth) {
+
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		
@@ -65,14 +79,39 @@ public class FeedController {
 		FriendsVO fvo = new FriendsVO();
 		
 		vo.setUser_id(id);
+		
 		Map<String, Object> datas = new HashMap<String, Object>();
-		datas.put("feedList", feedDao.feedSelectList(vo));
 
+		datas.put("feedList", feedDao.feedSelectList(vo));
+		String feedId = null;
+		LikesVO lvo = new LikesVO();
+		List<Map> temp = (List<Map>) datas.get("feedList");
+		System.out.println("temp : "+temp);
+		//-------------- 피드 좋아요 --------------------------------
+		Map<String, Object> fdatas = new HashMap<String, Object>();
+
+		List<LikesVO> list= new ArrayList();
+		
+			for(var i=0; i<temp.size(); i ++ ) {
+				Map<String, Object> tMap = temp.get(i);
+				feedId = (String) tMap.get("feed_id");
+
+				lvo.setFeed_id(feedId);
+				list =  likeDao.likeSelectList(lvo);
+				System.out.println("likeDao.likeSelectList(lvo) : "+likeDao.likeSelectList(lvo));
+				
+//				if(!list.isEmpty()) {
+//					list.add();
+//				};
+			}
 		uvo.setUser_id(id);
 		uvo = userDao.usersSelect(uvo);		
 		uvo.setTopic(uvo.getTopic());
 		fvo.setUser_id(id);
 		
+		System.out.println(feedDao.feedSelectList(vo));
+		System.out.println(list);
+		model.addAttribute("likecount",list);
 		model.addAttribute("sameTopic",feedDao.sameTopicList(uvo));		
 		model.addAttribute("likeTag",feedDao.likeTag());				
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
@@ -219,6 +258,36 @@ public class FeedController {
 		return "redirect:feed.do";
 	};
 	
+	@RequestMapping("friendSearch1.do")
+	public String allUserList(FriendsVO vo,Model model,Authentication auth){
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
 
+		vo.setUser_id(id);
+		model.addAttribute("allList",feedDao.allUser(vo));
+		model.addAttribute("newList",feedDao.newUser(vo));
+		model.addAttribute("myList",feedDao.myUser(vo));
+		model.addAttribute("topicList",topicDao.topicSelectList());
+		
+		return "friends/friendSearch";
+	};
+	
+	@RequestMapping("searchList.do")
+	public String friendSearchList(Model model,UsersVO vo,HttpServletRequest request) {
+		
+		String age1 = request.getParameter("ageVal1");
+		String age2 = request.getParameter("ageVal2");;
+		String disAge1 = request.getParameter("dis-ageVal1");;
+		String disAge2 = request.getParameter("dis-ageVal2");;
+		String gender = request.getParameter("genderVal");;
+		String country = request.getParameter("countryVal");;
+		String disCountry = request.getParameter("dis-countryVal");;
+		String lan = request.getParameter("lanVal");;
+		String topic = request.getParameter("topicVal");;
+		String disTopic = request.getParameter("dis-topicVal");;
+		
+		System.out.println("나이1 : "+age1 +"나이2 : "+ age2 +"나이3 : "+ disAge1 +"나이4 : "+ disAge2 + "성별 : "+gender+"국가 : "+country +"국가2 : "+ disCountry +"언어 : "+ lan + "토픽 : "+topic+ "ㄴ 토픽: "+disTopic );
+		return "redirect:friendSearch1.do";
+	}
 	
 }

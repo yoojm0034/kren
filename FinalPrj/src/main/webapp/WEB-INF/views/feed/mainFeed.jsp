@@ -3,6 +3,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="now" class="java.util.Date"/>
+<fmt:formatDate value="${now}" pattern="yyyy/MM/dd HH:mm" var="today"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,6 +112,7 @@ table {
 <body>
  <script>
 $(document).ready(function(){
+	
 	//-------생일롤링---------
 	var height =  $(".notice").height();
 	var num = $(".rolling li").length;
@@ -328,6 +332,8 @@ $(document).ready(function(){
 	});
 	
 
+	
+
 	//-------언어별---------
 	$('#searchLan').on('click',function(){
 		var para = document.location.href.split("="); 
@@ -343,51 +349,7 @@ $(document).ready(function(){
 		location.href="${pageContext.request.contextPath}/feed.do"
 	});
 });
-	//-------좋아요--------
- 	function likeIt(feedId){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/likeCnt.do",
-			type:"POST",
-			data:{feed_id:feedId},
-			success:function(result){
-				console.log(result);
-				if(result==0){
-					alert('좋아요!');
-				}else{
-					alert('좋아요 취소');
-				}
-				recCount(feedId);
-			},
-			error:function(err){
-				console.log(err);
-			}
-		}) 
-	}; 
-	 
-	//-------좋아요 카운트,유저--------
-	function recCount(feedId) {
-		var div = $('#likers-text'+feedId);
-		var cnt = $('#like-count'+feedId);
-			$.ajax({
-				url: "${pageContext.request.contextPath}/likeSelectList.do",
-                type: "POST",
-                data: {feed_id: feedId},
-                dataType:"JSON",
-                success: function(data) {
-                	var result= data.json;
-                	var i =0;
-                	$.each(data, function(idx, val) {
-                		//console.log(idx + " " + val.user_id);
-        				i++;
-                		div.append($('<p/>').html(val.user_id));
-        				cnt.append($('<p/>').html(i));
-        				//console.log(i);
-                	});
-    			console.log(result);
-                },
-			}) 
-	 };
-	 
+
 	//-------번역---------
 	function trans(id, text){
 		var div = $("#tdiv"+id);
@@ -407,43 +369,48 @@ $(document).ready(function(){
 			}
 		});  
 	};
-/* 	//무한 스크롤 
-	$(window).scroll(function() { if($(window).scrollTop() == $(document).height() - $(window).height()){ 
-		var limit =3;
-		var offset=0;
-		
-		const res = await fetch('http://api.com/restaurants?limit='+limit+'&offset='+offset);
-		console.log("또잉또잉"); 
-		
-	} }); */
 	
-</script>
-<script type="text/javascript">
-
-	function timeForToday(value) {
-		console.log(value);
-    const today = new Date();
-    const timeValue = new Date(value);
-
-    const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-    if (betweenTime < 1) return '방금전';
-    if (betweenTime < 60) {
-        return `${betweenTime}분전`;
-    }
-
-    const betweenTimeHour = Math.floor(betweenTime / 60);
-    if (betweenTimeHour < 24) {
-        return `${betweenTimeHour}시간전`;
-    }
-
-    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-    if (betweenTimeDay < 365) {
-        return `${betweenTimeDay}일전`;
-    }
-
-    return `${Math.floor(betweenTimeDay / 365)}년전`;
-}
-
+	//-------좋아요--------
+ 	function likeIt(feedId){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/likeCnt.do",
+			type:"POST",
+			data:{feed_id:feedId},
+			success:function(result){
+				if(result==0){
+					alert('좋아요!');
+				}else{
+					alert('좋아요 취소');
+				}
+				recCount(feedId);
+			},
+			error:function(err){
+				console.log(err);
+			}
+		}) 
+	}; 
+	
+	//-------좋아요 카운트,유저--------
+	function recCount(feedId){
+		var span = $('#recCnt'+feedId);
+		$.ajax({
+			url: "${pageContext.request.contextPath}/likeSelectList.do",
+               type: "POST",
+               data: {feed_id:feedId},
+               dataType:"JSON",
+               success: function(data) {
+               	var result= data.json;
+               	var i =0;
+               	$.each(data, function(idx, val) {
+       				i++;
+       				span.empty();
+       				span.append(i);
+               	});
+               },error:function(err){
+               	console.log(err);
+               }
+		}) 
+	 }; 
 </script>
 	<!-- Pageloader -->
 	<div class="pageloader"></div>
@@ -1042,8 +1009,10 @@ $(document).ready(function(){
 													data-user-popover="1" alt="">
 											</div>
 											<div class="user-info">
-												<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a> <span
-													class="time">${vo.reg_date } : ${vo.time_zone }</span>
+												<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a> <span class="time">
+												<script type="text/javascript">														
+														document.write(timeForToday('${vo.reg_date}'));
+												</script> </span>
 											</div>
 										</div>
 										<!-- Right side dropdown -->
@@ -1187,19 +1156,23 @@ $(document).ready(function(){
 										</div>
 
 										<!-- Followers text -->
-										<div class="likers-text" id="likers-text${vo.feed_id }">
+										<div class="likers-text">
 											<p>
-												<a href="#">Milly</a>, <a href="#">David</a>
+												
 											</p>
 										</div>
 
 										<!-- Post statistics -->
 										<div class="social-count">
-											<div class="likes-count" id="like-count${vo.feed_id }">
-												<i data-feather="heart"></i> <span>27</span>
-											</div>
 											<div class="comments-count" >
 												<i data-feather="message-circle"></i> <span>3</span>
+											</div>
+											<div class="likes-count" id="like-count${vo.feed_id }">
+												<i data-feather="heart"></i> <span id="recCnt${vo.feed_id }">
+												<script type="text/javascript">														
+														recCount('${vo.feed_id}');
+												</script>
+												</span>
 											</div>
 										</div>
 									</div>
@@ -1738,7 +1711,7 @@ $(document).ready(function(){
 									<!------------------------ 친구추천 시작 ------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>친구 추천<button onclick="location.href='friendSearch.do'">친구 찾으러 가쟝 </button></h4>
+								<h4>친구 추천<button onclick="location.href='friendSearch1.do'">친구 찾으러 가쟝 </button></h4>
 								<div class="dropdown is-spaced is-right dropdown-trigger">
 									<div>
 										<div class="button">
