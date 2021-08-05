@@ -72,8 +72,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 					
 					boardWriterSession.sendMessage(tmpMsg);
 				//좋아요누를시	
@@ -86,8 +86,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 					
 					boardWriterSession.sendMessage(tmpMsg);
 				//댓글작성시
@@ -100,8 +100,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 				}else if("like".equals(cmd) && boardWriterSession == null) {
 					
 					vo.setTo_id(receiver);
@@ -111,8 +111,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setUrl("/feed.do?feed_id=");
 					vo.setContent_id(seq);
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 				}
 			}
 			//팔로우했을시
@@ -132,8 +132,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setMsg("팔로우를 시작했습니다.");
 					vo.setType(cmd);
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 					
 					boardWriterSession.sendMessage(tmpMsg);
 				}else if("follow".equals(cmd) && boardWriterSession == null) {
@@ -142,8 +142,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setMsg("팔로우를 시작했습니다.");
 					vo.setType(cmd);
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 				//편지작성시	
 				}else if("letter".equals(cmd) && boardWriterSession != null) {
 					TextMessage tmpMsg = new TextMessage(caller + "님이 편지를 보냈습니다. ");
@@ -154,8 +154,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setType(cmd);
 					vo.setUrl("/letter.do");
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 					
 					boardWriterSession.sendMessage(tmpMsg);
 				//상대가 접속안되었을때 DB에만 입력	
@@ -167,8 +167,8 @@ public class EchoHandler extends TextWebSocketHandler {
 					vo.setType(cmd);
 					vo.setUrl("/letter.do");
 					System.out.println(vo);
-					//int r = pushDao.insertPush(vo);
-					//System.out.println(r + "건 입력");
+					int r = pushDao.insertPush(vo);
+					System.out.println(r + "건 입력");
 				}
 			}
 			

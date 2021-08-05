@@ -116,10 +116,10 @@
 		<div class="inner-wrapper" style="width: 80%">
 			
 			전체 방문자 수: ${totalCount} 오늘의 방문자 수: ${todayCount}
-			<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
-			<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
-			<button onclick="sendLetterPush('admin')" type="button">편지</button>
-			<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
+			<button onclick="sendTextPush('user1','feed_2')" type="button">댓글</button>
+			<button onclick="sendFollowPush('user1')" type="button">팔로우</button>
+			<button onclick="sendLetterPush('user1')" type="button">편지</button>
+			<button onclick="sendLikePush('user1','feed_2')" type="button">좋아요</button>
 			<div id="test"></div>
 			
 		</div>

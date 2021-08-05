@@ -13,4 +13,11 @@
 		and to_id = #{user_id}
 		order by push_dt DESC
 	</select>
+	
+	<update id="updatePush" parameterType="co.yedam.finalprj.push.vo.PushVO">
+		update push
+		set check_dt = sysdate
+		where push_id = #{push_id}
+		
+	</update>
 </mapper>
