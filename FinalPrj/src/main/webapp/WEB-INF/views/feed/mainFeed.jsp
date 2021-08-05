@@ -722,7 +722,7 @@ $(document).ready(function(){
 										</a></li>
 										<!-- Close X button -->
 										<li class="close-wrap"><span class="close-publish">
-												<i data-feather="x"></i>
+										<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 										</span></li>
 									</ul>
 								</div>
@@ -1021,7 +1021,7 @@ $(document).ready(function(){
 											class="dropdown is-spaced is-right is-neutral dropdown-trigger">
 											<div>
 												<div class="button">
-													<i data-feather="more-vertical"></i>
+													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg>
 												</div>
 											</div>
 											<div class="dropdown-menu" role="menu">
@@ -1101,8 +1101,8 @@ $(document).ready(function(){
 													</a>
 												</div>
 												<div class="fab-wrapper is-comment">
-													<a href="javascript:void(0);" class="small-fab"> <i
-														data-feather="message-circle"></i>
+													<a href="javascript:void(0);" class="small-fab"> 
+													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
 													</a>
 												</div>
 											</div>
@@ -1763,7 +1763,7 @@ $(document).ready(function(){
 												<span>${vo.user_id }</span> <span>나와 일치하는 관심사 ${vo.count }개</span>
 											</div>
 											<div class="add-friend add-transition">
-												<i data-feather="user-plus"></i>
+												<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
 											</div>
 										</div>
 									</c:if>
