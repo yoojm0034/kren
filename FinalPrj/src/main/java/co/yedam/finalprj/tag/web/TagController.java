@@ -88,6 +88,8 @@ public class TagController {
 	    result = tagDao.tagSelectList();
 	    return result;
 	}
+	
+
 
 
 	

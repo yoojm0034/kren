@@ -35,6 +35,7 @@ import co.yedam.finalprj.notice.service.NoticeService;
 import co.yedam.finalprj.tag.service.TagService;
 import co.yedam.finalprj.tag.vo.TagVO;
 import co.yedam.finalprj.topic.service.TopicService;
+import co.yedam.finalprj.users.email.returnMail;
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 
@@ -70,7 +71,7 @@ public class FeedController {
 	
 	//메인피드
 	@RequestMapping("feed.do")
-	public String feedList(FeedVO vo, Model model, HttpServletRequest request,Authentication auth) {
+	public String feedList(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
 
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
@@ -94,8 +95,17 @@ public class FeedController {
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
 		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
-		
 		return "feed/mainFeed";
+	}
+	
+	@RequestMapping("tagSelect.do")
+	public String tagSelect(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		System.out.println(vo.getTags());
+		System.out.println(feedDao.feedSelectList(vo));
+		model.addAttribute("feedList",feedDao.feedSelectList(vo));
+		return "no/feed/post";
 	}
 	
 	
