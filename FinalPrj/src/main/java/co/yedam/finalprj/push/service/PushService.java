@@ -8,6 +8,7 @@ import co.yedam.finalprj.users.vo.UsersVO;
 public interface PushService {
 	List<PushVO> pushSelectList(UsersVO vo);
 	PushVO pushSelect(PushVO vo);
+	PushVO pushSelect2(PushVO vo);
 	int insertPush(PushVO vo);
 	int updatePush(PushVO vo);
 	int deletePush(PushVO vo);
