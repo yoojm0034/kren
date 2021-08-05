@@ -132,7 +132,7 @@
                                     <div class="summary-card">
                                         <img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" alt="">
                                         <h4>Accrual Event</h4>
-                                        <p>현재 진행 중인 이벤트가 없습니다.</p>
+                                        <p>현재 진행 중인 우표적립 이벤트가 없습니다.</p>
                                     </div>
                                 </div>
                             </div>

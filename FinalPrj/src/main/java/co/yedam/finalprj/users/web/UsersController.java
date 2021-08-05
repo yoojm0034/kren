@@ -145,6 +145,23 @@ public class UsersController {
 	    return "";
 	}
 	
+	//아이디비밀번호 찾기...
+	@RequestMapping("find.do")
+	public String findIdPw() {
+		return "users/findIdPw";
+	}
+	
+	@RequestMapping("findID.do")
+	public String findID() {
+		
+		return "users/findId";
+	}
+	
+	@RequestMapping("findPW.do")
+	public String findPW() {
+		
+		return "users/findPw";
+	}
 	
 	//관리자 
 	//유저목록
