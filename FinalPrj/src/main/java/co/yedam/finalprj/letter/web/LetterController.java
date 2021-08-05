@@ -2,20 +2,28 @@ package co.yedam.finalprj.letter.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.LetterService;
 import co.yedam.finalprj.letter.vo.LetterVO;
 import co.yedam.finalprj.letterc.service.LettercService;
+import co.yedam.finalprj.topic.service.TopicService;
+import co.yedam.finalprj.users.service.UsersService;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 @Controller
 public class LetterController {
@@ -95,7 +103,33 @@ public class LetterController {
 		vo.setTo_id("user3");
 		model.addAttribute("newLetter", letterDao.selectNewLetter(vo));
 		model.addAttribute("friends", letterDao.selectAllFriend(vo));
-		return "letter/letterBox2";
+		return "empty/letterBox2";
+	}
+	
+	@Autowired
+	UsersService usersDao;
+	@RequestMapping("profileLetter.do")
+	public String profileLetter(@ModelAttribute("FriendsVO") FriendsVO fvo, UsersVO vo,
+			@RequestParam("user_id") String user_id, Model model, Authentication auth, HttpServletRequest request) {
+		
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setSession_id(Sessionid);
+		vo.setUser_id(user_id);
+		
+		System.out.println("Session : " + Sessionid);
+		System.out.println("UserID : "+ user_id);
+		
+		model.addAttribute("profile", usersDao.usersSelect(vo));
+		model.addAttribute("mytopic", usersDao.myTopicList(vo));
+		model.addAttribute("mytrip", usersDao.myTripList(vo));
+	
+		return "letter/profileLetter";
+	}
+
+	@RequestMapping("writeLetter.do")
+	public String writeLetter2(Authentication auth) {
+		return "empty/writeLetter";
 	}
 
 	@RequestMapping(value="deleteLetter.do", method = RequestMethod.POST)

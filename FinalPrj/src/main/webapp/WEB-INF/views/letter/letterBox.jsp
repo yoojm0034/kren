@@ -208,15 +208,12 @@
 			var sendbtn = $('button[data-send="'+send+'"]');
 			var txtarea = $('textarea[data-letter="'+send+'"]').val();
 			console.log(txtarea);
-			
 			//우표수량 체크
 			$.ajax({
 				url : '${pageContext.request.contextPath}/stampLetterCheck.do',
 				type : 'post',
-				data : JSON.stringify({
-					user_id : $('#user_id').val()
-				}),
-				contentType : "application/json; charset=UTF-8",
+				data : JSON.stringify({user_id : $('#user_id').val()}),
+			    contentType : "application/json; charset=UTF-8",
 				success : function(data) {
 					if (data > 0) { //우표가 있으면
 						if(confirm("편지를 전송하시겠습니까?") ) {
@@ -393,7 +390,7 @@
 </script>
 </head>
 <body>
-
+<input type="hidden" id="user_id" value="${user.user_id }">
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
 			<!-- LEFT SIDEBAR  -->

@@ -208,15 +208,12 @@
 			var sendbtn = $('button[data-send="'+send+'"]');
 			var txtarea = $('textarea[data-letter="'+send+'"]').val();
 			console.log(txtarea);
-			
 			//우표수량 체크
 			$.ajax({
 				url : '${pageContext.request.contextPath}/stampLetterCheck.do',
 				type : 'post',
-				data : JSON.stringify({
-					user_id : $('#user_id').val()
-				}),
-				contentType : "application/json; charset=UTF-8",
+				data : JSON.stringify({user_id : $('#user_id').val()}),
+			    contentType : "application/json; charset=UTF-8",
 				success : function(data) {
 					if (data > 0) { //우표가 있으면
 						if(confirm("편지를 전송하시겠습니까?") ) {
@@ -233,6 +230,7 @@
 						    	success: function(data) {
 						    		alert('전송되었습니다.');
 						    		location.reload(true);
+						    		sendLetterPush(to);
 						    	},
 						    	error: function(e) {
 						    		alert('편지전송실패');
@@ -252,7 +250,7 @@
 								    contentType : "application/json; charset=UTF-8",
 							    	success: function(data) {
 							    		alert('편지가 저장되었습니다.');
-							    		location.reload(true);
+							    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 							    	},
 							    	error: function(e) {
 							    		alert('저장실패');
@@ -264,6 +262,26 @@
 					    }
 					} else { //우표가 없으면
 						alert('우표수량을 확인해주세요.');
+						if(confirm("편지를 저장하시겠습니까?") ) {
+						    $.ajax({
+						    	url:'${pageContext.request.contextPath}/insertLetter.do',
+						    	type:'post',
+						    	data:JSON.stringify({
+						    		letter_id:send,
+						    		to_id:to,
+						    		content:txtarea,
+						    		gubun:'임시저장'
+						    	}),
+							    contentType : "application/json; charset=UTF-8",
+						    	success: function(data) {
+						    		alert('편지가 저장되었습니다.');
+						    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
+						    	},
+						    	error: function(e) {
+						    		alert('저장실패');
+						    	}
+						    });		    	
+					    }
 					}
 				},
 				error : function(e) {
@@ -368,6 +386,14 @@
 			}
 		});
 	} //function letterc
+	
+	function writePopup() {
+		var url= '${pageContext.request.contextPath}/writeLetter.do';
+		var winWidth = 860;
+	    var winHeight = 580;
+	    var popupOption= "width="+winWidth+", height="+winHeight;
+		window.open(url,"",popupOption);
+	}
 </script>
 </head>
 <body>
@@ -378,7 +404,7 @@
 			<div class="inbox-left-sidebar">
 				<div class="inbox-left-sidebar-inner ">
 					<div class="compose">
-						<a class="button is-fullwidth raised is-bold">Write</a>
+						<a class="button is-fullwidth raised is-bold" onclick="writePopup()">Write</a>
 					</div>
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
