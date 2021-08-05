@@ -4,6 +4,7 @@
 
 	<!-- 팔로잉 -->
 	<insert id="follow" parameterType="co.yedam.finalprj.friends.vo.FriendsVO">
-	insert into friends(user_id, following) values(#{user_id}, #{following})
+		insert into friends(user_id, following) values(#{user_id}, #{following})
 	</insert>
+	
 </mapper>
