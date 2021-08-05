@@ -193,11 +193,9 @@ body {
 		};
 
 	}
-	function sendTextPush() {
+	function sendTextPush(target, seq) {
 		//댓글
 		var user = "${user.user_id}";
-		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
-		var seq = 'feed_2'; //나중에 작성피드번호저장 
 		var sendData = 'reply,'+user+','+target+','+seq ;
 		console.log(sendData)
 		sock.send(sendData);
@@ -209,18 +207,15 @@ body {
 		console.log(sendData)
 		sock.send(sendData);
 	}
-	function sendLikePush() {
+	function sendLikePush(target, seq) {
 		//좋아요 누를시 작동
 		var user = "${user.user_id}";
-		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
-		var seq = 'feed_2'; //나중에 작성피드번호저장 
 		var sendData = 'like,'+user+','+target+','+seq ;
 		console.log(sendData)
 		sock.send(sendData);
 	}
-	function sendFollowPush() {
+	function sendFollowPush(target) {
 		var user = "${user.user_id}";
-		var target = 'admin';	// 나중에 팔로우 상대 아이디값 지정
 		var sendData = 'follow,'+user+','+target ;
 		console.log(sendData)
 		sock.send(sendData);
