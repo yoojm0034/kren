@@ -92,7 +92,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Object stampUpdate(UsersVO vo) {
+	public int stampUpdate(UsersVO vo) {
 		return loginmap.stampUpdate(vo);
 		
 	}

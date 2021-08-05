@@ -131,7 +131,128 @@
 		{ CALL feed_update( #{feed_id}, #{content}, #{photo} ,#{tags}, #{original_name}, #{uuid}, #{file_size}, #{directory}, #{write_lan} )} 
 	</update>
 	
-
-
+	<!-- 친구 맵  -->
+	<select id="allUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select  email,
+				name,
+				birth,
+				gender,
+				topic,
+				LANGUAGE1,
+				LANGUAGE2,
+				COUNTRY,
+				REG_DATE,
+				PROFILE,
+				USER_ID,
+				STATUS,
+				FLAG
+		from    users
+		where
+		STATUS = '일반회원'
+		and NOT   USER_ID IN (    SELECT BLOCKED
+					              FROM block
+						    	  WHERE USER_ID = #{user_id}
+		                    )
+		 and  NOT   USER_ID IN (  SELECT following
+					        	  FROM friends
+						    	  WHERE USER_ID = #{user_id}
+		                    )                   
+                    
+	</select>
+	<select id="newUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select  email,
+				name,
+				birth,
+				gender,
+				topic,
+				LANGUAGE1,
+				LANGUAGE2,
+				COUNTRY,
+				REG_DATE,
+				PROFILE,
+				USER_ID,
+				STATUS,
+				FLAG
+		from   users
+		where  STATUS = '일반회원'
+		and NOT   USER_ID IN (  SELECT BLOCKED
+									        	FROM block
+										    	WHERE USER_ID = #{user_id}
+		                    )
+		and  NOT   USER_ID IN (  SELECT following
+									        	FROM friends
+										    	WHERE USER_ID = #{user_id}
+		                    )                   
+		and  REG_DATE BETWEEN TRUNC(SYSDATE , 'iw') AND TRUNC(SYSDATE, 'iw')+6          
+	</select>
 	
+	<select id="myUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select  email,
+				name,
+				birth,
+				gender,
+				topic,
+				LANGUAGE1,
+				LANGUAGE2,
+				COUNTRY,
+				REG_DATE,
+				PROFILE,
+				USER_ID,
+				STATUS,
+				FLAG
+		from   users
+		where  STATUS = '일반회원'
+		and NOT   USER_ID IN (  SELECT BLOCKED
+					        	FROM block
+						    	WHERE USER_ID = #{user_id}
+		                    )
+		and    USER_ID IN (     SELECT following
+				        	    FROM friends
+					    	    WHERE USER_ID = #{user_id}
+		                    )         
+	</select>	       
+	<!-- 나이, 성별, 국가, 언어, 관심사 -->
+<!--  <select>
+		select  u.email,
+				u.name,
+				u.birth,
+				u.gender,
+				u.topic,
+				u.LANGUAGE1,
+				u.LANGUAGE2,
+				u.COUNTRY,
+				u.REG_DATE,
+				u.PROFILE,
+				u.USER_ID,
+				u.STATUS,
+				u.FLAG
+		from users u join age_v a
+		on u.USER_ID = a.USER_ID
+		where u.status = '일반회원'
+		<if test="start_age != null || end_age != null">
+			AND age between #{start_age} and #{end_age} 
+		</if>
+		<if test="start_dage != null || end_dage != null">
+			AND age NOT between #{start_dage} and #{end_dage} 
+		</if>
+		<if test="gender != null">
+			AND u.gender = #{gender}
+		</if>
+		<if test="country != null">
+			AND upper(u.COUNTRY) =#{country}
+		</if>
+		<if test="LANGUAGE1 != null">
+			AND  LANGUAGE1 = #{language1}
+		</if>
+		<if test="country != null">
+			AND upper(u.COUNTRY) =#{country}
+		</if>
+		<if test="topic != null">
+		 //생각해봐
+		</if>
+		<if test="topic != null">
+		 //생각해봐 싫은 관심사! 
+		</if>			
+	</select>  -->
+	             
 </mapper>

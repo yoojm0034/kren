@@ -10,6 +10,7 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 
 	<title>KREN</title>
+
 	<link rel="icon" type="image/png" href="${pageContext.request.contentType}/resources/template/assets/img/favicon.png" />
 
 	<!-- Fonts -->
@@ -88,5 +89,6 @@
 	<script src="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/jquery.dataTables.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/dataTables.bootstrap4.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/datatables-demo.js"></script>
+
 </body>
 </html>

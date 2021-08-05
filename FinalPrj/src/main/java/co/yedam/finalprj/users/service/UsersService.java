@@ -20,7 +20,7 @@ public interface UsersService {
 	
 	//------------------프로필---------------------
 	//우표 구매시 보유 우표수 변경...
-	public Object stampUpdate(UsersVO vo);
+	public int stampUpdate(UsersVO vo);
 	
 	//관심사 리스트
 	List<UsersVO> myTopicList(UsersVO vo);	

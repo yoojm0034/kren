@@ -27,5 +27,4 @@
 		select count(*) from friends where user_id=#{following}
 	</select>
 	
-	
 </mapper>

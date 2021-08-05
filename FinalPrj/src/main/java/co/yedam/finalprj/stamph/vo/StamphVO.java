@@ -13,4 +13,6 @@ public class StamphVO {
 	@JsonFormat(pattern = "yyyy/MM/dd") 
 	private Date sh_dt;
 	private String stamph_id;
+	private int cnt;
+	private String to_id;
 }

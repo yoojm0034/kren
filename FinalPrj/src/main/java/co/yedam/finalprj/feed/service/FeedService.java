@@ -22,4 +22,7 @@ public interface FeedService {
 	 int feedUpdate(FeedVO vo);										//피드수정
 	 int likeCntUPdate(LikesVO vo);
 
+	 List<FriendsVO> allUser(FriendsVO vo);
+	 List<FriendsVO> newUser(FriendsVO vo);
+	 List<FriendsVO> myUser(FriendsVO vo);
 }

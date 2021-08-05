@@ -27,4 +27,13 @@ public class PushController {
 		
 		return pushDao.pushSelectList(vo);
 	}
+	
+	@RequestMapping("pushUpdate.do")
+	@ResponseBody
+	public int pushUpdate(PushVO vo) {
+		System.out.println(vo.getPush_id());
+		int r = pushDao.updatePush(vo);
+		System.out.println(r + "건 입력");
+		return r;
+	}
 }

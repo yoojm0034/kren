@@ -69,5 +69,15 @@ public class LetterServiceImpl implements LetterService {
 		return map.updateLetterSendYN(vo);
 	}
 
+	@Override
+	public int updateSavedLetter(LetterVO vo) {
+		return map.updateSavedLetter(vo);
+	}
+
+	@Override
+	public int updateSavedSendYN(LetterVO vo) {
+		return map.updateSavedSendYN(vo);
+	}
+
 
 }

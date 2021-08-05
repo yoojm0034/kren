@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.stamph.map.StamphMap">
-
-	<select id="stamphSelect" resultType="co.yedam.finalprj.stamph.vo.StamphVO">
-		SELECT h.sh_dt, h.sh_type, s.CNT
-		FROM STAMPH h, STAMP s
+	
+	<select id="stamphSelectList" resultType="co.yedam.finalprj.stamph.vo.StamphVO" parameterType="co.yedam.finalprj.stamph.vo.StamphVO">
+		SELECT *
+		FROM stamph
 		WHERE USER_ID = #{user_id}
+		order by SH_DT DESC
 	</select>
 
 </mapper>

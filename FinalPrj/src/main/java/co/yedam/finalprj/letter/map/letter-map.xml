@@ -53,9 +53,10 @@
 	<!-- 임시저장한 편지조회 -->
 	<select id="selectSaveLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT U.NAME, L.* FROM LETTER L, USERS U
-		 WHERE L.USER_ID=U.USER_ID
+		 WHERE L.TO_ID=U.USER_ID
 		   AND L.USER_ID =#{user_id}
-		   AND GUBUN ='임시저장'
+		   AND L.GUBUN ='임시저장'
+      	   AND L.FROM_DELETE = 'N'
 		 ORDER BY SEND_DATE DESC
 	</select>
 	
@@ -103,11 +104,8 @@
 	
 	<!-- 답장내역 업데이트 -->
 	<update id="updateLetterSendYN" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
-		<selectKey keyProperty="lid" resultType="java.lang.String" order="BEFORE">
-			SELECT F_WHAT_SEND(#{to_id}, #{user_id}) FROM DUAL
-		</selectKey>
 		UPDATE LETTER SET SEND_YN = 'Y'
-		 WHERE LETTER_ID = #{lid}
+		 WHERE LETTER_ID = #{letter_id}
 	</update>
 	
 	<!-- 우표개수 차감 -->
@@ -124,6 +122,49 @@
 			('stamph_'||stamph_seq.nextval, '편지작성', SYSDATE, #{to_id}, #{user_id}, 1)
 	</insert>
 	<!-- /편지 작성 -->
+	
+	<!-- 임시편지 전송 -->
+	<update id="updateSavedLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		<selectKey keyProperty="distance" resultType="int" order="BEFORE">
+			SELECT TRUNC(CAL(#{to_id}, #{user_id}),0) FROM DUAL
+		</selectKey>
+		
+		UPDATE LETTER
+		   SET CONTENT=#{content}, PHOTO=#{photo, jdbcType=VARCHAR}, GUBUN=#{gubun}, SEND_DATE=SYSDATE
+		<choose>
+		<when test="distance lt 300">
+			, ARRIVE_DATE = SYSDATE+(INTERVAL '1' HOUR)
+		</when>
+		<when test="distance lt 2000">
+			, ARRIVE_DATE = SYSDATE+(INTERVAL '4' HOUR)
+		</when>
+		<when test="distance lt 4000">
+			, ARRIVE_DATE = SYSDATE+(INTERVAL '8' HOUR)
+		</when>
+		<when test="distance lt 6000">
+			, ARRIVE_DATE = SYSDATE+(INTERVAL '12' HOUR)
+		</when>
+		<when test="distance lt 8000">
+			, ARRIVE_DATE = SYSDATE+(INTERVAL '16' HOUR)
+		</when>
+		<when test="distance lt 10000">
+			, ARRIVE_DATE = SYSDATE+(INTERVAL '20' HOUR)
+		</when>
+		<when test="distance gte 10000">
+			, ARRIVE_DATE = SYSDATE+(INTERVAL '1' DAY)
+		</when>
+		</choose>
+		WHERE LETTER_ID=#{letter_id}
+	</update>
+	
+	<!-- 임시편지함에서 답장내역 업데이트 -->
+	<update id="updateSavedSendYN" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		<selectKey keyProperty="lid" resultType="String" order="BEFORE">
+			SELECT F_WHAT_SEND(#{to_id}, #{user_id}) FROM DUAL
+		</selectKey>
+		UPDATE LETTER SET SEND_YN = 'Y'
+		 WHERE LETTER_ID = #{lid}
+	</update>
 	
 	<!-- 편지 삭제 -->
 	<!-- 내가 작성자라면 FROM_DELETE / 작성자가 아니라면 TO_DATE -->	
