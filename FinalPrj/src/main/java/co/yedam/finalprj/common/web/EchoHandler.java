@@ -75,7 +75,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect(vo);
-						TextMessage tmpMsg = new TextMessage("<a id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + caller + "님이 " + seq + " 번 게시글에 댓글을 달았습니다.</a>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + caller + "님이 " + seq + " 번 게시글에 댓글을 달았습니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 					
@@ -92,7 +92,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect(vo);
-						TextMessage tmpMsg = new TextMessage("<a id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + caller + "님이 " + seq + " 번 게시글을 좋아합니다.</a>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + caller + "님이 " + seq + " 번 게시글을 좋아합니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 				//댓글작성시
@@ -140,7 +140,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect2(vo);
-						TextMessage tmpMsg = new TextMessage("<a id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + caller + "님이 " + receiver + " 님을 팔로우합니다.</a>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + caller + "님이 " + receiver + " 님을 팔로우합니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 				}else if("follow".equals(cmd) && boardWriterSession == null) {
@@ -164,7 +164,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect2(vo);
-						TextMessage tmpMsg = new TextMessage("<a id='clickUpdatePush' data-id='"+vo.getPush_id()+ "'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + caller + "님이 " + receiver + " 님에게 편지를 보냈습니다.</a>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+ "'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + caller + "님으로부터 " + receiver + " 님에게 편지가 오고 있습니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 				//상대가 접속안되었을때 DB에만 입력	

@@ -15,7 +15,10 @@
 body {
 	font-family:'ONE-Mobile-Regular';
 }
-
+h5:hover {
+	cursor: pointer;
+	color: silver;
+}
 .navbar-v1{
 	height: auto;
 }
@@ -99,10 +102,10 @@ body {
 		    	for(i=0 ; i < data.length ; i++) {
 							    		
 		    		 if(data[i].type == 'reply') {
-					        var rep = "<a id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글에 댓글을 남겼습니다.</a>"
+					        var rep = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글에 댓글을 남겼습니다.</h5>"
 					        var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
-					        var h3 = $('<h3></h3>');
+					        var h3 = $('<h5></h5>');
 					        var small = $('<small></small>');
 					        var div3 = $('<div class="media-right is-centered"></div>');
 					        var div4 = $('<div class="added-icon"></div>');
@@ -118,10 +121,10 @@ body {
 					        $('#replyA').append(div);
 				     }
 		    		 else if(data[i].type == 'follow') {
-					     	var fol = "<a id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님을 팔로우합니다.</a>"
+					     	var fol = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님을 팔로우합니다.</h5>"
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
-					        var h3 = $('<h3></h3>');
+					        var h3 = $('<h5></h5>');
 					        var small = $('<small></small>');
 					        var div3 = $('<div class="media-right is-centered"></div>');
 					        var div4 = $('<div class="added-icon"></div>');
@@ -137,10 +140,10 @@ body {
 					        $('#replyA').append(div);
 					 }
 		    		 else if(data[i].type == 'like') {
-					     	var lik = "<a id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글을 좋아합니다.</a>"
+					     	var lik = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글을 좋아합니다.</h5>"
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
-					        var h3 = $('<h3></h3>');
+					        var h3 = $('<h5></h5>');
 					        var small = $('<small></small>');
 					        var div3 = $('<div class="media-right is-centered"></div>');
 					        var div4 = $('<div class="added-icon"></div>');
@@ -156,10 +159,10 @@ body {
 					        $('#replyA').append(div);
 					 }
 		    		 else if(data[i].type == 'letter') {
-					     	var letter = "<a id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님에게 편지를 보냈습니다.</a>"
+					     	var letter = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님으로부터 " + data[i].to_id + "님에게 편지가 오고 있습니다.</h5>"
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
-					        var h3 = $('<h3></h3>');
+					        var h3 = $('<h5></h5>');
 					        var small = $('<small></small>');
 					        var div3 = $('<div class="media-right is-centered"></div>');
 					        var div4 = $('<div class="added-icon"></div>');
@@ -449,6 +452,27 @@ body {
 										</div>
 									</div>
 								</a>
+									<a href="/options-settings.html" class="account-item">
+									<div class="media">
+										<div class="icon-wrap">
+											<i data-feather="settings"></i>
+										</div>
+										<div class="media-content">
+											<small>Access widget settings.</small>
+										</div>
+									</div>
+								</a> 
+								<a class="account-item">
+									<div class="media">
+										<div class="icon-wrap">
+											<i data-feather="life-buoy"></i>
+										</div>
+										<div class="media-content">
+											<h3>Help</h3>
+											<small>Contact our support.</small>
+										</div>
+									</div>
+								</a> 	
 								</c:if>
 								<c:if test="${user.user_id eq 'admin'}">
 								<a id="profile-link" href="${pageContext.request.contextPath}/admin/admin.do"
@@ -470,26 +494,8 @@ body {
 								</a>
 								</c:if>
 								<hr class="account-divider">
-								<a href="/options-settings.html" class="account-item">
-									<div class="media">
-										<div class="icon-wrap">
-											<i data-feather="settings"></i>
-										</div>
-										<div class="media-content">
-											<small>Access widget settings.</small>
-										</div>
-									</div>
-								</a> <a class="account-item">
-									<div class="media">
-										<div class="icon-wrap">
-											<i data-feather="life-buoy"></i>
-										</div>
-										<div class="media-content">
-											<h3>Help</h3>
-											<small>Contact our support.</small>
-										</div>
-									</div>
-								</a> <a class="account-item">
+							
+								<a class="account-item">
 									<div class="media">
 										<div class="icon-wrap">
 											<i data-feather="power"></i>
