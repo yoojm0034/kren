@@ -13,6 +13,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>친구찾기 / Friends</title>
     <!-- Core CSS -->
+ <script src="https://unpkg.com/feather-icons"></script>
 <link rel="stylesheet" href="resources/template/assets/css/app.css">
 <link rel="stylesheet" href="resources/template/assets/css/core.css">
     <link rel="icon" type="image/png" href="resources/template/assets/img/favicon.png" />
@@ -191,7 +192,7 @@ $(document).ready(function(){
             <div class="container is-fluid">
                 <div class="nav-inner is-friends">
                     <a id="show-filters" class="nav-item is-icon">
-                        <i data-feather="filter"></i>
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                     </a>
                     <a id="hide-filters" class="nav-item is-icon is-hidden">
                         <i data-feather="x"></i>
@@ -203,23 +204,20 @@ $(document).ready(function(){
                         <a class="option-tab" data-tab="starred-friends">
                             <span>New</span>
                         </a>
-                        <a class="option-tab" data-tab="new-friends">
-                            <span>My</span>
-                        </a>
                         <div class="option-naver"></div>
                     </div>
                     <div class="end-group">
-                        <div class="nav-item is-friend-count">979 friends</div>
+                        <div class="nav-item is-friend-count">${fn:length(allList) } friends</div>
                         <div id="subsearch" class="nav-item is-search is-hidden">
                             <div class="control">
-                                <input type="text" class="input textFilter-input" placeholder="Search your friends">
+                                <input type="text" class="input textFilter-input" placeholder="친구를 검색해 보세요">
                             </div>
                         </div>
                         <a id="show-subsearch" class="nav-item is-icon">
-                            <i data-feather="search"></i>
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </a>
                         <a id="hide-subsearch" class="nav-item is-icon is-hidden">
-                            <i data-feather="x"></i>
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                         </a>
                     </div>
                 </div>
@@ -464,86 +462,6 @@ $(document).ready(function(){
                                 <label>Likes</label>
                                 <div class="stat-number">
                                     22.9k
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--third tab-->
-            <div id="new-friends" class="card-row-wrap">
-                <div class="card-row-placeholder is-hidden">
-                    No matching results
-                </div>
-                <div class="card-row">
-                    <!-- /partials/pages/friends/friend-lists/new-friends.html -->
-                    <!--Friend-->
-                   <c:forEach items="${vo.myList }" var="vo">
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/amadou.jpg" alt="">
-                            <img class="country" src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>${vo.name }</h3>
-                            <p>Sales Manager</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    728
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    184
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    226
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </c:forEach>
-                    <!--Friend-->
-                    <div class="card-flex friend-card">
-                        <div class="star-friend">
-                            <i data-feather="star"></i>
-                        </div>
-                        <div class="img-container">
-                            <img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/hisashi.jpg" alt="">
-                            <img class="country" src="resources/template/assets/img/icons/flags/japan.svg" alt="">
-                        </div>
-                        <div class="friend-info">
-                            <h3>Hisashi Yokida</h3>
-                            <p>Scientist</p>
-                        </div>
-                        <div class="friend-stats">
-                            <div class="stat-block">
-                                <label>Friends</label>
-                                <div class="stat-number">
-                                    8k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Posts</label>
-                                <div class="stat-number">
-                                    1.2k
-                                </div>
-                            </div>
-                            <div class="stat-block">
-                                <label>Likes</label>
-                                <div class="stat-number">
-                                    28.2k
                                 </div>
                             </div>
                         </div>
@@ -2326,5 +2244,7 @@ $(document).ready(function(){
     </div>
 
 </body>
-
+   <script>
+      feather.replace()
+    </script>
 </html>

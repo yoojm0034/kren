@@ -216,15 +216,6 @@ public class FeedController {
 		return result;
 	}
 	
-	//태그자동완성
-	@RequestMapping("autocpl.do")
-	@ResponseBody
-	public List<TagVO> TagAutocplList(@RequestParam Map<String, Object> params, HttpServletRequest request){
-	    List<TagVO> result = new ArrayList<TagVO>();        
-	    result = tagDao.tagSelectList();
-	    return result;
-	}
-
 	//태그등록
 	@RequestMapping("tagInsert.do")
 	public String tagInsert(TagVO vo, Model model) {
@@ -234,6 +225,7 @@ public class FeedController {
 		};
 		return "redirect:feed.do";
 	};
+
 	
 	@RequestMapping("friendSearch1.do")
 	public String allUserList(FriendsVO vo,Model model,Authentication auth){
