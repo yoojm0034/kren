@@ -5,7 +5,45 @@
 <head>
 <meta charset="UTF-8">
 <title>회원리스트</title>
+<style>
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .35rem;
+}
+ 
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin: 2px 0;
+    white-space: nowrap;
+    justify-content: flex-end;
+}
 
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #4e73df;
+    background-color: #fff;
+    border: 1px solid #dddfeb;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+div.dataTables_wrapper div.dataTables_paginate {
+    margin: 0;
+    white-space: nowrap;
+    text-align: right;
+}
+tr:hover { 
+	cursor: pointer; 
+	background-color: silver;
+	}
+</style>
 </head>
 <body>
 	<div class="stories-wrapper is-home">
@@ -116,16 +154,71 @@
 		<div class="inner-wrapper" style="width: 80%">
 			
 			전체 방문자 수: ${totalCount} 오늘의 방문자 수: ${todayCount}
-			<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
-			<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
-			<button onclick="sendLetterPush('admin')" type="button">편지</button>
-			<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
-			<div id="test"></div>
-			
+			<!-- 컨텐츠 시작 -->
+			<a class="mobile-sidebar-trigger is-home-v2"> <i
+				data-feather="menu"></i>
+			</a>
+			<div class="stories-content">
+				<div class="section-title main-section-title">
+					<h2>회원관리</h2>
+				</div>
+			</div>
+
+			<div class="stories-container" id="page-top">
+				<form action="">
+					<!-- Page Wrapper -->
+					<div id="wrapper">
+						<!-- Content Wrapper -->
+						<div id="content-wrapper" class="d-flex flex-column">
+							<!-- Main Content -->
+							<div id="content">
+								<!-- Begin Page Content -->
+								<div class="container-fluid">
+									<!-- DataTales Example -->
+									<div class="card shadow mb-4">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-bordered" id="dataTable" style="width:100%;cellspacing:0;" >
+													<thead>
+														<tr>
+															<th>이메일</th>
+															<th>아이디</th>
+															<th>이름</th>
+															<th>생년월일</th>
+															<th>성별</th>
+															<th>나라</th>
+															<th>회원상태</th>
+														</tr>
+													</thead>
+													<tbody>
+														<%-- <c:forEach items="${noticeList }" var="vo">
+															<tr data-id="${vo.notice_id}">
+																<td>${vo.notice_id }</td>
+																<td>${vo.title }</td>
+																<td>${vo.reg_date }</td>
+																<td>관리자</td>
+																<td>${vo.hit }</td>
+															</tr>
+														</c:forEach> --%>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									</div>
+									</div>
+								</div>
+								<!-- /.container-fluid -->
+
+							</div>
+							<!-- End of Main Content -->
+				</form>
+			</div>
 		</div>
 		<!-- 컨텐츠 종료 -->
-
+			
 	</div>
+
 
 
 

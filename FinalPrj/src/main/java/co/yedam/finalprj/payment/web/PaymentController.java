@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,7 +27,12 @@ public class PaymentController {
 	UsersService usersDao;
 	
 	@RequestMapping("admin/userPaymentList.do") 
-	public String paymentList() {
+	public String paymentList(PaymentVO vo, Model model) {
+			
+		model.addAttribute("all", paymentDao.allSales());
+		model.addAttribute("month", paymentDao.monthSales());
+		model.addAttribute("year", paymentDao.yearSales());
+		
 		return "admin/paymentList";
 	}
 	

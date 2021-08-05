@@ -11,4 +11,14 @@ public interface PaymentService {
 	int paymentInsert(PaymentVO vo);
 	int paymentUpdate(PaymentVO vo);
 	int paymentDelete(PaymentVO vo);
+	//결제합
+	int allSales();
+	//하루매출
+	int daySales();
+	//일주일매출
+	int weekSales();
+	//한달매출
+	int monthSales();
+	//연매출
+	int yearSales();
 }
