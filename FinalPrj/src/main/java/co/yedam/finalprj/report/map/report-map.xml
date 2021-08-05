@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.report.map.ReportMap">
-
+	<select id="reportSelectList" resultType="co.yedam.finalprj.report.vo.ReportVO">
+		select report_id, msg, reg_date, user_id, reported, content
+		from report
+		order by reg_date desc
+	</select>
 </mapper>

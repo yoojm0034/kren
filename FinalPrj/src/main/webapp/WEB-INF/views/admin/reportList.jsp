@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -274,14 +276,23 @@ tr:hover {
 													<thead>
 														<tr>
 															<th>글번호</th>
-															<th width="50%">제목</th>
+															<th width="30%">신고사유</th>
 															<th>등록일</th>
-															<th>작성자</th>
-															<th>조회수</th>
+															<th>피신고자</th>
+															<th>신고컨텐츠</th>
 														</tr>
 													</thead>
 													<tbody>
-														
+														<c:forEach items="${reportList}" var="vo">
+															<tr>
+																<td>${vo.report_id}</td>
+																<td>${vo.msg }</td>
+																<td>${vo.reg_date }</td>
+																<td>${vo.reported }</td>
+																<td><a href="${pageContext.request.contextPath}/feed.do?feed_id=${vo.content}">${vo.content }</a></td>
+																<!-- 다른신고게시글있으면 추가 -->
+															</tr>
+														</c:forEach>
 													</tbody>
 												</table>
 											</div>
@@ -305,13 +316,10 @@ tr:hover {
 			</a>
 			<div class="stories-content">
 				<div class="section-title main-section-title">
-					<h2>신고처리</h2>
+					<h2>피신고자 처리</h2>
 				</div>
 			</div>
 			<div align="right">
-				<button
-					onclick="location.href='${pageContext.request.contextPath}/home.do'"
-					class="button">홈으로</button>
 				<button id="sync" class="button">수정</button>
 			</div>
 			<div class="stories-container">

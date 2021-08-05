@@ -12,7 +12,6 @@
 		select *
 		from qna
 		where qna_id = #{qna_id}
-	
 	</select>
 	<!-- update -->
 	<update id="qnaUpdate" parameterType="co.yedam.finalprj.qna.vo.QnaVO">

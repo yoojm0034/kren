@@ -19,4 +19,30 @@
 		select *
 		from dual
 	</insert>
+	
+	<select id="allSales" resultType="int">
+		select sum(price) 
+		from payment
+	</select>
+<!-- 	<select id="daySales" resultType="int">
+		select sum(price) 
+		from payment
+		where to_char(pay_dt, 'yy/MM/dd') = to_char(sysdate, 'yy/MM/dd')
+	</select>
+	<select id="weekSales" resultType="int">
+		select sum(price) 
+		from payment  
+		where pay_dt BETWEEN TRUNC(sysdate, 'iw') AND TRUNC(sysdate,'iw')+6
+	</select> -->
+	<select id="monthSales" resultType="int">
+		select sum(price) 
+		from payment  
+		where pay_dt BETWEEN TRUNC(sysdate,'MM') AND LAST_DAY(sysdate)
+	</select>
+	<select id="yearSales" resultType="int">
+		select sum(price) 
+		from payment  
+		where pay_dt BETWEEN TO_CHAR(TRUNC(SYSDATE, 'yyyy') ,'yy/mm/dd') AND ADD_MONTHS (TRUNC (SYSDATE, 'YEAR'), 12) - 1 
+	</select>
+	
 </mapper>

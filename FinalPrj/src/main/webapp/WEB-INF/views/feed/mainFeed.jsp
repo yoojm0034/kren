@@ -106,6 +106,10 @@ table {
 .card.is-post .content-wrap .post-image .fab-wrapper.is-comment, .shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .content-wrap .post-image .fab-wrapper.is-comment {
     right: 60px;
 }
+post-text{
+	margin-left: 15px;
+    margin-top: 10px;
+}
 </style>
 
 </head>
@@ -151,6 +155,9 @@ $(document).ready(function(){
 				alert('태그를 입력해 주세요!');
 			}else{
 				if (maxAppend >= 5) return; 
+				if(maxAppend == 1){
+					$('#append_tag').append('<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>');
+				};
 				$('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
 				$('#activities-autocpl').val('');
 				maxAppend++;
@@ -211,7 +218,7 @@ $(document).ready(function(){
 	$('.feedUpdate').on('click',function(){
 		$('.app-overlay').addClass('is-active');
 		$('.is-new-content').addClass('is-highlighted');
-		
+		console.log('왜 안될까...');
 		var feedId = this.id;
 		var tags = $('#'+feedId).children(1).children(":eq(0)").val();
 		var content = $('#'+feedId).children(1).children(":eq(1)").val();
@@ -269,11 +276,6 @@ $(document).ready(function(){
 		$('#feedid').val('');
 	}); 
 	
-	//-------인기있는 주제검색---------
-	$('.tag-label').on('click',function(){
-		var tagName = this.id;
-		location.href="${pageContext.request.contextPath}/feed.do?tags=" + tagName
-	});
 	
 	//-------최신글---------
 	$('#allSearch').on('click',function(){
@@ -283,7 +285,6 @@ $(document).ready(function(){
 	//-------태그---------
 	$('#searchTag').on('click',function(){
 		var display = $("#SearchDiv").css('display');
-		
 		if(display == "none"){
 			$("#SearchDiv").css('display', 'block'); 
 			
@@ -331,24 +332,39 @@ $(document).ready(function(){
 		}
 	});
 	
-
-	
-
-	//-------언어별---------
-	$('#searchLan').on('click',function(){
-		var para = document.location.href.split("="); 
-		if(para[1]=="en"){
-			location.href="${pageContext.request.contextPath}/feed.do?write_lan=" + "ko"		
-		}else{
-			location.href="${pageContext.request.contextPath}/feed.do?write_lan=" +"en"
-		}
+	//-------언어별 Ko---------
+	$('#searchKo').on('click',function(){
+			location.href="${pageContext.request.contextPath}/feed.do?write_lan=" + "ko"	
 	});
+	
+	//-------언어별 En---------
+	$('#searchKo').on('click',function(){
+		location.href="${pageContext.request.contextPath}/feed.do?write_lan=" + "en"	
+	});
+	
 	
 	//-------내근처--------- 아직, 내위치 조회 상대방 위치와 비교 
 	$('#searchNear').on('click',function(){
 		location.href="${pageContext.request.contextPath}/feed.do"
 	});
+	
+	//-------공지사항이동---------
+	$('.page-block').on('click',function(){
+		var noticeId= this.id;
+		location.href="${pageContext.request.contextPath}/userSelectNotice.do?notice_id="+noticeId
+			
+	});
+	
+	//-------프로필클릭시---------
+	$('.user-info').on('click',function(){
+		var userId= this.id;
+		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
+			
+	});
+	
 });
+
+
 
 	//-------번역---------
 	function trans(id, text){
@@ -390,7 +406,7 @@ $(document).ready(function(){
 		}) 
 	}; 
 	
-	//-------좋아요 카운트,유저--------
+	//-------좋아요 카운트--------
 	function recCount(feedId){
 		var span = $('#recCnt'+feedId);
 		$.ajax({
@@ -399,18 +415,58 @@ $(document).ready(function(){
                data: {feed_id:feedId},
                dataType:"JSON",
                success: function(data) {
-               	var result= data.json;
-               	var i =0;
-               	$.each(data, function(idx, val) {
-       				i++;
-       				span.empty();
-       				span.append(i);
-               	});
+	               	var cnt =data.length;
+	               	if(cnt<1){
+	               		span.append(0);
+	
+	               	}else{
+		               	$.each(data, function(idx, val) {
+	    	   				span.empty();
+		       				span.append(cnt);   		
+	               	});
+	               	}
                },error:function(err){
                	console.log(err);
                }
 		}) 
 	 }; 
+	 
+	//-------친구 추천 팔로우--------	
+	function addFriend(id){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/follow.do",
+			type:"POST",
+			data:{following : id },
+			dataType:"JSON",
+			success:function(){
+				alert(userId+'친구로 추가 되었습니다');
+			},
+			error:function(err){
+				console.log(err);
+			}
+		})
+	};
+	//-------태그 클릭 시 이동---------
+	/* 	$('.tag-label').on('click',function(){
+			var tagName = this.id;
+			location.href="${pageContext.request.contextPath}/feed.do?tags=" + tagName
+		}); */
+$(function(){	
+	$('.tag-label').on('click',function(){
+		var tagName = this.id;
+		console.log(tagName);
+		$.ajax({
+			url:"${pageContext.request.contextPath}/tagSelect.do" ,
+			data:{tags : tagName},
+			success:function(result){
+				$('.feedContents').html(result);
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
+	});
+});	
 </script>
 	<!-- Pageloader -->
 	<div class="pageloader"></div>
@@ -691,9 +747,9 @@ $(document).ready(function(){
 							</div>
 							<div class="card-body no-padding">
 								<c:forEach items="${noticeList }" var="vo" end="3">
-									<div class="page-block">
+									<div class="page-block"  id="${vo.notice_id }">
 										<div class="page-meta">
-											<span>${vo.title }</span>
+											<a href="#"><span>${vo.title }</span></a>
 										</div>
 									</div>
 								</c:forEach>
@@ -980,7 +1036,8 @@ $(document).ready(function(){
 		 					<span class="search-label" id="allSearch">최신글</span>
 							<span class="search-label" id="searchNear">내 근처</span>
 							<span class="search-label" id="searchTag">태그</span>
-							<span class="search-label" id="searchLan">언어별</span>
+							<span class="search-label" id="searchKo">한국어</span>
+							<span class="search-label" id="searchEn">영어</span>
 						</label> 
 						
 						<div id="SearchDiv"
@@ -993,7 +1050,8 @@ $(document).ready(function(){
 									<i data-feather="x"></i>
 								</div>
 						</div>
-							
+						
+						<div class="feedContents">
 						<!------------------------ 포스트 시작 ------------------------->
 						<c:forEach items="${feedList }" var="vo">
 							<div id="feed-post-1" class="card is-post">
@@ -1008,7 +1066,7 @@ $(document).ready(function(){
 													data-demo-src="assets/img/avatars/dan.jpg"
 													data-user-popover="1" alt="">
 											</div>
-											<div class="user-info">
+											<div class="user-info" id="${vo.feed_id }">
 												<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a> <span class="time">
 												<script type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
@@ -1021,9 +1079,8 @@ $(document).ready(function(){
 											class="dropdown is-spaced is-right is-neutral dropdown-trigger">
 											<div>
 												<div class="button">
-													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg>
+													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>												</div>
 												</div>
-											</div>
 											<div class="dropdown-menu" role="menu">
 												<div class="dropdown-content">
 													<a href="#" class="dropdown-item">
@@ -1121,8 +1178,8 @@ $(document).ready(function(){
 													</a>
 												</div>
 												<div class="fab-wrapper is-comment">
-													<a href="javascript:void(0);" class="small-fab"> <i
-														data-feather="message-circle"></i>
+													<a href="javascript:void(0);" class="small-fab"> 
+													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
 													</a>
 												</div>
 											</div>
@@ -1165,10 +1222,12 @@ $(document).ready(function(){
 										<!-- Post statistics -->
 										<div class="social-count">
 											<div class="comments-count" >
-												<i data-feather="message-circle"></i> <span>3</span>
+												<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+												<span>3</span>
 											</div>
 											<div class="likes-count" id="like-count${vo.feed_id }">
-												<i data-feather="heart"></i> <span id="recCnt${vo.feed_id }">
+												<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+												<span id="recCnt${vo.feed_id }">
 												<script type="text/javascript">														
 														recCount('${vo.feed_id}');
 												</script>
@@ -1696,7 +1755,7 @@ $(document).ready(function(){
 							</div>
 						</c:forEach>
 						<!------------------------ 포스트 끝 ------------------------->
-
+					</div>
 						<div class=" load-more-wrap narrow-top has-text-centered">
 							<a href="#" class="load-more-button">Load More</a>
 						</div>
@@ -1715,7 +1774,7 @@ $(document).ready(function(){
 								<div class="dropdown is-spaced is-right dropdown-trigger">
 									<div>
 										<div class="button">
-											<i data-feather="more-vertical"></i>
+											<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
 										</div>
 									</div>
 									<div class="dropdown-menu" role="menu">
@@ -1762,7 +1821,7 @@ $(document).ready(function(){
 											<div class="page-meta">
 												<span>${vo.user_id }</span> <span>나와 일치하는 관심사 ${vo.count }개</span>
 											</div>
-											<div class="add-friend add-transition">
+											<div class="add-friend add-transition" id="${vo.user_id }" onclick="addFriend('${vo.user_id }')">
 												<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
 											</div>
 										</div>

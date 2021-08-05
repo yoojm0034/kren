@@ -43,4 +43,34 @@ public class PaymentServiceImpl implements PaymentService {
 		return map.paymentDelete(vo);
 	}
 
+	@Override
+	public int allSales() {
+		// TODO Auto-generated method stub
+		return map.allSales();
+	}
+
+	@Override
+	public int daySales() {
+		// TODO Auto-generated method stub
+		return map.daySales();
+	}
+
+	@Override
+	public int weekSales() {
+		// TODO Auto-generated method stub
+		return map.weekSales();
+	}
+
+	@Override
+	public int monthSales() {
+		// TODO Auto-generated method stub
+		return map.monthSales();
+	}
+
+	@Override
+	public int yearSales() {
+		// TODO Auto-generated method stub
+		return map.yearSales();
+	}
+
 }
