@@ -81,37 +81,14 @@ public class FeedController {
 		vo.setUser_id(id);
 		
 		Map<String, Object> datas = new HashMap<String, Object>();
-
 		datas.put("feedList", feedDao.feedSelectList(vo));
 		String feedId = null;
-		LikesVO lvo = new LikesVO();
-		List<Map> temp = (List<Map>) datas.get("feedList");
-		System.out.println("temp : "+temp);
-		//-------------- 피드 좋아요 --------------------------------
-		Map<String, Object> fdatas = new HashMap<String, Object>();
 
-		List<LikesVO> list= new ArrayList();
-		
-			for(var i=0; i<temp.size(); i ++ ) {
-				Map<String, Object> tMap = temp.get(i);
-				feedId = (String) tMap.get("feed_id");
-
-				lvo.setFeed_id(feedId);
-				list =  likeDao.likeSelectList(lvo);
-				System.out.println("likeDao.likeSelectList(lvo) : "+likeDao.likeSelectList(lvo));
-				
-//				if(!list.isEmpty()) {
-//					list.add();
-//				};
-			}
 		uvo.setUser_id(id);
 		uvo = userDao.usersSelect(uvo);		
 		uvo.setTopic(uvo.getTopic());
 		fvo.setUser_id(id);
-		
-		System.out.println(feedDao.feedSelectList(vo));
-		System.out.println(list);
-		model.addAttribute("likecount",list);
+
 		model.addAttribute("sameTopic",feedDao.sameTopicList(uvo));		
 		model.addAttribute("likeTag",feedDao.likeTag());				
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
