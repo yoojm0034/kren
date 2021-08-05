@@ -233,6 +233,7 @@
 						    	success: function(data) {
 						    		alert('전송되었습니다.');
 						    		location.reload(true);
+						    		sendLetterPush(to);
 						    	},
 						    	error: function(e) {
 						    		alert('편지전송실패');
@@ -252,7 +253,7 @@
 								    contentType : "application/json; charset=UTF-8",
 							    	success: function(data) {
 							    		alert('편지가 저장되었습니다.');
-							    		location.reload(true);
+							    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 							    	},
 							    	error: function(e) {
 							    		alert('저장실패');
@@ -264,6 +265,26 @@
 					    }
 					} else { //우표가 없으면
 						alert('우표수량을 확인해주세요.');
+						if(confirm("편지를 저장하시겠습니까?") ) {
+						    $.ajax({
+						    	url:'${pageContext.request.contextPath}/insertLetter.do',
+						    	type:'post',
+						    	data:JSON.stringify({
+						    		letter_id:send,
+						    		to_id:to,
+						    		content:txtarea,
+						    		gubun:'임시저장'
+						    	}),
+							    contentType : "application/json; charset=UTF-8",
+						    	success: function(data) {
+						    		alert('편지가 저장되었습니다.');
+						    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
+						    	},
+						    	error: function(e) {
+						    		alert('저장실패');
+						    	}
+						    });		    	
+					    }
 					}
 				},
 				error : function(e) {
@@ -274,7 +295,7 @@
 
 		});
 		
-	});
+	});// $(function()..end
 
 	// 교정테이블 추가
 	function add(id, idx) {

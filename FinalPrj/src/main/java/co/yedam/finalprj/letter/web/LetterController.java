@@ -70,6 +70,25 @@ public class LetterController {
 		model.addAttribute("save", letterDao.selectSaveLetter(vo));
 		return "letter/savedLetter";
 	}
+	
+	@RequestMapping(value="updateSavedLetter.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void updateSavedLetter(@RequestBody LetterVO vo) {
+		if(vo.getGubun().equals("일반")) { //내가 편지 전송
+			int n = letterDao.updateSavedSendYN(vo);
+			if(n!=0) { //일반편지라면
+				System.out.println("편지전달");
+				letterDao.updateSavedLetter(vo);
+				letterDao.updateLetterStampMinus(vo);
+				letterDao.insertLetterStamph(vo);	
+			}	
+		} else { // 편지 임시저장
+			int j = letterDao.updateSavedLetter(vo);
+			if(j!=0) {
+				System.out.println("임시편지재저장");
+			}
+		}
+	}
 
 	@RequestMapping("letterBox2.do")
 	public String letterBox2(Model model, LetterVO vo) {
@@ -95,25 +114,21 @@ public class LetterController {
 		String id = (String) user.getUsername();
 		vo.setUser_id(id);
 		int n = letterDao.insertLetter(vo);
-		if(n!=0) {
-			System.out.println(vo);
-			letterDao.updateLetterSendYN(vo);
-			letterDao.updateLetterStampMinus(vo);
-			letterDao.insertLetterStamph(vo);
-			System.out.println(letterDao.updateLetterSendYN(vo));
-			System.out.println(letterDao.updateLetterStampMinus(vo));
-			System.out.println(letterDao.insertLetterStamph(vo));
+		if(n!=0) { //답장여부Y,우표차감,우표사용내역기록
+				System.out.println(vo);
+				letterDao.updateLetterSendYN(vo);
+				letterDao.updateLetterStampMinus(vo);
+				letterDao.insertLetterStamph(vo);				
 		} else {
 			System.out.println("편지작성실패");
 		}
-		
 	}
 
 	@RequestMapping("stampLetterCheck.do")
 	@ResponseBody
 	public int stampLetterCheck(@RequestBody LetterVO vo) {
 		int cnt = letterDao.stampLetterCheck(vo);
-		if(letterDao.stampLetterCheck(vo) == 0) {
+		if(letterDao.stampLetterCheck(vo) == 0) { //우표가 없으면 0
 			cnt = 0;
 		}
 		return cnt;
