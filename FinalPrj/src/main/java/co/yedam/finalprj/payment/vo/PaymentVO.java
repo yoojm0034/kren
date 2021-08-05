@@ -12,5 +12,7 @@ public class PaymentVO {
 	private int price;
 	@JsonFormat(pattern = "yyyy/MM/dd") 
 	private Date pay_dt;
+	
+	private int cnt;
 
 }

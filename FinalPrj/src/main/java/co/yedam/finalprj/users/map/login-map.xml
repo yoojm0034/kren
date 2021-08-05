@@ -34,10 +34,11 @@
 		AND USER_ID = #{user_id}
 	</select>
 	
+	<!-- 우표 구매시 우표갯수 업데이트... -->
 	<update id="stampUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
 		update users
-		set stamp = #{stamp}
-		where user_id #{user_id}
+		set stamp = stamp + #{cnt}
+		where user_id = #{user_id}
 	</update>
 	
 
