@@ -57,10 +57,137 @@ $(function() {
 	    var aid = $(this).data('id');
 	    location.href= '${pageContext.request.contextPath}/'+'selectLetters.do/'+aid;
 	});
-});
+	
+	// 삭제버튼을 누르면 편지목록에서 삭제
+	$("body").on('click', '#delbtn',  function() {
+	    var delid = $(this).data('delid');	//letter_id
+	    console.log(delid);
+	    
+	    if(confirm("편지를 삭제하시겠습니까?") ) {
+		    $.ajax({
+		    	url:'deleteLetter.do',
+		    	type:'post',
+		    	data:JSON.stringify({letter_id:delid}),
+			    contentType : "application/json; charset=UTF-8",
+		    	success: function(data) {
+		    		alert('삭제되었습니다.');
+		    		location.reload(true);
+		    	},
+		    	error: function(e) {
+		    		alert('삭제실패');
+		    	}
+		    });		    	
+	    } else {
+	    	alert("취소되었습니다.");
+	    }
+	});
+	
+	// 편지 입력
+	$("body").on('click', '#send', function() {
+		var send = $(this).data('send'); //letter_id
+		var to = $(this).data('to'); //to_id
+		var sendbtn = $('button[data-send="'+send+'"]');
+		var txtarea = $('textarea[data-letter="'+send+'"]').val();
+		console.log(txtarea);
+		
+		//우표수량 체크
+		$.ajax({
+			url : '${pageContext.request.contextPath}/stampLetterCheck.do',
+			type : 'post',
+			data : JSON.stringify({
+				user_id : $('#user_id').val()
+			}),
+			contentType : "application/json; charset=UTF-8",
+			success : function(cnt) {
+				if (cnt > 0) { //우표가 있으면
+					if(confirm("편지를 전송하시겠습니까?") ) {
+					    $.ajax({
+					    	url:'${pageContext.request.contextPath}/updateSavedLetter.do',
+					    	type:'post',
+					    	data:JSON.stringify({
+					    		letter_id:send,
+					    		to_id:to,
+					    		user_id:"${user.user_id}",
+					    		content:txtarea,
+					    		photo:"",
+					    		gubun:'일반'
+					    	}),
+						    contentType : "application/json; charset=UTF-8",
+					    	success: function(data) {
+					    		alert('전송되었습니다.');
+					    		location.href = '${pageContext.request.contextPath}/selectLetters.do/'+to;
+					    		sendLetterPush(to);
+					    	},
+					    	error: function(e) {
+					    		alert('편지전송실패');
+					    	}
+					    });		    	
+				    } else {
+				    	if(confirm("편지를 저장하시겠습니까?") ) {
+						    $.ajax({
+						    	url:'${pageContext.request.contextPath}/updateSavedLetter.do',
+						    	type:'post',
+						    	data:JSON.stringify({
+						    		letter_id:send,
+						    		to_id:to,
+						    		user_id:"${user.user_id}",
+						    		content:txtarea,
+						    		photo:"",
+						    		gubun:'임시저장'
+						    	}),
+							    contentType : "application/json; charset=UTF-8",
+						    	success: function(data) {
+						    		alert('편지가 저장되었습니다.');
+						    		location.reload(true);
+						    	},
+						    	error: function(e) {
+						    		alert('저장실패');
+						    	}
+						    });		    	
+					    } else {
+					    	alert("편지작성이 취소되었습니다.");
+					    }
+				    }
+				} else { //우표가 없으면
+					alert('우표수량을 확인해주세요.');
+					if(confirm("편지를 저장하시겠습니까?") ) {
+					    $.ajax({
+					    	url:'${pageContext.request.contextPath}/updateSavedLetter.do',
+					    	type:'post',
+					    	data:JSON.stringify({
+					    		letter_id:send,
+					    		to_id:to,
+					    		user_id:"${user.user_id}",
+					    		content:txtarea,
+					    		photo:"",
+					    		gubun:'임시저장'
+					    	}),
+						    contentType : "application/json; charset=UTF-8",
+					    	success: function(data) {
+					    		alert('편지가 저장되었습니다.');
+					    		location.reload(true);
+					    	},
+					    	error: function(e) {
+					    		alert('저장실패');
+					    	}
+					    });		    	
+				    } else {
+				    	alert("편지작성이 취소되었습니다.");
+				    }
+				}
+			},
+			error : function(e) {
+				alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+			}
+		});
+	});//편지입력끝
+	
+	
+});//$(function().. end
 </script>
 </head>
 <body>
+<input type="hidden" id="user_id" value="${user.user_id }">
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
 			<!-- LEFT SIDEBAR  -->
@@ -163,7 +290,7 @@ $(function() {
 									<div id="msg-card-${status.index }" data-preview-id="${status.index }"
 										class="card is-msg has-attachment">
 										<div class="card-content">
-											<span class="msg-timestamp"> <fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd HH:mm"/> <img
+											<span class="msg-timestamp"> <fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd"/> <img
 												src="resources/template/assets/img/letter/stamp.png">
 											</span>
 											<div class="msg-header">
@@ -172,7 +299,7 @@ $(function() {
 														style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
 														src="https://via.placeholder.com/400x400" alt="friends">
 													<span class="msg-from"
-														style="vertical-align: top; margin-left: 5px;"> <small><a>${vo.name }</a></small>
+														style="vertical-align: top; margin-left: 5px;"> <small><a>TO:${vo.name }</a></small>
 													</span>
 												</div>
 											</div>
@@ -276,8 +403,8 @@ $(function() {
 											data-user-popover="1">
 									</div>
 									<div class="meta">
-										<div class="name">${vo.name }</div>
-										<div class="date"><fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd HH:mm"/></div>
+										<div class="name">TO:${vo.name }</div>
+										<div class="date"><fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd"/></div>
 									</div>
 								</div>
 	
@@ -294,7 +421,9 @@ $(function() {
 						</div>
 
 						<div class="has-text-right">
-							<button type="button" class="button is-solid accent-button is-bold raised send-message">Send Letter</button>
+							<button type="button" class="button is-solid accent-button is-bold raised send-message" id="send"
+							data-send="${vo.letter_id  }" data-to="${vo.to_id }" >Send Letter</button>
+							<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">삭제</button>
 						</div>
 
 						</div>	

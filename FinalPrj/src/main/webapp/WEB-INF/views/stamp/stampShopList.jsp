@@ -17,10 +17,12 @@
 			var name = "${user.name}"
 			var stamp = $(this).data('id');
 			var pay = $(this).data('pay');
+			var cnt = $(this).data('cnt');
 			
 			console.log(name);
 			console.log(stamp);
 			console.log(pay);
+			console.log(cnt);
 			
 			var IMP = window.IMP; // 생략가능
 			IMP.init('imp86362495');
@@ -46,13 +48,14 @@
 					
 	 				$.ajax({
 								url:'paymentInsert.do',
-								data: { 'price': rsp.paid_amount },
+								data: { 'price': rsp.paid_amount, 'cnt': cnt },
 								success: function(data){
 									console.log(data);
 									//성공하면 인트값 1보다 크면 ...입력 -> 페이지 이동
 										}
 							}); 
-	 			
+	 				//결제 성공 후 마이페이지-우표함으로 이동...
+	 				location.href="myStamp.do"
 				} else {
 					//결제 실패 로직
 					var msg = '결제에 실패하였습니다.';
@@ -91,7 +94,7 @@
 										</div>
 
 										<div class="discount">
-											<span class="has-price">X${vo.cnt}개</span>
+											<span class="has-price" id="cnt">X${vo.cnt}개</span>
 										</div>
 
 										<div class="price">
@@ -99,15 +102,40 @@
 										</div>
 
 										<div>
-											<button id="check_module" data-id="${vo.stamp_id}" data-pay="${vo.pay}" 
+											<button id="check_module" 
+											data-id="${vo.stamp_id}" data-pay="${vo.pay}" data-cnt="${vo.cnt}" 
 											class="button is-solid accent-button raised">Buy</button>
 										</div>
-
-
 									</div>
 								</div>
 							</c:forEach>
+							<div class="continue-shopping">
+                            	<a href="myStamp.do">Continue Shopping</a>
+                            </div>
+							
 						</div>
+						<div class="column is-4">
+                            <div class="cart-summary">
+                                <div class="summary-header">
+                                    <h3>STATUS OF MY STAMP RETENTION</h3>
+                                </div>
+
+                                <!--card-->
+                                <div class="summary-card">
+                                    <div class="order-line">
+                                        <h4 style="color:black">stamp</h4>
+                                        <h4 style="color:blue">${user.stamp}</h4>
+                                    </div>
+                                </div>
+                                    
+                                    <!--card-->
+                                    <div class="summary-card">
+                                        <img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" alt="">
+                                        <h4>Accrual Event</h4>
+                                        <p>현재 진행 중인 이벤트가 없습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
 					</div>
 				</div>
 			</div>

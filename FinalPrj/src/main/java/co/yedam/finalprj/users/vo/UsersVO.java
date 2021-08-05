@@ -45,5 +45,7 @@ public class UsersVO {
 	private String flag;
 	private int count; // 일치하는관심사 수
 	private String session_id; // 일치하는관심사 수
+	
+	private int cnt;
 
 }

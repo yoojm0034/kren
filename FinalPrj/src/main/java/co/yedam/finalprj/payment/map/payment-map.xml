@@ -14,8 +14,8 @@
 		insert all
 			into PAYMENT(PAY_ID, USER_ID, price, pay_dt)
 				 values('payment_'||payment_seq.nextval, #{user_id}, #{price}, sysdate)
-			into STAMPH(USER_ID, sh_type, sh_dt, STAMPh_ID) 
-				 values(#{user_id}, '구매', sysdate, 'stamph_'||stamph_seq.nextval)
+			into STAMPH(USER_ID, sh_type, sh_dt, STAMPh_ID, cnt) 
+				 values(#{user_id}, '구매', sysdate, 'stamph_'||stamph_seq.nextval, #{cnt})
 		select *
 		from dual
 	</insert>
