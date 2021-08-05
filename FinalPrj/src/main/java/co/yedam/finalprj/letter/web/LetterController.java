@@ -59,9 +59,7 @@ public class LetterController {
 		vo.setUser_id(id); //친구아이디
 		model.addAttribute("friends", letterDao.selectAllFriend(vo)); //친구목록
 		model.addAttribute("friendLetter", letterDao.selectFriendLetter(vo)); //해당친구와의 편지들
-		model.addAttribute("replyLetter", letterDao.replyLetter(vo)); //마지막으로 편지를 보낸 회원
 
-		System.out.println("누가답장?"+letterDao.replyLetter(vo));
 		// 교정편지 조회
 		model.addAttribute("lettercs", lettercDao.selectLetterC());
 		return "letter/selectLetters";

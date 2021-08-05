@@ -74,6 +74,61 @@
     padding: revert;
 }
 
+ #modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+       }
+       #modal .modal-window {
+           background: rgba( 69, 139, 197, 0.70 );
+           box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+           backdrop-filter: blur( 13.5px );
+           -webkit-backdrop-filter: blur( 13.5px );
+           border-radius: 10px;
+           border: 1px solid rgba( 255, 255, 255, 0.18 );
+           width: 400px;
+           height: 500px;
+           position: relative;
+           top: -100px;
+           padding: 10px;
+       }
+       #modal .title {
+           padding-left: 10px;
+           display: inline;
+           text-shadow: 1px 1px 2px gray;
+           color: white;
+           
+       }
+       #modal .title h2 {
+           display: inline;
+       }
+       #modal .close-area {
+           display: inline;
+           float: right;
+           padding-right: 10px;
+           cursor: pointer;
+           text-shadow: 1px 1px 2px gray;
+           color: white;
+       }
+       
+       #modal .content {
+           margin-top: 20px;
+           padding: 0px 10px;
+           text-shadow: 1px 1px 2px gray;
+           color: white;
+       }
 </style>
 <script>
 	// 영어 -> 한국어
@@ -85,7 +140,7 @@
 		console.log(en);
 		console.log(div);			
 			$.ajax({
-				url:"korean",
+				url:"${pageContext.request.contextPath}/korean",
 				type:"GET",
 				data: Data,
 			    contentType : "application/json; charset:UTF-8",
@@ -110,7 +165,7 @@
 		var opt = $("select[data-transopt="+index+"]");
 		console.log(ko);
 		$.ajax({
-			url:"english",
+			url:"${pageContext.request.contextPath}/english",
 			type:"GET",
 			data: Data,
 		    contentType : "application/json; charset:UTF-8",
@@ -397,6 +452,202 @@
 </script>
 </head>
 <body>
+		<div id="create-group-modal"
+			class="modal create-group-modal is-light-bg">
+			<div class="modal-background"></div>
+			<div class="modal-content">
+
+				<div class="card">
+					<div class="card-heading">
+						<h3>Create group</h3>
+						<!-- Close X button -->
+						<div class="close-wrap">
+							<span class="close-modal"> <i data-feather="x"></i>
+							</span>
+						</div>
+					</div>
+					<!-- Modal subheading -->
+					<div class="subheading">
+						<!-- Group avatar -->
+						<div class="group-avatar">
+							<input id="group-avatar-upload">
+							<div class="add-photo">
+								<i data-feather="plus"></i>
+							</div>
+						</div>
+						<!-- Group name -->
+						<div class="control">
+							<input type="text" class="input"
+								placeholder="Give the group a name">
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="inner">
+							<div class="left-section">
+								<div class="search-subheader">
+									<div class="control">
+										<input type="text" class="input"
+											placeholder="Search for friends to add"> <span
+											class="icon"> <i data-feather="search"></i>
+										</span>
+									</div>
+								</div>
+								<div id="new-group-list" class="user-list has-slimscroll">
+
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-1">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/dan.jpg" alt="">
+										<div class="friend-name">Dan Walker</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-1"> <label
+													for="checkbox-group-1"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-2">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/daniel.jpg" alt="">
+										<div class="friend-name">Daniel Wellington</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-2"> <label
+													for="checkbox-group-2"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-3">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/stella.jpg" alt="">
+										<div class="friend-name">Stella Bergmann</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-3"> <label
+													for="checkbox-group-3"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-4">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/david.jpg" alt="">
+										<div class="friend-name">David Kim</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-4"> <label
+													for="checkbox-group-4"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-5">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/nelly.png" alt="">
+										<div class="friend-name">Nelly Schwartz</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-5"> <label
+													for="checkbox-group-5"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-6">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/elise.jpg" alt="">
+										<div class="friend-name">Elise Walker</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-6"> <label
+													for="checkbox-group-6"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-7">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/bobby.jpg" alt="">
+										<div class="friend-name">Bobby Brown</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-7"> <label
+													for="checkbox-group-7"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-8">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/lana.jpeg" alt="">
+										<div class="friend-name">Lana Henrikssen</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-8"> <label
+													for="checkbox-group-8"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-9">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/gaelle.jpeg" alt="">
+										<div class="friend-name">Gaelle Morris</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-9"> <label
+													for="checkbox-group-9"></label>
+											</div>
+										</div>
+									</div>
+									<!-- Friend -->
+									<div class="friend-block" data-ref="ref-10">
+										<img class="friend-avatar"
+											src="https://via.placeholder.com/300x300"
+											data-demo-src="assets/img/avatars/mike.jpg" alt="">
+										<div class="friend-name">Mike Lasalle</div>
+										<div class="round-checkbox is-small">
+											<div>
+												<input type="checkbox" id="checkbox-group-10"> <label
+													for="checkbox-group-10"></label>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<div class="right-section has-slimscroll">
+								<div class="selected-count">
+									<span>Selected</span> <span id="selected-friends-count">0</span>
+								</div>
+
+								<div id="selected-list" class="selected-list"></div>
+
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						<button type="button"
+							class="button is-solid grey-button close-modal">Cancel</button>
+						<button type="button"
+							class="button is-solid accent-button close-modal">Create
+							a Group</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
 <input type="hidden" id="user_id" value="${user.user_id }">
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
@@ -654,6 +905,18 @@
 										<div class="name">${vo.name }</div>
 										<div class="date"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/> </div>
 									</div>
+									<c:if test="${vo.user_id ne user.user_id }">
+									<div class="meta-right">
+										<button class="button is-solid grey-button is-bold raised"
+										 id="btnModal" data-report="${vo.user_id }">
+											<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+												<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+												<line x1="12" y1="9" x2="12" y2="13"></line>
+												<line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+										</button>
+									</div>
+									</c:if>
+
 								</div>
 	
 								<hr>
