@@ -77,4 +77,20 @@
 		select count(*) from feed where user_id=#{user_id}
 	</select>
 	
+	<!-- 팔로잉 리스트 -->
+	<select id="followingList" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select name, photo, flag, city, country, user_id, (select count(*)
+                                                		   from friends
+                                                 		   where user_id=#{session_id} and following=u.user_id) as followCheck
+		from users u
+		where user_id IN ( select following 
+						   from friends 
+						   where user_id=#{user_id})
+	</select>	
+
+	<!-- 팔로워 리스트 -->
+	<select id="followerList" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select * from friends where following=#{user_id}
+	</select>	
+	
 </mapper>

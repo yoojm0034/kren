@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface UsersMap {
@@ -22,6 +23,8 @@ public interface UsersMap {
 	List<UsersVO> myTopicList(UsersVO vo);	
 	List<UsersVO> myTripList(UsersVO vo);	
 	int postCnt(UsersVO vo);
+	List<UsersVO> followingList(UsersVO vo);
+	List<UsersVO> followerList(UsersVO vo);
 	
 	//admin
 	int adminUsersUpdate(UsersVO vo);

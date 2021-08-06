@@ -12,6 +12,7 @@
 <title>test</title>
 </head>
 <style>
+
 .cover-bg .cover-image {
 max-height: 200px;
 }
@@ -202,8 +203,11 @@ $(document).ready(function() {
 // 팔로잉 리스트 ajax
 $(function(){
 	$('#followingList').on('click', function (){
+		var user_id = $('#user_id').val();
 		$.ajax({
 			url: '${pageContext.request.contextPath}/followingList.do',
+	    	type:'post',
+	    	data:{user_id : user_id},
 			success: function(result) {
 				$('.profile-contents').html(result);
 			}

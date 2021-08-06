@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface UsersService {
@@ -30,6 +31,10 @@ public interface UsersService {
 	
 	//작성글 카운트
 	int postCnt(UsersVO vo);
+	
+	//팔로잉,팔로워 리스트
+	List<UsersVO> followingList(UsersVO vo);
+	List<UsersVO> followerList(UsersVO vo);
 	
 	
 	//-----------------로그인 로그아웃---------------

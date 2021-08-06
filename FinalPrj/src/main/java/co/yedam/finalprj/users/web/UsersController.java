@@ -70,7 +70,6 @@ public class UsersController {
 		model.addAttribute("followingCnt", friendsDao.followingCnt(fvo));
 		model.addAttribute("followerCnt", friendsDao.followerCnt(fvo));
 		
-		
 		model.addAttribute("profile", usersDao.usersSelect(vo));
 		model.addAttribute("postCnt", usersDao.postCnt(vo));
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
@@ -81,7 +80,14 @@ public class UsersController {
 	
 	// 팔로잉 리스트
 	@RequestMapping("followingList.do")
-	public String followingList() {
+	public String followingList(UsersVO vo, Model model, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setSession_id(Sessionid);
+		
+		System.out.println(vo);
+		
+		model.addAttribute("followingList", usersDao.followingList(vo));
 		return "no/users/followingList";
 	}
 	

@@ -44,7 +44,8 @@ public class UsersVO {
 	private String timezone;
 	private String flag;
 	private int count; // 일치하는관심사 수
-	private String session_id; // 일치하는관심사 수
+	private String session_id; // 세션아이디
+	private int followCheck; // 팔로잉 체크
 	
 	private int cnt;
 

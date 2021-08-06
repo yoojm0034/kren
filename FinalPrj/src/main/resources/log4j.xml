@@ -32,6 +32,9 @@
 
 	<!-- Root Logger -->
 
+	<logger name="org.apache.commons">
+		<level value="info" />
+	</logger>
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />

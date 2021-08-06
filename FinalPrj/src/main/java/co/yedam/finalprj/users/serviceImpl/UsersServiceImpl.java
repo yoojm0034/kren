@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.users.map.LoginMap;
 import co.yedam.finalprj.users.map.UsersMap;
 import co.yedam.finalprj.users.service.UsersService;
@@ -110,6 +111,16 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public int postCnt(UsersVO vo) {
 		return map.postCnt(vo);
+	}
+
+	@Override
+	public List<UsersVO> followingList(UsersVO vo) {
+		return map.followingList(vo);
+	}
+
+	@Override
+	public List<UsersVO> followerList(UsersVO vo) {
+		return map.followerList(vo);
 	}
 
 }
