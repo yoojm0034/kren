@@ -210,8 +210,8 @@ h5:hover {
 
 	
 	function connectWs() {
-		sock = new SockJS("${pageContext.request.contextPath}/echo");
-		//sock = new SockJS("http://192.168.0.76/FinalPrj/echo");
+		//sock = new SockJS("${pageContext.request.contextPath}/echo");
+		sock = new SockJS("http://192.168.0.76/FinalPrj/echo");
 		
 		sock.onopen = function() {
 			console.log('info: connection opened.');
