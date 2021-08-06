@@ -1,28 +1,30 @@
 package co.yedam.finalprj.users.web;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-import javax.imageio.ImageIO;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.finalprj.friends.service.FriendsService;
 import co.yedam.finalprj.friends.vo.FriendsVO;
@@ -148,19 +150,76 @@ public class UsersController {
 	//아이디비밀번호 찾기...
 	@RequestMapping("find.do")
 	public String findIdPw() {
-		return "users/findIdPw";
+		return "find/findIdPw";
 	}
 	
 	@RequestMapping("findID.do")
-	public String findID() {
+	public int findID(ModelAndView mav, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String email = request.getParameter("email");
+		//String id = usersDao.findId(email);
 		
-		return "users/findId";
+		int cnt = 0;
+		if(usersDao.emailCheck(email) != null) {
+			cnt = 1;
+		}
+		return cnt;
+			
+//		if(vo != null) {
+//		Random r = new Random();
+//		int num = r.nextInt(999999); // 랜덤난수설정
+//		
+//		if (vo.getEmail().equals(email)) {
+//			session.setAttribute("email", vo.getEmail());
+//
+//			String setfrom = "yi_na@naver.com"; // naver 
+//			String tomail = "yi_na@naver.com"; //받는사람
+//			String title = "[kren] 인증 이메일 입니다"; 
+//			String content = System.getProperty("line.separator") + "안녕하세요 회원님" + System.getProperty("line.separator")
+//					+ "kren 이메일 인증번호는 " + num + " 입니다." + System.getProperty("line.separator"); // 
+//
+//			try {
+//				MimeMessage message = mailSender.createMimeMessage();
+//				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "utf-8");
+//
+//				messageHelper.setFrom(setfrom); 
+//				messageHelper.setTo(tomail); 
+//				messageHelper.setSubject(title);
+//				messageHelper.setText(content); 
+//
+//				mailSender.send(message);
+//			} catch (Exception e) {
+//				System.out.println(e.getMessage());
+//			}
+//
+//			mav.setViewName("find/findId");
+//			mav.addObject("num", num);
+//			return mav;
+//		}else {
+//			mav.setViewName("find/findId");
+//			return mav;
+//		}
+//		}else {
+//			mav.setViewName("find/findId");
+//			return mav;
+//		}
+	}
+	
+	@RequestMapping("findID2.do")
+	public String findID2() {
+		
+		return "find/findId2";
+	}
+	
+	@RequestMapping("findID3.do")
+	public String findID3() {
+		
+		return "find/findId3";
 	}
 	
 	@RequestMapping("findPW.do")
 	public String findPW() {
 		
-		return "users/findPw";
+		return "find/findPw";
 	}
 	
 	//관리자 

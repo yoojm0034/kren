@@ -23,6 +23,10 @@ public interface UsersMap {
 	List<UsersVO> myTripList(UsersVO vo);	
 	int postCnt(UsersVO vo);
 	
+	//아이디 비밀번호 찾기...
+	public void findId(UsersVO vo);
+	public void findPw(UsersVO vo);
+
 	//admin
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();
