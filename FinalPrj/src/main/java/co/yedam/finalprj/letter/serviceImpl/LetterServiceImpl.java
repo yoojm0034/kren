@@ -79,5 +79,10 @@ public class LetterServiceImpl implements LetterService {
 		return map.updateSavedSendYN(vo);
 	}
 
+	@Override
+	public LetterVO oneSelect(LetterVO vo) {
+		return map.oneSelect(vo);
+	}
+
 
 }

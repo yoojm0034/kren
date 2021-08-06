@@ -74,61 +74,9 @@
     padding: revert;
 }
 
- #modal.modal-overlay {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-       }
-       #modal .modal-window {
-           background: rgba( 69, 139, 197, 0.70 );
-           box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-           backdrop-filter: blur( 13.5px );
-           -webkit-backdrop-filter: blur( 13.5px );
-           border-radius: 10px;
-           border: 1px solid rgba( 255, 255, 255, 0.18 );
-           width: 400px;
-           height: 500px;
-           position: relative;
-           top: -100px;
-           padding: 10px;
-       }
-       #modal .title {
-           padding-left: 10px;
-           display: inline;
-           text-shadow: 1px 1px 2px gray;
-           color: white;
-           
-       }
-       #modal .title h2 {
-           display: inline;
-       }
-       #modal .close-area {
-           display: inline;
-           float: right;
-           padding-right: 10px;
-           cursor: pointer;
-           text-shadow: 1px 1px 2px gray;
-           color: white;
-       }
-       
-       #modal .content {
-           margin-top: 20px;
-           padding: 0px 10px;
-           text-shadow: 1px 1px 2px gray;
-           color: white;
-       }
+#drop table {
+    text-align: left;
+}
 </style>
 <script>
 	// 영어 -> 한국어
@@ -347,7 +295,25 @@
 
 		});
 		
-	});
+		// 신고버튼을 누르면
+		$('body').on('click','#rbtn', function() {
+			var report = $(this).data('report');//name
+			var repo = $(this).data('repo'); 	//letter_id
+			var sub = $('button[data-report="'+repo+'"]'); //해당버튼 
+			var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
+			var txt = "";
+			if(radio == '기타') {
+				$('textarea[data-rtxt="'+repo+'"]').attr('hidden',false);
+				txt = $('textarea[data-rtxt="'+repo+'"]').val();//기타사유
+			} else {
+				$('textarea[data-rtxt="'+repo+'"]').attr('hidden',true);
+			}
+			var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
+			console.log(report, repo, radio, chk, txt);
+			
+		})
+		 
+	}); // $function end
 
 	// 교정테이블 추가
 	function add(id, idx) {
@@ -738,13 +704,65 @@
 									</div>
 									<c:if test="${vo.user_id ne user.user_id }">
 									<div class="meta-right">
-										<button class="button is-solid grey-button is-bold raised"
-										 id="btnModal" data-report="${vo.user_id }">
-											<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-												<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-												<line x1="12" y1="9" x2="12" y2="13"></line>
-												<line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-										</button>
+									<!-- report Btn -->
+				               	<div class="navbar-item is-icon drop-trigger" id="drop">
+            					<a class="icon-link" id="btnModal" href="javascript:void(0);">
+                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                             	</a>
+               					<div class="nav-drop is-account-dropdown is-active">
+		                     	<div class="inner">
+		                        <div class="nav-drop-header">
+		                           <span>REPORT</span>
+		                        </div>
+		                        <div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
+	                        	<table>
+	                        	<tr>
+                        		<td>
+                        		<input type="radio" id="msg" name="${vo.letter_id }" value="스팸 게시물">스팸 게시물
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="가짜정보 제공">가짜정보 제공
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="성적인 내용">성적인 내용
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="욕설/비방">욕설/비방
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="기타">기타
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<textarea data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true"></textarea>
+                        		</td>
+	                        	</tr>
+	                        	</table>
+		                        </div>
+		                        <div class="nav-drop-footer">
+		                        <input type="checkbox" id="blocked" data-rchk="${vo.letter_id }" value="${vo.user_id }">${vo.name } 차단
+								<button id="rbtn" data-repo="${vo.letter_id }" data-report="${vo.user_id }">신고</button>
+		                        </div>
+		                        </div>
+			                   </div>               
+              					</div><!-- /report Btn -->
 									</div>
 									</c:if>
 

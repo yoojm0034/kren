@@ -181,6 +181,10 @@
 		 WHERE LETTER_ID =#{letter_id}
 		   AND USER_ID =#{user_id}
 		</when>
+		<when test='user_id == "admin"'>
+		UPDATE LETTER SET TO_DELETE = 'Y', FROM_DELETE = 'Y' 
+		 WHERE LETTER_ID =#{letter_id}
+		</when>
 		<otherwise>
 		UPDATE LETTER SET TO_DELETE = 'Y' 
 		 WHERE LETTER_ID =#{letter_id}
@@ -188,5 +192,10 @@
 		</otherwise>
 		</choose>
 	</update>
+	
+	<select id="oneSelect" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
+		SELECT * FROM LETTER
+		WHERE LETTER_ID=#{letter_id}
+	</select>
 
 </mapper>
