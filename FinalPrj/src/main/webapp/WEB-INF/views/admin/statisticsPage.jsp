@@ -1,10 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- chart.js -->
+<!-- include application-chart.min.css -->
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
+<script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+
+</head>
+</head>
+<script type="text/javascript">
+	$(function() {
+
+	      const el = document.getElementById('chart-area');
+	      const data = {
+	        categories: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+	        series: [
+	          {
+	            name: 'Budget',
+	            data: [5000, 3000, 5000, 7000, 6000, 4000, 1000],
+	          },
+	          {
+	            name: 'Income',
+	            data: [8000, 4000, 7000, 2000, 6000, 3000, 5000],
+	          },
+	          {
+	            name: 'Expenses',
+	            data: [4000, 4000, 6000, 3000, 4000, 5000, 7000],
+	          },
+	          {
+	            name: 'Debt',
+	            data: [3000, 4000, 3000, 1000, 2000, 4000, 3000],
+	          },
+	        ],
+	      };
+	      const options = {
+	        chart: { title: 'Monthly Revenue', width: 900, height: 400 },
+	        xAxis: { pointOnColumn: false, title: { text: 'Month' } },
+	        yAxis: { title: 'Amount' },
+	      };
+
+	      const chart = toastui.Chart.areaChart({ el, data, options });	
+	})
+	
+</script>
+
 
 
 </head>
@@ -115,194 +160,197 @@
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
 		<div class="inner-wrapper" style="width: 80%">
-
-			<div class="stories-container">
-				<div class="settings-wrapper">
-					<div class="stories-content">
-						<div class="section-title main-section-title">
-							<h2>통계페이지</h2>
-						</div>
+			전체 방문자 수: ${totalCount} 오늘의 방문자 수: ${todayCount}
+			<div id="chart-area"></div>
+		</div>
+		<div class="stories-container">
+			<div class="settings-wrapper">
+				<div class="stories-content">
+					<div class="section-title main-section-title">
+						<h2>통계페이지</h2>
 					</div>
-					<!-- /partials/settings/sections/general-settings.html -->
-					<div id="general-settings" class="settings-section is-active">
-						<div class="settings-panel">
+				</div>
+				<!-- /partials/settings/sections/general-settings.html -->
+				<div id="general-settings" class="settings-section is-active">
+					<div class="settings-panel">
 
-							<div class="title-wrap">
-								<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
-								</a>
-								<h2>통계그래프</h2>
-							</div>
+						<div class="title-wrap">
+							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
+							</a>
+							<h2>통계그래프</h2>
 
-							<div class="settings-form-wrapper">
-								<div class="illustration">
-
-									<p>
-										If you'd like to learn more about general settings, you can
-										read about it in the <a>user guide</a>.
-									</p>
-								</div>
-							</div>
 						</div>
-					</div>
-					<br>
-					<div id="general-settings" class="settings-section is-active">
-						<div class="settings-panel">
 
-							<div class="title-wrap">
-								<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
-								</a>
-								<h2>General Settings</h2>
-							</div>
+						<div class="settings-form-wrapper">
+							<div class="illustration">
 
-							<div class="settings-form-wrapper">
-								<div class="illustration">
-									<p>
-										If you'd like to learn more about general settings, you can
-										read about it in the <a>user guide</a>.
-									</p>
-								</div>
+								<p>
+									If you'd like to learn more about general settings, you can
+									read about it in the <a>user guide</a>.
+								</p>
 							</div>
 						</div>
 					</div>
-					<br>
-					<div id="general-settings" class="settings-section is-active">
-						<div class="settings-panel">
-							<div class="title-wrap">
-								<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
-								</a>
-								<h2>통계그래프</h2>
+				</div>
+				<br>
+				<div id="general-settings" class="settings-section is-active">
+					<div class="settings-panel">
+
+						<div class="title-wrap">
+							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
+							</a>
+							<h2>General Settings</h2>
+						</div>
+
+						<div class="settings-form-wrapper">
+							<div class="illustration">
+								<p>
+									If you'd like to learn more about general settings, you can
+									read about it in the <a>user guide</a>.
+								</p>
 							</div>
-							<div class="settings-form-wrapper">
-								<div class="settings-form">
-									<div class="columns is-multiline flex-portrait">
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="monitor"></i>
-													</div>
-													<h4>Devices</h4>
-													<p>Manage connected devices</p>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div id="general-settings" class="settings-section is-active">
+					<div class="settings-panel">
+						<div class="title-wrap">
+							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
+							</a>
+							<h2>통계그래프</h2>
+						</div>
+						<div class="settings-form-wrapper">
+							<div class="settings-form">
+								<div class="columns is-multiline flex-portrait">
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="monitor"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="codesandbox"></i>
-													</div>
-													<h4>Authentication</h4>
-													<p>Authentication settings</p>
+												<h4>Devices</h4>
+												<p>Manage connected devices</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="codesandbox"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="box"></i>
-													</div>
-													<h4>API</h4>
-													<p>API settings</p>
+												<h4>Authentication</h4>
+												<p>Authentication settings</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="box"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="search"></i>
-													</div>
-													<h4>Search</h4>
-													<p>Search settings</p>
+												<h4>API</h4>
+												<p>API settings</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="search"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="cloud-snow"></i>
-													</div>
-													<h4>Cloud Settings</h4>
-													<p>Manage storage</p>
+												<h4>Search</h4>
+												<p>Search settings</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="cloud-snow"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="cpu"></i>
-													</div>
-													<h4>Cache</h4>
-													<p>Cache settings</p>
+												<h4>Cloud Settings</h4>
+												<p>Manage storage</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="cpu"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="gift"></i>
-													</div>
-													<h4>Reedeem</h4>
-													<p>Reedeem your points</p>
+												<h4>Cache</h4>
+												<p>Cache settings</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="gift"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="command"></i>
-													</div>
-													<h4>Shortcuts</h4>
-													<p>manage shortcuts</p>
+												<h4>Reedeem</h4>
+												<p>Reedeem your points</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="command"></i>
 												</div>
-											</a>
-										</div>
-										<!--link-->
-										<div class="column is-4">
-											<a class="setting-sublink">
-												<div class="link-content">
-													<div class="link-icon">
-														<i data-feather="layout"></i>
-													</div>
-													<h4>Layout</h4>
-													<p>Layout settings</p>
+												<h4>Shortcuts</h4>
+												<p>manage shortcuts</p>
+											</div>
+										</a>
+									</div>
+									<!--link-->
+									<div class="column is-4">
+										<a class="setting-sublink">
+											<div class="link-content">
+												<div class="link-icon">
+													<i data-feather="layout"></i>
 												</div>
-											</a>
-										</div>
+												<h4>Layout</h4>
+												<p>Layout settings</p>
+											</div>
+										</a>
 									</div>
 								</div>
-
-								<div class="illustration">
-									<p>
-										If you'd like to learn more about preferences settings, you
-										can read about it in the <a>user guide</a>.
-									</p>
-								</div>
 							</div>
 
+							<div class="illustration">
+								<p>
+									If you'd like to learn more about preferences settings, you can
+									read about it in the <a>user guide</a>.
+								</p>
+							</div>
 						</div>
+
 					</div>
-
-
-
 				</div>
+
+
+
 			</div>
 		</div>
-		<!-- 컨텐츠 종료 -->
+	</div>
+	<!-- 컨텐츠 종료 -->
 
 
 	</div>

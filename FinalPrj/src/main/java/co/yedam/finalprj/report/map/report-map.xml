@@ -5,6 +5,7 @@
 		resultType="co.yedam.finalprj.report.vo.ReportVO">
 		select report_id, msg, reg_date, user_id, reported, content
 		from report
+		where read_date is null
 		order by reg_date desc
 	</select>
 	
