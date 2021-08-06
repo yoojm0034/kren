@@ -1,24 +1,24 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<jsp:useBean id="now" class="java.util.Date"/>
-<fmt:formatDate value="${now}" pattern="yyyy/MM/dd HH:mm" var="today"/>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate value="${now}" pattern="yyyy/MM/dd HH:mm" var="today" />
 <!DOCTYPE html>
 <html>
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<link rel="icon" type="image/png" href="resources/template/assets/img/favicon.png" />
-<link href="resources/template/assets/nicelabel/css/jquery-nicelabel.css" rel="stylesheet">
+<link rel="icon" type="image/png"
+	href="resources/template/assets/img/favicon.png" />
+<link
+	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
+	rel="stylesheet">
 <script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Main Feed</title>
 <style>
@@ -26,19 +26,24 @@ article, aside, details, figcaption, figure, footer, header, hgroup,
 	menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
+
 ol, ul {
 	list-style: none;
 }
+
 blockquote, q {
 	quotes: none;
 }
+
 blockquote:before, blockquote:after, q:before, q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -51,16 +56,19 @@ table {
 	margin-bottom: 24px;
 	border-radius: 6px;
 }
+
 .rolling {
 	position: relative;
 	width: 100%;
 	height: auto;
 }
+
 .rolling li {
 	width: 100%;
 	height: 340px;
 	line-height: 50px;
 }
+
 .tag-label {
 	display: inline-block;
 	font-size: 14px;
@@ -78,45 +86,45 @@ table {
 	margin-top: 6px;
 	margin-bottom: 5px;
 }
-.view-wrapper {
-    padding: 40px 12px;
-}
-.search-label {
-    display: inline-block;
-    font-size: 14px;
-    padding: 6px 15px 10px 15px;
-    border-radius: 2rem;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.2s;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    background-color: #6ba4e9;
-    color: white;
-    margin-left: 10px;
-    margin-bottom: 15px;
-}
-.tdiv {
-    font-weight: bold;
-    text-shadow: 0 0 black;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-.card.is-post .content-wrap .post-image .fab-wrapper.is-comment, .shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .content-wrap .post-image .fab-wrapper.is-comment {
-    right: 60px;
-}
-post-text{
-	margin-left: 15px;
-    margin-top: 10px;
-}
-</style>
 
-</head>
-<body>
- <script>
+.view-wrapper {
+	padding: 40px 12px;
+}
+
+.search-label {
+	display: inline-block;
+	font-size: 14px;
+	padding: 6px 15px 10px 15px;
+	border-radius: 2rem;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	transition: all 0.2s;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	background-color: #6ba4e9;
+	color: white;
+	margin-left: 10px;
+	margin-bottom: 15px;
+}
+
+.tdiv {
+	font-weight: bold;
+	text-shadow: 0 0 black;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.card.is-post .content-wrap .post-image .fab-wrapper.is-comment,
+	.shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .content-wrap .post-image .fab-wrapper.is-comment
+	{
+	right: 60px;
+}
+
+</style>
+<script>
 $(document).ready(function(){
-	
+
 	//-------생일롤링---------
 	var height =  $(".notice").height();
 	var num = $(".rolling li").length;
@@ -144,46 +152,45 @@ $(document).ready(function(){
 		$(this).css("cursor", "default");
 	});
 	
-
-	//-------태그등록---------
-	var maxAppend = 0;
-	document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
-	function tagFunction() {
-		if(event.keyCode==13){
-	    	var tagval = $('#activities-autocpl').val();
-	    	if(!tagval) {
-				alert('태그를 입력해 주세요!');
-			}else{
-				if (maxAppend >= 5) return; 
-				if(maxAppend == 1){
-					$('#append_tag').append('<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>');
-				};
-				$('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
-				$('#activities-autocpl').val('');
-				maxAppend++;
-				$.ajax({
-					url: "${pageContext.request.contextPath}/tagInsert.do" ,
-					type: "POST",
-					data:{ tag_name : tagval } ,
-					success: function(data){
-					},
-					error: function(err){
-					}
-				}); 
-			}
-		}else if(event.keyCode==35){
-			event.preventDefault();
-			event.returnValue = false;
-		}else if(event.keyCode==44){
-			event.preventDefault();
-			event.returnValue = false;
+	//-------피드 수정----------
+	var maxCnt = 0;
+	$('.feedUpdate').on('click',function(){
+		$('.app-overlay').addClass('is-active');
+		$('.is-new-content').addClass('is-highlighted');
+		$('#publish').focus();
+		
+		var feedId = this.id;
+		var tags = $('#'+feedId).children(1).children(":eq(0)").val();
+		var content = $('#'+feedId).children(1).children(":eq(1)").val();
+		var photo = $('#'+feedId).children(1).children(":eq(2)").val(); 
+		var fphoto = $('#'+feedId).children(1).children(":eq(3)").val(); 
+		var retag = tags.replace(/,/g, "#");	
+		var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
+		
+		$('#feedid').val(feedId);	
+		$('#publish').val(content);
+		document.getElementById('photo').value = fphoto;
+		if(retag != ""){
+			$('#append_tag').append("#"+retag);			
 		}
 		
-	  $('.tagDelete').on('click', function () {
-      	$( this ).remove(); 
-      	maxAppend--;
-	  });
-	}
+		if(photo != ""){	
+		  if(maxCnt >= 1 ) return;
+		  var deleteIcon = feather.icons.x.toSvg();
+		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
+		  $('#feed-upload').append(template);
+		  maxCnt++;
+		  maxValue++;
+		 
+		  $('.remove-file').on('click', function () {
+		         $(this).closest('.upload-wrap').remove();
+		         photoChk.val(1);
+		         maxCnt--;
+		         maxValue--;
+		       });
+		}
+	});
+
 
 	//-------태그자동완성---------
 	if ($('#activities-autocpl').length) {
@@ -213,44 +220,6 @@ $(document).ready(function(){
 	    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
 	  };
 	  
-	//-------피드 수정----------
-	var maxCnt = 0;
-	$('.feedUpdate').on('click',function(){
-		$('.app-overlay').addClass('is-active');
-		$('.is-new-content').addClass('is-highlighted');
-		console.log('왜 안될까...');
-		var feedId = this.id;
-		var tags = $('#'+feedId).children(1).children(":eq(0)").val();
-		var content = $('#'+feedId).children(1).children(":eq(1)").val();
-		var photo = $('#'+feedId).children(1).children(":eq(2)").val(); 
-		var fphoto = $('#'+feedId).children(1).children(":eq(3)").val(); 
-		var retag = tags.replace(/,/g, "#");	
-		var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
-		
-		$('#feedid').val(feedId);	
-		if(retag != ""){
-			$('#append_tag').append("#"+retag);			
-		}
-		
-		if(photo != ""){	
-		  if(maxCnt >= 1 ) return;
-		  var deleteIcon = feather.icons.x.toSvg();
-		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
-		  $('#feed-upload').append(template);
-		  maxCnt++;
-		  maxValue++;
-		 
-		  $('.remove-file').on('click', function () {
-		         $(this).closest('.upload-wrap').remove();
-		         photoChk.val(1);
-		         maxCnt--;
-		         maxValue--;
-		       });
-		}
-		
-		$('#publish').val(content);
-		document.getElementById('photo').value = fphoto;	
-	});
 
 	//-------피드 등록---------
 	$('#publish-button').on('click', function(){
@@ -276,76 +245,33 @@ $(document).ready(function(){
 		$('#feedid').val('');
 	}); 
 	
-	
 	//-------최신글---------
 	$('#allSearch').on('click',function(){
-		location.href="${pageContext.request.contextPath}/feed.do"
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do",
+			success:function(result){
+				console.log(result);
+				$('.feedContents').html(result);
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
 	});
-	
-	//-------태그---------
-	$('#searchTag').on('click',function(){
-		var display = $("#SearchDiv").css('display');
-		if(display == "none"){
-			$("#SearchDiv").css('display', 'block'); 
-			
-			if ($('#tagInput').length) {
-			    var html = '';
-			    var activitiesOptions = {
-			      url: "${pageContext.request.contextPath}/autocpl.do",
-			      getValue: "tag_name",
-		 	      template: {
-			        type: "custom",
-			        method: function method(value) {
-			          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
-			        }
-			      }, 
-			      highlightPhrase: false,
-			      list: {
-			        maxNumberOfElements: 5,
-			        showAnimation: {
-			          type: "slide",
-			          time: 400,
-			          callback: function callback() {}
-			        },
-			        match: {
-			          enabled: true
-			        }
-			      }
-			    };
-			    $("#tagInput").easyAutocomplete(activitiesOptions);
-			  };
-			  
-			document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
-			
-				function tagsFunction() {
-					if(event.keyCode==13){
-				    	var tagval=$('#tagInput').val();
-				    	if(!tagval) {
-							alert('태그를 입력해 주세요!');
-						}else{
-							location.href="${pageContext.request.contextPath}/feed.do?tags=" + tagval
-						}
-					}
-				};
-		}else{
-			$("#SearchDiv").css('display', 'none'); 
-		}
-	});
-	
+
 	//-------언어별 Ko---------
 	$('#searchKo').on('click',function(){
-			location.href="${pageContext.request.contextPath}/feed.do?write_lan=" + "ko"	
-	});
-	
-	//-------언어별 En---------
-	$('#searchKo').on('click',function(){
-		location.href="${pageContext.request.contextPath}/feed.do?write_lan=" + "en"	
-	});
-	
-	
-	//-------내근처--------- 아직, 내위치 조회 상대방 위치와 비교 
-	$('#searchNear').on('click',function(){
-		location.href="${pageContext.request.contextPath}/feed.do"
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do",
+			data:{write_lan : 'ko' },
+			success:function(result){
+				console.log('한국어만 나옴');
+				$('.feedContents').html(result);
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
 	});
 	
 	//-------공지사항이동---------
@@ -355,83 +281,244 @@ $(document).ready(function(){
 			
 	});
 	
-	//-------프로필클릭시---------
-	$('.user-info').on('click',function(){
-		var userId= this.id;
-		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
+});
+</script>
+</head>
+<body>
+<script>
+
+	$(function(){
+		//-------태그---------
+		$('#searchTag').on('click',function(){
+			var display = $("#SearchDiv").css('display');
+			if(display == "none"){
+				$("#SearchDiv").css('display', 'block'); 
+				
+				if ($('#tagInput').length) {
+				    var html = '';
+				    var activitiesOptions = {
+				      url: "${pageContext.request.contextPath}/autocpl.do",
+				      getValue: "tag_name",
+			 	      template: {
+				        type: "custom",
+				        method: function method(value) {
+				          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+				        }
+				      }, 
+				      highlightPhrase: false,
+				      list: {
+				        maxNumberOfElements: 5,
+				        showAnimation: {
+				          type: "slide",
+				          time: 400,
+				          callback: function callback() {}
+				        },
+				        match: {
+				          enabled: true
+				        }
+				      }
+				    };
+				    $("#tagInput").easyAutocomplete(activitiesOptions);
+				  };
+				  
+				document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
+					function tagsFunction() {
+						if(event.keyCode==13){
+					    	var tagval=$('#tagInput').val();
+					    	if(!tagval) {
+								alert('태그를 입력해 주세요!');
+							}else{
+								$.ajax({
+									url:"${pageContext.request.contextPath}/feedSelect.do",
+									data:{tags : tagval },
+									success:function(result){
+										console.log('태그검색결과');
+										$('.feedContents').html(result);
+									},
+									error:function(err){
+										console.log(err);
+									}
+								});
+							}
+						}
+					};
+			}else{
+				$("#SearchDiv").css('display', 'none'); 
+			}
+		});
+	});
+
+	$(function(){
+	//-------태그등록---------
+		var maxAppend = 0;
+		document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
+		function tagFunction() {
+			if(event.keyCode==13){
+		    	var tagval = $('#activities-autocpl').val();
+		    	if(!tagval) {
+					alert('태그를 입력해 주세요!');
+				}else{
+					if (maxAppend >= 5) return; 
+					$('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
+					$('#activities-autocpl').val('');
+					maxAppend++;
+					$.ajax({
+						url: "${pageContext.request.contextPath}/tagInsert.do" ,
+						type: "POST",
+						data:{ tag_name : tagval } ,
+						success: function(data){
+						},
+						error: function(err){
+						}
+					}); 
+				}
+			}else if(event.keyCode==35){
+				event.preventDefault();
+				event.returnValue = false;
+			}else if(event.keyCode==44){
+				event.preventDefault();
+				event.returnValue = false;
+			}
 			
+		  $('.tagDelete').on('click', function () {
+		  	$( this ).remove(); 
+		  	maxAppend--;
+		  });
+		}
+	});
+
+
+	$(function(){
+		//-------언어별 En---------
+		$('#searchEn').on('click',function(){
+			$.ajax({
+				url:"${pageContext.request.contextPath}/feedSelect.do",
+				data:{write_lan : 'en' },
+				success:function(result){
+					console.log('영어만 나옴');
+					$('.feedContents').html(result);
+				},
+				error:function(err){
+					console.log(err);
+				}
+			});
+		});
+	});
+	$(function(){
+		//-------내근처--------- 
+		$('#searchNear').on('click',function(){
+			$.ajax({
+				url:"${pageContext.request.contextPath}/feedSelect.do",
+				data:{location : 'true' },
+				success:function(result){
+					$('.feedContents').html(result);
+				},
+				error:function(err){
+					console.log(err);
+				}
+			});
+		});
+	});
+
+	$(function(){
+		//-------프로필클릭시---------
+		$('.user-info').on('click',function(){
+			var userId= this.id;
+			location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
+				
+		});
 	});
 	
-});
-
-
-
-	//-------번역---------
-	function trans(id, text){
-		var div = $("#tdiv"+id);
-		var lan = div.next().attr('id');
- 	 	$.ajax({
-			url:"${pageContext.request.contextPath}/transContent.do",
-			type:"GET",
-			data:{	korean:text,
-					write_lan: lan},
-			success:function(v){
-				var json = JSON.parse(v);
-				var transval = json.message.result.translatedText;
-				div.append($('<p/>').html(transval));
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});  
-	};
-	
-	//-------좋아요--------
- 	function likeIt(feedId){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/likeCnt.do",
-			type:"POST",
-			data:{feed_id:feedId},
-			success:function(result){
-				if(result==0){
-					alert('좋아요!');
-				}else{
-					alert('좋아요 취소');
+	$(function(){
+		//-------태그라벨---------
+		$('.tag-label').on('click',function(){
+			var tagName = this.id;
+			console.log(tagName);
+			console.log('왜');
+			$.ajax({
+				url:"${pageContext.request.contextPath}/feedSelect.do" ,
+				data:{tags : tagName},
+				success:function(result){
+					$('.feedContents').html(result);
+				},
+				error:function(err){
+					console.log(err);
 				}
-				recCount(feedId);
-			},
-			error:function(err){
-				console.log(err);
-			}
-		}) 
-	}; 
+			});
+		});
+	});
+	$(function(){
+			//-------좋아요--------
+			function likeIt(feedId){
+			$.ajax({
+				url:"${pageContext.request.contextPath}/likeCnt.do",
+				type:"POST",
+				data:{feed_id:feedId},
+				success:function(result){
+					if(result==0){
+						alert('좋아요!');
+					}else{
+						alert('좋아요 취소');
+					}
+					recCount(feedId);
+				},
+				error:function(err){
+					console.log(err);
+				}
+			}) 
+		}; 
+	});	
 	
-	//-------좋아요 카운트--------
-	function recCount(feedId){
-		var span = $('#recCnt'+feedId);
-		$.ajax({
-			url: "${pageContext.request.contextPath}/likeSelectList.do",
-               type: "POST",
-               data: {feed_id:feedId},
-               dataType:"JSON",
-               success: function(data) {
-	               	var cnt =data.length;
-	               	if(cnt<1){
-	               		span.append(0);
+	$(function(){
+		//-------좋아요 카운트--------
+		function recCount(feedId){
+			var span = $('#recCnt'+feedId);
+			$.ajax({
+				url: "${pageContext.request.contextPath}/likeSelectList.do",
+		           type: "POST",
+		           data: {feed_id:feedId},
+		           dataType:"JSON",
+		           success: function(data) {
+		               	var cnt =data.length;
+		               	if(cnt<1){
+		               		span.empty();
+		               		span.append(0);
+		               	}else{
+			               	$.each(data, function(idx, val) {
+		    	   				span.empty();
+			       				span.append(cnt);   		
+		               	});
+		               	}
+		           },error:function(err){
+		           	console.log(err);
+		           }
+			}) 
+		 }; 
+	});	
 	
-	               	}else{
-		               	$.each(data, function(idx, val) {
-	    	   				span.empty();
-		       				span.append(cnt);   		
-	               	});
-	               	}
-               },error:function(err){
-               	console.log(err);
-               }
-		}) 
-	 }; 
-	 
-	//-------친구 추천 팔로우--------	
+	$(function(){
+		//-------번역---------
+		function trans(id, text){
+			var div = $("#tdiv"+id);
+			var lan = div.next().attr('id');
+		 	$.ajax({
+				url:"${pageContext.request.contextPath}/transContent.do",
+				type:"GET",
+				data:{	korean: text,
+						write_lan: lan},
+				success:function(v){
+					var json = JSON.parse(v);
+					var transval = json.message.result.translatedText;
+					div.append($('<p/>').html(transval));
+				},
+				error:function(err){
+					console.log(err);
+				}
+			});  
+		};
+	});	
+	
+	//-------친구 추천 팔로우--------	 안됨 
 	function addFriend(id){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/follow.do",
@@ -446,30 +533,8 @@ $(document).ready(function(){
 			}
 		})
 	};
-	//-------태그 클릭 시 이동---------
-	/* 	$('.tag-label').on('click',function(){
-			var tagName = this.id;
-			location.href="${pageContext.request.contextPath}/feed.do?tags=" + tagName
-		}); */
-$(function(){	
-	$('.tag-label').on('click',function(){
-		var tagName = this.id;
-		console.log(tagName);
-		$.ajax({
-			url:"${pageContext.request.contextPath}/tagSelect.do" ,
-			data:{tags : tagName},
-			success:function(result){
-				$('.feedContents').html(result);
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-});	
 </script>
 	<!-- Pageloader -->
-	<div class="pageloader"></div>
 	<div class="infraloader is-active"></div>
 	<div class="app-overlay"></div>
 	<div class="view-wrapper">
@@ -747,7 +812,7 @@ $(function(){
 							</div>
 							<div class="card-body no-padding">
 								<c:forEach items="${noticeList }" var="vo" end="3">
-									<div class="page-block"  id="${vo.notice_id }">
+									<div class="page-block" id="${vo.notice_id }">
 										<div class="page-meta">
 											<a href="#"><span>${vo.title }</span></a>
 										</div>
@@ -761,1001 +826,1052 @@ $(function(){
 
 					<!-- Middle column -->
 					<div class="column is-6">
-						<form action="feedInsert.do" id="feedInsert" method="post" enctype="multipart/form-data">
-							<input type="hidden" id="tags" name="tags">
-							<input type="hidden" id="feedid" name="feedid">
-							<input type="hidden" id="photo" name="photo">
-							<input type="hidden" id="photoChk" name="photoChk">
-						<!-- Publishing Area -->
-						<!-- /partials/pages/feed/compose-card.html -->
-						<div id="compose-card" class="card is-new-content">
-							<!-- Top tabs -->
-							<div class="tabs-wrapper">
-								<div class="tabs is-boxed is-fullwidth">
-									<ul>
-										<li class="is-active"><a> <span class="icon is-small"><i
-													data-feather="edit-3"></i></span> <span>Publish</span>
-										</a></li>
-										<!-- Close X button -->
-										<li class="close-wrap"><span class="close-publish">
-										<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-										</span></li>
-									</ul>
-								</div>
-								<!-- Tab content -->
-								<!-- ----------글쓰는 부분 --------------->
-								<div class="tab-content">
-									<div class="compose">
-										<div class="compose-form">
-											<img src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/jenna.png" alt="">
-											<div class="control">
-												<textarea id="publish" name="content" class="textarea" rows="3"
-													placeholder="Write something about you..."></textarea>
-											</div>
-										</div>
-										<div id="feed-upload" class="feed-upload"></div>
-										<div id="append_tag"></div>
-										<div id="options-summary" class="options-summary"></div>
-										<div id="tag-suboption"
-											class="is-autocomplete is-suboption is-hidden">
-											<!-- Tag friends suboption -->
-											<div id="tag-list" class="tag-list"></div>
-											<div class="control">
-												<input id="tags-autocpl" type="text" class="input"
-													placeholder="Who are you with?">
-												<div class="icon">
-													<i data-feather="search"></i>
-												</div>
-												<div class="close-icon is-main">
-													<i data-feather="x"></i>
-												</div>
-											</div>
-										</div>
-										<!-- /Tag friends suboption -->
-
-										<!-- Activities suboption -->
-										<div id="activities-suboption"
-											class="is-autocomplete is-suboption is-hidden">
-											<div id="activities-autocpl-wrapper"
-												class="control has-margin">
-												<input id="activities-autocpl" type="text" class="input" 
-													placeholder="태그를 입력해 주세요" 
-													>
-												<div class="icon">
-													<i data-feather="search"></i>
-												</div>
-												<div class="close-icon is-main">
-													<i data-feather="x"></i>
-												</div>
-											</div>
-
-											<!-- Mood suboption -->
-											<div id="mood-autocpl-wrapper"
-												class="is-autocomplete is-activity is-hidden">
-												<div class="control has-margin">
-													<input id="mood-autocpl" type="text"
-														class="input is-subactivity"
-														placeholder="How do you feel?">
-													<div class="input-block">Feels</div>
-													<div class="close-icon is-subactivity">
-														<i data-feather="x"></i>
-													</div>
-												</div>
-											</div>
-
-											<!-- Drinking suboption child -->
-											<div id="drinking-autocpl-wrapper"
-												class="is-autocomplete is-activity is-hidden">
-												<div class="control has-margin">
-													<input id="drinking-autocpl" type="text"
-														class="input is-subactivity"
-														placeholder="What are you drinking?">
-													<div class="input-block">Drinks</div>
-													<div class="close-icon is-subactivity">
-														<i data-feather="x"></i>
-													</div>
-												</div>
-											</div>
-
-											<!-- Eating suboption child -->
-											<div id="eating-autocpl-wrapper"
-												class="is-autocomplete is-activity is-hidden">
-												<div class="control has-margin">
-													<input id="eating-autocpl" type="text"
-														class="input is-subactivity"
-														placeholder="What are you eating?">
-													<div class="input-block">Eats</div>
-													<div class="close-icon is-subactivity">
-														<i data-feather="x"></i>
-													</div>
-												</div>
-											</div>
-
-											<!-- Reading suboption child -->
-											<div id="reading-autocpl-wrapper"
-												class="is-autocomplete is-activity is-hidden">
-												<div class="control has-margin">
-													<input id="reading-autocpl" type="text"
-														class="input is-subactivity"
-														placeholder="What are you reading?">
-													<div class="input-block">Reads</div>
-													<div class="close-icon is-subactivity">
-														<i data-feather="x"></i>
-													</div>
-												</div>
-											</div>
-
-											<!-- Watching suboption child -->
-											<div id="watching-autocpl-wrapper"
-												class="is-autocomplete is-activity is-hidden">
-												<div class="control has-margin">
-													<input id="watching-autocpl" type="text"
-														class="input is-subactivity"
-														placeholder="What are you watching?">
-													<div class="input-block">Watches</div>
-													<div class="close-icon is-subactivity">
-														<i data-feather="x"></i>
-													</div>
-												</div>
-											</div>
-
-											<!-- Travel suboption child -->
-											<div id="travel-autocpl-wrapper"
-												class="is-autocomplete is-activity is-hidden">
-												<div class="control has-margin">
-													<input id="travel-autocpl" type="text"
-														class="input is-subactivity"
-														placeholder="Where are you going?">
-													<div class="input-block">Travels</div>
-													<div class="close-icon is-subactivity">
-														<i data-feather="x"></i>
-													</div>
-												</div>
-											</div>
-
-										</div>
-										<!-- /Activities suboption -->
-
-										<!-- Location suboption -->
-										<div id="location-suboption"
-											class="is-autocomplete is-suboption is-hidden">
-											<div id="location-autocpl-wrapper"
-												class="control is-location-wrapper has-margin">
-												<input id="location-autocpl" type="text" class="input"
-													placeholder="Where are you now?">
-												<div class="icon">
-													<i data-feather="map-pin"></i>
-												</div>
-												<div class="close-icon is-main">
-													<i data-feather="x"></i>
-												</div>
-											</div>
-										</div>
-
-										<!-- Link suboption -->
-										<div id="link-suboption"
-											class="is-autocomplete is-suboption is-hidden">
-											<div id="link-autocpl-wrapper"
-												class="control is-location-wrapper has-margin">
-												<input id="link-autocpl" type="text" class="input"
-													placeholder="Enter the link URL">
-												<div class="icon">
-													<i data-feather="link-2"></i>
-												</div>
-												<div class="close-icon is-main">
-													<i data-feather="x"></i>
-												</div>
-											</div>
-										</div>
-
-										<!-- GIF suboption -->
-										<div id="gif-suboption"
-											class="is-autocomplete is-suboption is-hidden">
-											<div id="gif-autocpl-wrapper"
-												class="control is-gif-wrapper has-margin">
-												<input id="gif-autocpl" type="text" class="input"
-													placeholder="Search a GIF to add" autofocus>
-												<div class="icon">
-													<i data-feather="search"></i>
-												</div>
-												<div class="close-icon is-main">
-													<i data-feather="x"></i>
-												</div>
-												<div class="gif-dropdown">
-													<div class="inner">
-														<div class="gif-block">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/1.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/2.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/3.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/4.gif" alt="">
-														</div>
-														<div class="gif-block">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/5.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/6.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/7.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/8.gif" alt="">
-														</div>
-														<div class="gif-block">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/9.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/10.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/11.gif" alt="">
-															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="assets/img/demo/gif/12.gif" alt="">
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
+						<form action="feedInsert.do" id="feedInsert" method="post"
+							enctype="multipart/form-data">
+							<input type="hidden" id="tags" name="tags"> <input
+								type="hidden" id="feedid" name="feedid"> <input
+								type="hidden" id="photo" name="photo"> <input
+								type="hidden" id="photoChk" name="photoChk">
+							<!-- Publishing Area -->
+							<!-- /partials/pages/feed/compose-card.html -->
+							<div id="compose-card" class="card is-new-content">
+								<!-- Top tabs -->
+								<div class="tabs-wrapper">
+									<div class="tabs is-boxed is-fullwidth">
+										<ul>
+											<li class="is-active"><a> <span
+													class="icon is-small"><i data-feather="edit-3"></i></span>
+													<span>Publish</span>
+											</a></li>
+											<!-- Close X button -->
+											<li class="close-wrap"><span class="close-publish">
+													<svg viewBox="0 0 24 24" width="24" height="24"
+														stroke="currentColor" stroke-width="2" fill="none"
+														stroke-linecap="round" stroke-linejoin="round"
+														class="css-i6dzq1">
+														<line x1="18" y1="6" x2="6" y2="18"></line>
+														<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+											</span></li>
+										</ul>
 									</div>
-									
-									<!-- /Compose form -->
+									<!-- Tab content -->
+									<!-- ----------글쓰는 부분 --------------->
+									<div class="tab-content">
+										<div class="compose">
+											<div class="compose-form">
+												<img src="https://via.placeholder.com/300x300"
+													data-demo-src="assets/img/avatars/jenna.png" alt="">
+												<div class="control">
+													<textarea id="publish" name="content" class="textarea"
+														rows="3" placeholder="Write something about you..."></textarea>
+												</div>
+											</div>
+											<div id="feed-upload" class="feed-upload"></div>
+											<div id="append_tag"></div>
+											<div id="options-summary" class="options-summary"></div>
+											<div id="tag-suboption"
+												class="is-autocomplete is-suboption is-hidden">
+												<!-- Tag friends suboption -->
+												<div id="tag-list" class="tag-list"></div>
+												<div class="control">
+													<input id="tags-autocpl" type="text" class="input"
+														placeholder="Who are you with?">
+													<div class="icon">
+														<i data-feather="search"></i>
+													</div>
+													<div class="close-icon is-main">
+														<i data-feather="x"></i>
+													</div>
+												</div>
+											</div>
+											<!-- /Tag friends suboption -->
 
-									<!-- General basic options -->
-									<div id="basic-options" class="compose-options">
-										<!-- Upload action -->
-										<div class="compose-option">
-											<i data-feather="camera"></i> <span>Media</span> <input
-												id="feed-upload-input-2" name="file" type="file" accept=".png, .jpg, .jpeg" onchange="readURL(this)">
-										</div>
-										<!-- Tag action -->
-										<div id="show-activities" class="compose-option">
-											<img
-												src="resources/template/assets/img/icons/emoji/emoji-1.svg"
-												alt=""> <span>Tag</span>
-										</div>
-									</div>
-									<!-- /General basic options -->
+											<!-- Activities suboption -->
+											<div id="activities-suboption"
+												class="is-autocomplete is-suboption is-hidden">
+												<div id="activities-autocpl-wrapper"
+													class="control has-margin">
+													<input id="activities-autocpl" type="text" class="input"
+														placeholder="태그를 입력해 주세요">
+													<div class="icon">
+														<i data-feather="search"></i>
+													</div>
+													<div class="close-icon is-main">
+														<i data-feather="x"></i>
+													</div>
+												</div>
 
-									<!-- Footer buttons -->
-									<div class="more-wrap">
-									
-										<!-- Publish button -->
-										<button id="publish-button" type="button"
-											class="button is-solid accent-button is-fullwidth is-disabled"
-											>Publish</button>
+												<!-- Mood suboption -->
+												<div id="mood-autocpl-wrapper"
+													class="is-autocomplete is-activity is-hidden">
+													<div class="control has-margin">
+														<input id="mood-autocpl" type="text"
+															class="input is-subactivity"
+															placeholder="How do you feel?">
+														<div class="input-block">Feels</div>
+														<div class="close-icon is-subactivity">
+															<i data-feather="x"></i>
+														</div>
+													</div>
+												</div>
+
+												<!-- Drinking suboption child -->
+												<div id="drinking-autocpl-wrapper"
+													class="is-autocomplete is-activity is-hidden">
+													<div class="control has-margin">
+														<input id="drinking-autocpl" type="text"
+															class="input is-subactivity"
+															placeholder="What are you drinking?">
+														<div class="input-block">Drinks</div>
+														<div class="close-icon is-subactivity">
+															<i data-feather="x"></i>
+														</div>
+													</div>
+												</div>
+
+												<!-- Eating suboption child -->
+												<div id="eating-autocpl-wrapper"
+													class="is-autocomplete is-activity is-hidden">
+													<div class="control has-margin">
+														<input id="eating-autocpl" type="text"
+															class="input is-subactivity"
+															placeholder="What are you eating?">
+														<div class="input-block">Eats</div>
+														<div class="close-icon is-subactivity">
+															<i data-feather="x"></i>
+														</div>
+													</div>
+												</div>
+
+												<!-- Reading suboption child -->
+												<div id="reading-autocpl-wrapper"
+													class="is-autocomplete is-activity is-hidden">
+													<div class="control has-margin">
+														<input id="reading-autocpl" type="text"
+															class="input is-subactivity"
+															placeholder="What are you reading?">
+														<div class="input-block">Reads</div>
+														<div class="close-icon is-subactivity">
+															<i data-feather="x"></i>
+														</div>
+													</div>
+												</div>
+
+												<!-- Watching suboption child -->
+												<div id="watching-autocpl-wrapper"
+													class="is-autocomplete is-activity is-hidden">
+													<div class="control has-margin">
+														<input id="watching-autocpl" type="text"
+															class="input is-subactivity"
+															placeholder="What are you watching?">
+														<div class="input-block">Watches</div>
+														<div class="close-icon is-subactivity">
+															<i data-feather="x"></i>
+														</div>
+													</div>
+												</div>
+
+												<!-- Travel suboption child -->
+												<div id="travel-autocpl-wrapper"
+													class="is-autocomplete is-activity is-hidden">
+													<div class="control has-margin">
+														<input id="travel-autocpl" type="text"
+															class="input is-subactivity"
+															placeholder="Where are you going?">
+														<div class="input-block">Travels</div>
+														<div class="close-icon is-subactivity">
+															<i data-feather="x"></i>
+														</div>
+													</div>
+												</div>
+
+											</div>
+											<!-- /Activities suboption -->
+
+											<!-- Location suboption -->
+											<div id="location-suboption"
+												class="is-autocomplete is-suboption is-hidden">
+												<div id="location-autocpl-wrapper"
+													class="control is-location-wrapper has-margin">
+													<input id="location-autocpl" type="text" class="input"
+														placeholder="Where are you now?">
+													<div class="icon">
+														<i data-feather="map-pin"></i>
+													</div>
+													<div class="close-icon is-main">
+														<i data-feather="x"></i>
+													</div>
+												</div>
+											</div>
+
+											<!-- Link suboption -->
+											<div id="link-suboption"
+												class="is-autocomplete is-suboption is-hidden">
+												<div id="link-autocpl-wrapper"
+													class="control is-location-wrapper has-margin">
+													<input id="link-autocpl" type="text" class="input"
+														placeholder="Enter the link URL">
+													<div class="icon">
+														<i data-feather="link-2"></i>
+													</div>
+													<div class="close-icon is-main">
+														<i data-feather="x"></i>
+													</div>
+												</div>
+											</div>
+
+											<!-- GIF suboption -->
+											<div id="gif-suboption"
+												class="is-autocomplete is-suboption is-hidden">
+												<div id="gif-autocpl-wrapper"
+													class="control is-gif-wrapper has-margin">
+													<input id="gif-autocpl" type="text" class="input"
+														placeholder="Search a GIF to add" autofocus>
+													<div class="icon">
+														<i data-feather="search"></i>
+													</div>
+													<div class="close-icon is-main">
+														<i data-feather="x"></i>
+													</div>
+													<div class="gif-dropdown">
+														<div class="inner">
+															<div class="gif-block">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/1.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/2.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/3.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/4.gif" alt="">
+															</div>
+															<div class="gif-block">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/5.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/6.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/7.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/8.gif" alt="">
+															</div>
+															<div class="gif-block">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/9.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/10.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/11.gif" alt="">
+																<img src="https://via.placeholder.com/478x344"
+																	data-demo-src="assets/img/demo/gif/12.gif" alt="">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<!-- /Compose form -->
+
+										<!-- General basic options -->
+										<div id="basic-options" class="compose-options">
+											<!-- Upload action -->
+											<div class="compose-option">
+												<i data-feather="camera"></i> <span>Media</span> <input
+													id="feed-upload-input-2" name="file" type="file"
+													accept=".png, .jpg, .jpeg" onchange="readURL(this)">
+											</div>
+											<!-- Tag action -->
+											<div id="show-activities" class="compose-option">
+												<img
+													src="resources/template/assets/img/icons/emoji/emoji-1.svg"
+													alt=""> <span>Tag</span>
+											</div>
+										</div>
+										<!-- /General basic options -->
+
+										<!-- Footer buttons -->
+										<div class="more-wrap">
+
+											<!-- Publish button -->
+											<button id="publish-button" type="button"
+												class="button is-solid accent-button is-fullwidth is-disabled">Publish</button>
+										</div>
 									</div>
 								</div>
 							</div>
+						</form>
+
+						<!-------------- 검색 태그 부분------------ -->
+						<label class="nicelabel-default-position"> <span
+							class="search-label" id="allSearch">최신글</span> <span
+							class="search-label" id="searchNear">내 근처</span> <span
+							class="search-label" id="searchTag">태그</span> <span
+							class="search-label" id="searchKo">한국어</span> <span
+							class="search-label" id="searchEn">영어</span>
+						</label>
+
+						<div id="SearchDiv" class="control has-margin"
+							style="display: none;">
+							<input type="text" id="tagInput" class="input"
+								placeholder="태그를 입력해 주세요">
+							<div class="icon">
+								<i data-feather="search"></i>
+							</div>
+							<div class="close-icon is-main">
+								<i data-feather="x"></i>
+							</div>
 						</div>
-					</form>
-					
-					<!-------------- 검색 태그 부분------------ -->
-		 				<label class="nicelabel-default-position">
-		 					<span class="search-label" id="allSearch">최신글</span>
-							<span class="search-label" id="searchNear">내 근처</span>
-							<span class="search-label" id="searchTag">태그</span>
-							<span class="search-label" id="searchKo">한국어</span>
-							<span class="search-label" id="searchEn">영어</span>
-						</label> 
-						
-						<div id="SearchDiv"
-								class="control has-margin" style="display: none;">
-								<input  type="text" id="tagInput" class="input" placeholder="태그를 입력해 주세요">
-								<div class="icon">
-									<i data-feather="search"></i>
-								</div>
-								<div class="close-icon is-main">
-									<i data-feather="x"></i>
-								</div>
-						</div>
-						
+
 						<div class="feedContents">
-						<!------------------------ 포스트 시작 ------------------------->
-						<c:forEach items="${feedList }" var="vo">
-							<div id="feed-post-1" class="card is-post">
-								<!-- Main wrap -->
-								<div class="content-wrap">
-									<!-- Post header -->
-									<div class="card-heading">
-										<!-- User meta -->
-										<div class="user-block">
-											<div class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/dan.jpg"
-													data-user-popover="1" alt="">
-											</div>
-											<div class="user-info" id="${vo.feed_id }">
-												<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a> <span class="time">
-												<script type="text/javascript">														
-														document.write(timeForToday('${vo.reg_date}'));
-												</script> </span>
-											</div>
-										</div>
-										<!-- Right side dropdown -->
-										<!-- /partials/pages/feed/dropdowns/feed-post-dropdown.html -->
-										<div
-											class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-											<div>
-												<div class="button">
-													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>												</div>
-												</div>
-											<div class="dropdown-menu" role="menu">
-												<div class="dropdown-content">
-													<a href="#" class="dropdown-item">
-														<div class="media" >
-															<i data-feather="bookmark"></i>
-															<div class="media-content" id="${vo.content }" onclick="trans('${vo.feed_id }','${vo.content }')">
-																<h3>번역</h3>
-															</div>
-														</div>
-													</a> <a class="dropdown-item">
-														<div class="media">
-															<i data-feather="bell"></i>
-															<div class="media-content">
-																<h3>교정</h3>
-															</div>
-														</div>
-													</a>
-												<c:if test="${vo.user_id ne user.user_id}">
-													<hr class="dropdown-divider">
-													<a class="dropdown-item">
-														<div class="media">
-															<i data-feather="bell"></i>
-															<div class="media-content">
-																<h3>신고</h3>
-															</div>
-														</div>
-													</a>
-												</c:if>													
-												<c:if test="${vo.user_id eq user.user_id}">
-													<hr class="dropdown-divider">
-													<a class="dropdown-item">
-														<div class="media feedUpdate" id="${vo.feed_id }">
-															<i data-feather="bell"></i>
-															<div class="media-content" >
-															<input type="hidden" id="update-tag" name="update-tag" value="${vo.tags }">
-															<input type="hidden" id="update-content" name="update-content" value="${vo.content }">
-															<input type="hidden" id="update-photo" name="update-photo" value="${vo.uuid }">
-															<input type="hidden" id="update-fphoto" name="update-fphoto" value="${vo.fphoto }">
-																<h3>수정</h3>
-															</div>
-														</div>
-													<a href="#" class="dropdown-item">
-														<div class="media">
-															<i data-feather="flag"></i>
-															<div class="media-content" onclick="location.href='feedDelete.do?feed_id=${vo.feed_id }'">
-																<h3>삭제</h3>
-															</div>
-														</div>
-													</a>	
-												</c:if>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- /Post header -->
-									<!-- Post body -->
-									<div class="card-body">
-										<!-- Post body text -->
-										<div class="post-text">
-											<p>${vo.content }</p>
-											<div class="tdiv" id="tdiv${vo.feed_id }"></div>
-											<div class="twdiv" id="${vo.write_lan }"></div>
-										</div>
-										<!-- Featured image -->
-										<c:if test="${empty vo.fphoto}">
-											<div class="post-image"
-												style="margin-bottom: 50px; margin-top: 30px">
-												<!-- Action buttons -->
-												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-												<div class="like-wrapper">
-													<a class="like-button" onclick="likeIt('${vo.feed_id}'); return false;"> <i
-														class="mdi mdi-heart not-liked bouncy"></i> <i
-														class="mdi mdi-heart is-liked bouncy"></i> <span
-														class="like-overlay"></span>
-													</a>
-												</div>
-												<div class="fab-wrapper is-comment">
-													<a href="javascript:void(0);" class="small-fab"> 
-													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-													</a>
-												</div>
-											</div>
-										</c:if>
-										<c:if test="${not empty vo.fphoto}">
-											<div class="post-image">
-												 <img
-													src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}' alt=""/>
-												<!-- Action buttons -->
-												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-												<div class="like-wrapper">
-													<a  class="like-button" onclick="likeIt('${vo.feed_id}'); return false;"> <i
-														class="mdi mdi-heart not-liked bouncy"></i> <i
-														class="mdi mdi-heart is-liked bouncy"></i> <span
-														class="like-overlay"></span>
-													</a>
-												</div>
-												<div class="fab-wrapper is-comment">
-													<a href="javascript:void(0);" class="small-fab"> 
-													<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-													</a>
-												</div>
-											</div>
-										</c:if>
-										<div>
-											<p>
-											<c:if test="${not empty vo.tags }">
-												<a>#${fn:replace(vo.tags,',','#')}</a>
-											</c:if>
-											</p>
-										</div>
-									</div>
-									<!-- /Post body -->
-
-									<!-- Post footer -->
-									<div class="card-footer">
-										<!-- Followers avatars -->
-										<div class="likers-group">
-											<img src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/dan.jpg"
-												data-user-popover="1" alt=""> <img
-												src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/david.jpg"
-												data-user-popover="4" alt=""> <img
-												src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/edward.jpeg"
-												data-user-popover="5" alt=""> <img
-												src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/milly.jpg"
-												data-user-popover="7" alt="">
-										</div>
-
-										<!-- Followers text -->
-										<div class="likers-text">
-											<p>
-												
-											</p>
-										</div>
-
-										<!-- Post statistics -->
-										<div class="social-count">
-											<div class="comments-count" >
-												<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-												<span>3</span>
-											</div>
-											<div class="likes-count" id="like-count${vo.feed_id }">
-												<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-												<span id="recCnt${vo.feed_id }">
-												<script type="text/javascript">														
-														recCount('${vo.feed_id}');
-												</script>
-												</span>
-											</div>
-										</div>
-									</div>
-									<!-- /Post footer -->
-								</div>
-								<!-- /Main wrap -->
-
-								<!-- Post #1 Comments -->
-								<div class="comments-wrap is-hidden">
-									<!-- Header -->
-									<div class="comments-heading">
-										<h4>
-											Comments <small>(8)</small>
-										</h4>
-										<div class="close-comments">
-											<i data-feather="x"></i>
-										</div>
-									</div>
-									<!-- /Header -->
-
-									<!-- Comments body -->
-									<div class="comments-body has-slimscroll">
-
-										<!-- Comment -->
-										<div class="media is-comment">
-											<!-- User image -->
-											<div class="media-left">
+							<!------------------------ 포스트 시작 ------------------------->
+							<c:forEach items="${feedList }" var="vo">
+								<div id="feed-post-1" class="card is-post">
+									<!-- Main wrap -->
+									<div class="content-wrap">
+										<!-- Post header -->
+										<div class="card-heading">
+											<!-- User meta -->
+											<div class="user-block">
 												<div class="image">
 													<img src="https://via.placeholder.com/300x300"
 														data-demo-src="assets/img/avatars/dan.jpg"
 														data-user-popover="1" alt="">
 												</div>
-											</div>
-											<!-- Content -->
-											<div class="media-content">
-												<a href="#">Dan Walker</a> <span class="time">28
-													minutes ago</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-													elit, sed do eiusmod tempo incididunt ut labore et dolore
-													magna aliqua. Ut enim ad minim veniam, quis nostrud
-													exercitation ullamco laboris consequat.</p>
-												<!-- Actions -->
-												<div class="controls">
-													<div class="like-count">
-														<i data-feather="thumbs-up"></i> <span>4</span>
-													</div>
-													<div class="reply">
-														<a href="#">Reply</a>
-													</div>
-													<div class="edit">
-														<a href="#">Edit</a>
-													</div>
+												<div class="user-info" id="${vo.feed_id }">
+													<a href="#">${vo.feed_id } : ${vo.name } :
+														${vo.write_lan } </a> <span class="time"> <script
+															type="text/javascript">														
+														document.write(timeForToday('${vo.reg_date}'));
+												</script>
+													</span>
 												</div>
-
-												<!-- Nested Comment -->
-												<div class="media is-comment">
-													<!-- User image -->
-													<div class="media-left">
-														<div class="image">
-															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/david.jpg"
-																data-user-popover="4" alt="">
-														</div>
-													</div>
-													<!-- Content -->
-													<div class="media-content">
-														<a href="#">David Kim</a> <span class="time">15
-															minutes ago</span>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-															elit, sed do eiusmod tempo incididunt ut labore et dolore
-															magna aliqua.</p>
-														<!-- Actions -->
-														<div class="controls">
-															<div class="like-count">
-																<i data-feather="thumbs-up"></i> <span>0</span>
-															</div>
-															<div class="reply">
-																<a href="#">Reply</a>
-															</div>
-														</div>
-													</div>
-													<!-- Right side dropdown -->
-													<div class="media-right">
-														<div
-															class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-															<div>
-																<div class="button">
-																	<i data-feather="more-vertical"></i>
-																</div>
-															</div>
-															<div class="dropdown-menu" role="menu">
-																<div class="dropdown-content">
-																	<a class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="x"></i>
-																			<div class="media-content">
-																				<h3>Hide</h3>
-																				<small>Hide this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																	<div class="dropdown-divider"></div>
-																	<a href="#" class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="flag"></i>
-																			<div class="media-content">
-																				<h3>Report</h3>
-																				<small>Report this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- /Nested Comment -->
-
 											</div>
 											<!-- Right side dropdown -->
-											<div class="media-right">
-												<!-- /partials/pages/feed/dropdowns/comment-dropdown.html -->
-												<div
-													class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-													<div>
-														<div class="button">
-															<i data-feather="more-vertical"></i>
-														</div>
+											<!-- /partials/pages/feed/dropdowns/feed-post-dropdown.html -->
+											<div
+												class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+												<div>
+													<div class="button">
+														<svg viewBox="0 0 24 24" width="24" height="24"
+															stroke="currentColor" stroke-width="2" fill="none"
+															stroke-linecap="round" stroke-linejoin="round"
+															class="css-i6dzq1">
+															<line x1="8" y1="6" x2="21" y2="6"></line>
+															<line x1="8" y1="12" x2="21" y2="12"></line>
+															<line x1="8" y1="18" x2="21" y2="18"></line>
+															<line x1="3" y1="6" x2="3.01" y2="6"></line>
+															<line x1="3" y1="12" x2="3.01" y2="12"></line>
+															<line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
 													</div>
-													<div class="dropdown-menu" role="menu">
-														<div class="dropdown-content">
+												</div>
+												<div class="dropdown-menu" role="menu">
+													<div class="dropdown-content">
+														<a href="#" class="dropdown-item">
+															<div class="media">
+																<i data-feather="bookmark"></i>
+																<div class="media-content" id="${vo.content }"
+																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
+																	<h3>번역</h3>
+																</div>
+															</div>
+														</a> <a class="dropdown-item">
+															<div class="media">
+																<i data-feather="bell"></i>
+																<div class="media-content">
+																	<h3>교정</h3>
+																</div>
+															</div>
+														</a>
+														<c:if test="${vo.user_id ne user.user_id}">
+															<hr class="dropdown-divider">
 															<a class="dropdown-item">
 																<div class="media">
-																	<i data-feather="x"></i>
+																	<i data-feather="bell"></i>
 																	<div class="media-content">
-																		<h3>Hide</h3>
-																		<small>Hide this comment.</small>
+																		<h3>신고</h3>
 																	</div>
 																</div>
 															</a>
-															<div class="dropdown-divider"></div>
-															<a href="#" class="dropdown-item">
-																<div class="media">
-																	<i data-feather="flag"></i>
+														</c:if>
+														<c:if test="${vo.user_id eq user.user_id}">
+															<hr class="dropdown-divider">
+															<a class="dropdown-item">
+																<div class="media feedUpdate" id="update${vo.feed_id }">
+																	<i data-feather="bell"></i>
 																	<div class="media-content">
-																		<h3>Report</h3>
-																		<small>Report this comment.</small>
+																		<input type="hidden" id="update-tag" name="update-tag"
+																			value="${vo.tags }"> <input type="hidden"
+																			id="update-content" name="update-content"
+																			value="${vo.content }"> <input type="hidden"
+																			id="update-photo" name="update-photo"
+																			value="${vo.uuid }"> <input type="hidden"
+																			id="update-fphoto" name="update-fphoto"
+																			value="${vo.fphoto }">
+																		<h3>수정</h3>
 																	</div>
-																</div>
+																</div> <a href="#" class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="flag"></i>
+																		<div class="media-content"
+																			onclick="location.href='feedDelete.do?feed_id=${vo.feed_id }'">
+																			<h3>삭제</h3>
+																		</div>
+																	</div>
 															</a>
-														</div>
+														</c:if>
 													</div>
 												</div>
 											</div>
 										</div>
-										<!-- /Comment -->
-
-										<!-- Comment -->
-										<div class="media is-comment">
-											<!-- User image -->
-											<div class="media-left">
-												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/rolf.jpg"
-														data-user-popover="13" alt="">
-												</div>
+										<!-- /Post header -->
+										<!-- Post body -->
+										<div class="card-body">
+											<!-- Post body text -->
+											<div class="post-text">
+												<p>${vo.content }</p>
+												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
+												<div class="twdiv" id="${vo.write_lan }"></div>
 											</div>
-											<!-- Content -->
-											<div class="media-content">
-												<a href="#">Rolf Krupp</a> <span class="time">9 hours
-													ago</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-													elit, sed do eiusmod tempo incididunt ut labore et dolore
-													magna aliqua. Exercitation ullamco laboris consequat.</p>
-												<!-- Actions -->
-												<div class="controls">
-													<div class="like-count">
-														<i data-feather="thumbs-up"></i> <span>2</span>
+											<!-- Featured image -->
+											<c:if test="${empty vo.fphoto}">
+												<div class="post-image"
+													style="margin-bottom: 50px; margin-top: 30px">
+													<!-- Action buttons -->
+													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+													<div class="like-wrapper">
+														<a class="like-button"
+															onclick="likeIt('${vo.feed_id}'); return false;"> <i
+															class="mdi mdi-heart not-liked bouncy"></i> <i
+															class="mdi mdi-heart is-liked bouncy"></i> <span
+															class="like-overlay"></span>
+														</a>
 													</div>
-													<div class="reply">
-														<a href="#">Reply</a>
-													</div>
-												</div>
-
-												<!-- Nested Comment -->
-												<div class="media is-comment">
-													<!-- User image -->
-													<div class="media-left">
-														<div class="image">
-															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/elise.jpg"
-																data-user-popover="6" alt="">
-														</div>
-													</div>
-													<!-- Content -->
-													<div class="media-content">
-														<a href="#">Elise Walker</a> <span class="time">8
-															hours ago</span>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-															elit, sed do eiusmod tempo incididunt ut labore et dolore
-															magna aliqua.</p>
-														<!-- Actions -->
-														<div class="controls">
-															<div class="like-count">
-																<i data-feather="thumbs-up"></i> <span>0</span>
-															</div>
-															<div class="reply">
-																<a href="#">Reply</a>
-															</div>
-														</div>
-													</div>
-													<!-- Right side dropdown -->
-													<div class="media-right">
-														<div
-															class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-															<div>
-																<div class="button">
-																	<i data-feather="more-vertical"></i>
-																</div>
-															</div>
-															<div class="dropdown-menu" role="menu">
-																<div class="dropdown-content">
-																	<a class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="x"></i>
-																			<div class="media-content">
-																				<h3>Hide</h3>
-																				<small>Hide this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																	<div class="dropdown-divider"></div>
-																	<a href="#" class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="flag"></i>
-																			<div class="media-content">
-																				<h3>Report</h3>
-																				<small>Report this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																</div>
-															</div>
-														</div>
+													<div class="fab-wrapper is-comment">
+														<a href="javascript:void(0);" class="small-fab"> <svg
+																viewBox="0 0 24 24" width="24" height="24"
+																stroke="currentColor" stroke-width="2" fill="none"
+																stroke-linecap="round" stroke-linejoin="round"
+																class="css-i6dzq1">
+																<path
+																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+														</a>
 													</div>
 												</div>
-												<!-- /Nested Comment -->
-
-												<!-- Nested Comment -->
-												<div class="media is-comment">
-													<!-- User image -->
-													<div class="media-left">
-														<div class="image">
-															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/rolf.jpg"
-																data-user-popover="13" alt="">
-														</div>
+											</c:if>
+											<c:if test="${not empty vo.fphoto}">
+												<div class="post-image">
+													<img
+														src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
+														alt="" />
+													<!-- Action buttons -->
+													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+													<div class="like-wrapper">
+														<a class="like-button"
+															onclick="likeIt('${vo.feed_id}'); return false;"> <i
+															class="mdi mdi-heart not-liked bouncy"></i> <i
+															class="mdi mdi-heart is-liked bouncy"></i> <span
+															class="like-overlay"></span>
+														</a>
 													</div>
-													<!-- Content -->
-													<div class="media-content">
-														<a href="#">Rolf Krupp</a> <span class="time">7
-															hours ago</span>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-															elit, sed do eiusmod tempo incididunt ut labore et dolore
-															magna aliqua.</p>
-														<!-- Actions -->
-														<div class="controls">
-															<div class="like-count">
-																<i data-feather="thumbs-up"></i> <span>1</span>
-															</div>
-															<div class="reply">
-																<a href="#">Reply</a>
-															</div>
-														</div>
-													</div>
-													<!-- Right side dropdown -->
-													<div class="media-right">
-														<div
-															class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-															<div>
-																<div class="button">
-																	<i data-feather="more-vertical"></i>
-																</div>
-															</div>
-															<div class="dropdown-menu" role="menu">
-																<div class="dropdown-content">
-																	<a class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="x"></i>
-																			<div class="media-content">
-																				<h3>Hide</h3>
-																				<small>Hide this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																	<div class="dropdown-divider"></div>
-																	<a href="#" class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="flag"></i>
-																			<div class="media-content">
-																				<h3>Report</h3>
-																				<small>Report this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																</div>
-															</div>
-														</div>
+													<div class="fab-wrapper is-comment">
+														<a href="javascript:void(0);" class="small-fab"> <svg
+																viewBox="0 0 24 24" width="24" height="24"
+																stroke="currentColor" stroke-width="2" fill="none"
+																stroke-linecap="round" stroke-linejoin="round"
+																class="css-i6dzq1">
+																<path
+																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+														</a>
 													</div>
 												</div>
-												<!-- /Nested Comment -->
-
-												<!-- Nested Comment -->
-												<div class="media is-comment">
-													<!-- User image -->
-													<div class="media-left">
-														<div class="image">
-															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/elise.jpg"
-																data-user-popover="6" alt="">
-														</div>
-													</div>
-													<!-- Content -->
-													<div class="media-content">
-														<a href="#">Elise Walker</a> <span class="time">6
-															hours ago</span>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-															elit, sed do eiusmod tempo incididunt ut labore et dolore
-															magna aliqua.</p>
-														<!-- Actions -->
-														<div class="controls">
-															<div class="like-count">
-																<i data-feather="thumbs-up"></i> <span>0</span>
-															</div>
-															<div class="reply">
-																<a href="#">Reply</a>
-															</div>
-														</div>
-													</div>
-													<!-- Right side dropdown -->
-													<div class="media-right">
-														<div
-															class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-															<div>
-																<div class="button">
-																	<i data-feather="more-vertical"></i>
-																</div>
-															</div>
-															<div class="dropdown-menu" role="menu">
-																<div class="dropdown-content">
-																	<a class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="x"></i>
-																			<div class="media-content">
-																				<h3>Hide</h3>
-																				<small>Hide this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																	<div class="dropdown-divider"></div>
-																	<a href="#" class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="flag"></i>
-																			<div class="media-content">
-																				<h3>Report</h3>
-																				<small>Report this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- /Nested Comment -->
-
+											</c:if>
+											<div>
+												<p>
+													<c:if test="${not empty vo.tags }">
+														<a>#${fn:replace(vo.tags,',','#')}</a>
+													</c:if>
+												</p>
 											</div>
-											<!-- Right side dropdown -->
-											<div class="media-right">
-												<div
-													class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-													<div>
-														<div class="button">
-															<i data-feather="more-vertical"></i>
-														</div>
-													</div>
-													<div class="dropdown-menu" role="menu">
-														<div class="dropdown-content">
-															<a class="dropdown-item">
-																<div class="media">
-																	<i data-feather="x"></i>
-																	<div class="media-content">
-																		<h3>Hide</h3>
-																		<small>Hide this comment.</small>
-																	</div>
-																</div>
-															</a>
-															<div class="dropdown-divider"></div>
-															<a href="#" class="dropdown-item">
-																<div class="media">
-																	<i data-feather="flag"></i>
-																	<div class="media-content">
-																		<h3>Report</h3>
-																		<small>Report this comment.</small>
-																	</div>
-																</div>
-															</a>
-														</div>
-													</div>
+										</div>
+										<!-- /Post body -->
+
+										<!-- Post footer -->
+										<div class="card-footer">
+											<!-- Followers avatars -->
+											<div class="likers-group">
+												<img src="https://via.placeholder.com/300x300"
+													data-demo-src="assets/img/avatars/dan.jpg"
+													data-user-popover="1" alt=""> <img
+													src="https://via.placeholder.com/300x300"
+													data-demo-src="assets/img/avatars/david.jpg"
+													data-user-popover="4" alt=""> <img
+													src="https://via.placeholder.com/300x300"
+													data-demo-src="assets/img/avatars/edward.jpeg"
+													data-user-popover="5" alt=""> <img
+													src="https://via.placeholder.com/300x300"
+													data-demo-src="assets/img/avatars/milly.jpg"
+													data-user-popover="7" alt="">
+											</div>
+
+											<!-- Followers text -->
+											<div class="likers-text">
+												<p></p>
+											</div>
+
+											<!-- Post statistics -->
+											<div class="social-count">
+												<div class="comments-count">
+													<svg viewBox="0 0 24 24" width="24" height="24"
+														stroke="currentColor" stroke-width="2" fill="none"
+														stroke-linecap="round" stroke-linejoin="round"
+														class="css-i6dzq1">
+														<path
+															d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+													<span>3</span>
+												</div>
+												<div class="likes-count" id="like-count${vo.feed_id }">
+													<svg viewBox="0 0 24 24" width="24" height="24"
+														stroke="currentColor" stroke-width="2" fill="none"
+														stroke-linecap="round" stroke-linejoin="round"
+														class="css-i6dzq1">
+														<path
+															d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+													<span id="recCnt${vo.feed_id }"> <script
+															type="text/javascript">														
+														recCount('${vo.feed_id}');
+												</script>
+													</span>
 												</div>
 											</div>
 										</div>
-										<!-- /Comment -->
-
-										<!-- Comment -->
-										<div class="media is-comment">
-											<!-- User image -->
-											<div class="media-left">
-												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/lana.jpeg"
-														data-user-popover="10" alt="">
-												</div>
-											</div>
-											<!-- Content -->
-											<div class="media-content">
-												<a href="#">Lana Henrikssen</a> <span class="time">10
-													hours ago</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-													elit, sed do eiusmod tempo incididunt ut labore et dolore
-													magna aliqua.</p>
-												<!-- Comment actions -->
-												<div class="controls">
-													<div class="like-count">
-														<i data-feather="thumbs-up"></i> <span>5</span>
-													</div>
-													<div class="reply">
-														<a href="#">Reply</a>
-													</div>
-												</div>
-											</div>
-											<!-- Right side dropdown -->
-											<div class="media-right">
-												<div
-													class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-													<div>
-														<div class="button">
-															<i data-feather="more-vertical"></i>
-														</div>
-													</div>
-													<div class="dropdown-menu" role="menu">
-														<div class="dropdown-content">
-															<a class="dropdown-item">
-																<div class="media">
-																	<i data-feather="x"></i>
-																	<div class="media-content">
-																		<h3>Hide</h3>
-																		<small>Hide this comment.</small>
-																	</div>
-																</div>
-															</a>
-															<div class="dropdown-divider"></div>
-															<a href="#" class="dropdown-item">
-																<div class="media">
-																	<i data-feather="flag"></i>
-																	<div class="media-content">
-																		<h3>Report</h3>
-																		<small>Report this comment.</small>
-																	</div>
-																</div>
-															</a>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- /Comment -->
-
+										<!-- /Post footer -->
 									</div>
-									<!-- /Comments body -->
+									<!-- /Main wrap -->
 
-									<!-- Comments footer -->
-									<div class="card-footer">
-										<div class="media post-comment has-emojis">
-											<!-- Comment Textarea -->
-											<div class="media-content">
-												<div class="field">
-													<p class="control">
-														<textarea class="textarea comment-textarea" rows="5"
-															placeholder="Write a comment..."></textarea>
-													</p>
-												</div>
-												<!-- Additional actions -->
-												<div class="actions">
-													<div class="image is-32x32">
-														<img class="is-rounded"
-															src="https://via.placeholder.com/300x300"
-															data-demo-src="assets/img/avatars/jenna.png"
-															data-user-popover="0" alt="">
+									<!-- Post #1 Comments -->
+									<div class="comments-wrap is-hidden">
+										<!-- Header -->
+										<div class="comments-heading">
+											<h4>
+												Comments <small>(8)</small>
+											</h4>
+											<div class="close-comments">
+												<svg viewBox="0 0 24 24" width="24" height="24"
+													stroke="currentColor" stroke-width="2" fill="none"
+													stroke-linecap="round" stroke-linejoin="round"
+													class="css-i6dzq1">
+													<line x1="18" y1="6" x2="6" y2="18"></line>
+													<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+												</i>
+											</div>
+										</div>
+										<!-- /Header -->
+
+										<!-- Comments body -->
+										<div class="comments-body has-slimscroll">
+
+											<!-- Comment -->
+											<div class="media is-comment">
+												<!-- User image -->
+												<div class="media-left">
+													<div class="image">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/dan.jpg"
+															data-user-popover="1" alt="">
 													</div>
-													<div class="toolbar">
-														<div class="action is-auto">
-															<i data-feather="at-sign"></i>
+												</div>
+												<!-- Content -->
+												<div class="media-content">
+													<a href="#">Dan Walker</a> <span class="time">28
+														minutes ago</span>
+													<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+														elit, sed do eiusmod tempo incididunt ut labore et dolore
+														magna aliqua. Ut enim ad minim veniam, quis nostrud
+														exercitation ullamco laboris consequat.</p>
+													<!-- Actions -->
+													<div class="controls">
+														<div class="like-count">
+															<i data-feather="thumbs-up"></i> <span>4</span>
 														</div>
-														<div class="action is-emoji">
-															<i data-feather="smile"></i>
+														<div class="reply">
+															<a href="#">Reply</a>
 														</div>
-														<div class="action is-upload">
-															<i data-feather="camera"></i> 
+														<div class="edit">
+															<a href="#">Edit</a>
 														</div>
-														<a class="button is-solid primary-button raised">Post
-															Comment</a>
+													</div>
+
+													<!-- Nested Comment -->
+													<div class="media is-comment">
+														<!-- User image -->
+														<div class="media-left">
+															<div class="image">
+																<img src="https://via.placeholder.com/300x300"
+																	data-demo-src="assets/img/avatars/david.jpg"
+																	data-user-popover="4" alt="">
+															</div>
+														</div>
+														<!-- Content -->
+														<div class="media-content">
+															<a href="#">David Kim</a> <span class="time">15
+																minutes ago</span>
+															<p>Lorem ipsum dolor sit amet, consectetur
+																adipisicing elit, sed do eiusmod tempo incididunt ut
+																labore et dolore magna aliqua.</p>
+															<!-- Actions -->
+															<div class="controls">
+																<div class="like-count">
+																	<i data-feather="thumbs-up"></i> <span>0</span>
+																</div>
+																<div class="reply">
+																	<a href="#">Reply</a>
+																</div>
+															</div>
+														</div>
+														<!-- Right side dropdown -->
+														<div class="media-right">
+															<div
+																class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																<div>
+																	<div class="button">
+																		<i data-feather="more-vertical"></i>
+																	</div>
+																</div>
+																<div class="dropdown-menu" role="menu">
+																	<div class="dropdown-content">
+																		<a class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="x"></i>
+																				<div class="media-content">
+																					<h3>Hide</h3>
+																					<small>Hide this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																		<div class="dropdown-divider"></div>
+																		<a href="#" class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="flag"></i>
+																				<div class="media-content">
+																					<h3>Report</h3>
+																					<small>Report this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- /Nested Comment -->
+
+												</div>
+												<!-- Right side dropdown -->
+												<div class="media-right">
+													<!-- /partials/pages/feed/dropdowns/comment-dropdown.html -->
+													<div
+														class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+														<div>
+															<div class="button">
+																<i data-feather="more-vertical"></i>
+															</div>
+														</div>
+														<div class="dropdown-menu" role="menu">
+															<div class="dropdown-content">
+																<a class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="x"></i>
+																		<div class="media-content">
+																			<h3>Hide</h3>
+																			<small>Hide this comment.</small>
+																		</div>
+																	</div>
+																</a>
+																<div class="dropdown-divider"></div>
+																<a href="#" class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="flag"></i>
+																		<div class="media-content">
+																			<h3>Report</h3>
+																			<small>Report this comment.</small>
+																		</div>
+																	</div>
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- /Comment -->
+
+											<!-- Comment -->
+											<div class="media is-comment">
+												<!-- User image -->
+												<div class="media-left">
+													<div class="image">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/rolf.jpg"
+															data-user-popover="13" alt="">
+													</div>
+												</div>
+												<!-- Content -->
+												<div class="media-content">
+													<a href="#">Rolf Krupp</a> <span class="time">9
+														hours ago</span>
+													<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+														elit, sed do eiusmod tempo incididunt ut labore et dolore
+														magna aliqua. Exercitation ullamco laboris consequat.</p>
+													<!-- Actions -->
+													<div class="controls">
+														<div class="like-count">
+															<i data-feather="thumbs-up"></i> <span>2</span>
+														</div>
+														<div class="reply">
+															<a href="#">Reply</a>
+														</div>
+													</div>
+
+													<!-- Nested Comment -->
+													<div class="media is-comment">
+														<!-- User image -->
+														<div class="media-left">
+															<div class="image">
+																<img src="https://via.placeholder.com/300x300"
+																	data-demo-src="assets/img/avatars/elise.jpg"
+																	data-user-popover="6" alt="">
+															</div>
+														</div>
+														<!-- Content -->
+														<div class="media-content">
+															<a href="#">Elise Walker</a> <span class="time">8
+																hours ago</span>
+															<p>Lorem ipsum dolor sit amet, consectetur
+																adipisicing elit, sed do eiusmod tempo incididunt ut
+																labore et dolore magna aliqua.</p>
+															<!-- Actions -->
+															<div class="controls">
+																<div class="like-count">
+																	<i data-feather="thumbs-up"></i> <span>0</span>
+																</div>
+																<div class="reply">
+																	<a href="#">Reply</a>
+																</div>
+															</div>
+														</div>
+														<!-- Right side dropdown -->
+														<div class="media-right">
+															<div
+																class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																<div>
+																	<div class="button">
+																		<i data-feather="more-vertical"></i>
+																	</div>
+																</div>
+																<div class="dropdown-menu" role="menu">
+																	<div class="dropdown-content">
+																		<a class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="x"></i>
+																				<div class="media-content">
+																					<h3>Hide</h3>
+																					<small>Hide this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																		<div class="dropdown-divider"></div>
+																		<a href="#" class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="flag"></i>
+																				<div class="media-content">
+																					<h3>Report</h3>
+																					<small>Report this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- /Nested Comment -->
+
+													<!-- Nested Comment -->
+													<div class="media is-comment">
+														<!-- User image -->
+														<div class="media-left">
+															<div class="image">
+																<img src="https://via.placeholder.com/300x300"
+																	data-demo-src="assets/img/avatars/rolf.jpg"
+																	data-user-popover="13" alt="">
+															</div>
+														</div>
+														<!-- Content -->
+														<div class="media-content">
+															<a href="#">Rolf Krupp</a> <span class="time">7
+																hours ago</span>
+															<p>Lorem ipsum dolor sit amet, consectetur
+																adipisicing elit, sed do eiusmod tempo incididunt ut
+																labore et dolore magna aliqua.</p>
+															<!-- Actions -->
+															<div class="controls">
+																<div class="like-count">
+																	<i data-feather="thumbs-up"></i> <span>1</span>
+																</div>
+																<div class="reply">
+																	<a href="#">Reply</a>
+																</div>
+															</div>
+														</div>
+														<!-- Right side dropdown -->
+														<div class="media-right">
+															<div
+																class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																<div>
+																	<div class="button">
+																		<i data-feather="more-vertical"></i>
+																	</div>
+																</div>
+																<div class="dropdown-menu" role="menu">
+																	<div class="dropdown-content">
+																		<a class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="x"></i>
+																				<div class="media-content">
+																					<h3>Hide</h3>
+																					<small>Hide this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																		<div class="dropdown-divider"></div>
+																		<a href="#" class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="flag"></i>
+																				<div class="media-content">
+																					<h3>Report</h3>
+																					<small>Report this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- /Nested Comment -->
+
+													<!-- Nested Comment -->
+													<div class="media is-comment">
+														<!-- User image -->
+														<div class="media-left">
+															<div class="image">
+																<img src="https://via.placeholder.com/300x300"
+																	data-demo-src="assets/img/avatars/elise.jpg"
+																	data-user-popover="6" alt="">
+															</div>
+														</div>
+														<!-- Content -->
+														<div class="media-content">
+															<a href="#">Elise Walker</a> <span class="time">6
+																hours ago</span>
+															<p>Lorem ipsum dolor sit amet, consectetur
+																adipisicing elit, sed do eiusmod tempo incididunt ut
+																labore et dolore magna aliqua.</p>
+															<!-- Actions -->
+															<div class="controls">
+																<div class="like-count">
+																	<i data-feather="thumbs-up"></i> <span>0</span>
+																</div>
+																<div class="reply">
+																	<a href="#">Reply</a>
+																</div>
+															</div>
+														</div>
+														<!-- Right side dropdown -->
+														<div class="media-right">
+															<div
+																class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																<div>
+																	<div class="button">
+																		<i data-feather="more-vertical"></i>
+																	</div>
+																</div>
+																<div class="dropdown-menu" role="menu">
+																	<div class="dropdown-content">
+																		<a class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="x"></i>
+																				<div class="media-content">
+																					<h3>Hide</h3>
+																					<small>Hide this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																		<div class="dropdown-divider"></div>
+																		<a href="#" class="dropdown-item">
+																			<div class="media">
+																				<i data-feather="flag"></i>
+																				<div class="media-content">
+																					<h3>Report</h3>
+																					<small>Report this comment.</small>
+																				</div>
+																			</div>
+																		</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<!-- /Nested Comment -->
+
+												</div>
+												<!-- Right side dropdown -->
+												<div class="media-right">
+													<div
+														class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+														<div>
+															<div class="button">
+																<i data-feather="more-vertical"></i>
+															</div>
+														</div>
+														<div class="dropdown-menu" role="menu">
+															<div class="dropdown-content">
+																<a class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="x"></i>
+																		<div class="media-content">
+																			<h3>Hide</h3>
+																			<small>Hide this comment.</small>
+																		</div>
+																	</div>
+																</a>
+																<div class="dropdown-divider"></div>
+																<a href="#" class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="flag"></i>
+																		<div class="media-content">
+																			<h3>Report</h3>
+																			<small>Report this comment.</small>
+																		</div>
+																	</div>
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- /Comment -->
+
+											<!-- Comment -->
+											<div class="media is-comment">
+												<!-- User image -->
+												<div class="media-left">
+													<div class="image">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/lana.jpeg"
+															data-user-popover="10" alt="">
+													</div>
+												</div>
+												<!-- Content -->
+												<div class="media-content">
+													<a href="#">Lana Henrikssen</a> <span class="time">10
+														hours ago</span>
+													<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+														elit, sed do eiusmod tempo incididunt ut labore et dolore
+														magna aliqua.</p>
+													<!-- Comment actions -->
+													<div class="controls">
+														<div class="like-count">
+															<i data-feather="thumbs-up"></i> <span>5</span>
+														</div>
+														<div class="reply">
+															<a href="#">Reply</a>
+														</div>
+													</div>
+												</div>
+												<!-- Right side dropdown -->
+												<div class="media-right">
+													<div
+														class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+														<div>
+															<div class="button">
+																<i data-feather="more-vertical"></i>
+															</div>
+														</div>
+														<div class="dropdown-menu" role="menu">
+															<div class="dropdown-content">
+																<a class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="x"></i>
+																		<div class="media-content">
+																			<h3>Hide</h3>
+																			<small>Hide this comment.</small>
+																		</div>
+																	</div>
+																</a>
+																<div class="dropdown-divider"></div>
+																<a href="#" class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="flag"></i>
+																		<div class="media-content">
+																			<h3>Report</h3>
+																			<small>Report this comment.</small>
+																		</div>
+																	</div>
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- /Comment -->
+
+										</div>
+										<!-- /Comments body -->
+
+										<!-- Comments footer -->
+										<div class="card-footer">
+											<div class="media post-comment has-emojis">
+												<!-- Comment Textarea -->
+												<div class="media-content">
+													<div class="field">
+														<p class="control">
+															<textarea class="textarea comment-textarea" rows="5"
+																placeholder="Write a comment..."></textarea>
+														</p>
+													</div>
+													<!-- Additional actions -->
+													<div class="actions">
+														<div class="image is-32x32">
+															<img class="is-rounded"
+																src="https://via.placeholder.com/300x300"
+																data-demo-src="assets/img/avatars/jenna.png"
+																data-user-popover="0" alt="">
+														</div>
+														<div class="toolbar">
+															<div class="action is-auto">
+																<i data-feather="at-sign"></i>
+															</div>
+															<div class="action is-emoji">
+																<i data-feather="smile"></i>
+															</div>
+															<div class="action is-upload">
+																<i data-feather="camera"></i>
+															</div>
+															<a class="button is-solid primary-button raised">Post
+																Comment</a>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
+										<!-- Comments footer -->
 									</div>
-									<!-- Comments footer -->
+									<!-- /Post #1 Comments -->
 								</div>
-								<!-- /Post #1 Comments -->
-							</div>
-						</c:forEach>
-						<!------------------------ 포스트 끝 ------------------------->
-					</div>
+							</c:forEach>
+							<!------------------------ 포스트 끝 ------------------------->
+						</div>
 						<div class=" load-more-wrap narrow-top has-text-centered">
 							<a href="#" class="load-more-button">Load More</a>
 						</div>
@@ -1767,14 +1883,27 @@ $(function(){
 					<!-- Right side column -->
 
 					<div class="column is-3">
-									<!------------------------ 친구추천 시작 ------------------------->
+						<!------------------------ 친구추천 시작 ------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>친구 추천<button onclick="location.href='friendSearch1.do'">친구 찾으러 가쟝 </button></h4>
+								<h4>
+									친구 추천
+									<button onclick="location.href='friendSearch1.do'">친구
+										찾으러 가쟝</button>
+								</h4>
 								<div class="dropdown is-spaced is-right dropdown-trigger">
 									<div>
 										<div class="button">
-											<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+											<svg viewBox="0 0 24 24" width="24" height="24"
+												stroke="currentColor" stroke-width="2" fill="none"
+												stroke-linecap="round" stroke-linejoin="round"
+												class="css-i6dzq1">
+												<line x1="8" y1="6" x2="21" y2="6"></line>
+												<line x1="8" y1="12" x2="21" y2="12"></line>
+												<line x1="8" y1="18" x2="21" y2="18"></line>
+												<line x1="3" y1="6" x2="3.01" y2="6"></line>
+												<line x1="3" y1="12" x2="3.01" y2="12"></line>
+												<line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
 										</div>
 									</div>
 									<div class="dropdown-menu" role="menu">
@@ -1819,10 +1948,19 @@ $(function(){
 												data-demo-src="assets/img/avatars/nelly.png"
 												data-user-popover="9" alt="">
 											<div class="page-meta">
-												<span>${vo.user_id }</span> <span>나와 일치하는 관심사 ${vo.count }개</span>
+												<span>${vo.user_id }</span> <span>나와 일치하는 관심사
+													${vo.count }개</span>
 											</div>
-											<div class="add-friend add-transition" id="${vo.user_id }" onclick="addFriend('${vo.user_id }')">
-												<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+											<div class="add-friend add-transition" id="${vo.user_id }"
+												onclick="addFriend('${vo.user_id }')">
+												<svg viewBox="0 0 24 24" width="24" height="24"
+													stroke="currentColor" stroke-width="2" fill="none"
+													stroke-linecap="round" stroke-linejoin="round"
+													class="css-i6dzq1">
+													<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+													<circle cx="8.5" cy="7" r="4"></circle>
+													<line x1="20" y1="8" x2="20" y2="14"></line>
+													<line x1="23" y1="11" x2="17" y2="11"></line></svg>
 											</div>
 										</div>
 									</c:if>
@@ -1866,7 +2004,7 @@ $(function(){
 							</c:forEach>
 						</div>
 						<!------------------------ 생일 끝 ------------------------->
-		
+
 					</div>
 					<!-- /Right side column -->
 				</div>
@@ -2091,7 +2229,9 @@ $(function(){
 					</div>
 					<div class="card-body">
 						<div class="content-block is-active">
-							<img src="resources/template/assets/img/illustrations/cards/albums.svg" alt="">
+							<img
+								src="resources/template/assets/img/illustrations/cards/albums.svg"
+								alt="">
 							<div class="help-text">
 								<h3>Manage your photos</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -2100,7 +2240,9 @@ $(function(){
 						</div>
 
 						<div class="content-block">
-							<img src="resources/template/assets/img/illustrations/cards/upload.svg" alt="">
+							<img
+								src="resources/template/assets/img/illustrations/cards/upload.svg"
+								alt="">
 							<div class="help-text">
 								<h3>Upload your photos</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -2389,7 +2531,9 @@ $(function(){
 					</div>
 					<div class="card-body">
 						<div class="content-block is-active">
-							<img src="resources/template/assets/img/illustrations/cards/videotrip.svg" alt="">
+							<img
+								src="resources/template/assets/img/illustrations/cards/videotrip.svg"
+								alt="">
 							<div class="help-text">
 								<h3>Share live videos</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -2398,7 +2542,9 @@ $(function(){
 						</div>
 
 						<div class="content-block">
-							<img src="resources/template/assets/img/illustrations/cards/videocall.svg" alt="">
+							<img
+								src="resources/template/assets/img/illustrations/cards/videocall.svg"
+								alt="">
 							<div class="help-text">
 								<h3>To build your audience</h3>
 								<p>Lorem ipsum sit dolor amet is a dummy text used by the
@@ -2459,7 +2605,8 @@ $(function(){
 							<div class="right-section">
 								<div class="header">
 									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+										data-demo-src="resources/template/assets/img/avatars/jenna.png"
+										alt="">
 									<div class="user-meta">
 										<span>Jenna Davis <small>is live</small></span> <span><small>right
 												now</small></span>
@@ -2556,8 +2703,8 @@ $(function(){
 											<div>
 												<div class="avatar-button">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
-													<i data-feather="triangle"></i>
+														data-demo-src="resources/template/assets/img/avatars/jenna.png"
+														alt=""> <i data-feather="triangle"></i>
 												</div>
 											</div>
 											<div class="dropdown-menu has-margin" role="menu">
@@ -2565,7 +2712,8 @@ $(function(){
 													<a href="#" class="dropdown-item is-selected">
 														<div class="media">
 															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+																data-demo-src="resources/template/assets/img/avatars/jenna.png"
+																alt="">
 															<div class="media-content">
 																<h3>Jenna Davis</h3>
 																<small>Interact as Jenna Davis.</small>
@@ -2579,7 +2727,8 @@ $(function(){
 													<a href="#" class="dropdown-item">
 														<div class="media">
 															<img src="https://via.placeholder.com/478x344"
-																data-demo-src="resources/template/assets/img/avatars/hanzo.svg" alt="">
+																data-demo-src="resources/template/assets/img/avatars/hanzo.svg"
+																alt="">
 															<div class="media-content">
 																<h3>Css Ninja</h3>
 																<small>Interact as Css Ninja.</small>
@@ -2607,8 +2756,8 @@ $(function(){
 											<figure class="media-left">
 												<p class="image is-32x32">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt=""
-														data-user-popover="1">
+														data-demo-src="resources/template/assets/img/avatars/dan.jpg"
+														alt="" data-user-popover="1">
 												</p>
 											</figure>
 											<div class="media-content">
@@ -2626,8 +2775,8 @@ $(function(){
 											<figure class="media-left">
 												<p class="image is-32x32">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="resources/template/assets/img/avatars/david.jpg" alt=""
-														data-user-popover="4">
+														data-demo-src="resources/template/assets/img/avatars/david.jpg"
+														alt="" data-user-popover="4">
 												</p>
 											</figure>
 											<div class="media-content">
@@ -2644,8 +2793,8 @@ $(function(){
 											<figure class="media-left">
 												<p class="image is-32x32">
 													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="resources/template/assets/img/avatars/rolf.jpg" alt=""
-														data-user-popover="17">
+														data-demo-src="resources/template/assets/img/avatars/rolf.jpg"
+														alt="" data-user-popover="17">
 												</p>
 											</figure>
 											<div class="media-content">
@@ -2665,7 +2814,8 @@ $(function(){
 								<div class="comment-controls">
 									<div class="controls-inner">
 										<img src="https://via.placeholder.com/300x300"
-											data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+											data-demo-src="resources/template/assets/img/avatars/jenna.png"
+											alt="">
 										<div class="control">
 											<textarea class="textarea comment-textarea is-rounded"
 												rows="1"></textarea>
@@ -2787,8 +2937,9 @@ $(function(){
 										<div>
 											<div class="button page-selector">
 												<img src="https://via.placeholder.com/150x150"
-													data-demo-src="resources/template/assets/img/avatars/hanzo.svg" alt="">
-												<span>Css Ninja</span> <i data-feather="chevron-down"></i>
+													data-demo-src="resources/template/assets/img/avatars/hanzo.svg"
+													alt=""> <span>Css Ninja</span> <i
+													data-feather="chevron-down"></i>
 											</div>
 										</div>
 										<div class="dropdown-menu" role="menu">
@@ -2796,7 +2947,8 @@ $(function(){
 												<div class="dropdown-item">
 													<div class="media">
 														<img src="https://via.placeholder.com/150x150"
-															data-demo-src="resources/template/assets/img/avatars/hanzo.svg" alt="">
+															data-demo-src="resources/template/assets/img/avatars/hanzo.svg"
+															alt="">
 														<div class="media-content">
 															<h3>Css Ninja</h3>
 															<small>Share on Css Ninja.</small>
@@ -2819,7 +2971,8 @@ $(function(){
 												<div class="dropdown-item">
 													<div class="media">
 														<img src="https://via.placeholder.com/150x150"
-															data-demo-src="resources/template/assets/img/icons/logos/slicer.svg" alt="">
+															data-demo-src="resources/template/assets/img/icons/logos/slicer.svg"
+															alt="">
 														<div class="media-content">
 															<h3>Slicer</h3>
 															<small>Share on Slicer.</small>
@@ -2834,7 +2987,8 @@ $(function(){
 
 								<div class="alias">
 									<img src="https://via.placeholder.com/150x150"
-										data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+										data-demo-src="resources/template/assets/img/avatars/jenna.png"
+										alt="">
 								</div>
 							</div>
 						</div>
@@ -2861,7 +3015,8 @@ $(function(){
 							<div class="featured-image">
 								<img id="share-modal-image"
 									src="https://via.placeholder.com/1600x900"
-									data-demo-src="resources/template/assets/img/demo/unsplash/1.jpg" alt="">
+									data-demo-src="resources/template/assets/img/demo/unsplash/1.jpg"
+									alt="">
 							</div>
 							<div class="publication-meta">
 								<div class="inner-flex">
@@ -3004,7 +3159,8 @@ $(function(){
 					<div class="card-body has-text-centered">
 
 						<div class="image-wrap">
-							<img src="resources/template/assets/img/illustrations/characters/no-stream.svg"
+							<img
+								src="resources/template/assets/img/illustrations/characters/no-stream.svg"
 								alt="">
 						</div>
 
@@ -3036,7 +3192,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/dan.jpg"
+								alt="">
 						</div>
 						<div class="username">
 							<span>Dan Walker</span> <span><i data-feather="star"></i>
@@ -3192,9 +3349,11 @@ $(function(){
 			<div id="chat-sidebar" class="users-sidebar">
 				<!-- Header -->
 				<div class="header-item">
-					<img class="light-image" src="resources/template/assets/img/logo/friendkit-bold.svg"
-						alt=""> <img class="dark-image"
-						src="resources/template/assets/img/logo/friendkit-white.svg" alt="">
+					<img class="light-image"
+						src="resources/template/assets/img/logo/friendkit-bold.svg" alt="">
+					<img class="dark-image"
+						src="resources/template/assets/img/logo/friendkit-white.svg"
+						alt="">
 				</div>
 				<!-- User list -->
 				<div class="conversations-list has-slimscroll-xs">
@@ -3214,7 +3373,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/stella.jpg"
+								alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -3224,7 +3384,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/daniel.jpg"
+								alt="">
 							<div class="user-status is-away"></div>
 						</div>
 					</div>
@@ -3234,7 +3395,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/david.jpg"
+								alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -3244,7 +3406,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/edward.jpeg"
+								alt="">
 							<div class="user-status is-online"></div>
 						</div>
 					</div>
@@ -3254,7 +3417,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/elise.jpg"
+								alt="">
 							<div class="user-status is-away"></div>
 						</div>
 					</div>
@@ -3264,7 +3428,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/nelly.png" alt="">
+								data-demo-src="resources/template/assets/img/avatars/nelly.png"
+								alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -3274,7 +3439,8 @@ $(function(){
 						<div class="avatar-container">
 							<img class="user-avatar"
 								src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
+								data-demo-src="resources/template/assets/img/avatars/milly.jpg"
+								alt="">
 							<div class="user-status is-busy"></div>
 						</div>
 					</div>
@@ -3299,7 +3465,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/dan.jpg"
+							alt="">
 						<div class="message-block">
 							<span>8:03am</span>
 							<div class="message-text">Hi Jenna! I made a new design,
@@ -3309,7 +3476,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/dan.jpg"
+							alt="">
 						<div class="message-block">
 							<span>8:03am</span>
 							<div class="message-text">It's quite clean and it's
@@ -3319,7 +3487,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>8:12am</span>
 							<div class="message-text">Oh really??! I want to see that.</div>
@@ -3328,7 +3497,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/dan.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/dan.jpg"
+							alt="">
 						<div class="message-block">
 							<span>8:13am</span>
 							<div class="message-text">FYI it was done in less than a
@@ -3338,7 +3508,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>8:17am</span>
 							<div class="message-text">Great to hear it. Just send me
@@ -3348,7 +3519,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>8:18am</span>
 							<div class="message-text">And if you have a prototype, you
@@ -3366,7 +3538,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>10:34am</span>
 							<div class="message-text">Hey Stella! Aren't we supposed to
@@ -3376,7 +3549,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>10:37am</span>
 							<div class="message-text">Just remembered it.</div>
@@ -3385,7 +3559,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/stella.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/stella.jpg"
+							alt="">
 						<div class="message-block">
 							<span>11:22am</span>
 							<div class="message-text">Yeah you always do that, forget
@@ -3403,7 +3578,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>3:24pm</span>
 							<div class="message-text">Daniel, Amanda told me about your
@@ -3413,7 +3589,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/daniel.jpg"
+							alt="">
 						<div class="message-block">
 							<span>3:42pm</span>
 							<div class="message-text">Hey Jenna, thanks for answering
@@ -3423,7 +3600,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/daniel.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/daniel.jpg"
+							alt="">
 						<div class="message-block">
 							<span>3:43pm</span>
 							<div class="message-text">Can i borrow your car for a quick
@@ -3442,7 +3620,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>12:34pm</span>
 							<div class="message-text">Damn you! Why would you even
@@ -3452,7 +3631,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>12:32pm</span>
 							<div class="message-text">I just HATE aliens.</div>
@@ -3461,7 +3641,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/david.jpg"
+							alt="">
 						<div class="message-block">
 							<span>13:09pm</span>
 							<div class="message-text">C'mon, you just gotta learn the
@@ -3471,7 +3652,8 @@ $(function(){
 					</div>
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/david.jpg"
+							alt="">
 						<div class="message-block">
 							<span>13:11pm</span>
 							<div class="message-text">I checked the replay and for
@@ -3481,7 +3663,8 @@ $(function(){
 					</div>
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>13:12pm</span>
 							<div class="message-text">I know but i struggle when i have
@@ -3490,7 +3673,8 @@ $(function(){
 					</div>
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/david.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/david.jpg"
+							alt="">
 						<div class="message-block">
 							<span>13:17pm</span>
 							<div class="message-text">Join me in game, i'll show you.</div>
@@ -3506,7 +3690,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg"
+							alt="">
 						<div class="message-block">
 							<span>4:55pm</span>
 							<div class="message-text">Hey Jenna, what's up?</div>
@@ -3515,7 +3700,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg"
+							alt="">
 						<div class="message-block">
 							<span>4:56pm</span>
 							<div class="message-text">Iam coming to LA tomorrow.
@@ -3525,7 +3711,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>5:21pm</span>
 							<div class="message-text">Hey mate, it's been a while. Sure
@@ -3535,7 +3722,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg"
+							alt="">
 						<div class="message-block">
 							<span>5:27pm</span>
 							<div class="message-text">Ok. Let's say i pick you up at
@@ -3545,7 +3733,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>5:43pm</span>
 							<div class="message-text">Yup, that works great.</div>
@@ -3554,7 +3743,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>5:44pm</span>
 							<div class="message-text">And yeah, don't forget to bring
@@ -3564,7 +3754,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/edward.jpeg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/edward.jpeg"
+							alt="">
 						<div class="message-block">
 							<span>5:27pm</span>
 							<div class="message-text">No worries</div>
@@ -3581,7 +3772,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>11:53am</span>
 							<div class="message-text">Elise, i forgot my folder at your
@@ -3591,7 +3783,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>11:53am</span>
 							<div class="message-text">I need it badly, it's work stuff.</div>
@@ -3600,7 +3793,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/elise.jpg"
+							alt="">
 						<div class="message-block">
 							<span>12:19pm</span>
 							<div class="message-text">Yeah i noticed. I'll drop it in
@@ -3618,7 +3812,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>8:22pm</span>
 							<div class="message-text">So you watched the movie?</div>
@@ -3627,7 +3822,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>8:22pm</span>
 							<div class="message-text">Was it scary?</div>
@@ -3636,7 +3832,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/nelly.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/nelly.png"
+							alt="">
 						<div class="message-block">
 							<span>9:03pm</span>
 							<div class="message-text">It was so frightening, i felt my
@@ -3653,7 +3850,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg"
+							alt="">
 						<div class="message-block">
 							<span>2:01pm</span>
 							<div class="message-text">Hello Jenna, did you read my
@@ -3663,7 +3861,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg"
+							alt="">
 						<div class="message-block">
 							<span>2:01pm</span>
 							<div class="message-text">Didn't hear from you since i sent
@@ -3673,7 +3872,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>2:02pm</span>
 							<div class="message-text">Hello Milly, Iam really sorry,
@@ -3683,7 +3883,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg"
+							alt="">
 						<div class="message-block">
 							<span>2:04pm</span>
 							<div class="message-text">And what did you think about it?</div>
@@ -3692,7 +3893,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>2:05pm</span>
 							<div class="message-text">Actually it's quite good, there
@@ -3702,7 +3904,8 @@ $(function(){
 
 					<div class="chat-message is-sent">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/jenna.png" alt="">
+							data-demo-src="resources/template/assets/img/avatars/jenna.png"
+							alt="">
 						<div class="message-block">
 							<span>2:07pm</span>
 							<div class="message-text">I think that i can give it to my
@@ -3712,7 +3915,8 @@ $(function(){
 
 					<div class="chat-message is-received">
 						<img src="https://via.placeholder.com/300x300"
-							data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
+							data-demo-src="resources/template/assets/img/avatars/milly.jpg"
+							alt="">
 						<div class="message-block">
 							<span>2:09pm</span>
 							<div class="message-text">Crossing fingers then</div>
@@ -4670,7 +4874,8 @@ $(function(){
 
 							<div class="details-avatar">
 								<img src="https://via.placeholder.com/300x300"
-									data-demo-src="resources/template/assets/img/avatars/milly.jpg" alt="">
+									data-demo-src="resources/template/assets/img/avatars/milly.jpg"
+									alt="">
 								<div class="call-me">
 									<i class="mdi mdi-phone"></i>
 								</div>
@@ -4744,7 +4949,8 @@ $(function(){
 				</div>
 				<div class="card-body">
 
-					<img src="resources/template/assets/img/icons/chat/bubbles.svg" alt="">
+					<img src="resources/template/assets/img/icons/chat/bubbles.svg"
+						alt="">
 
 					<div class="field is-autocomplete">
 						<div class="control has-icon">
@@ -4785,27 +4991,32 @@ $(function(){
 				<div class="explore-list has-slimscroll">
 					<!--item-->
 					<a href="/navbar-v1-feed.html" class="explore-item"> <img
-						src="resources/template/assets/img/icons/explore/clover.svg" alt="">
+						src="resources/template/assets/img/icons/explore/clover.svg"
+						alt="">
 						<h4>Feed</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-profile-friends.html" class="explore-item">
-						<img src="resources/template/assets/img/icons/explore/friends.svg" alt="">
+						<img src="resources/template/assets/img/icons/explore/friends.svg"
+						alt="">
 						<h4>Friends</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-videos-home.html" class="explore-item"> <img
-						src="resources/template/assets/img/icons/explore/videos.svg" alt="">
+						src="resources/template/assets/img/icons/explore/videos.svg"
+						alt="">
 						<h4>Videos</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-pages-main.html" class="explore-item"> <img
-						src="resources/template/assets/img/icons/explore/tag-euro.svg" alt="">
+						src="resources/template/assets/img/icons/explore/tag-euro.svg"
+						alt="">
 						<h4>Pages</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-ecommerce-products.html" class="explore-item">
-						<img src="resources/template/assets/img/icons/explore/cart.svg" alt="">
+						<img src="resources/template/assets/img/icons/explore/cart.svg"
+						alt="">
 						<h4>Commerce</h4>
 					</a>
 					<!--item-->
@@ -4815,12 +5026,15 @@ $(function(){
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-stories-main.html" class="explore-item"> <img
-						src="resources/template/assets/img/icons/explore/chrono.svg" alt="">
+						src="resources/template/assets/img/icons/explore/chrono.svg"
+						alt="">
 						<h4>Stories</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-questions-home.html" class="explore-item">
-						<img src="resources/template/assets/img/icons/explore/question.svg" alt="">
+						<img
+						src="resources/template/assets/img/icons/explore/question.svg"
+						alt="">
 						<h4>Questions</h4>
 					</a>
 					<!--item-->
@@ -4835,17 +5049,20 @@ $(function(){
 					</a>
 					<!--item-->
 					<a href="https://envato.com" class="explore-item"> <img
-						src="resources/template/assets/img/icons/explore/envato.svg" alt="">
+						src="resources/template/assets/img/icons/explore/envato.svg"
+						alt="">
 						<h4>Envato</h4>
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-events.html" class="explore-item"> <img
-						src="resources/template/assets/img/icons/explore/calendar.svg" alt="">
+						src="resources/template/assets/img/icons/explore/calendar.svg"
+						alt="">
 						<h4>Events</h4>
 					</a>
 					<!--item-->
 					<a href="https://cssninja.io" target="_blank" class="explore-item">
-						<img src="resources/template/assets/img/icons/explore/pin.svg" alt="">
+						<img src="resources/template/assets/img/icons/explore/pin.svg"
+						alt="">
 						<h4>Css Ninja</h4>
 					</a>
 					<!--item-->
@@ -4855,7 +5072,8 @@ $(function(){
 					</a>
 					<!--item-->
 					<a href="/navbar-v1-settings.html" class="explore-item"> <img
-						src="resources/template/assets/img/icons/explore/settings.svg" alt="">
+						src="resources/template/assets/img/icons/explore/settings.svg"
+						alt="">
 						<h4>Settings</h4>
 					</a>
 				</div>

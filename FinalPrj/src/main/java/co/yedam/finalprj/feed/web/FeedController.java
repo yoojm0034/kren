@@ -98,12 +98,12 @@ public class FeedController {
 		return "feed/mainFeed";
 	}
 	
-	@RequestMapping("tagSelect.do")
+	@RequestMapping("feedSelect.do")
 	public String tagSelect(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
-		System.out.println(vo.getTags());
-		System.out.println(feedDao.feedSelectList(vo));
+		System.out.println("로케이션 값 "+vo.getLocation());
+		vo.setUser_id(id);
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 		return "no/feed/post";
 	}
@@ -223,7 +223,7 @@ public class FeedController {
 	    	tvo.setEn(text);
 	    	result = transDao.getKr(tvo);
 	    }
-		return result;
+	    return result;
 	}
 	
 	//태그등록
