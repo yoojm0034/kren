@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.report.map.ReportMap">
-	<select id="reportSelectList" resultType="co.yedam.finalprj.report.vo.ReportVO">
+	<select id="reportSelectList"
+		resultType="co.yedam.finalprj.report.vo.ReportVO">
 		select report_id, msg, reg_date, user_id, reported, content
 		from report
 		order by reg_date desc
 	</select>
+	
+	<select id="reportSelect"
+		parameterType="co.yedam.finalprj.report.vo.ReportVO"
+		resultType="co.yedam.finalprj.report.vo.ReportVO">
+
+	</select>
+
+	<insert id="reportInsert"
+		parameterType="co.yedam.finalprj.report.vo.ReportVO">
+		INSERT INTO REPORT
+			(REPORT_ID,USER_ID,CONTENT,MSG,REPORTED,REG_DATE)
+		VALUES
+			('report_'||report_seq.nextval, #{user_id}, #{content}, #{msg}, #{reported}, SYSDATE)
+	</insert>
+
+	<update id="reportUpdate" parameterType="co.yedam.finalprj.report.vo.ReportVO">
+	</update>
+
+	<delete id="reportDelete" parameterType="co.yedam.finalprj.report.vo.ReportVO">
+	</delete>
+
 </mapper>

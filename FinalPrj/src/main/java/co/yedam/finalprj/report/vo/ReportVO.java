@@ -12,4 +12,7 @@ public class ReportVO {
 	private String user_id;
 	private String reported;
 	private String content;
+	
+	//차단여부
+	private String blocked;
 }

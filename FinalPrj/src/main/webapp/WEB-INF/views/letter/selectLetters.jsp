@@ -130,6 +130,8 @@
 	}
 	
 	$(function() {
+		
+//--------조회--------------------------------
 		// 친구목록 클릭하면 편지목록들 조회 
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
@@ -149,22 +151,13 @@
 			}
 		});		
 		
+//--------교정--------------------------------
 		// 교정테이블 행 삭제 그룹 이벤트
 		$("body").on('click', '#btnd',  function() {
 		    var btnd = $(this).data('btnd');
 			var trDel = $("button[data-btnd="+btnd+"]").parent().parent();
 			trDel.remove();
 		});
-
-// 		// 교정테이블 td에 textarea 추가 그룹 이벤트
-// 		$("body").on('click', '#btnc',  function() {
-// 		    var btnc = $(this).data('btnc');
-// 			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
-// 			var tdRoad = $("button[data-btnc="+btnc+"]").parent();
-// 		    console.log(btnc, textRoad);
-// 			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
-// 			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
-// 		});
 		
 		// 교정테이블 추가 그룹 이벤트
 		$("body").on('click', '#corbtn',  function() {
@@ -204,7 +197,7 @@
 		    }
 		});
 		
-		// 편지 입력
+//--------편지입력--------------------------------
 		$("body").on('click', '#send', function() {
 			var send = $(this).data('send'); //letter_id
 			var to = $(this).data('to'); //to_id
@@ -295,23 +288,57 @@
 
 		});
 		
-		// 신고버튼을 누르면
-		$('body').on('click','#rbtn', function() {
+//--------신고START--------------------------------
+		$('body').on('click','#rbtn', function() { // 신고버튼을 누르면
 			var report = $(this).data('report');//name
 			var repo = $(this).data('repo'); 	//letter_id
 			var sub = $('button[data-report="'+repo+'"]'); //해당버튼 
 			var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
 			var txt = "";
 			if(radio == '기타') {
-				$('textarea[data-rtxt="'+repo+'"]').attr('hidden',false);
-				txt = $('textarea[data-rtxt="'+repo+'"]').val();//기타사유
+				txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
 			} else {
-				$('textarea[data-rtxt="'+repo+'"]').attr('hidden',true);
+				txt = radio;
 			}
 			var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
 			console.log(report, repo, radio, chk, txt);
 			
-		})
+			if(confirm('신고하시겠습니까?')) {
+				$.ajax({
+					url:'${pageContext.request.contextPath}/reportInsert.do',
+					type:'post',
+					data:JSON.stringify({
+						user_id:'${user.user_id}',
+						content:repo,
+						msg:txt,
+						reported:report,
+						blocked:chk
+					}),
+					contentType : "application/json; charset=UTF-8",
+					success: function(data) {
+						alert('신고되었습니다.');
+						location.reload(true);
+					},
+					error: function(err) {
+						alert('관리자에게 문의해주세요.');
+					}
+				});
+			}
+			
+		});
+		
+		$('body').on('click','#msg', function() { //기타를 누르면 값을 입력할 수 있도록
+			var select = $(this);
+			var repo = select.attr('name');
+			console.log(repo);
+			var msg = $("input:radio[name='"+repo+"']:checked").val();
+			if(msg == '기타') {
+				$('input[data-rtxt="'+repo+'"]').attr('hidden',false);				
+			} else {
+				$('input[data-rtxt="'+repo+'"]').attr('hidden',true);				
+			}
+		});
+//--------신고END----------------------------------------
 		 
 	}); // $function end
 
@@ -407,7 +434,8 @@
 			}
 		});
 	} //function letterc
-	
+
+//--------팝업----------------------------------------
 	function writePopup() {
 		var winWidth = 860;
 	    var winHeight = 580;
@@ -430,12 +458,14 @@
 </script>
 </head>
 <body>
+<!-- 팝업에 값 전달하는 폼 -->
 <form id="letterform" name="letterform" method="post">
 <input type="hidden" id="to_id" name="to_id">
 <input type="hidden" id="user_id" value="${user.user_id }">
 <input type="hidden" id="to_name" name="to_name">
 <input type="hidden" id="name" name="name">
 </form>
+<!-- /팝업에 값 전달하는 폼 -->
 
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
@@ -751,7 +781,7 @@
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<textarea data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true"></textarea>
+								<input data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true"></input>
                         		</td>
 	                        	</tr>
 	                        	</table>

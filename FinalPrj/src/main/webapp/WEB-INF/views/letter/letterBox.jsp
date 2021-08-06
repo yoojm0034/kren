@@ -73,7 +73,9 @@
     resize: none;
     padding: revert;
 }
-
+#drop table {
+    text-align: left;
+}
 </style>
 <script>
 	// 영어 -> 한국어
@@ -200,6 +202,58 @@
 		    	alert("취소되었습니다.");
 		    }
 		});
+		
+//--------신고START--------------------------------
+		$('body').on('click','#rbtn', function() { // 신고버튼을 누르면
+			var report = $(this).data('report');//name
+			var repo = $(this).data('repo'); 	//letter_id
+			var sub = $('button[data-report="'+repo+'"]'); //해당버튼 
+			var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
+			var txt = "";
+			if(radio == '기타') {
+				txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
+			} else {
+				txt = radio;
+			}
+			var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
+			console.log(report, repo, radio, chk, txt);
+			
+			if(confirm('신고하시겠습니까?')) {
+				$.ajax({
+					url:'${pageContext.request.contextPath}/reportInsert.do',
+					type:'post',
+					data:JSON.stringify({
+						user_id:'${user.user_id}',
+						content:repo,
+						msg:txt,
+						reported:report,
+						blocked:chk
+					}),
+					contentType : "application/json; charset=UTF-8",
+					success: function(data) {
+						alert('신고되었습니다.');
+						location.reload(true);
+					},
+					error: function(err) {
+						alert('관리자에게 문의해주세요.');
+					}
+				});
+			}
+			
+		});
+		
+		$('body').on('click','#msg', function() { //기타를 누르면 값을 입력할 수 있도록
+			var select = $(this);
+			var repo = select.attr('name');
+			console.log(repo);
+			var msg = $("input:radio[name='"+repo+"']:checked").val();
+			if(msg == '기타') {
+				$('input[data-rtxt="'+repo+'"]').attr('hidden',false);				
+			} else {
+				$('input[data-rtxt="'+repo+'"]').attr('hidden',true);				
+			}
+		});
+//--------신고END----------------------------------------
 
 		// 편지 입력
 		$("body").on('click', '#send', function() {
@@ -667,6 +721,68 @@
 									<div class="meta">
 										<div class="name">${vo.name }</div>
 										<div class="date"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/> </div>
+									</div>
+									<div class="meta-right">
+								<!-- report Btn -->
+				               	<div class="navbar-item is-icon drop-trigger" id="drop">
+            					<a class="icon-link" id="btnModal" href="javascript:void(0);">
+                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                             	</a>
+               					<div class="nav-drop is-account-dropdown is-active">
+		                     	<div class="inner">
+		                        <div class="nav-drop-header">
+		                           <span>REPORT</span>
+		                        </div>
+		                        <div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
+	                        	<table>
+	                        	<tr>
+                        		<td>
+                        		<input type="radio" id="msg" name="${vo.letter_id }" value="스팸 게시물">스팸 게시물
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="가짜정보 제공">가짜정보 제공
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="성적인 내용">성적인 내용
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="욕설/비방">욕설/비방
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="기타">기타
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true"></input>
+                        		</td>
+	                        	</tr>
+	                        	</table>
+		                        </div>
+		                        <div class="nav-drop-footer">
+		                        <input type="checkbox" id="blocked" data-rchk="${vo.letter_id }" value="${vo.user_id }">${vo.name } 차단
+								<button id="rbtn" data-repo="${vo.letter_id }" data-report="${vo.user_id }">신고</button>
+		                        </div>
+		                        </div>
+			                   </div>               
+              					</div>
+              					<!-- /report Btn -->
 									</div>
 								</div>
 	
