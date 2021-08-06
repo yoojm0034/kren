@@ -26,6 +26,10 @@ public interface UsersMap {
 	List<UsersVO> followingList(UsersVO vo);
 	List<UsersVO> followerList(UsersVO vo);
 	
+	//아이디 비밀번호 찾기...
+	public void findId(UsersVO vo);
+	public void findPw(UsersVO vo);
+
 	//admin
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();

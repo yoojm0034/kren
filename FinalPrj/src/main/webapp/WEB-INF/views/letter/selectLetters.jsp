@@ -74,61 +74,9 @@
     padding: revert;
 }
 
- #modal.modal-overlay {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-       }
-       #modal .modal-window {
-           background: rgba( 69, 139, 197, 0.70 );
-           box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-           backdrop-filter: blur( 13.5px );
-           -webkit-backdrop-filter: blur( 13.5px );
-           border-radius: 10px;
-           border: 1px solid rgba( 255, 255, 255, 0.18 );
-           width: 400px;
-           height: 500px;
-           position: relative;
-           top: -100px;
-           padding: 10px;
-       }
-       #modal .title {
-           padding-left: 10px;
-           display: inline;
-           text-shadow: 1px 1px 2px gray;
-           color: white;
-           
-       }
-       #modal .title h2 {
-           display: inline;
-       }
-       #modal .close-area {
-           display: inline;
-           float: right;
-           padding-right: 10px;
-           cursor: pointer;
-           text-shadow: 1px 1px 2px gray;
-           color: white;
-       }
-       
-       #modal .content {
-           margin-top: 20px;
-           padding: 0px 10px;
-           text-shadow: 1px 1px 2px gray;
-           color: white;
-       }
+#drop table {
+    text-align: left;
+}
 </style>
 <script>
 	// 영어 -> 한국어
@@ -182,6 +130,8 @@
 	}
 	
 	$(function() {
+		
+//--------조회--------------------------------
 		// 친구목록 클릭하면 편지목록들 조회 
 		$('a.item').on('click', function() {
 		    var aid = $(this).data('id');
@@ -201,22 +151,13 @@
 			}
 		});		
 		
+//--------교정--------------------------------
 		// 교정테이블 행 삭제 그룹 이벤트
 		$("body").on('click', '#btnd',  function() {
 		    var btnd = $(this).data('btnd');
 			var trDel = $("button[data-btnd="+btnd+"]").parent().parent();
 			trDel.remove();
 		});
-
-// 		// 교정테이블 td에 textarea 추가 그룹 이벤트
-// 		$("body").on('click', '#btnc',  function() {
-// 		    var btnc = $(this).data('btnc');
-// 			var textRoad = $("button[data-btnc="+btnc+"]").parent().prev().text();
-// 			var tdRoad = $("button[data-btnc="+btnc+"]").parent();
-// 		    console.log(btnc, textRoad);
-// 			tdRoad.append($('<textarea id="correcting" data-corr="'+btnc+'">').val(textRoad));
-// 			$("button[data-btnc="+btnc+"]").remove(); // 교정 행 추가 버튼 삭제
-// 		});
 		
 		// 교정테이블 추가 그룹 이벤트
 		$("body").on('click', '#corbtn',  function() {
@@ -256,7 +197,7 @@
 		    }
 		});
 		
-		// 편지 입력
+//--------편지입력--------------------------------
 		$("body").on('click', '#send', function() {
 			var send = $(this).data('send'); //letter_id
 			var to = $(this).data('to'); //to_id
@@ -347,7 +288,59 @@
 
 		});
 		
-	});
+//--------신고START--------------------------------
+		$('body').on('click','#rbtn', function() { // 신고버튼을 누르면
+			var report = $(this).data('report');//name
+			var repo = $(this).data('repo'); 	//letter_id
+			var sub = $('button[data-report="'+repo+'"]'); //해당버튼 
+			var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
+			var txt = "";
+			if(radio == '기타') {
+				txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
+			} else {
+				txt = radio;
+			}
+			var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
+			console.log(report, repo, radio, chk, txt);
+			
+			if(confirm('신고하시겠습니까?')) {
+				$.ajax({
+					url:'${pageContext.request.contextPath}/reportInsert.do',
+					type:'post',
+					data:JSON.stringify({
+						user_id:'${user.user_id}',
+						content:repo,
+						msg:txt,
+						reported:report,
+						blocked:chk
+					}),
+					contentType : "application/json; charset=UTF-8",
+					success: function(data) {
+						alert('신고되었습니다.');
+						location.reload(true);
+					},
+					error: function(err) {
+						alert('관리자에게 문의해주세요.');
+					}
+				});
+			}
+			
+		});
+		
+		$('body').on('click','#msg', function() { //기타를 누르면 값을 입력할 수 있도록
+			var select = $(this);
+			var repo = select.attr('name');
+			console.log(repo);
+			var msg = $("input:radio[name='"+repo+"']:checked").val();
+			if(msg == '기타') {
+				$('input[data-rtxt="'+repo+'"]').attr('hidden',false);				
+			} else {
+				$('input[data-rtxt="'+repo+'"]').attr('hidden',true);				
+			}
+		});
+//--------신고END----------------------------------------
+		 
+	}); // $function end
 
 	// 교정테이블 추가
 	function add(id, idx) {
@@ -441,7 +434,8 @@
 			}
 		});
 	} //function letterc
-	
+
+//--------팝업----------------------------------------
 	function writePopup() {
 		var winWidth = 860;
 	    var winHeight = 580;
@@ -464,12 +458,14 @@
 </script>
 </head>
 <body>
+<!-- 팝업에 값 전달하는 폼 -->
 <form id="letterform" name="letterform" method="post">
 <input type="hidden" id="to_id" name="to_id">
 <input type="hidden" id="user_id" value="${user.user_id }">
 <input type="hidden" id="to_name" name="to_name">
 <input type="hidden" id="name" name="name">
 </form>
+<!-- /팝업에 값 전달하는 폼 -->
 
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
@@ -544,7 +540,8 @@
 						</div>
 
 						<div class="control is-grouped">
-							<a class="button" href="letterBox.do"> <svg
+						<div class="control is-grouped">
+							<a class="button" href="javascript:location.reload()"> <svg
 									xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 									viewBox="0 0 24 24" fill="none" stroke="currentColor"
 									stroke-width="2" stroke-linecap="round"
@@ -555,22 +552,7 @@
 										d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
 								</svg>
 							</a>
-							
-							<!--BASIC DROPDOWN-->
-							<div class="dropdown is-spaced is-accent dropdown-trigger">
-								<div>
-									<div class="button">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24"
-											height="24" viewBox="0 0 24 24" fill="none"
-											stroke="currentColor" stroke-width="2"
-											stroke-linecap="round" stroke-linejoin="round"
-											class="feather feather-more-horizontal">
-											<circle cx="12" cy="12" r="1"></circle>
-											<circle cx="19" cy="12" r="1"></circle>
-											<circle cx="5" cy="12" r="1"></circle></svg>
-									</div>
-								</div>
-							</div>
+						</div>
 						</div>
 						<!-- /BUTTON GROUP -->
 					</div>
@@ -658,47 +640,14 @@
 						<!-- BUTTON GROUP -->
 						<div class="action-buttons">
 							<div class="control is-grouped">
-								<a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-refresh-cw">
-										<polyline points="23 4 23 10 17 10"></polyline>
-										<polyline points="1 20 1 14 7 14"></polyline>
+								<a class="button"  href="javascript:window.print()"><svg viewBox="0 0 24 24" width="24"
+										height="24" stroke="currentColor" stroke-width="2" fill="none"
+										stroke-linecap="round" stroke-linejoin="round"
+										class="css-i6dzq1">
+										<polyline points="6 9 6 2 18 2 18 9"></polyline>
 										<path
-											d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-									</svg>
-								</a>
-							</div>
-							<div class="control is-grouped">
-								<a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-star">
-										<polygon
-											points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-									</svg>
-								</a> <a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-inbox">
-										<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
-										<path
-											d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
-									</svg>
-								</a>
-							</div>
-							<div class="control is-grouped is-arrows">
-								<a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-chevron-left">
-										<polyline points="15 18 9 12 15 6"></polyline></svg>
-								</a> <a class="button"> <svg xmlns="http://www.w3.org/2000/svg"
-										width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-chevron-right">
-										<polyline points="9 18 15 12 9 6"></polyline></svg>
-								</a>
+											d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+										<rect x="6" y="14" width="12" height="8"></rect></svg> </a>
 							</div>
 							<!-- MOBILE SIDEBARS -->
 							<div
@@ -738,13 +687,65 @@
 									</div>
 									<c:if test="${vo.user_id ne user.user_id }">
 									<div class="meta-right">
-										<button class="button is-solid grey-button is-bold raised"
-										 id="btnModal" data-report="${vo.user_id }">
-											<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-												<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-												<line x1="12" y1="9" x2="12" y2="13"></line>
-												<line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-										</button>
+									<!-- report Btn -->
+				               	<div class="navbar-item is-icon drop-trigger" id="drop">
+            					<a class="icon-link" id="btnModal" href="javascript:void(0);">
+                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                             	</a>
+               					<div class="nav-drop is-account-dropdown is-active">
+		                     	<div class="inner">
+		                        <div class="nav-drop-header">
+		                           <span>REPORT</span>
+		                        </div>
+		                        <div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
+	                        	<table>
+	                        	<tr>
+                        		<td>
+                        		<input type="radio" id="msg" name="${vo.letter_id }" value="스팸 게시물">스팸 게시물
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="가짜정보 제공">가짜정보 제공
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="성적인 내용">성적인 내용
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="욕설/비방">욕설/비방
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input type="radio" id="msg" name="${vo.letter_id }" value="기타">기타
+                        		</td>
+	                        	</tr>
+	                        	<tr>
+                        		<td>
+								<input data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true"></input>
+                        		</td>
+	                        	</tr>
+	                        	</table>
+		                        </div>
+		                        <div class="nav-drop-footer">
+		                        <input type="checkbox" id="blocked" data-rchk="${vo.letter_id }" value="${vo.user_id }">${vo.name } 차단
+								<button id="rbtn" data-repo="${vo.letter_id }" data-report="${vo.user_id }">신고</button>
+		                        </div>
+		                        </div>
+			                   </div>               
+              					</div><!-- /report Btn -->
 									</div>
 									</c:if>
 

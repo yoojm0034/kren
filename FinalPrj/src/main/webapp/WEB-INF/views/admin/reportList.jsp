@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style>
 .pagination {
 	display: flex;
@@ -59,6 +60,11 @@ tr:hover {
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
+	$('#clickContent').on('click', function() {
+		//ajax보내고 ..
+		console(click)
+
+	})
 	$(document)
 			.ready(
 					function() {
@@ -289,7 +295,11 @@ tr:hover {
 																<td>${vo.msg }</td>
 																<td>${vo.reg_date }</td>
 																<td>${vo.reported }</td>
-																<td><a href="${pageContext.request.contextPath}/feed.do?feed_id=${vo.content}">${vo.content }</a></td>
+																<c:set var="content" value="${vo.content}" />
+																<%-- <c:if test="${fn:contains(content,'feed')}"> --%>
+																<td><a data-content="${vo.content }"
+																	class="button modal-trigger" data-modal="share-modal"
+																	id="clickContent">${vo.content }</a></td>
 																<!-- 다른신고게시글있으면 추가 -->
 															</tr>
 														</c:forEach>
@@ -307,7 +317,7 @@ tr:hover {
 					<!-- End of Main Content -->
 				</form>
 			</div>
-			
+
 		</div>
 
 		<div class="inner-wrapper" style="width: 80%">
@@ -333,9 +343,66 @@ tr:hover {
 		</div>
 
 	</div>
+	<!-- test -->
+
+	<div id="share-modal"
+		class="modal share-modal is-xsmall has-light-bg ">
+		<div class="modal-background"></div>
+		<div class="modal-content">
+
+			<div class="card">
+				<div class="card-heading">
+
+					<!-- Close X button -->
+					<div class="close-wrap">
+						<span class="close-modal"> <svg
+								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="feather feather-x">
+								<line x1="18" y1="6" x2="6" y2="18"></line>
+								<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+						</span>
+					</div>
+				</div>
+
+				<div class="card-body">
+					<div class="shared-publication">
+
+						<div class="publication-meta">
+							<div class="inner-flex">
+								<p id="share-modal-text">불러온내용</p>
+							</div>
+							<div class="publication-footer">
+								<div class="stats">
+									<div class="stat-block">
+										<i class="mdi mdi-earth"></i> <small>컨텐츠번호</small>
+									</div>
+									<div class="stat-block">
+										<i class="mdi mdi-eye"></i> <small>신고당한아이디</small>
+									</div>
+								</div>
+								<div class="publication-origin">
+									<small>kren</small>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="card-footer">
+					<div class="button-wrap">
+						<button type="button"
+							class="button is-solid dark-grey-button close-modal">Cancel</button>
+						<button type="button"
+							class="button is-solid primary-button close-modal">Publish</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 	<!-- 컨텐츠 종료 -->
-
-
 
 </body>
 </html>

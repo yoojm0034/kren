@@ -5,9 +5,9 @@
 	<!-- 일반회원 글만, 탈퇴한 회원, 정지당한 회원 글 보이지 않음 , 블락한 회원의 글 제외 -->
 	<select id="feedSelectList"
 		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
-		
 		SELECT *
 	    FROM (SELECT
+	    				TRUNC(CAL(#{user_id} ,u.USER_ID),0),
 						u.USER_ID 	"user_id",
 						u.EMAIL 	"email",
 						u.NAME 		"name",
@@ -26,6 +26,7 @@
 	      				d.UUID 		"uuid",
 	        			d.DIRECTORY,
 	        			p.DELETE_YN "delete_yn"
+	        			
 			  FROM 		feed f JOIN users u
 						ON f.USER_ID = u.USER_ID
 	        			left outer join photo p
@@ -42,6 +43,9 @@
 	  	    </if>
 	  	    <if test="write_lan != null">
 			AND write_lan = #{write_lan}
+	  	    </if>
+	  	    <if test="location != null">
+			AND 1 BETWEEN 0 AND 2000
 	  	    </if>
 			ORDER BY f.REG_DATE DESC)
 	<!-- 	WHERE ROWNUM <![CDATA[<=]]> 4 -->
@@ -123,7 +127,7 @@
 	
 	<!-- 피드 삭제 -->
 	<delete id="feedDelete" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
-		{ CALL feed_delete( #{feed_id} )} 
+		{ CALL feed_delete( #{feed_id})} 
 	</delete>
 	
 	<!-- 피드 수정 -->

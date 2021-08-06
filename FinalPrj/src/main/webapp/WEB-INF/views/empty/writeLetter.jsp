@@ -5,7 +5,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 <style>
 
@@ -74,19 +73,15 @@ $(function () {
 	to.text('TO.'+toname);
 	from.text('FROM.'+name);	
 	console.log(toid, user_id, content, name, toname);
-	
-	//push
-	function sendLetterPush(target) {
-			//편지
-			var user = user_id;
-			var sendData = 'letter,'+user+','+target;
-			console.log(sendData)
-			sock.send(sendData);
-	}
 
 	//편지저장
 	$('#save').on('click',function() {
 		content = $('#text').val();
+		if(content == "") {
+			alert('내용을 입력하세요.');
+			$('#text').focus();
+			return ;
+		}
 		if(confirm("편지를 저장하시겠습니까?") ) {
 		    $.ajax({
 		    	url:'${pageContext.request.contextPath}/insertLetter.do',
@@ -112,6 +107,11 @@ $(function () {
 	// 편지 입력
 	$('#send').on('click',function() {
 		content = $('#text').val();
+		if(content == "") {
+			alert('내용을 입력하세요.');
+			$('#text').focus();
+			return ;
+		}
 		//우표수량 체크
 		$.ajax({
 			url : '${pageContext.request.contextPath}/stampLetterCheck.do',
@@ -132,9 +132,9 @@ $(function () {
 						    contentType : "application/json; charset=UTF-8",
 					    	success: function(data) {
 					    		alert('전송되었습니다.');
+					    		sendLetterPush(toid);
 					    		opener.parent.location.reload();
 					    		window.close();
-					    		sendLetterPush(to);
 					    	},
 					    	error: function(e) {
 					    		alert('편지전송실패');
@@ -154,6 +154,7 @@ $(function () {
 						    	success: function(data) {
 						    		alert('편지가 저장되었습니다.');
 						    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
+						    		window.close();
 						    	},
 						    	error: function(e) {
 						    		alert('저장실패');
@@ -201,7 +202,7 @@ $(function () {
 		<div class="contents">
 			<div class="bold"><span id="to">To.</span></div>
 			<div>
-				<textarea class="letter" id="text">복잡하네요.</textarea>
+				<textarea class="letter" id="text" placeholder="write letter"></textarea>
 			</div>
 			<div class="bold">
 				<div class="left"><span id="from">From.</span></div>	
