@@ -80,14 +80,16 @@ public class ReportController {
 	   String content = req.getParameter("content");
 	   int r = 0;
 	   if(content.contains("feed")) {
+		   //신고리스트에서 피드읽고, 피드에대한 댓글도 읽음처리되야된다.
+		   //--넘어오는feed_id로 댓글번호를 검색한다. 읽음처리를 먼저해주고 피드삭제
+		   int k = reportDao.reportAllUpdate(rvo);
+		   System.out.println(k + "건 읽음처리");
+		   
 		   //프로시저를 통해 한번에 피드삭제, 댓글삭제
 		   fvo.setFeed_id(content);
 		   r = feedDao.feedDelete(fvo);
 		   System.out.println(r + "건 삭제처리");
-		   //신고리스트에서 피드읽고, 피드에대한 댓글도 읽음처리되야된다.
-		   //--넘어오는feed_id로 댓글번호를 검색한다.
-		   int k = reportDao.reportAllUpdate(rvo);
-		   System.out.println(k + "건 읽음처리");
+		   
 	   }else if(content.contains("letter")) {
 		   vo.setLetter_id(content);
 		   //r = letterDao. 삭제처리
