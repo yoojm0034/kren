@@ -215,6 +215,21 @@ $(function(){
 	});
 });
 
+// 팔로워 리스트 ajax
+$(function(){
+	$('#followerList').on('click', function (){
+		var user_id = $('#user_id').val();
+		$.ajax({
+			url: '${pageContext.request.contextPath}/followerList.do',
+	    	type:'post',
+	    	data:{user_id : user_id},
+			success: function(result) {
+				$('.profile-contents').html(result);
+			}
+		});
+	});
+});
+
 
 // 팔로우 언팔로우 버튼
 $('body').on('click', '#follow-btn',  function() {
@@ -340,7 +355,7 @@ function follow(check) {
 	                                <span>Following</span>
 	                                <span id="followingCnt">${followingCnt }</span>
                                 </a>
-                                <a id="follwerList">
+                                <a id="followerList">
                                 	<span>Followers</span>
                                 	<span id="followerCnt">${followerCnt }</span>
                                 </a>

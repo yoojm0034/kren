@@ -312,16 +312,16 @@ a[href^="https://maps.google.com/maps"] {
 			<div class="columns profile-contents">
 				<div id="profile-timeline-widgets" class="column is-12">
 					<div class="box-heading">
-						<h4>Following</h4>
+						<h4>Follower</h4>
 					</div>
 					
-					<!-- 팔로잉 리스트 영역 -->
+					<!-- 팔로워 리스트 영역 -->
 					<div class="basic-infos-wrapper">
 						<div id="friends-page" class="friends-wrapper main-container">
 							<div id="all-friends" class="card-row-wrap is-active">
 								<div class="card-row">
-									<!-- 팔로잉 리스트 반복 -->
-									<c:forEach items="${followingList }" var="friend" varStatus="status">
+									<!-- 팔로워 리스트 반복 -->
+									<c:forEach items="${followerList }" var="friend" varStatus="status">
 										<div class="card-flex friend-card">
 											<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${friend.user_id }">
 												<div class="img-container">

@@ -93,6 +93,18 @@ public class UsersController {
 		return "no/users/followingList";
 	}
 	
+	// 팔로워 리스트
+	@RequestMapping("followerList.do")
+	public String followerList(UsersVO vo, Model model, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setSession_id(Sessionid);
+		
+		System.out.println(vo);
+		
+		model.addAttribute("followerList", usersDao.followerList(vo));
+		return "no/users/followerList";
+	}
 	
 	
 	// 회원가입

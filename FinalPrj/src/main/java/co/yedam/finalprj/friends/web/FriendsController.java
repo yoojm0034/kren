@@ -38,10 +38,10 @@ public class FriendsController {
 		
 		int r = FriendsDao.follow(vo);
 		if (r>0) {
-		System.out.println("[" + Sessionid + "]유저가 [" + following + "]를 팔로잉 했습니다.");
+			System.out.println("[" + Sessionid + "]유저가 [" + following + "]를 팔로잉 했습니다.");
+			return "FollowOK";
 		}
-		
-		return "FollowOK";
+		return "fail";
 	} 
 	
 	// 언팔로우
@@ -56,8 +56,8 @@ public class FriendsController {
 		int r = FriendsDao.unfollow(vo);
 		if (r>0) {
 			System.out.println("[" + Sessionid + "]유저가 [" + following + "]를 언팔로우 했습니다.");
+			return "UnFollowOK";
 		}
-		
-		return "UnFollowOK";
+		return "fail";		
 	} 
 }
