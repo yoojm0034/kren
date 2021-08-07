@@ -24,6 +24,9 @@
 	</insert>
 
 	<update id="reportUpdate" parameterType="co.yedam.finalprj.report.vo.ReportVO">
+		UPDATE report 
+		SET read_date = sysdate
+		where content = #{content}
 	</update>
 
 	<delete id="reportDelete" parameterType="co.yedam.finalprj.report.vo.ReportVO">

@@ -57,17 +57,14 @@ tr:hover {
 <script
 	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript">
-	$('#clickContent').on('click', function() {
-		//ajax보내고 ..
-		console(click)
+<!-- 모달 -->	
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />	
 
-	})
-	$(document)
-			.ready(
-					function() {
+
+<script type="text/javascript">
+	$(document).ready(function() {
 						const dataSource = {
 							contentType : 'application/json',
 							api : {
@@ -89,18 +86,18 @@ tr:hover {
 							columns : [ {
 								header : 'USERS(desc)',
 								name : 'user_id',
-								sortingType : 'desc',
-								sortable : true,
+								filter : {
+									type : 'text',
+									showApplyBtn : true,
+									showClearBtn : true
+								},
 								align : 'center'
 							}, {
 								header : 'NAME',
 								name : 'name',
 								align : 'center',
-								filter : {
-									type : 'text',
-									showApplyBtn : true,
-									showClearBtn : true
-								}
+								sortingType : 'desc',
+								sortable : true
 							}, {
 								header : 'EMAIL',
 								name : 'email',
@@ -141,11 +138,25 @@ tr:hover {
 							recruitGrid.request('updateData', {
 								checkedOnly : true
 							});
-
+							alert("회원상태를 수정하였습니다.");
+							location.reload();
 						});
-
-					});
+									
+						
+	});
+	function clickContent(data) {
+	
+		var w = 860;
+	    var h = 580;
+	    var popupOption= "width="+w+", height="+h;
+	    var popupX = (document.body.offsetWidth/2) - (w/2);
+		var popupY= (document.body.offsetHeight/2) - (h/2);
+	    var target ='pop';
+		window.open('${pageContext.request.contextPath}/admin/reportAdmin.do?data='+data,target,popupOption,'left='+ popupX + ', top='+ popupY);
+	};	
+	
 </script>
+
 </head>
 <body>
 	<div class="stories-wrapper is-home">
@@ -296,11 +307,10 @@ tr:hover {
 																<td>${vo.reg_date }</td>
 																<td>${vo.reported }</td>
 																<c:set var="content" value="${vo.content}" />
-																<%-- <c:if test="${fn:contains(content,'feed')}"> --%>
-																<td><a data-content="${vo.content }"
-																	class="button modal-trigger" data-modal="share-modal"
-																	id="clickContent">${vo.content }</a></td>
-																<!-- 다른신고게시글있으면 추가 -->
+																<%-- <c:if test="${fn:contains(content,'feed')}"> data-modal="share-modal"  class="button modal-trigger" --%>
+																<td>
+																	<a data-content="${vo.content }" id="clickContent" onclick="clickContent('${vo.content }')">${vo.content }</a>
+																</td>
 															</tr>
 														</c:forEach>
 													</tbody>
@@ -345,64 +355,62 @@ tr:hover {
 	</div>
 	<!-- test -->
 
-	<div id="share-modal"
-		class="modal share-modal is-xsmall has-light-bg ">
+	<div id="share-modal" class="modal share-modal is-xsmall has-light-bg ">
+		<div class="modal-dialog" role="document">
 		<div class="modal-background"></div>
 		<div class="modal-content">
-
-			<div class="card">
-				<div class="card-heading">
-
-					<!-- Close X button -->
-					<div class="close-wrap">
-						<span class="close-modal"> <svg
-								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-								viewBox="0 0 24 24" fill="none" stroke="currentColor"
-								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-								class="feather feather-x">
-								<line x1="18" y1="6" x2="6" y2="18"></line>
-								<line x1="6" y1="6" x2="18" y2="18"></line></svg>
-						</span>
-					</div>
-				</div>
-
-				<div class="card-body">
-					<div class="shared-publication">
-
-						<div class="publication-meta">
-							<div class="inner-flex">
-								<p id="share-modal-text">불러온내용</p>
-							</div>
-							<div class="publication-footer">
-								<div class="stats">
-									<div class="stat-block">
-										<i class="mdi mdi-earth"></i> <small>컨텐츠번호</small>
-									</div>
-									<div class="stat-block">
-										<i class="mdi mdi-eye"></i> <small>신고당한아이디</small>
-									</div>
-								</div>
-								<div class="publication-origin">
-									<small>kren</small>
-								</div>
-							</div>
+			<form action="">
+				<div class="card">
+					<div class="modal-header">
+						<h5 class="modal-title">컨텐츠번호</h5>
+						<!-- Close X button -->
+						<div class="close-wrap">
+							<span class="close-modal"> <svg
+									xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+									viewBox="0 0 24 24" fill="none" stroke="currentColor"
+									stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+									class="feather feather-x">
+									<line x1="18" y1="6" x2="6" y2="18"></line>
+									<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+							</span>
 						</div>
-
+					</div>
+					<div class="modal-body">
+						<div class="shared-publication">
+							<div class="publication-meta">
+								<div class="inner-flex">
+									<p id="share-modal-text">불러온내용</p>
+								</div>
+								<div class="publication-footer">
+									<div class="stats">
+										<div class="stat-block">
+											<i class="mdi mdi-earth"></i> <small>컨텐츠번호</small>
+										</div>
+										<div class="stat-block">
+											<i class="mdi mdi-eye"></i> <small>신고당한아이디</small>
+										</div>
+									</div>
+									<div class="publication-origin">
+										<small>admin</small>
+									</div>
+								</div>
+							</div>
+	
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="button-wrap">
+							<button type="button"
+								class="button is-solid dark-grey-button close-modal">취소</button>
+							<button type="button"
+								class="button is-solid primary-button close-modal">삭제처리</button>
+						</div>
 					</div>
 				</div>
-				<div class="card-footer">
-					<div class="button-wrap">
-						<button type="button"
-							class="button is-solid dark-grey-button close-modal">Cancel</button>
-						<button type="button"
-							class="button is-solid primary-button close-modal">Publish</button>
-					</div>
-				</div>
-			</div>
-
+			</form>
 		</div>
 	</div>
+	</div>
 	<!-- 컨텐츠 종료 -->
-
 </body>
 </html>

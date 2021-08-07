@@ -10,6 +10,7 @@
 	<select id="usersSelectList" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		select *
 		from users
+		where user_id not in ('admin')
 	</select>
 	<select id="adminUsersSelectList" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		SELECT *

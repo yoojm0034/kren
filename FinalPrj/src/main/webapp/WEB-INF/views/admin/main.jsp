@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -191,15 +192,17 @@ tr:hover {
 														</tr>
 													</thead>
 													<tbody>
-														<%-- <c:forEach items="${noticeList }" var="vo">
-															<tr data-id="${vo.notice_id}">
-																<td>${vo.notice_id }</td>
-																<td>${vo.title }</td>
-																<td>${vo.reg_date }</td>
-																<td>관리자</td>
-																<td>${vo.hit }</td>
+														<c:forEach items="${userList }" var="vo">
+															<tr>
+																<td>${vo.email}</td>
+																<td>${vo.user_id }</td>
+																<td>${vo.name }</td>
+																<td>${vo.birth }</td>
+																<td>${vo.gender }</td>
+																<td>${vo.city }</td>
+																<td>${vo.status }</td>
 															</tr>
-														</c:forEach> --%>
+														</c:forEach>
 													</tbody>
 												</table>
 											</div>

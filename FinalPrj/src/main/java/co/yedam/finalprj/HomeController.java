@@ -1,11 +1,17 @@
 package co.yedam.finalprj;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import co.yedam.finalprj.users.service.UsersService;
 
 
 @Controller
 public class HomeController {
+	@Autowired
+	UsersService userDao;
 	
 	@RequestMapping("home.do")
 	public String home() {
@@ -23,7 +29,8 @@ public class HomeController {
 	} 
 
 	@RequestMapping("admin/admin.do")
-	public String admin() {
+	public String admin(Model model) {
+		model.addAttribute("userList", userDao.usersSelectList());
 		return "admin/main";
 	} 
 	@RequestMapping("feed1.do")
