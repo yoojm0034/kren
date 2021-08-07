@@ -44,4 +44,10 @@ public class ReportServiceImpl implements ReportService {
 		return map.reportDelete(vo);
 	}
 
+	@Override
+	public int reportAllUpdate(ReportVO vo) {
+		// TODO Auto-generated method stub
+		return map.reportAllUpdate(vo);
+	}
+
 }

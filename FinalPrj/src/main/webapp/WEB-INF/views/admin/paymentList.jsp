@@ -58,7 +58,12 @@
 							}, {
 								header : '결제일',
 								name : 'pay_dt',
-								align : 'center'
+								align : 'center',
+								filter : {
+									type : 'text',
+									showApplyBtn : true,
+									showClearBtn : true
+								}
 							} ],
 							/* 	summary: {
 								    height: 15,

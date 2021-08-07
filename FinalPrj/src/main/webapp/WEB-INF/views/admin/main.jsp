@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -152,9 +153,9 @@ tr:hover {
 		</div>
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 80%">
+		<div class="inner-wrapper" style="width: 80%" >
 			
-			전체 방문자 수: ${totalCount} 오늘의 방문자 수: ${todayCount}
+			<h1>전체 방문자 수: ${totalCount} / 오늘의 방문자 수: ${todayCount}</h1>
 			<!-- 컨텐츠 시작 -->
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
@@ -197,9 +198,10 @@ tr:hover {
 																<td>${vo.email}</td>
 																<td>${vo.user_id }</td>
 																<td>${vo.name }</td>
-																<td>${vo.birth }</td>
+																<fmt:formatDate  var="birth" value="${vo.birth}" type="DATE" pattern="yyyy/MM/dd"/>
+																<td>${birth }</td>
 																<td>${vo.gender }</td>
-																<td>${vo.city }</td>
+																<td>${vo.country }</td>
 																<td>${vo.status }</td>
 															</tr>
 														</c:forEach>

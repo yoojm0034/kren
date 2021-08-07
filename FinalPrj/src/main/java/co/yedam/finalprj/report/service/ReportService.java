@@ -9,5 +9,6 @@ public interface ReportService {
 	ReportVO reportSelect(ReportVO vo);
 	int reportInsert(ReportVO vo);
 	int reportUpdate(ReportVO vo);
+	int reportAllUpdate(ReportVO vo);
 	int reportDelete(ReportVO vo);
 }	

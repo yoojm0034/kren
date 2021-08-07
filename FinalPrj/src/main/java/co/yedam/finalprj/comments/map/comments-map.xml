@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.comments.map.CommentsMap">
-
+	<select id="commentSelect" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
+		SELECT comment_id, feed_id, reg_date, content, user_id
+		FROM comments
+		WHERE comment_id=#{comment_id}
+	</select>
+	
+	<delete id="commentDelete" parameterType="co.yedam.finalprj.comments.vo.CommentsVO">
+		DELETE FROM comments 
+		WHERE comment_id=#{comment_id}
+	</delete>
+	
+	
 </mapper>
