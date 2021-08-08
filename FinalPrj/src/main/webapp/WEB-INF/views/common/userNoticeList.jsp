@@ -53,6 +53,9 @@ tr:hover {
 	$('#btnHome').on('click', function(){
 		location.href='${pageContext.request.contextPath}/feed.do'
 	})
+	$('#btnBack').on('click', function() {
+		history.back();
+	});
  })	
 </script>
 </head>
@@ -119,6 +122,7 @@ tr:hover {
 			</div>
 			<div>
 				<button id="btnHome" class="button grey-button">홈으로</button>
+				<button type="button" id="btnBack" class="button grey-button">이전페이지</button>
 			</div>
 		</div>
 		<!-- 컨텐츠 종료 -->

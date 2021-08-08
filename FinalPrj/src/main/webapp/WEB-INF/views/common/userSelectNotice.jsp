@@ -75,7 +75,6 @@
 					</div>
 					<div>
 						<button type="button" id="btnNoticeList" class="button grey-button">목록</button>
-						<button type="button" id="btnBack" class="button grey-button">이전페이지</button>
 					</div>
 			</div>
 		</div>

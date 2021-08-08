@@ -161,13 +161,10 @@
 						</textarea>
 					</div>
 					<div align="center">
-						<button type="reset" class="button">작성취소</button>
-						<button type="submit" id="btnSubmit" class="button">메일작성</button>
-						<br>
-					</div>
-					<div align="right">
 						<button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/userQnaList.do'"
 							class="button">목록으로</button>
+						<button type="submit" id="btnSubmit" class="button">메일작성</button>
+						<br>
 					</div>
 				</form>
 			</div>
