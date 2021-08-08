@@ -235,5 +235,12 @@
 		 //생각해봐 싫은 관심사! 
 		</if>			
 	</select>  --> 
-	             
+	
+	
+	<!-- 관리자 -->
+	<select id="oneSelectFeed" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
+		select *
+		from feed
+		where feed_id = #{feed_id}
+	</select>             
 </mapper>

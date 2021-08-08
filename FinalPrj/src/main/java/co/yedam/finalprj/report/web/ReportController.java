@@ -17,6 +17,8 @@ import co.yedam.finalprj.letter.service.LetterService;
 import co.yedam.finalprj.letter.vo.LetterVO;
 import co.yedam.finalprj.report.service.ReportService;
 import co.yedam.finalprj.report.vo.ReportVO;
+import co.yedam.finalprj.users.service.UsersService;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 @Controller
 public class ReportController {
@@ -32,6 +34,9 @@ public class ReportController {
    
    @Autowired
    CommentsService commentDao; 
+   
+   @Autowired
+   UsersService usersDao;
    
    //신고리스트
    @RequestMapping("admin/userReportList.do")
@@ -80,8 +85,9 @@ public class ReportController {
 	   String content = req.getParameter("content");
 	   int r = 0;
 	   if(content.contains("feed")) {
-		   //신고리스트에서 피드읽고, 피드에대한 댓글도 읽음처리되야된다.
-		   //--넘어오는feed_id로 댓글번호를 검색한다. 읽음처리를 먼저해주고 피드삭제
+			/*
+			 * 신고리스트에서 피드읽고, 피드에대한 댓글도 읽음처리되야된다. 넘어오는feed_id로 댓글번호를 검색한다. 읽음처리를 먼저해주고 피드삭제
+			 */
 		   int k = reportDao.reportAllUpdate(rvo);
 		   System.out.println(k + "건 읽음처리");
 		   
@@ -113,13 +119,17 @@ public class ReportController {
    //신고가 들어왔지만 이상없을경우 읽음처리
    @RequestMapping("admin/readContent.do")
    @ResponseBody
-   public int readContent(HttpServletRequest req,LetterVO vo, FeedVO fvo, ReportVO rvo, CommentsVO cvo) {
+   public int readContent(HttpServletRequest req,LetterVO vo, FeedVO fvo, ReportVO rvo, CommentsVO cvo, UsersVO uvo) {
 	   String content = req.getParameter("content");
+	   String id = req.getParameter("user_id");
 	   rvo.setContent(content);
 	   int r = reportDao.reportUpdate(rvo);
 	   System.out.println(r + "건 읽음");
 	   //읽음처리하면 유저 신고카운트 1개 차감
-	   
+	   uvo.setUser_id(id);
+	   uvo.setCnt(r);
+	   int k = usersDao.reportUpdateMinus(uvo);
+	   System.out.println(k + "건 수정");
 	   return r;
    }
    

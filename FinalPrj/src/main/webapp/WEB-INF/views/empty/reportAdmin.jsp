@@ -58,7 +58,8 @@
 				url : '${pageContext.request.contextPath}/admin/readContent.do',
 				type : 'POST',
 				data : {
-					content : '${content.feed_id}'
+					content : '${content.feed_id}',
+					user_id : '${content.user_id}'
 				},
 				success : function(data) {
 					if (data > 0) {

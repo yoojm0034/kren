@@ -93,6 +93,11 @@ public class FeedServiceImpl implements FeedService {
 		// TODO Auto-generated method stub
 		return map.searchFriend(vo);
 	}
+	@Override
+	public FeedVO oneSelectFeed(FeedVO vo) {
+		// TODO Auto-generated method stub
+		return map.oneSelectFeed(vo);
+	}
 
 
 

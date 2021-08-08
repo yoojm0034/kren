@@ -28,5 +28,9 @@ public interface FeedMap {
 	List<FriendsVO> allUser(FriendsVO vo);
 	List<FriendsVO> newUser(FriendsVO vo);
 	List<UsersVO> searchFriend(UsersVO vo);		//친구검색 
+	
+	//관리자
+	//피드1건조회
+	FeedVO oneSelectFeed(FeedVO vo);
 }
 

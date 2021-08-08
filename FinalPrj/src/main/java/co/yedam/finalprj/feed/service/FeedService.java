@@ -25,4 +25,6 @@ public interface FeedService {
 	 List<FriendsVO> allUser(FriendsVO vo);
 	 List<FriendsVO> newUser(FriendsVO vo);
 	 List<UsersVO> searchFriend(UsersVO vo);
+	 
+	 FeedVO oneSelectFeed(FeedVO vo);
 }
