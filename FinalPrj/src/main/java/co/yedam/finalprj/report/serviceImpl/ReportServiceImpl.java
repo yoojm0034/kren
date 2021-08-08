@@ -50,4 +50,10 @@ public class ReportServiceImpl implements ReportService {
 		return map.reportAllUpdate(vo);
 	}
 
+	@Override
+	public int reportUpdateUser(ReportVO vo) {
+		// TODO Auto-generated method stub
+		return map.reportUpdateUser(vo);
+	}
+
 }

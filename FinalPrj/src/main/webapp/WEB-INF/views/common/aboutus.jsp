@@ -95,10 +95,10 @@
 				</div>
 			</div>
 		</div>
-		<button onclick="sendTextPush('user3','feed_2')" type="button">댓글</button>
-		<button onclick="sendFollowPush('user3')" type="button">팔로우</button>
-		<button onclick="sendLetterPush('user3')" type="button">편지</button>
-		<button onclick="sendLikePush('user3','feed_2')" type="button">좋아요</button>
+		<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
+		<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
+		<button onclick="sendLetterPush('admin')" type="button">편지</button>
+		<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
 
 
 

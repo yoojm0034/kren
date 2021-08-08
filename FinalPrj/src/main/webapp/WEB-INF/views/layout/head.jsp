@@ -246,16 +246,21 @@ h5:hover {
 	        div.append(div3);
 	        if(data.includes('편지')) {
 	        	$('#replyB').prepend(div);
+	        	toastr.options.escapeHtml = true;
+				toastr.options.closeButton = true;
+				toastr.options.newestOnTop = false;
+				toastr.options.progressBar = true;
+				toastr.info('편지가 오고있습니다.','알림', {timeOut: 6000});
 	        }else{
 	        	$('#replyA').prepend(div);
-	        	
+	        	toastr.options.escapeHtml = true;
+				toastr.options.closeButton = true;
+				toastr.options.newestOnTop = false;
+				toastr.options.progressBar = true;
+				toastr.info('알림을 확인하세요.','알림', {timeOut: 6000});
 	        }
 			
-			toastr.options.escapeHtml = true;
-			toastr.options.closeButton = true;
-			toastr.options.newestOnTop = false;
-			toastr.options.progressBar = true;
-			toastr.info('알림이 도착했습니다.','알림', {timeOut: 6000});
+			
 		};
 
 		sock.onclose = function() {

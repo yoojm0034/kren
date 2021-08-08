@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.finalprj.friends.service.FriendsService;
 import co.yedam.finalprj.friends.vo.FriendsVO;
+import co.yedam.finalprj.report.service.ReportService;
+import co.yedam.finalprj.report.vo.ReportVO;
 import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
@@ -45,6 +44,7 @@ public class UsersController {
 	@Autowired UsersService usersDao;
 	@Autowired TopicService topicDao;
 	@Autowired FriendsService friendsDao;
+	@Autowired ReportService reportDao;
 
 	@RequestMapping("test3.do")
 	public String test3() {
@@ -257,11 +257,14 @@ public class UsersController {
 	//유저상태업데이트
 	@PutMapping("admin/usersUpdate.do")
 	@ResponseBody
-	public Map<String, Object> adminUsersUpdate(@RequestBody MemberData memberData) {
+	public Map<String, Object> adminUsersUpdate(@RequestBody MemberData memberData, ReportVO vo) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		System.out.println(memberData);
 		for(int i=0; i < memberData.updatedRows.size(); i++) {
 			usersDao.adminUsersUpdate(memberData.updatedRows.get(i));
+			vo.setReported(memberData.updatedRows.get(i).getUser_id());
+			int r = reportDao.reportUpdateUser(vo);
+			System.out.println(r + "건 수정");
 		}
 		data.put("result", true);
 		data.put("data", memberData.updatedRows);
