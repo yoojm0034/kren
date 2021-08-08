@@ -159,10 +159,10 @@
 			var discountry = $("#dcountry-op option:selected").val();
 			var distopic = "";
 
-			topic = topic.substr(0,topic.length - 1);
-			distopic = distopic.substr(0,topic.length - 1);
-			$("input[name=topic-label]:checked").each(function() {topic += $(this).val();});
-			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val();});
+/* 			topic = topic.substr(0,topic.length - 1);
+			distopic = distopic.substr(0,topic.length - 1); */
+			$("input[name=topic-label]:checked").each(function() {topic += $(this).val() + "|"; });
+			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ "|";});
 
 			$('#gender').val(gender);
 			$('#country').val(country);
@@ -171,7 +171,8 @@
 			$('#dlanguage').val(topic);
 			$('#topic').val(topic);
 			$('#dtopic').val(distopic);
-
+			console.log('토픽2z' + topic);
+			console.log('d토픽2' + distopic);
 			$('#frm').submit();
 		});
 
@@ -270,7 +271,7 @@
 					<div>
 						<label class="search-label">언어</label> <select id="language1">
 							<option value="">All</option>
-							<option value="ko">한국어</option>
+							<option value="kr">한국어</option>
 							<option value="en">영어</option>
 						</select>
 					</div>
@@ -342,7 +343,7 @@
 							<div class="friend-stats">
 								<div class="stat-block">
 									<label>Friends</label>
-									<div class="stat-number">642</div>
+									<div class="stat-number">6421</div>
 								</div>
 								<div class="stat-block">
 									<label>Posts</label>

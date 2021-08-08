@@ -304,8 +304,10 @@ public class FeedController {
 		System.out.println("2토픽: "+vo.getTopic());
 		System.out.println("2제외토픽: "+vo.getDtopic());
 		
-		feedDao.searchFriend(vo);
-		return "redirect:friendSearch1.do";
+		System.out.println(feedDao.searchFriend(vo));
+		model.addAttribute("allList",feedDao.searchFriend(vo));
+		model.addAttribute("topicList",topicDao.topicSelectList());
+		return "friends/friendSearch";
 	}
 	
 }
