@@ -127,7 +127,7 @@ $(document).ready(function () {
       $(this).addClass('is-hidden');
       $(this).closest('.transition-block').append(successIndicator); //Show a success toast
 
-      setTimeout(function () {
+  /*    setTimeout(function () {
         if ($this.closest('.transition-block').hasClass('page-block')) {
           iziToast.show({
             maxWidth: '280px',
@@ -165,7 +165,7 @@ $(document).ready(function () {
             zindex: 99999
           });
         }
-      }, 1000);
+      }, 1000);*/
     });
   }
 });

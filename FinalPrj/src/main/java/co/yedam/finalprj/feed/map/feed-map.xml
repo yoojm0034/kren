@@ -7,7 +7,7 @@
 		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
 		SELECT *
 	    FROM (SELECT
-	    				TRUNC(CAL(#{user_id} ,u.USER_ID),0),
+	    				TRUNC(CAL(#{user_id} ,u.USER_ID),0) ,
 						u.USER_ID 	"user_id",
 						u.EMAIL 	"email",
 						u.NAME 		"name",
@@ -153,15 +153,15 @@
 		from    users
 		where
 		STATUS = '일반회원'
-		and NOT   USER_ID IN (    SELECT BLOCKED
+		AND NOT user_id IN (#{user_id})
+		AND NOT   USER_ID IN (    SELECT BLOCKED
 					              FROM block
 						    	  WHERE USER_ID = #{user_id}
 		                    )
-		 and  NOT   USER_ID IN (  SELECT following
+		AND  NOT   USER_ID IN (  SELECT following
 					        	  FROM friends
 						    	  WHERE USER_ID = #{user_id}
-		                    )                   
-                    
+		                      )         
 	</select>
 	<select id="newUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		select  email,
@@ -179,45 +179,21 @@
 				FLAG
 		from   users
 		where  STATUS = '일반회원'
-		and NOT   USER_ID IN (  SELECT BLOCKED
-									        	FROM block
-										    	WHERE USER_ID = #{user_id}
+		AND NOT user_id IN (#{user_id})
+		AND NOT   USER_ID IN (  SELECT BLOCKED
+								FROM block
+								WHERE USER_ID = #{user_id}
 		                    )
-		and  NOT   USER_ID IN (  SELECT following
-									        	FROM friends
-										    	WHERE USER_ID = #{user_id}
+		AND  NOT   USER_ID IN (  SELECT following
+								 FROM friends
+								 WHERE USER_ID = #{user_id}
 		                    )                   
-		and  REG_DATE BETWEEN TRUNC(SYSDATE , 'iw') AND TRUNC(SYSDATE, 'iw')+6          
+		AND  REG_DATE BETWEEN TRUNC(SYSDATE , 'iw') AND TRUNC(SYSDATE, 'iw')+6          
 	</select>
-	
-	<select id="myUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		select  email,
-				name,
-				birth,
-				gender,
-				topic,
-				LANGUAGE1,
-				LANGUAGE2,
-				COUNTRY,
-				REG_DATE,
-				PROFILE,
-				USER_ID,
-				STATUS,
-				FLAG
-		from   users
-		where  STATUS = '일반회원'
-		and NOT   USER_ID IN (  SELECT BLOCKED
-					        	FROM block
-						    	WHERE USER_ID = #{user_id}
-		                    )
-		and    USER_ID IN (     SELECT following
-				        	    FROM friends
-					    	    WHERE USER_ID = #{user_id}
-		                    )         
-	</select>	       
+       
 	<!-- 나이, 성별, 국가, 언어, 관심사 -->
-<!--  <select>
-		select  u.email,
+<!--  	<select id="searchFriend" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT  u.email,
 				u.name,
 				u.birth,
 				u.gender,
@@ -230,14 +206,15 @@
 				u.USER_ID,
 				u.STATUS,
 				u.FLAG
-		from users u join age_v a
+		FROM users u join age_v a
 		on u.USER_ID = a.USER_ID
-		where u.status = '일반회원'
-		<if test="start_age != null || end_age != null">
-			AND age between #{start_age} and #{end_age} 
+		WHERE u.status = '일반회원'
+		AND NOT user_id IN (#{user_id})
+		<if test="s_age != null">
+			AND age between #{s_age} and #{e_age} 
 		</if>
-		<if test="start_dage != null || end_dage != null">
-			AND age NOT between #{start_dage} and #{end_dage} 
+		<if test="s_dage != null">
+			AND age NOT between #{s_dage} and #{e_dage} 
 		</if>
 		<if test="gender != null">
 			AND u.gender = #{gender}
@@ -245,18 +222,18 @@
 		<if test="country != null">
 			AND upper(u.COUNTRY) =#{country}
 		</if>
+		<if test="dcountry != null">
+			AND NOT upper(u.COUNTRY) IN (#{dcountry})
+		</if>
 		<if test="LANGUAGE1 != null">
 			AND  LANGUAGE1 = #{language1}
 		</if>
-		<if test="country != null">
-			AND upper(u.COUNTRY) =#{country}
-		</if>
 		<if test="topic != null">
-		 //생각해봐
+			
 		</if>
 		<if test="topic != null">
 		 //생각해봐 싫은 관심사! 
 		</if>			
-	</select>  -->
+	</select>  --> 
 	             
 </mapper>

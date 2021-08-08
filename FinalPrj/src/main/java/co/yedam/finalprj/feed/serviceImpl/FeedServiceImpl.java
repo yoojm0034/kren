@@ -89,9 +89,9 @@ public class FeedServiceImpl implements FeedService {
 		return map.newUser(vo);
 	}
 	@Override
-	public List<FriendsVO> myUser(FriendsVO vo) {
+	public List<UsersVO> searchFriend(UsersVO vo) {
 		// TODO Auto-generated method stub
-		return map.myUser(vo);
+		return map.searchFriend(vo);
 	}
 
 

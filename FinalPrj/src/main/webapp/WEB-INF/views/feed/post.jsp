@@ -25,10 +25,60 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/template/assets/js/global.js"></script>
-<script src="resources/template/assets/js/global.js"></script>
+	
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/global.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/app.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/webcam.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/compose.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/autocompletes.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
+
 <script>
+//-------좋아요--------
+function likeIt(feedId){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/likeCnt.do",
+		type:"POST",
+		data:{feed_id:feedId},
+		success:function(result){
+			if(result==0){
+				alert('좋아요!');
+			}else{
+				alert('좋아요 취소');
+			}
+			recCount(feedId);
+		},
+		error:function(err){
+			console.log(err);
+		}
+	}) 
+}; 
+
+
+//-------좋아요 카운트--------
+function recCount(feedId){
+	var span = $('#recCnt'+feedId);
+	$.ajax({
+		url: "${pageContext.request.contextPath}/likeSelectList.do",
+           type: "POST",
+           data: {feed_id:feedId},
+           dataType:"JSON",
+           success: function(data) {
+               	var cnt =data.length;
+               	if(cnt<1){
+               		span.empty();
+               		span.append(0);
+               	}else{
+	               	$.each(data, function(idx, val) {
+    	   				span.empty();
+	       				span.append(cnt);   		
+               	});
+               	}
+           },error:function(err){
+           	console.log(err);
+           }
+	}) 
+ }; 
 
 
 </script>
@@ -47,7 +97,7 @@
 								alt="">
 						</div>
 						<div class="user-info" id="${vo.feed_id }">
-							<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } </a>
+							<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } :  </a>
 							<span class="time${vo.feed_id }"> <script
 									type="text/javascript">
 							function timeForToday(value,id) {
@@ -133,7 +183,7 @@
 								<c:if test="${vo.user_id eq user.user_id}">
 									<hr class="dropdown-divider">
 									<a class="dropdown-item">
-										<div class="media feedUpdate" id="update${vo.feed_id }">
+										<div class="media feedUpdate" id="update${vo.feed_id }" onclick="feedUpdate('${vo.feed_id }')">
 											<i data-feather="bell"></i>
 											<div class="media-content">
 												<input type="hidden" id="update-tag" name="update-tag"
@@ -271,9 +321,8 @@
 								class="css-i6dzq1">
 								<path
 									d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-							<span id="recCnt${vo.feed_id }"> <script
-									type="text/javascript">														
-														recCount('${vo.feed_id}');
+							<span id="recCnt${vo.feed_id }"> <script>														
+								recCount('${vo.feed_id}');
 							</script>
 							</span>
 						</div>

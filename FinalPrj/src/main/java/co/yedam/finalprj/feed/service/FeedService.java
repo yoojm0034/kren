@@ -24,5 +24,5 @@ public interface FeedService {
 
 	 List<FriendsVO> allUser(FriendsVO vo);
 	 List<FriendsVO> newUser(FriendsVO vo);
-	 List<FriendsVO> myUser(FriendsVO vo);
+	 List<UsersVO> searchFriend(UsersVO vo);
 }

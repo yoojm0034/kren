@@ -25,9 +25,8 @@ public interface FeedMap {
 	int likeCntUPdate(LikesVO vo);
 	
 	//친구
-	
 	List<FriendsVO> allUser(FriendsVO vo);
 	List<FriendsVO> newUser(FriendsVO vo);
-	List<FriendsVO> myUser(FriendsVO vo);
+	List<UsersVO> searchFriend(UsersVO vo);		//친구검색 
 }
 

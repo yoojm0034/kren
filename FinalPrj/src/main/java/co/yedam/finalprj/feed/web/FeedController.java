@@ -103,6 +103,7 @@ public class FeedController {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		System.out.println("로케이션 값 "+vo.getLocation());
+	
 		vo.setUser_id(id);
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 		return "no/feed/post";
@@ -245,27 +246,65 @@ public class FeedController {
 		vo.setUser_id(id);
 		model.addAttribute("allList",feedDao.allUser(vo));
 		model.addAttribute("newList",feedDao.newUser(vo));
-		model.addAttribute("myList",feedDao.myUser(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
-		
 		return "friends/friendSearch";
 	};
 	
 	@RequestMapping("searchList.do")
-	public String friendSearchList(Model model,UsersVO vo,HttpServletRequest request) {
+	public String friendSearchList(Model model,UsersVO vo,Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+
+		vo.setUser_id(id);
 		
-		String age1 = request.getParameter("ageVal1");
-		String age2 = request.getParameter("ageVal2");;
-		String disAge1 = request.getParameter("dis-ageVal1");;
-		String disAge2 = request.getParameter("dis-ageVal2");;
-		String gender = request.getParameter("genderVal");;
-		String country = request.getParameter("countryVal");;
-		String disCountry = request.getParameter("dis-countryVal");;
-		String lan = request.getParameter("lanVal");;
-		String topic = request.getParameter("topicVal");;
-		String disTopic = request.getParameter("dis-topicVal");;
+		System.out.println("시작 나이: "+vo.getS_age());
+		System.out.println("시작 나이2: "+vo.getE_age());
+		System.out.println("끝 나이: "+vo.getS_dage());
+		System.out.println("끝 나이2: "+vo.getE_dage());
+		System.out.println("성별: "+vo.getGender());
+		System.out.println("국가: "+vo.getCountry());
+		System.out.println("제외국가: "+vo.getDcountry());
+		System.out.println("언어: "+vo.getLanguage1());
 		
-		System.out.println("나이1 : "+age1 +"나이2 : "+ age2 +"나이3 : "+ disAge1 +"나이4 : "+ disAge2 + "성별 : "+gender+"국가 : "+country +"국가2 : "+ disCountry +"언어 : "+ lan + "토픽 : "+topic+ "ㄴ 토픽: "+disTopic );
+		System.out.println("토픽: "+vo.getTopic());
+		System.out.println("제외토픽: "+vo.getDtopic());
+		
+		
+		
+		if(vo.getS_age().equals("") || vo.getE_age().equals("") ){
+			vo.setS_age(null);
+		}
+		if(vo.getS_dage().equals("") || vo.getE_dage().equals("") ){
+			vo.setS_dage(null);
+		}
+		if(vo.getCountry().equals("")) {
+			vo.setCountry(null);
+		}
+		if(vo.getDcountry().equals("")) {
+			vo.setDcountry(null);
+		}
+		if(vo.getLanguage1().equals("")) {
+			vo.setLanguage1(null);
+		}
+		if(vo.getTopic().equals("")) {
+			vo.setTopic(null);
+		}
+		if(vo.getDtopic().equals("")) {
+			vo.setDtopic(null);
+		}
+		System.out.println("2시작 나이: "+vo.getS_age());
+		System.out.println("2시작 나이2: "+vo.getE_age());
+		System.out.println("2끝 나이: "+vo.getS_dage());
+		System.out.println("2끝 나이2: "+vo.getE_dage());
+		System.out.println("2성별: "+vo.getGender());
+		System.out.println("2국가: "+vo.getCountry());
+		System.out.println("2제외국가: "+vo.getDcountry());
+		System.out.println("2언어: "+vo.getLanguage1());
+		
+		System.out.println("2토픽: "+vo.getTopic());
+		System.out.println("2제외토픽: "+vo.getDtopic());
+		
+		feedDao.searchFriend(vo);
 		return "redirect:friendSearch1.do";
 	}
 	
