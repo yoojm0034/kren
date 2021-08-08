@@ -19,4 +19,5 @@ public interface LetterService {
 	public int updateSavedSendYN(LetterVO vo);
 	public int deleteLetter(LetterVO vo);
 	public LetterVO oneSelect(LetterVO vo);
+	public int updateAdminYN(LetterVO vo);
 }

@@ -181,10 +181,6 @@
 		 WHERE LETTER_ID =#{letter_id}
 		   AND USER_ID =#{user_id}
 		</when>
-		<when test='user_id == "admin"'>
-		UPDATE LETTER SET TO_DELETE = 'Y', FROM_DELETE = 'Y' 
-		 WHERE LETTER_ID =#{letter_id}
-		</when>
 		<otherwise>
 		UPDATE LETTER SET TO_DELETE = 'Y' 
 		 WHERE LETTER_ID =#{letter_id}
@@ -197,5 +193,11 @@
 		SELECT * FROM LETTER
 		WHERE LETTER_ID=#{letter_id}
 	</select>
+
+	<!-- 관리자 -->
+	<update id="updateAdminYN" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		UPDATE LETTER SET TO_DELETE = 'Y', FROM_DELETE = 'Y' 
+		WHERE LETTER_ID =#{letter_id}
+	</update>
 
 </mapper>
