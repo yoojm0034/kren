@@ -25,14 +25,16 @@
 						d.ORIGINAL_NAME, 
 	      				d.UUID 		"uuid",
 	        			d.DIRECTORY,
-	        			p.DELETE_YN "delete_yn"
-	        			
+	        			p.DELETE_YN "delete_yn",
+	        			nvl(likeCnt.LIKECNT,0) "like_cnt"
 			  FROM 		feed f JOIN users u
 						ON f.USER_ID = u.USER_ID
 	        			left outer join photo p
 	        			on  f.PHOTO = p.PHOTO_ID
 	        			left outer join photo_detail d
 	       				on p.PHOTO_ID=  d.PHOTO_ID
+	       				left outer join feedLikeCnt_v likeCnt
+                		on f.FEED_ID = likeCnt.FEED_ID
 			  WHERE  	u.STATUS = '일반회원'
 			  AND NOT   f.USER_ID IN (  SELECT BLOCKED
 							        	FROM block
@@ -48,7 +50,6 @@
 			AND 1 BETWEEN 0 AND 2000
 	  	    </if>
 			ORDER BY f.REG_DATE DESC)
-	<!-- 	WHERE ROWNUM <![CDATA[<=]]> 4 -->
 	</select>
 
 	<!--오늘 생일인 친구 조회 , 블릭한 친구 제외-->
@@ -68,21 +69,7 @@
 								 )
 	</select>
 	
-	<!-- 인기 있는 주제 조회 최근피드 내에서 조회 (중북 태그 제거) -->
-	<select id="likeTag" parameterType="co.yedam.finalprj.tag.vo.TagVO" resultType="co.yedam.finalprj.tag.vo.TagVO">
-		SELECT 	DISTINCT(c.col) as "tag_name"
-		FROM 
-				(WITH count AS (
-								  SELECT LISTAGG(tags, ',') WITHIN GROUP (ORDER BY tags) as "TAGS"
-								  FROM (
-								          SELECT * FROM  feed 
-								          ORDER BY reg_date DESC
-								        )
-				)
-				SELECT Regexp_Substr(TAGS,'[^,]+', 1, Level) COL From count 
-				Connect By Regexp_Substr(TAGS, '[^,]+', 1, Level) Is Not Null
-				) c 
-	</select>
+
 	
 	<!-- 나와 상대방의 일치하는 관심사 수 , 블락친구 제외, 이미 친구인 유저 제외 -->
 	<select id="sameTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
@@ -102,23 +89,9 @@
 		AND STATUS = '일반회원'
 	</select>
 	
-	<!-- 태그 체크 존재하면 추가 하지않음-->
-	<select id="tagSelect" parameterType="co.yedam.finalprj.tag.vo.TagVO" resultType="int">
-		SELECT count(tag_name) as tag_name
-  		FROM   tag 
-		WHERE  tag_name IN (#{tag_name})
-	</select>
-	
-	<!-- 좋아요 존재하면 삭제, 존재하지 않으면 추가 -->
-	<select id="likeCntUPdate" parameterType="co.yedam.finalprj.likes.vo.LikesVO" resultType="int">
-		SELECT f_likeInsert(#{feed_id},#{user_id})
-		FROM dual
-	</select>
-	
-	<!-- 태그 등록 존재하지 않을 시 추가  -->
-	<insert id="tagInsert" parameterType="co.yedam.finalprj.tag.vo.TagVO">
-		INSERT INTO tag(tag_name) VALUES( #{tag_name} )	
-	</insert>
+
+
+
 	
 	<!-- 피드 등록 -->
 	<insert id="feedInsert" statementType="CALLABLE" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
@@ -135,60 +108,78 @@
 		{ CALL feed_update( #{feed_id}, #{content}, #{photo} ,#{tags}, #{original_name}, #{uuid}, #{file_size}, #{directory}, #{write_lan} )} 
 	</update>
 	
+	
 	<!-- 친구 맵  -->
 	<select id="allUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		select  email,
-				name,
-				birth,
-				gender,
-				topic,
-				LANGUAGE1,
-				LANGUAGE2,
-				COUNTRY,
-				REG_DATE,
-				PROFILE,
-				USER_ID,
-				STATUS,
-				FLAG
-		from    users
+		select  u.email,
+		        u.name,
+		        u.birth,
+		        u.gender,
+		        u.topic,
+		        u.LANGUAGE1,
+				u.LANGUAGE2,
+				u.COUNTRY,
+				u.REG_DATE,
+				u.PROFILE,
+				u.USER_ID,
+				u.STATUS,
+				u.FLAG,
+        		NVL( fv.feedCnt,0) "feedCnt",
+		        NVL(fing.FOLLOWINGCNT,0) "followingCnt",
+		        NVL(fer.FOLLOWERCNT,0) "followerCnt"
+		from 	users u LEFT OUTER JOIN feedCnt_v fv
+				on u.USER_ID =fv.USER_ID
+		   		LEFT OUTER JOIN followingCnt_v fing
+		    	on u.user_id = fing.USER_ID
+		    	LEFT OUTER JOIN followerCnt_v fer
+		    	on u.USER_ID = fer.FOLLOWING
 		where
-		STATUS = '일반회원'
-		AND NOT user_id IN (#{user_id})
-		AND NOT   USER_ID IN (    SELECT BLOCKED
-					              FROM block
-						    	  WHERE USER_ID = #{user_id}
-		                    )
-		AND  NOT   USER_ID IN (  SELECT following
-					        	  FROM friends
-						    	  WHERE USER_ID = #{user_id}
-		                      )         
+				STATUS = '일반회원'
+				AND NOT   u.user_id IN (#{user_id})
+				AND NOT   u.USER_ID IN (  SELECT BLOCKED
+							              FROM block
+								    	  WHERE USER_ID = #{user_id}
+				                    )
+				AND  NOT  u.USER_ID IN (  SELECT following
+							        	  FROM friends
+								    	  WHERE USER_ID = #{user_id}
+				                      	) 
 	</select>
 	<select id="newUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		select  email,
-				name,
-				birth,
-				gender,
-				topic,
-				LANGUAGE1,
-				LANGUAGE2,
-				COUNTRY,
-				REG_DATE,
-				PROFILE,
-				USER_ID,
-				STATUS,
-				FLAG
-		from   users
-		where  STATUS = '일반회원'
-		AND NOT user_id IN (#{user_id})
-		AND NOT   USER_ID IN (  SELECT BLOCKED
-								FROM block
-								WHERE USER_ID = #{user_id}
-		                    )
-		AND  NOT   USER_ID IN (  SELECT following
-								 FROM friends
-								 WHERE USER_ID = #{user_id}
-		                    )                   
-		AND  REG_DATE BETWEEN TRUNC(SYSDATE , 'iw') AND TRUNC(SYSDATE, 'iw')+6          
+	   select   u.email,
+		        u.name,
+		        u.birth,
+		        u.gender,
+		        u.topic,
+		        u.LANGUAGE1,
+				u.LANGUAGE2,
+				u.COUNTRY,
+				u.REG_DATE,
+				u.PROFILE,
+				u.USER_ID,
+				u.STATUS,
+				u.FLAG,
+        		NVL( fv.feedCnt,0) "feedCnt",
+		        NVL(fing.FOLLOWINGCNT,0) "followingCnt",
+		        NVL(fer.FOLLOWERCNT,0) "followerCnt"
+		from 	users u LEFT OUTER JOIN feedCnt_v fv
+				on u.USER_ID =fv.USER_ID
+		   		LEFT OUTER JOIN followingCnt_v fing
+		    	on u.user_id = fing.USER_ID
+		    	LEFT OUTER JOIN followerCnt_v fer
+		    	on u.USER_ID = fer.FOLLOWING
+		where
+				STATUS = '일반회원'
+				AND NOT u.user_id IN (#{user_id})
+				AND NOT u.USER_ID IN (   SELECT BLOCKED
+							             FROM block
+								    	 WHERE USER_ID = #{user_id}
+				                    )
+				AND NOT u.USER_ID IN (   SELECT following
+							        	 FROM friends
+								    	 WHERE USER_ID = #{user_id}
+				                      	)         
+				AND  u.REG_DATE BETWEEN TRUNC(SYSDATE , 'iw') AND TRUNC(SYSDATE, 'iw')+6          
 	</select>
        
 	<!-- 나이, 성별, 국가, 언어, 관심사 -->
@@ -206,11 +197,28 @@
 				u.USER_ID,
 				u.STATUS,
 				u.FLAG,
-				a.age
-		FROM users u join age_v a
-		on u.USER_ID = a.USER_ID
-		WHERE u.status = '일반회원'
-		AND NOT u.user_id IN (#{user_id})
+				a.age,
+        		NVL( fv.feedCnt,0) "feedCnt",
+		        NVL(fing.FOLLOWINGCNT,0) "followingCnt",
+		        NVL(fer.FOLLOWERCNT,0) "followerCnt"
+		FROM 	users u join age_v a
+				on u.USER_ID = a.USER_ID
+			    LEFT OUTER JOIN feedCnt_v fv
+				on u.USER_ID =fv.USER_ID
+			    LEFT OUTER JOIN followingCnt_v fing
+			    on u.user_id = fing.USER_ID
+			    LEFT OUTER JOIN followerCnt_v fer
+			    on u.USER_ID = fer.FOLLOWING
+		WHERE	u.status = '일반회원'
+				AND NOT u.user_id IN ('user1')
+			    AND NOT u.USER_ID IN (  SELECT BLOCKED
+			                            FROM block
+			                            WHERE USER_ID = #{user_id}
+					                 )
+				AND NOT u.USER_ID IN (  SELECT following
+			                            FROM friends
+			                            WHERE USER_ID = #{user_id}
+					                  ); 
 		<if test="s_age != null">
 			AND a.age between #{s_age} and #{e_age} 
 		</if>
@@ -228,13 +236,13 @@
 			AND NOT upper(u.COUNTRY) IN (upper(#{dcountry}))
 		</if>
 		<if test="language1 != null">
-			AND  language1 = #{language1}
+			AND  u.language1 = #{language1}
 		</if>
   		<if test="dtopic != null">
-			and not REGEXP_LIKE (topic,#{dtopic})
+			AND not REGEXP_LIKE (u.topic,#{dtopic})
 		</if>
 		 <if test="topic != null">
-			and REGEXP_LIKE (topic,#{topic})
+			AND REGEXP_LIKE (u.topic,#{topic})
 		</if> 
 	</select>  
 	

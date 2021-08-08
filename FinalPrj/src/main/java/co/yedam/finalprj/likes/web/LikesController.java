@@ -22,25 +22,16 @@ public class LikesController {
 	
 	@RequestMapping("likeCnt.do")
 	@ResponseBody
-	public String likeCnt(@RequestParam(value = "feed_id", defaultValue = "-")String feedId,
+	public List<LikesVO> likeCnt(@RequestParam(value = "feed_id", defaultValue = "-")String feedId,
 						  LikesVO vo ,HttpServletRequest request,Authentication auth) {
-		
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
+		
 		vo.setFeed_id(feedId);
 		vo.setUser_id(id);
 		
-		int r =likeDao.likeChk(vo);
-		
-		String result = Integer.toString(r);
-		return result;
-	}
-	
-	@RequestMapping("likeSelectList.do")
-	@ResponseBody
-	public List<LikesVO> likeSelectList(LikesVO vo){
+		likeDao.likeChk(vo);	//삭제 or 등록
 		List<LikesVO> result = likeDao.likeSelectList(vo);
-		System.out.println(result+": result");
 		return result;
 	}
 	

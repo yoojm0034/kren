@@ -20,23 +20,19 @@ public class LikesServiceImpl implements LikesService {
 		
 		if(cnt == 0) {
 			map.likeInsert(vo);
-			System.out.println("등록");
 		} else {
 			map.likeDelete(vo);
-			System.out.println("삭제");
 		}
 		return cnt;
 	}
 
 	@Override
 	public int likeInsert(LikesVO vo) {
-		// TODO Auto-generated method stub
 		return map.likeInsert(vo);
 	}
 
 	@Override
 	public int likeDelete(LikesVO vo) {
-		// TODO Auto-generated method stub
 		return map.likeDelete(vo);
 	}
 

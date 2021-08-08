@@ -91,10 +91,11 @@ public class FeedController {
 		fvo.setUser_id(id);
 
 		model.addAttribute("sameTopic",feedDao.sameTopicList(uvo));		
-		model.addAttribute("likeTag",feedDao.likeTag());				
+		model.addAttribute("likeTag",tagDao.likeTag());				
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
 		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
+		System.out.println(feedDao.feedSelectList(vo));
 		return "feed/mainFeed";
 	}
 	
@@ -102,7 +103,6 @@ public class FeedController {
 	public String tagSelect(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
-		System.out.println("로케이션 값 "+vo.getLocation());
 	
 		vo.setUser_id(id);
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
@@ -227,15 +227,7 @@ public class FeedController {
 	    return result;
 	}
 	
-	//태그등록
-	@RequestMapping("tagInsert.do")
-	public String tagInsert(TagVO vo, Model model) {
-		int chk = feedDao.tagSelect(vo);
-		if(chk == 0) {
-			feedDao.tagInsert(vo);
-		};
-		return "redirect:feed.do";
-	};
+
 
 	
 	@RequestMapping("friendSearch1.do")
@@ -244,7 +236,9 @@ public class FeedController {
 		String id = (String) user.getUsername();
 
 		vo.setUser_id(id);
+		
 		model.addAttribute("allList",feedDao.allUser(vo));
+		model.addAttribute("searchList",feedDao.allUser(vo));
 		model.addAttribute("newList",feedDao.newUser(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
 		return "friends/friendSearch";
@@ -257,25 +251,14 @@ public class FeedController {
 
 		vo.setUser_id(id);
 		
-		System.out.println("시작 나이: "+vo.getS_age());
-		System.out.println("시작 나이2: "+vo.getE_age());
-		System.out.println("끝 나이: "+vo.getS_dage());
-		System.out.println("끝 나이2: "+vo.getE_dage());
-		System.out.println("성별: "+vo.getGender());
-		System.out.println("국가: "+vo.getCountry());
-		System.out.println("제외국가: "+vo.getDcountry());
-		System.out.println("언어: "+vo.getLanguage1());
-		
-		System.out.println("토픽: "+vo.getTopic());
-		System.out.println("제외토픽: "+vo.getDtopic());
-		
-		
-		
 		if(vo.getS_age().equals("") || vo.getE_age().equals("") ){
 			vo.setS_age(null);
 		}
 		if(vo.getS_dage().equals("") || vo.getE_dage().equals("") ){
 			vo.setS_dage(null);
+		}
+		if(vo.getGender().equals("")) {
+			vo.setGender(null);
 		}
 		if(vo.getCountry().equals("")) {
 			vo.setCountry(null);
@@ -292,22 +275,25 @@ public class FeedController {
 		if(vo.getDtopic().equals("")) {
 			vo.setDtopic(null);
 		}
-		System.out.println("2시작 나이: "+vo.getS_age());
-		System.out.println("2시작 나이2: "+vo.getE_age());
-		System.out.println("2끝 나이: "+vo.getS_dage());
-		System.out.println("2끝 나이2: "+vo.getE_dage());
-		System.out.println("2성별: "+vo.getGender());
-		System.out.println("2국가: "+vo.getCountry());
-		System.out.println("2제외국가: "+vo.getDcountry());
-		System.out.println("2언어: "+vo.getLanguage1());
+		System.out.println("시작 나이: "+vo.getS_age());
+		System.out.println("시작 나이2: "+vo.getE_age());
+		System.out.println("끝 나이: "+vo.getS_dage());
+		System.out.println("끝 나이2: "+vo.getE_dage());
+		System.out.println("성별: "+vo.getGender());
+		System.out.println("국가: "+vo.getCountry());
+		System.out.println("제외국가: "+vo.getDcountry());
+		System.out.println("언어: "+vo.getLanguage1());
 		
-		System.out.println("2토픽: "+vo.getTopic());
-		System.out.println("2제외토픽: "+vo.getDtopic());
+		System.out.println("토픽: "+vo.getTopic());
+		System.out.println("제외토픽: "+vo.getDtopic());
 		
 		System.out.println(feedDao.searchFriend(vo));
-		model.addAttribute("allList",feedDao.searchFriend(vo));
+
+		model.addAttribute("searchList",feedDao.searchFriend(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
 		return "friends/friendSearch";
 	}
+
+	
 	
 }

@@ -34,51 +34,8 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
 
 <script>
-//-------좋아요--------
-function likeIt(feedId){
-	$.ajax({
-		url:"${pageContext.request.contextPath}/likeCnt.do",
-		type:"POST",
-		data:{feed_id:feedId},
-		success:function(result){
-			if(result==0){
-				alert('좋아요!');
-			}else{
-				alert('좋아요 취소');
-			}
-			recCount(feedId);
-		},
-		error:function(err){
-			console.log(err);
-		}
-	}) 
-}; 
 
 
-//-------좋아요 카운트--------
-function recCount(feedId){
-	var span = $('#recCnt'+feedId);
-	$.ajax({
-		url: "${pageContext.request.contextPath}/likeSelectList.do",
-           type: "POST",
-           data: {feed_id:feedId},
-           dataType:"JSON",
-           success: function(data) {
-               	var cnt =data.length;
-               	if(cnt<1){
-               		span.empty();
-               		span.append(0);
-               	}else{
-	               	$.each(data, function(idx, val) {
-    	   				span.empty();
-	       				span.append(cnt);   		
-               	});
-               	}
-           },error:function(err){
-           	console.log(err);
-           }
-	}) 
- }; 
 
 
 </script>
@@ -321,10 +278,9 @@ function recCount(feedId){
 								class="css-i6dzq1">
 								<path
 									d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-							<span id="recCnt${vo.feed_id }"> <script>														
-								recCount('${vo.feed_id}');
-							</script>
-							</span>
+								<span id="recCnt${vo.feed_id }" >
+													 ${vo.like_cnt }
+								</span>
 						</div>
 					</div>
 				</div>

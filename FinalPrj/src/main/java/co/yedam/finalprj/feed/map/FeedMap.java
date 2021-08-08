@@ -11,23 +11,16 @@ import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface FeedMap {
 	List<Map<String,Object>> feedSelectList(FeedVO vo);			//피드리스트
-	List<LikesVO> FeedLikeSelect(LikesVO vo);		
-	List<UsersVO> birthUser(FriendsVO vo);						//생일인유저 ->친구검색
-	List<UsersVO> sameTopicList(UsersVO vo); 					//나와일치하는관심사수
-	
-	List<TagVO> likeTag();										//인기있는태그 ->태그
-	int tagSelect(TagVO vo);								    //태그체크 ->태그
-	int tagInsert(TagVO vo);									//태그등록 ->태그
-	
 	int feedInsert(FeedVO vo);									//피드등록	
 	int feedDelete(FeedVO vo);									//피드삭제
 	int feedUpdate(FeedVO vo);									//피드수정
-	int likeCntUPdate(LikesVO vo);
-	
 	//친구
+	List<UsersVO> sameTopicList(UsersVO vo); 					//나와일치하는관심사수
+	List<UsersVO> searchFriend(UsersVO vo);						//친구검색 
+	List<UsersVO> birthUser(FriendsVO vo);						//생일인유저
 	List<FriendsVO> allUser(FriendsVO vo);
 	List<FriendsVO> newUser(FriendsVO vo);
-	List<UsersVO> searchFriend(UsersVO vo);		//친구검색 
+
 	
 	//관리자
 	//피드1건조회

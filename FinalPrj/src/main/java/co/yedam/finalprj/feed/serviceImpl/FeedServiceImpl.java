@@ -39,58 +39,33 @@ public class FeedServiceImpl implements FeedService {
 		return map.birthUser(vo);
 	}
 	@Override
-	public List<TagVO> likeTag() {
-		//인기있는태그
-		return map.likeTag();
-	}
-	@Override
 	public List<UsersVO> sameTopicList(UsersVO vo) {
-		//나와일치하는관심사수
 		return map.sameTopicList(vo);
 	}
-	@Override
-	public int tagSelect(TagVO vo) {
-		//태그 체크
-		return map.tagSelect(vo);
-	}
-	@Override
-	public int tagInsert(TagVO vo) {
-		//태그 등록
-		return map.tagInsert(vo);
-	}
+
 	@Override
 	public int feedInsert(FeedVO vo) {
-		//피드등록
 		return map.feedInsert(vo);
 	}
 	@Override
 	public int feedDelete(FeedVO vo) {
-		//피드삭제
 		return map.feedDelete(vo);
 	}
 	@Override
 	public int feedUpdate(FeedVO vo) {
-		//피드 수정
 		return map.feedUpdate(vo);
 	}
-	@Override
-	public int likeCntUPdate(LikesVO vo) {
-		//좋아요 좋아요 갯수
-		return map.likeCntUPdate(vo);
-	}
+
 	@Override
 	public List<FriendsVO> allUser(FriendsVO vo) {
-		// TODO Auto-generated method stub
 		return map.allUser(vo);
 	}
 	@Override
 	public List<FriendsVO> newUser(FriendsVO vo) {
-
 		return map.newUser(vo);
 	}
 	@Override
 	public List<UsersVO> searchFriend(UsersVO vo) {
-		// TODO Auto-generated method stub
 		return map.searchFriend(vo);
 	}
 	@Override
