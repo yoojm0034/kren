@@ -110,6 +110,17 @@ public class ReportController {
 	  
 	   return r;
    }
-   
+   //신고가 들어왔지만 이상없을경우 읽음처리
+   @RequestMapping("admin/readContent.do")
+   @ResponseBody
+   public int readContent(HttpServletRequest req,LetterVO vo, FeedVO fvo, ReportVO rvo, CommentsVO cvo) {
+	   String content = req.getParameter("content");
+	   rvo.setContent(content);
+	   int r = reportDao.reportUpdate(rvo);
+	   System.out.println(r + "건 읽음");
+	   //읽음처리하면 유저 신고카운트 1개 차감
+	   
+	   return r;
+   }
    
 }

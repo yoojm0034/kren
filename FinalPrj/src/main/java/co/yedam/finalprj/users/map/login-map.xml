@@ -41,5 +41,16 @@
 		where user_id = #{user_id}
 	</update>
 	
+	<update id="reportUpdatePlus" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		UPDATE users
+		SET report_cnt = report_cnt + 1
+		WHERE user_id = #{user_id}
+	</update>
+	
+	<update id="reportUpdateMinus" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		UPDATE users
+		SET report_cnt = report_cnt - 1
+		WHERE user_id = #{user_id}
+	</update>
 
 </mapper>

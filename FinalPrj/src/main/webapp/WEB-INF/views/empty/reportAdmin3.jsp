@@ -53,6 +53,29 @@
 			});
 
 		})
+		
+		$('#read').click(function() {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/admin/readContent.do',
+				type : 'POST',
+				data : {
+					content : '${content.comment_id}'
+				},
+				success : function(data) {
+					if (data > 0) {
+						console.log("데이터 전송이 성공적으로 끝났을 때 실행");
+						alert(data + "건 읽음");
+						opener.parent.location.reload();
+						window.close();
+					}
+
+				},
+				error : function(err) {
+					console.log(err);
+				}
+			});
+
+		})
 
 	})
 </script>
@@ -87,6 +110,8 @@
 			<button id="reset" onclick='window.close()' class="button">취소</button>
 			<button id="del" type="button"
 				class="button is-solid primary-button raised">게시물 삭제</button>
+			<button id="read" type="button"
+				class="button is-solid primary-button raised">게시물 읽음처리</button>	
 		</div>
 	</div>
 	

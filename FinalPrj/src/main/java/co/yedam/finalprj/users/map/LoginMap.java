@@ -26,4 +26,7 @@ public interface LoginMap {
 	//우표 구매시 보유 우표수 변경...
 	public int stampUpdate(UsersVO vo);
 	
+	//-----------------신고-----------------------
+	int reportUpdatePlus(UsersVO vo);
+	int reportUpdateMinus(UsersVO vo);
 }

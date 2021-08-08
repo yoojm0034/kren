@@ -49,4 +49,7 @@ public interface UsersService {
 	//-----------------관리자-----------------------
 	int adminUsersUpdate(UsersVO vo);
 	List<UsersVO> adminUsersSelectList();
+	//-----------------신고-----------------------
+	int reportUpdatePlus(UsersVO vo);
+	int reportUpdateMinus(UsersVO vo);
 }

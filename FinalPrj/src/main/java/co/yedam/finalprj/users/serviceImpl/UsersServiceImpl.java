@@ -124,4 +124,16 @@ public class UsersServiceImpl implements UsersService {
 		return map.followerList(vo);
 	}
 
+	@Override
+	public int reportUpdatePlus(UsersVO vo) {
+		// TODO Auto-generated method stub
+		return loginmap.reportUpdatePlus(vo);
+	}
+
+	@Override
+	public int reportUpdateMinus(UsersVO vo) {
+		// TODO Auto-generated method stub
+		return loginmap.reportUpdateMinus(vo);
+	}
+
 }
