@@ -192,7 +192,7 @@
 	</select>
        
 	<!-- 나이, 성별, 국가, 언어, 관심사 -->
-<!--  	<select id="searchFriend" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+  	<select id="searchFriend" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		SELECT  u.email,
 				u.name,
 				u.birth,
@@ -205,36 +205,38 @@
 				u.PROFILE,
 				u.USER_ID,
 				u.STATUS,
-				u.FLAG
+				u.FLAG,
+				a.age
 		FROM users u join age_v a
 		on u.USER_ID = a.USER_ID
 		WHERE u.status = '일반회원'
-		AND NOT user_id IN (#{user_id})
+		AND NOT u.user_id IN (#{user_id})
 		<if test="s_age != null">
-			AND age between #{s_age} and #{e_age} 
+			AND a.age between #{s_age} and #{e_age} 
 		</if>
 		<if test="s_dage != null">
-			AND age NOT between #{s_dage} and #{e_dage} 
+			AND a.age NOT between #{s_dage} and #{e_dage} 
 		</if>
-		<if test="gender != null">
+ 		<if test="gender != null">
 			AND u.gender = #{gender}
 		</if>
 		<if test="country != null">
-			AND upper(u.COUNTRY) =#{country}
+			AND upper(u.COUNTRY) = upper(#{country})
 		</if>
+		
 		<if test="dcountry != null">
-			AND NOT upper(u.COUNTRY) IN (#{dcountry})
+			AND NOT upper(u.COUNTRY) IN (upper(#{dcountry}))
 		</if>
-		<if test="LANGUAGE1 != null">
-			AND  LANGUAGE1 = #{language1}
+		<if test="language1 != null">
+			AND  language1 = #{language1}
 		</if>
-		<if test="topic != null">
-			
+  		<if test="dtopic != null">
+			and not REGEXP_LIKE (topic,#{dtopic})
 		</if>
-		<if test="topic != null">
-		 //생각해봐 싫은 관심사! 
-		</if>			
-	</select>  --> 
+		 <if test="topic != null">
+			and REGEXP_LIKE (topic,#{topic})
+		</if> 
+	</select>  
 	
 	
 	<!-- 관리자 -->
