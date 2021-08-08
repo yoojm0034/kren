@@ -472,9 +472,6 @@
 			<!-- LEFT SIDEBAR  -->
 			<div class="inbox-left-sidebar">
 				<div class="inbox-left-sidebar-inner ">
-					<div class="compose">
-						<a class="button is-fullwidth raised is-bold" onclick="writePopup()">Write</a>
-					</div>
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
 						<a href="${pageContext.request.contextPath}/letterBox.do" class="item">
