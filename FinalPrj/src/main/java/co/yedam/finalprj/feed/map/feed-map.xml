@@ -238,7 +238,7 @@
 	
 	
 	<!-- 관리자 -->
-	<select id="oneSelectFeed" parameterType="co.yedam.finalprj.feed.vo.FeedVO">
+	<select id="oneSelectFeed" parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="co.yedam.finalprj.feed.vo.FeedVO">
 		select *
 		from feed
 		where feed_id = #{feed_id}

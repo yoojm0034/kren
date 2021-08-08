@@ -64,7 +64,7 @@ public class ReportController {
 	   if(content.contains("feed")) {
 		   //피드자체정보 
 		   fvo.setFeed_id(content);
-		   //model.addAttribute("content", 피드한건조회)
+		   model.addAttribute("content", feedDao.oneSelectFeed(fvo));
 		   path = "empty/reportAdmin";
 	   }else if(content.contains("letter")) {
 		   vo.setLetter_id(content);
