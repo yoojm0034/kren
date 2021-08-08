@@ -171,7 +171,7 @@
 			$('#dtopic').val(distopic);
 			console.log('토픽2z' + topic);
 			console.log('d토픽2' + distopic);
-			$('#frm').submit();
+			//$('#frm').submit();
 		});
 
 		$('#show-filters').on('click',function() {
@@ -183,6 +183,10 @@
 				});
 			});
 		});
+		
+		$('#country-op').children().on('click',function(){
+			console.log(this);
+		})
 		
 });
 
@@ -269,7 +273,8 @@
 						기타<input type="radio" name="genderval" value="O">
 					</div>
 					<div>
-						<label class="search-label">국가</label> <select id="country-op">
+						<label class="search-label" >국가</label> 
+						<select id="country-op" multiple="multiple">
 							<option value="">All</option>
 						</select>
 					</div>
@@ -295,7 +300,8 @@
 						<input type="text" id="e_dage" name="e_dage" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 					</div>
 					<div>
-						<label class="search-label">국가</label> <select id="dcountry-op">
+						<label class="search-label">국가</label> 
+						<select id="dcountry-op" multiple="multiple">
 							<option value="">All</option>
 						</select>
 					</div>
@@ -330,10 +336,7 @@
 					<!-- /partials/pages/friends/friend-lists/all-friends.html -->
 					<!--Friend-->
 					<c:forEach items="${searchList }" var="vo">
-						<div class="card-flex friend-card">
-							<div class="star-friend is-active">
-								<i data-feather="star"></i>
-							</div>
+						<div class="card-flex friend-card" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
 							<div class="img-container">
 								<img class="avatar" src="https://via.placeholder.com/300x300"
 									data-demo-src="resources/template/assets/img/avatars/david.jpg"
@@ -341,8 +344,8 @@
 									src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
 									alt="">
 							</div>
-							<div class="friend-info">
-								<h3>${vo.name }</h3>
+							<div class="friend-info" >
+								<h3>${vo.name } 1</h3>
 								<p>Senior Developer</p>
 							</div>
 							<div class="friend-stats">
@@ -366,6 +369,7 @@
 								</div>
 							</div>
 						</div>
+					</a>
 					</c:forEach>
 					<!--Friend-->
 					<div class="card-flex friend-card">

@@ -61,12 +61,6 @@ public class FeedController {
 	UsersService userDao;
 	
 	@Autowired
-	LikesService likeDao;
-	
-	@Autowired
-	FriendsService friendDao;
-	
-	@Autowired
 	TopicService topicDao;
 	
 	//메인피드
@@ -99,6 +93,7 @@ public class FeedController {
 		return "feed/mainFeed";
 	}
 	
+	//피드 Div
 	@RequestMapping("feedSelect.do")
 	public String tagSelect(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
 		User user = (User) auth.getPrincipal();
@@ -108,7 +103,6 @@ public class FeedController {
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 		return "no/feed/post";
 	}
-	
 	
 	//피드등록,수정 
 	@RequestMapping("feedInsert.do")
@@ -228,8 +222,7 @@ public class FeedController {
 	}
 	
 
-
-	
+	//친구검색화면 
 	@RequestMapping("friendSearch1.do")
 	public String allUserList(FriendsVO vo,Model model,Authentication auth){
 		User user = (User) auth.getPrincipal();
@@ -244,6 +237,7 @@ public class FeedController {
 		return "friends/friendSearch";
 	};
 	
+	//친구검색
 	@RequestMapping("searchList.do")
 	public String friendSearchList(Model model,UsersVO vo,Authentication auth) {
 		User user = (User) auth.getPrincipal();
@@ -275,6 +269,7 @@ public class FeedController {
 		if(vo.getDtopic().equals("")) {
 			vo.setDtopic(null);
 		}
+		
 		System.out.println("시작 나이: "+vo.getS_age());
 		System.out.println("시작 나이2: "+vo.getE_age());
 		System.out.println("끝 나이: "+vo.getS_dage());
@@ -283,7 +278,6 @@ public class FeedController {
 		System.out.println("국가: "+vo.getCountry());
 		System.out.println("제외국가: "+vo.getDcountry());
 		System.out.println("언어: "+vo.getLanguage1());
-		
 		System.out.println("토픽: "+vo.getTopic());
 		System.out.println("제외토픽: "+vo.getDtopic());
 		
