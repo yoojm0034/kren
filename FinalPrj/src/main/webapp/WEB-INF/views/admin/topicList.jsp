@@ -65,20 +65,20 @@
 			  recruitGrid.request('updateData', {
 			  checkedOnly: true
 			  });
-			  
+			  location.reload();
 		}) ;
 		$('#create').click(function () {
 			  recruitGrid.request('createData', {
 			  checkedOnly: true
 			  });
-			  
+			  location.reload();
 		}) ;
 		$('#delete').click(function () {
 			  recruitGrid.removeCheckedRows(true);	
 			  recruitGrid.request('deleteData', {
 			  checkedOnly: true
 			  });
-			  
+			  location.reload();
 		}) ;
 		const prependBtn = document.getElementById('prependBtn');
 		const appendedData = {
@@ -209,7 +209,7 @@
 	            </div>  
 	            <div align="right" class="btn-wrapper">
 	            	<button id="prependBtn" class="button">행추가</button>
-	            	<button id="create" class="button">추가</button>
+	            	<button id="create" class="button">DB추가</button>
 					<button id="sync" class="button">수정</button>
 					<button id="delete" class="button">삭제</button>
 	            </div>

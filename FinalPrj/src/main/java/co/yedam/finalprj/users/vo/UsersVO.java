@@ -48,13 +48,13 @@ public class UsersVO {
 	private int followCheck; // 팔로잉 체크
 	
 	private int cnt;
-	
 	private String s_age;		//검색시작나이
 	private String e_age;		//검색끝나이
 	private String s_dage;		//제외시작나이
 	private String e_dage;		//검색끝나이
 	private String dcountry;	//제외국가
-	
 	private String dtopic;		//제외관심사
-
+	private String feedCnt; 	//작성자글수
+	private String followingCnt;
+	private String followerCnt;
 }

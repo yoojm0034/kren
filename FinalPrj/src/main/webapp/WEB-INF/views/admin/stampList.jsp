@@ -55,20 +55,20 @@
 			  recruitGrid.request('updateData', {
 			  checkedOnly: true
 			  });
-			  
+			  location.reload();
 		}) ;
 		$('#create').click(function () {
 			  recruitGrid.request('createData', {
 			  checkedOnly: true
 			  });
-			  
+			  location.reload();
 		}) ;
 		$('#delete').click(function () {
 			  recruitGrid.removeCheckedRows(false);	
 			  recruitGrid.request('deleteData', {
 			  checkedOnly: true
 			  });
-			  
+			  location.reload();
 		}) ;
 		const prependBtn = document.getElementById('prependBtn');
 		const appendedData = {

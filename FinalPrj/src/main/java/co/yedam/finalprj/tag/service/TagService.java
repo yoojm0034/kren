@@ -10,4 +10,7 @@ public interface TagService {
 	int tagInsert(TagVO vo);
 	int tagUpdate(TagVO vo);
 	int tagDelete(TagVO vo);
+	int tagCnt(TagVO vo);										//태그체크
+	int tagchkInsert(TagVO vo);									//태그등록
+	List<TagVO> likeTag();										//인기있는태그
 }

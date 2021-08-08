@@ -29,7 +29,6 @@
 								alt="">
 							<div class="title-meta">
 								<h3>바로가기</h3>
-								<p>With a top navigation</p>
 							</div>
 						</div>
 
@@ -46,7 +45,7 @@
 											<div class="demo-title">공지사항</div>
 											<div class="demo-link" data-theme="light">
 												<div class="is-dm" onclick="location.href='${pageContext.request.contextPath}/userNoticeList.do'">
-													Go to demo 
+													Go to Notice 
 													<i data-feather="chevron-right"></i>
 												</div>
 											</div>
@@ -63,9 +62,9 @@
 									<div class="circle-overlay"></div>
 									<div class="demo-info has-text-centered">
 										<div class="wrapper">
-											<div class="demo-title">Q&A 작성</div>
+											<div class="demo-title">문의하기</div>
 											<div class="demo-link" data-theme="dark">
-												<a class="is-dm" href="/navbar-v1-feed.html">Go to demo
+												<a class="is-dm" href="/navbar-v1-feed.html">Contact Us
 													<i data-feather="chevron-right"></i>
 												</a>
 											</div>

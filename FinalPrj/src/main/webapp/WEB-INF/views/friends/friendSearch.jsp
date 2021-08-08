@@ -159,10 +159,8 @@
 			var discountry = $("#dcountry-op option:selected").val();
 			var distopic = "";
 
-			topic = topic.substr(0,topic.length - 1);
-			distopic = distopic.substr(0,topic.length - 1);
-			$("input[name=topic-label]:checked").each(function() {topic += $(this).val();});
-			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val();});
+			$("input[name=topic-label]:checked").each(function() {topic += $(this).val() + "|"; });
+			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ "|";});
 
 			$('#gender').val(gender);
 			$('#country').val(country);
@@ -171,8 +169,9 @@
 			$('#dlanguage').val(topic);
 			$('#topic').val(topic);
 			$('#dtopic').val(distopic);
-
-			$('#frm').submit();
+			console.log('토픽2z' + topic);
+			console.log('d토픽2' + distopic);
+			//$('#frm').submit();
 		});
 
 		$('#show-filters').on('click',function() {
@@ -184,6 +183,10 @@
 				});
 			});
 		});
+		
+		$('#country-op').children().on('click',function(){
+			console.log(this);
+		})
 		
 });
 
@@ -208,8 +211,14 @@
 						data-feather="x"></i>
 					</a>
 					<div class="option-tabs is-friends">
-						<a class="option-tab is-active" data-tab="all-friends"> <span>Search</span>
-						</a> <a class="option-tab" data-tab="starred-friends"> <span>New</span>
+						<a class="option-tab is-active" data-tab="all-friends"> 
+						<span>Search</span>
+						</a> 
+						<a class="option-tab" data-tab="starred-friends"> 
+						<span>All</span>
+						</a>
+						<a class="option-tab" data-tab="new-friends"> 
+						<span>New</span>
 						</a>
 						<div class="option-naver"></div>
 					</div>
@@ -258,19 +267,21 @@
 					</div>
 					<div>
 						<label class="search-label">성별</label> 
-						남<input type="radio" name="genderval" value="M" checked="checked"> 
+						무관<input type="radio" name="genderval" value="" checked="checked"> 
+						남<input type="radio" name="genderval" value="M"> 
 						여<input type="radio" name="genderval" value="W">
 						기타<input type="radio" name="genderval" value="O">
 					</div>
 					<div>
-						<label class="search-label">국가</label> <select id="country-op">
+						<label class="search-label" >국가</label> 
+						<select id="country-op" multiple="multiple">
 							<option value="">All</option>
 						</select>
 					</div>
 					<div>
 						<label class="search-label">언어</label> <select id="language1">
 							<option value="">All</option>
-							<option value="ko">한국어</option>
+							<option value="kr">한국어</option>
 							<option value="en">영어</option>
 						</select>
 					</div>
@@ -289,7 +300,8 @@
 						<input type="text" id="e_dage" name="e_dage" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 					</div>
 					<div>
-						<label class="search-label">국가</label> <select id="dcountry-op">
+						<label class="search-label">국가</label> 
+						<select id="dcountry-op" multiple="multiple">
 							<option value="">All</option>
 						</select>
 					</div>
@@ -323,11 +335,8 @@
 				<div class="card-row">
 					<!-- /partials/pages/friends/friend-lists/all-friends.html -->
 					<!--Friend-->
-					<c:forEach items="${allList }" var="vo">
-						<div class="card-flex friend-card">
-							<div class="star-friend is-active">
-								<i data-feather="star"></i>
-							</div>
+					<c:forEach items="${searchList }" var="vo">
+						<div class="card-flex friend-card" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
 							<div class="img-container">
 								<img class="avatar" src="https://via.placeholder.com/300x300"
 									data-demo-src="resources/template/assets/img/avatars/david.jpg"
@@ -335,25 +344,32 @@
 									src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
 									alt="">
 							</div>
-							<div class="friend-info">
-								<h3>${vo.name }</h3>
+							<div class="friend-info" >
+								<h3>${vo.name } 1</h3>
 								<p>Senior Developer</p>
 							</div>
 							<div class="friend-stats">
 								<div class="stat-block">
-									<label>Friends</label>
-									<div class="stat-number">642</div>
+									<label>Following</label>
+									<div class="stat-number" >
+									${vo.followingCnt }
+									</div>
 								</div>
 								<div class="stat-block">
 									<label>Posts</label>
-									<div class="stat-number">112</div>
+									<div class="stat-number">
+										${vo.feedCnt }
+									</div>
 								</div>
 								<div class="stat-block">
-									<label>Likes</label>
-									<div class="stat-number">468</div>
+									<label>Followers</label>
+									<div class="stat-number">
+										${vo.followerCnt }
+									</div>
 								</div>
 							</div>
 						</div>
+					</a>
 					</c:forEach>
 					<!--Friend-->
 					<div class="card-flex friend-card">
@@ -394,6 +410,55 @@
 				<div class="card-row-placeholder is-hidden">No matching
 					results</div>
 				<div class="card-row">
+					<!-- /partials/pages/friends/friend-lists/all-friends.html -->
+					<!--Friend-->
+					<c:forEach items="${allList }" var="vo">
+						<div class="card-flex friend-card">
+							<div class="star-friend is-active">
+								<i data-feather="star"></i>
+							</div>
+							<div class="img-container">
+								<img class="avatar" src="https://via.placeholder.com/300x300"
+									data-demo-src="resources/template/assets/img/avatars/david.jpg"
+									alt=""> <img class="country"
+									src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
+									alt="">
+							</div>
+							<div class="friend-info">
+								<h3>${vo.name }</h3>
+								<p>Senior Developer</p>
+							</div>
+							<div class="friend-stats">
+								<div class="stat-block">
+									<label>Following</label>
+									<div class="stat-number" >
+									 ${vo.followingCnt }
+	
+									</div>
+								</div>
+								<div class="stat-block">
+									<label>Posts</label>
+									<div class="stat-number">
+										${vo.feedCnt }
+									</div>
+								</div>
+								<div class="stat-block">
+									<label>Followers</label>
+									<div class="stat-number">
+										${vo.followerCnt }
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+			
+		<!--third tab-->
+			<div id="new-friends" class="card-row-wrap">
+				<div class="card-row-placeholder is-hidden">No matching
+					results</div>
+				<div class="card-row">
 					<!-- /partials/pages/friends/friend-lists/starred-friends.html -->
 					<!--Friend-->
 					<c:forEach items="${newList }" var="vo">
@@ -410,54 +475,35 @@
 							</div>
 							<div class="friend-info">
 								<h3>${vo.name }</h3>
-								<p>Social Influencer</p>
+								<p>
+								<script type="text/javascript">														
+									document.write(timeForToday('${vo.reg_date}'));
+								</script>
+								 가입</p>
 							</div>
 							<div class="friend-stats">
 								<div class="stat-block">
-									<label>Friends</label>
-									<div class="stat-number">8.7k</div>
+									<label>Following</label>
+									<div class="stat-number" >
+									${vo.followingCnt }
+	
+									</div>
 								</div>
 								<div class="stat-block">
 									<label>Posts</label>
-									<div class="stat-number">528</div>
+									<div class="stat-number">
+										${vo.feedCnt }
+									</div>
 								</div>
 								<div class="stat-block">
-									<label>Likes</label>
-									<div class="stat-number">25.4k</div>
+									<label>Followers</label>
+									<div class="stat-number">
+										${vo.followerCnt }
+									</div>
 								</div>
 							</div>
 						</div>
 					</c:forEach>
-					<!--Friend-->
-					<div class="card-flex friend-card">
-						<div class="star-friend is-active">
-							<i data-feather="star"></i>
-						</div>
-						<div class="img-container">
-							<img class="avatar" src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/elise.jpg"
-								alt=""> <img class="country"
-								src="resources/template/assets/img/icons/flags/korea.svg" alt="">
-						</div>
-						<div class="friend-info">
-							<h3>Elise Walker</h3>
-							<p>Social Influencer</p>
-						</div>
-						<div class="friend-stats">
-							<div class="stat-block">
-								<label>Friends</label>
-								<div class="stat-number">15.7k</div>
-							</div>
-							<div class="stat-block">
-								<label>Posts</label>
-								<div class="stat-number">857</div>
-							</div>
-							<div class="stat-block">
-								<label>Likes</label>
-								<div class="stat-number">22.9k</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>

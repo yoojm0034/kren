@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,73 +19,66 @@
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-						const dataSource = {
-							contentType : 'application/json',
-							api : {
-								readData : {
-									url : '${pageContext.request.contextPath}/admin/paymentList.do',
-									method : 'GET'
-								},
-							}
-						};
-						console.log(dataSource);
-						const Grid = tui.Grid; //인스턴스 객체 생성 
-						const recruitGrid = new Grid({
-							el : document.getElementById('recruitGrid'), // DOM의 id지정
-							data : dataSource,
-							columns : [ {
-								header : 'pay_id',
-								name : 'pay_id',
-								sortingType : 'desc',
-								sortable : true,
-								align : 'center'
-							}, {
-								header : 'USER',
-								name : 'user_id',
-								align : 'center',
-								filter : {
-									type : 'text',
-									showApplyBtn : true,
-									showClearBtn : true
-								}
-							}, {
-								header : '가격',
-								name : 'price',
-								align : 'center'
-							}, {
-								header : '결제일',
-								name : 'pay_dt',
-								align : 'center',
-								filter : {
-									type : 'text',
-									showApplyBtn : true,
-									showClearBtn : true
-								}
-							} ],
-							/* 	summary: {
-								    height: 15,
-								    position: 'bottom', 
-								    columnContent:{
-								    	price: {
-								            template: function(valueMap) {
-								              return `합계 : ` +valueMap.sum+`원`;
-								       		}
-								        }
-								    }
-								}, */
-							rowHeaders : [ 'rowNum' ],
-							pagination : true,
-							pageOptions : {
-								useClient : true,
-								perPage : 15
-							}
-						});
+<style>
+.pagination {
+	display: flex;
+	padding-left: 0;
+	list-style: none;
+	border-radius: .35rem;
+}
 
-					});
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+	margin: 2px 0;
+	white-space: nowrap;
+	justify-content: flex-end;
+}
+
+.page-link {
+	position: relative;
+	display: block;
+	padding: .5rem .75rem;
+	margin-left: -1px;
+	line-height: 1.25;
+	color: #4e73df;
+	background-color: #fff;
+	border: 1px solid #dddfeb;
+}
+
+*, ::after, ::before {
+	box-sizing: border-box;
+}
+
+div.dataTables_wrapper div.dataTables_paginate {
+	margin: 0;
+	white-space: nowrap;
+	text-align: right;
+}
+
+tr:hover {
+	cursor: pointer;
+	background-color: silver;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#table").DataTable({
+			// 표시 건수기능 숨기기
+			lengthChange : true,
+			lengthMenu : [ 10, 20, 30, 40, 50 ],
+			// 검색 기능 숨기기
+			searching : true,
+			// 정렬 기능 숨기기
+			ordering : true,
+			// 정보 표시 숨기기
+			info : false,
+			// 페이징 기능 숨기기
+			paging : true,
+			columnDefs : [ {
+				targets : 2,
+				render : $.fn.dataTable.render.number(',', '.', 0, '', '원')
+			} ]
+		});
+	});
 </script>
 </head>
 <body>
@@ -202,12 +196,58 @@
 					<h2>결제내역 관리</h2>
 				</div>
 			</div>
-			<div class="stories-container">
-				<div class="container-inner">
-					<div align="center">
-						<div id="recruitGrid"></div>
+			<div class="stories-container" id="page-top">
+				<form action="">
+					<!-- Page Wrapper -->
+					<div id="wrapper">
+						<!-- Content Wrapper -->
+						<div id="content-wrapper" class="d-flex flex-column">
+							<!-- Main Content -->
+							<div id="content">
+								<!-- Begin Page Content -->
+								<div class="container-fluid">
+									<!-- DataTales Example -->
+									<div class="card shadow mb-4">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-bordered" id="table"
+													style="width: 100%; cellspacing: 0;">
+													<thead>
+														<tr>
+															<th>결제번호</th>
+															<th>유저ID</th>
+															<th>결제금액</th>
+															<th>결제일</th>
+
+														</tr>
+													</thead>
+													<tbody>
+														<c:forEach items="${paymentList }" var="vo">
+															<tr>
+																<td>${vo.pay_id}</td>
+																<td>${vo.user_id }</td>
+																<td>${vo.price }</td>
+																<fmt:formatDate var="day" value="${vo.pay_dt}" type="DATE" pattern="yyyy/MM/dd" />
+																<td>${day }</td>
+															</tr>
+														</c:forEach>
+													</tbody>
+													<tfoot>
+													
+													</tfoot>
+
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /.container-fluid -->
+
 					</div>
-				</div>
+					<!-- End of Main Content -->
+				</form>
 			</div>
 			<div class="stories-container">
 				<div class="container-inner">
@@ -217,15 +257,15 @@
 								<div class="main-stats">
 									<div class="stat-block">
 										<h4>월간매출</h4>
-										<p>${month }</p>
+										<p>${month }원</p>
 									</div>
 									<div class="stat-block is-centered">
 										<h4>연간매출</h4>
-										<p>${year }</p> 
+										<p>${year }원</p>
 									</div>
 									<div class="stat-block">
 										<h4>전체매출</h4>
-										<p>${all }</p>
+										<p>${all }원</p>
 									</div>
 								</div>
 							</div>

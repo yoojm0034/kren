@@ -7,6 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <title>회원리스트</title>
+  <link rel="stylesheet" href="/bootstrap-3.3.2-dist/css/bootstrap.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <style>
 .pagination {
     display: flex;
@@ -46,6 +49,25 @@ tr:hover {
 	background-color: silver;
 	}
 </style>
+<script>
+        $(function() {
+        	$("#table").DataTable({
+        		// 표시 건수기능 숨기기
+        		lengthChange: true,
+        		lengthMenu: [ 10, 20, 30, 40, 50 ],
+        		// 검색 기능 숨기기
+        		searching: true,
+        		// 정렬 기능 숨기기
+        		ordering: true,
+        		// 정보 표시 숨기기
+        		info: false,
+        		// 페이징 기능 숨기기
+        		paging: true
+        	});
+           
+        	
+    });
+    </script>
 </head>
 <body>
 	<div class="stories-wrapper is-home">
@@ -180,7 +202,7 @@ tr:hover {
 									<div class="card shadow mb-4">
 										<div class="card-body">
 											<div class="table-responsive">
-												<table class="table table-bordered" id="dataTable" style="width:100%;cellspacing:0;" >
+												<table class="table table-bordered" id="table" style="width:100%;cellspacing:0;" >
 													<thead>
 														<tr>
 															<th>이메일</th>

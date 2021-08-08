@@ -11,7 +11,6 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
 <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
-
 </head>
 </head>
 <script type="text/javascript">
@@ -22,15 +21,15 @@
 	        categories: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 	        series: [
 	          {
-	            name: 'Budget',
+	            name: '방문자',
 	            data: [5000, 3000, 5000, 7000, 6000, 4000, 1000],
 	          },
 	          {
-	            name: 'Income',
+	            name: '회원가입수',
 	            data: [8000, 4000, 7000, 2000, 6000, 3000, 5000],
 	          },
 	          {
-	            name: 'Expenses',
+	            name: '새로운피드',
 	            data: [4000, 4000, 6000, 3000, 4000, 5000, 7000],
 	          },
 	          {
@@ -46,11 +45,11 @@
 	      };
 
 	      const chart = toastui.Chart.areaChart({ el, data, options });	
+	      
+
 	})
 	
 </script>
-
-
 
 </head>
 <body>
@@ -158,10 +157,14 @@
 			</div>
 		</div>
 		<!-- 사이드바 종료 -->
+		
 		<!-- 컨텐츠 시작 -->
 		<div class="inner-wrapper" style="width: 80%">
 			전체 방문자 수: ${totalCount} 오늘의 방문자 수: ${todayCount}
 			<div id="chart-area"></div>
+		
+
+			
 		</div>
 		<div class="stories-container">
 			<div class="settings-wrapper">
@@ -353,6 +356,6 @@
 	<!-- 컨텐츠 종료 -->
 
 
-	</div>
 </body>
+
 </html>

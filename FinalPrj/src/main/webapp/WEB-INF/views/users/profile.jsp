@@ -161,7 +161,7 @@ $(document).ready(function() {
 		var lon = Number($('#lon').val());
 		const city = { lat: lat, lng: lon};
 	    const map = new google.maps.Map(document.getElementById("map"), {
-	      zoom: 7,
+	      zoom: 10,
 	      center: city,
 	      mapTypeControl: false,
 	      streetViewControl: false,
@@ -221,6 +221,22 @@ $(function(){
 		var user_id = $('#user_id').val();
 		$.ajax({
 			url: '${pageContext.request.contextPath}/followerList.do',
+	    	type:'post',
+	    	data:{user_id : user_id},
+			success: function(result) {
+				$('.profile-contents').html(result);
+			}
+		});
+	});
+});
+
+
+// 프로필 수정 페이지로 이동
+$(function(){
+	$('#editProfile').on('click', function (){
+		var user_id = $('#user_id').val();
+		$.ajax({
+			url: '${pageContext.request.contextPath}/usersUpdateForm.do',
 	    	type:'post',
 	    	data:{user_id : user_id},
 			success: function(result) {
@@ -361,7 +377,7 @@ function follow(check) {
                                 </a>
                             </div>
                             <div class="subheader-middle" style="position: absolute; left: 50%; transform: translate(-50%);">
-                                <h2>${profile.name}</h2>
+                               <a href="profile.do?user_id=${profile.user_id }"><h2>${profile.name}</h2></a>
                             </div>
                             <div class="subheader-end is-hidden-mobile" style="display: flex">
                             	<div class="language_label">
@@ -371,7 +387,7 @@ function follow(check) {
                             	</div>
                             	<c:choose>
                             		<c:when test="${user.user_id eq profile.user_id }">
-		                                <a class="button is-solid primary-button">✍🏻 Edit Profile</a>
+		                                <a class="button is-solid primary-button" id="editProfile">✍🏻 Edit Profile</a>
                             		</c:when>
                             		<c:otherwise>
 		                                <a class="button is-solid primary-button">✍🏻 Write a letter</a>

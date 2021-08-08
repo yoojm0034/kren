@@ -141,6 +141,19 @@ tr:hover {
 							alert("회원상태를 수정하였습니다.");
 							location.reload();
 						});
+						$("#table").DataTable({
+			        		// 표시 건수기능 숨기기
+			        		lengthChange: true,
+			        		lengthMenu: [ 10, 20, 30, 40, 50 ],
+			        		// 검색 기능 숨기기
+			        		searching: true,
+			        		// 정렬 기능 숨기기
+			        		ordering: true,
+			        		// 정보 표시 숨기기
+			        		info: false,
+			        		// 페이징 기능 숨기기
+			        		paging: true
+			        	});
 									
 						
 	});
@@ -288,7 +301,7 @@ tr:hover {
 									<div class="card shadow mb-4">
 										<div class="card-body">
 											<div class="table-responsive">
-												<table class="table table-bordered" id="dataTable"
+												<table class="table table-bordered" id="table"
 													style="width: 100%; cellspacing: 0;">
 													<thead>
 														<tr>

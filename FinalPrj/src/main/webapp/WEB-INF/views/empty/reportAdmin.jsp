@@ -93,6 +93,10 @@
 					<td>${content.feed_id }</td>
 				</tr>
 				<tr>
+					<th>피신고자</th>
+					<td>${content.user_id }</td>
+				</tr>
+				<tr>
 					<th>피드내용</th>
 					<td>${content.content }</td>
 				</tr>

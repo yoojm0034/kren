@@ -30,5 +30,5 @@ public class FeedVO {
 	private String directory;
 	
 	private MultipartFile file;
-	
+	private String like_cnt;
 }

@@ -28,7 +28,7 @@ public class PaymentController {
 	
 	@RequestMapping("admin/userPaymentList.do") 
 	public String paymentList(PaymentVO vo, Model model) {
-			
+		model.addAttribute("paymentList", paymentDao.paymentSelectList());	
 		model.addAttribute("all", paymentDao.allSales());
 		model.addAttribute("month", paymentDao.monthSales());
 		model.addAttribute("year", paymentDao.yearSales());

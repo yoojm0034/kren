@@ -43,4 +43,21 @@ public class TagServiceImpl implements TagService {
 		return map.tagDelete(vo);
 	}
 
+	@Override
+	public int tagCnt(TagVO vo) {
+		
+		return map.tagCnt(vo);
+	}
+	
+	@Override
+	public int tagchkInsert(TagVO vo) {
+		
+		return map.tagchkInsert(vo);
+	}
+
+	@Override
+	public List<TagVO> likeTag() {
+		
+		return map.likeTag();
+	}
 }

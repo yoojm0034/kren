@@ -106,6 +106,11 @@ public class UsersController {
 		return "no/users/followerList";
 	}
 	
+	// 프로필 업데이트
+	@RequestMapping("usersUpdateForm.do")
+	public String usersUpdateForm(UsersVO vo, Model model, Authentication auth) {
+		return "no/users/usersUpdateForm";
+	}	
 	
 	// 회원가입
 	@RequestMapping("userJoinForm.do")

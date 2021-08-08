@@ -89,6 +89,16 @@ public class TagController {
 	    return result;
 	}
 	
+	//피드
+	//태그등록
+	@RequestMapping("tagInsert.do")
+	public String tagInsert(TagVO vo, Model model) {
+		int chk = tagDao.tagCnt(vo);
+		if(chk == 0) {
+			tagDao.tagchkInsert(vo);
+		};
+		return "redirect:feed.do";
+	};
 
 
 

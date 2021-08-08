@@ -49,7 +49,7 @@
 	
 	<update id="reportUpdateMinus" parameterType="co.yedam.finalprj.users.vo.UsersVO">
 		UPDATE users
-		SET report_cnt = report_cnt - #{CNT}
+		SET report_cnt = report_cnt - #{cnt}
 		WHERE user_id = #{user_id}
 	</update>
 
