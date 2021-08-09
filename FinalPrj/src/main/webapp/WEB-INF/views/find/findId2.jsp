@@ -34,21 +34,23 @@
                         <h2 class="form-title has-text-centered">Find ID</h2>
                         <h3 class="form-subtitle has-text-centered">Check the verification code.</h3>
 
-                        <!--Form-->
+                        <!--Form:받아온 인증코드를 컨트롤러로 넘겨서 일치하는지 확인-->
+                        <form action="findID2.do{dice}" method="post">
                         <div class="login-form">
                             <div class="form-panel">
                                 <div class="field">
                                     <label>Verification Code</label>
                                     <div class="control">
-                                        <input type="text" class="input" name="email_injeung" placeholder="Enter verification code">
+                                        <input type="text" class="input" id= "email_injeung" name="email_injeung" placeholder="Enter verification code">
                                     </div>
                                 </div>
                             </div>
 						<br>
                             <div class="buttons">
-                                <a class="button is-solid primary-button is-fullwidth raised" onclick="location.href='findID3.do'">verification</a>
+                                <a class="button is-solid primary-button is-fullwidth raised" type="submit" onclick="findId2()">verification</a>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>

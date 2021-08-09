@@ -68,7 +68,7 @@ public class UsersServiceImpl implements UsersService {
 
 	//아이디 비밀번호 찾기...
 	@Override
-	public String findId(String email) {
+	public UsersVO findId(String email) {
 		// TODO Auto-generated method stub
 		return null;
 	}

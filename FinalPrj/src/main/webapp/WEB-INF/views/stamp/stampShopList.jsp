@@ -110,7 +110,7 @@
 								</div>
 							</c:forEach>
 							<div class="continue-shopping">
-                            	<a href="myStamp.do">Continue Shopping</a>
+                            	<input type="button" value="Continue Shopping" onClick="history.go(-1)">
                             </div>
 							
 						</div>
