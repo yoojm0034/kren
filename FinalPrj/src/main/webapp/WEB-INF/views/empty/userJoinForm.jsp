@@ -252,14 +252,12 @@ $(function() {
 });
 
 //--------------------------- 언어체크 -------------------------
-function language() {
-	console.log($('#language1 option:selected').val());
-	if ($('#language1 option:selected').val() == 'Korean') {
+function language(e) {
+	if (e == 'Korean') {
 		$('input[name=language2]').attr('value', 'English');
 	} else {
 		$('input[name=language2]').attr('value', 'Korean');
 	}
-	console.log($('#language2').val());
 };
 
 // ------------------- TOPIC 체크 카운트 계산 ---------------------
@@ -345,7 +343,7 @@ $('#step5').click(function() {
 	<div class="infraloader is-active"></div>
 	<div class="signup-wrapper">
 		<div class="fake-nav">
-			<a href="/" class="logo"> <img
+			<a href="home.do" class="logo"> <img
 				src="resources/template/assets/img/logo/logo2.png" width="112"
 				height="28" alt="">
 			</a>
@@ -572,7 +570,7 @@ $('#step5').click(function() {
 							<div class="dropbox" style="text-align: center;">
 								<div class="control" style="display: inline-grid; margin: 1rem;">
 									<b><label>Native</label></b> 
-									<select name="language1" id="language1" onchange="language()" style="width: 100px; font-size: 12pt;">
+									<select name="language1" id="language1" onchange="language(this.options[this.selectedIndex].text)" style="width: 100px; font-size: 12pt;">
 										<option value="" selected hidden="hidden">Native</option>
 										<option value="KR">Korean</option>
 										<option value="EN">English</option>
@@ -617,7 +615,6 @@ $('#step5').click(function() {
 							</div>
 						</div>
 						<form:hidden path="topic"/>
-						<
 						<div class="buttons">
 							<a class="button process-button" data-step="step-dot-2">Back</a>
 							<a class="button process-button is-next" data-step="step-dot-4" id="step4">Next</a>

@@ -257,167 +257,211 @@ a[href^="https://maps.google.com/maps"] {
 	resize: none;
 }
 
-#deleteBtn { display: inline }
-#deleteBtn svg { vertical-align: bottom }
+#deleteBtn { display: inline; cursor: pointer;}
+
+#deleteBtn svg { vertical-align: bottom;}
+
 </style>
 <script>
-// DB에 입력되어있는 관심사 개수 카운트
+// 페이지 로딩시 DB에 입력되어있는 개수 카운트
 $(document).ready(function(){
+	//관심사 개수
 	var topicCnt = $('input:checkbox[name=topics]:checked').length;
 	$("#checked").text(topicCnt);
+	//자기소개 글자수
+    var content = $('#profile').val();
+    $('#contentCnt').text(content.length);
 	
 });
 
-	// 이메일 체크
-	$(function() {
-		$('#emailCheck').click(function() {
-			if ($('#email').val() == "") {
-				alert('이메일을 입력하세요.');
-				$('#email').focus();
-				return false;
+// 이메일 체크
+$(function() {
+	$('#emailCheck').click(function() {
+		if ($('#email').val() == "") {
+			alert('이메일을 입력하세요.');
+			$('#email').focus();
+			return false;
+		}
+		//email 중복확인 ajax
+		$.ajax({
+			url : '${pageContext.request.contextPath}/userEmailCheck.do',
+			data : {
+				email : $('#email').val()
+			},
+			type : 'post',
+			success : function(data) {
+				if (data > 0) {
+					alert('이미 사용중입니다. 새로 입력해주세요.');
+					$('#email').val('');
+					$('#email').focus();
+				} else {
+					$('#email').attr("readonly", true);
+					$('#codeCheck').focus();
+					$.ajax({ 	//중복확인 통과후 인증코드 메일보내는 ajax
+						url : 'sendEmail.do',
+						data : { email : $('#email').val() },
+						type : 'post',
+						success : function(code) {
+							alert('메일이 전송되었습니다.');
+							$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
+								if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
+									alert('이메일 인증이 완료되었습니다.');
+									$('#codeCheck').val("checked");
+								} else {
+									alert('인증번호가 틀립니다');
+								}
+							})
+						},
+						error : function(err) {
+							alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+						}
+					}); // end of code check ajax
+				} // end of if
+			},
+			error : function(err) {
+				console.log(err);
 			}
-			//email 중복확인 ajax
-			$.ajax({
-				url : '${pageContext.request.contextPath}/userEmailCheck.do',
-				data : {
-					email : $('#email').val()
-				},
-				type : 'post',
-				success : function(data) {
-					if (data > 0) {
-						alert('이미 사용중입니다. 새로 입력해주세요.');
-						$('#email').val('');
-						$('#email').focus();
-					} else {
-						$('#email').attr("readonly", true);
-						$('#codeCheck').focus();
-						//중복확인 통과후 인증코드 메일보내는 ajax
-						$.ajax({
-							url : 'sendEmail.do',
-							data : {
-								email : $('#email').val()
-							},
-							type : 'post',
-							success : function(code) {
-								alert('메일이 전송되었습니다.');
-								$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
-									if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
-										alert('이메일 인증이 완료되었습니다.');
-										$('#codeCheck').val("checked");
-									} else {
-										alert('인증번호가 틀립니다');
-									}
-								})
-							},
-							error : function(err) {
-								alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
-							}
-						}); // end of code check ajax
-					} // end of if
-				},
-				error : function(err) {
-					console.log(err);
-				}
-			}); // end of 중복확인 ajax
-		});
+		}); // end of 중복확인 ajax
 	});
+});
 
-	//----------------------------------위치 조회-----------------------------------
-	function getLocation() {
-		$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi", function(
-				json) {
-			console.log(json);
+//----------------------------------언어 레벨-----------------------------------
+function level(e) {
+	$("#language2_level").val(e);
+};
 
-			// 변수 담기
-			var country = json['location']['country']['name'];
-			var city = json['location']['region']['name'];
-			var timezone = json['time_zone']['id'];
-			var lat = json['location']['latitude'];
-			var lon = json['location']['longitude'];
-			var flag = json['location']['country']['flag']['emojitwo'];
+//----------------------------------위치 조회-----------------------------------
+function getLocation() {
+	$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi", function(
+			json) {
+		console.log(json);
 
-			// input에 값 넣기
-			$("#country").val(country);
-			$("#city").val(city);
-			$("#timezone").val(timezone);
-			$("#lat").val(lat);
-			$("#lon").val(lon);
-			$("#flag").val(flag);
+		// 변수 담기
+		var country = json['location']['country']['name'];
+		var city = json['location']['region']['name'];
+		var timezone = json['time_zone']['id'];
+		var lat = json['location']['latitude'];
+		var lon = json['location']['longitude'];
+		var flag = json['location']['country']['flag']['emojitwo'];
 
-			$("#city2").text(city);
-			$("#country2").text(', ' + country);
-		});
+		// input에 값 넣기
+		$("#country").val(country);
+		$("#city").val(city);
+		$("#timezone").val(timezone);
+		$("#lat").val(lat);
+		$("#lon").val(lon);
+		$("#flag").val(flag);
+
+		$("#city2").text(city);
+		$("#country2").text(', ' + country);
+	});
+};
+//----------------------------------About Me-----------------------------------
+// 글자수 카운트
+$('#profile').keyup(function (e){
+    var content = $(this).val();
+    $('#contentCnt').text(content.length);
+    if (content.length > 1000){
+        alert("최대 1000자까지 입력 가능합니다.");
+        $(this).val(content.substring(0, 1000));
+        $('#contentCnt').text(1000);
+    }
+});
+
+//----------------------------------TOPIC 카운트-----------------------------------
+function getCheckedCnt(obj)  {
+	  // 선택된 목록 가져오기
+	  const query = 'input[name="topics"]:checked';
+	  const selectedElements = document.querySelectorAll(query);
+	  
+	  // 선택된 목록의 갯수 세기
+	  const selectedElementsCnt = selectedElements.length;
+	  
+	  if (selectedElementsCnt <= 30) {
+		  document.getElementById('checked').innerText
+		    = selectedElementsCnt;
+	  } else {
+		  alert("30개를 초과 선택 불가합니다.");
+		  obj.checked = false;
+		  selectedElementsCnt -= 1;
+	  };
 	};
 
-	
-	//----------------------------------TOPIC 카운트-----------------------------------
-	function getCheckedCnt(obj)  {
-		  // 선택된 목록 가져오기
-		  const query = 'input[name="topics"]:checked';
-		  const selectedElements = document.querySelectorAll(query);
-		  
-		  // 선택된 목록의 갯수 세기
-		  const selectedElementsCnt = selectedElements.length;
-		  
-		  if (selectedElementsCnt <= 30) {
-			  document.getElementById('checked').innerText
-			    = selectedElementsCnt;
-		  } else {
-			  alert("30개를 초과 선택 불가합니다.");
-			  obj.checked = false;
-			  selectedElementsCnt -= 1;
-		  };
-		};
-	
-	//-------------------------------다녀온 나라--------------------------------------
-	
-	// 더하기 버튼 누르면 추가
-	$(function() {
-		$('#addBtn').click(function() {
-			var add = "";
-			add += '<div class="label-round">';
-			add += '<input type="text" id="user-visited" value="${vo.visited }">';
-			add += '<span id="deleteBtn">';
-			add += '\<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
-			add += '</span>';
-			add += '</div>';
-			$('.trip-area').append(add);
-		});
-	});	
-	
-	// x 누르면 삭제
-	$('body').on('click', '#deleteBtn', function() {
-			$(this).parent().remove();
-	});
-	
-	// 작성한 값과 기존의 값 넣어주기
-	$(function() {
-		$('#log').click(function() {
-			var leng = $("input[id=user-visited").length;
-			var visited = "";
-			for (var i=0; i<leng; i++) {
-				visited += $("input[id=user-visited").eq(i).val() + ',';
-			}
-			visited = visited.substr(0, visited.length -1);
-			$("#visited").val(visited);
-			console.log($("#visited").val());
+//-------------------------------다녀온 나라--------------------------------------
 
+// 더하기 버튼 누르면 추가
+$(function() {
+	$('#addBtn').click(function() {
+		var add = "";
+		add += '<div class="label-round">';
+		add += '<input type="text" id="user-visited" value="${vo.visited }">';
+		add += '<span id="deleteBtn">';
+		add += '\<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+		add += '</span>';
+		add += '</div>';
+		$('.trip-area').append(add);
+	});
+});	
+
+// x 누르면 삭제
+$('body').on('click', '#deleteBtn', function() {
+		$(this).parent().remove();
+});
+
+
+//-------------------------------제출버튼 클릭--------------------------------------
+$(function() {
+	$('#saveBtn').click(function() { 
+		// 들어갈 값 : email, password, language2_level, country, city, lat, lon, timezone, flag
+		// profile, topic, visited
+		
+		// topic 값 넣기
+		var topic = "";
+		$("input[name=topics]:checked").each(function() {
+			topic += $(this).val() + ',';
 		});
-	});	
-	
+		topic = topic.substr(0, topic.length -1);
+		$('#topic').val(topic);
+		
+		// 다녀온 나라 값 넣어주기 
+		var leng = $("input[id=user-visited").length;
+		var visited = "";
+		for (var i=0; i<leng; i++) {
+			visited += $("input[id=user-visited").eq(i).val() + ',';
+		}
+		visited = visited.substr(0, visited.length -1);
+		$("#visited").val(visited);
+		
+		console.log('email : ' + $("#email").val());		
+		console.log('password : ' + $("#password").val());		
+		console.log('level : ' + $("#language2_level").val());
+		console.log('country : ' + $("#country").val());
+		console.log('city : ' + $("#city").val());
+		console.log('timezone: ' + $("#timezone").val());
+		console.log('lat : ' + $("#lat").val());
+		console.log('lon : ' + $("#lon").val());
+		console.log('flag : ' + $("#flag").val());
+		console.log('profile : ' + $('#profile').val());
+		console.log('topic : ' + $('#topic').val());
+		console.log('visited : ' + $("#visited").val());
+	});
+});	
+
 </script>
 <div style="padding: 0px 12px 0px 12px;">
 	<div class="container is-custom">
 		<div id="profile-main" class="view-wrap is-headless">
 			<div class="columns profile-contents">
 				<div id="profile-timeline-widgets" class="column is-5">
+					<input type="hidden" id="country" name="country">
+					<input type="hidden" id="city" name="city">
+					<input type="hidden" id="lat" name="lat">
+					<input type="hidden" id="lon" name="lon">
+					<input type="hidden" id="timezone" name="timezone">
+					<input type="hidden" id="flag" name="flag">
 					<input type="hidden" id="visited" name="visited">
-					<input type="hidden" id="" name="">
-					<input type="hidden" id="" name="">
-					<input type="hidden" id="" name="">
-					<input type="hidden" id="" name="">
-					<input type="hidden" id="" name="">
-					<input type="hidden" id="" name="">
+					<input type="hidden" id="topic" name="topic">
+					<input type="hidden" id="language2_level" name="language2_level" value="${profile.language2_level }">
 					
 					<!-- Basic Infos widget -->
 					<div class="box-heading">
@@ -469,7 +513,7 @@ $(document).ready(function(){
 								<div class="field">
 									<label>Language</label>
 									<div class="control">
-										<select name="language2_level" id="language2_level"
+										<select name="level" id="level" onchange="level(this.options[this.selectedIndex].value)"
 											style="width: 75%; font-size: 12pt;">
 											<option value="1"
 												<c:if test="${profile.language2_level == 1}">selected</c:if>>Beginner</option>
@@ -503,7 +547,12 @@ $(document).ready(function(){
 				<div class="column is-7">
 					<!---------------------- 자기소개 -------------------------->
 					<div class="box-heading">
-						<h4>About Me</h4>
+						<div class="left">
+							<h4>About Me</h4>
+						</div>
+						<div class="right">
+							(<span id="contentCnt">0</span> / 1000)
+						</div>
 					</div>
 					<div class="friend-cards-list">
 						<div class="card is-friend-card">
@@ -546,7 +595,6 @@ $(document).ready(function(){
 					<div class="box-heading">
 						<h4>Trips</h4> <a id="addBtn"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
 					</div>
-								<button id="log">잘되나 보자</button>
 					<div class="trip-cards-list">
 						<div class="card is-trip-card">
 							<div class="trip-item">

@@ -337,13 +337,11 @@ function follow(check) {
 							<span>${profile.city }, ${profile.country }&nbsp;</span><span
 								id="localTime"></span>
 						</div>
-						<input type="text" id="lat" value="${profile.lat }"
-							hidden="hidden" /> <input type="text" id="lon"
-							value="${profile.lon }" hidden="hidden" /> <input type="text"
-							id="timezone" value="${profile.timezone }" hidden="hidden" /> <input
-							type="text" id="level" value="${profile.language2_level }"
-							hidden="hidden" /> <input type="text" id="user_id"
-							value="${profile.user_id }" hidden="hidden" />
+						<input type="text" id="lat" value="${profile.lat }" hidden="hidden" /> 
+						<input type="text" id="lon" value="${profile.lon }" hidden="hidden" /> 
+						<input type="text" id="timezone" value="${profile.timezone }" hidden="hidden" />
+						<input type="text" id="level" value="${profile.language2_level }" hidden="hidden" /> 
+						<input type="text" id="user_id" value="${profile.user_id }" hidden="hidden" />
 						<script async
 							src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
 						<div class="avatar">
