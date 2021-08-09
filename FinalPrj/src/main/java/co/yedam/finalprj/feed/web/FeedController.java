@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.service.LanguageService;
 import co.yedam.finalprj.feed.vo.FeedVO;
@@ -63,6 +63,9 @@ public class FeedController {
 	@Autowired
 	TopicService topicDao;
 	
+	@Autowired
+	CommentsService CommentDao;
+	
 	//메인피드
 	@RequestMapping("feed.do")
 	public String feedList(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
@@ -90,6 +93,9 @@ public class FeedController {
 		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 		System.out.println(feedDao.feedSelectList(vo));
+		
+		//댓글
+		model.addAttribute("commentList",CommentDao.commentSelectList());
 		return "feed/mainFeed";
 	}
 	
@@ -224,11 +230,13 @@ public class FeedController {
 
 	//친구검색화면 
 	@RequestMapping("friendSearch1.do")
-	public String allUserList(FriendsVO vo,Model model,Authentication auth){
+	public String allUserList(UsersVO vo,Model model,Authentication auth){
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
-
+		
 		vo.setUser_id(id);
+		vo = userDao.usersSelect(vo);	
+		vo.setTopic(vo.getTopic());
 		
 		model.addAttribute("allList",feedDao.allUser(vo));
 		model.addAttribute("searchList",feedDao.allUser(vo));
@@ -253,6 +261,9 @@ public class FeedController {
 		}
 		if(vo.getGender().equals("")) {
 			vo.setGender(null);
+		}
+		if(vo.getDgender().equals("")) {
+			vo.setDgender(null);
 		}
 		if(vo.getCountry().equals("")) {
 			vo.setCountry(null);
@@ -284,8 +295,7 @@ public class FeedController {
 		System.out.println(feedDao.searchFriend(vo));
 
 		model.addAttribute("searchList",feedDao.searchFriend(vo));
-		model.addAttribute("topicList",topicDao.topicSelectList());
-		return "friends/friendSearch";
+		return "friendSearch1.do";
 	}
 
 	

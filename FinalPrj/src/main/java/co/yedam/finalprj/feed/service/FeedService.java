@@ -15,15 +15,13 @@ public interface FeedService {
 	 int feedUpdate(FeedVO vo);										//피드수정
 	 int feedInsert(FeedVO vo);										//피드등록
 	 int feedDelete(FeedVO vo);										//피드삭제
-	 List<UsersVO> sameTopicList(UsersVO vo); 						//나와일치하는관심사수
-	 
 
-	
 	 List<UsersVO> birthUser(FriendsVO vo);							//생일인유저
 	
-	 List<FriendsVO> allUser(FriendsVO vo);
-	 List<FriendsVO> newUser(FriendsVO vo);
+	 List<UsersVO> sameTopicList(UsersVO vo); 						//나와일치하는관심사수
 	 List<UsersVO> searchFriend(UsersVO vo);
+	 List<UsersVO> allUser(UsersVO vo);
+	 List<UsersVO> newUser(UsersVO vo);
 	 
 	 FeedVO oneSelectFeed(FeedVO vo);		
 }
