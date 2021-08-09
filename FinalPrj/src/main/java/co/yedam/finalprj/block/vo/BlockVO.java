@@ -1,5 +1,9 @@
 package co.yedam.finalprj.block.vo;
 
-public class BlockVO {
+import lombok.Data;
 
+@Data
+public class BlockVO {
+	private String user_id;
+	private String blocked;
 }
