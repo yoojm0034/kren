@@ -23,8 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import co.yedam.finalprj.feed.service.FeedService;
+import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.service.FriendsService;
 import co.yedam.finalprj.friends.vo.FriendsVO;
+import co.yedam.finalprj.letter.service.LetterService;
+import co.yedam.finalprj.letter.vo.LetterVO;
 import co.yedam.finalprj.report.service.ReportService;
 import co.yedam.finalprj.report.vo.ReportVO;
 import co.yedam.finalprj.topic.service.TopicService;
@@ -45,6 +49,8 @@ public class UsersController {
 	@Autowired TopicService topicDao;
 	@Autowired FriendsService friendsDao;
 	@Autowired ReportService reportDao;
+	@Autowired FeedService feedDao;
+	@Autowired LetterService letterDao;
 
 	@RequestMapping("test3.do")
 	public String test3() {
@@ -272,14 +278,19 @@ public class UsersController {
 	//유저상태업데이트
 	@PutMapping("admin/usersUpdate.do")
 	@ResponseBody
-	public Map<String, Object> adminUsersUpdate(@RequestBody MemberData memberData, ReportVO vo) {
+	public Map<String, Object> adminUsersUpdate(@RequestBody MemberData memberData, ReportVO vo,FeedVO fvo, LetterVO lvo) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		System.out.println(memberData);
 		for(int i=0; i < memberData.updatedRows.size(); i++) {
 			usersDao.adminUsersUpdate(memberData.updatedRows.get(i));
+			//신고목록중 유저에 대한 모든 신고 읽음처리
 			vo.setReported(memberData.updatedRows.get(i).getUser_id());
 			int r = reportDao.reportUpdateUser(vo);
 			System.out.println(r + "건 수정");
+			//피드 - 회원아이디로 회원이작성한 모든 댓글, 좋아요, 피드, 삭제해야됨
+			
+			//편지 - 회원아이디로 회원이 작성한 편지 모두 삭제
+	
 		}
 		data.put("result", true);
 		data.put("data", memberData.updatedRows);
