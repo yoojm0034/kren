@@ -50,7 +50,7 @@ tr:hover {
 	}
 </style>
 <script>
-        $(function() {
+     $(function() {
         	$("#table").DataTable({
         		// 표시 건수기능 숨기기
         		lengthChange: true,
@@ -178,6 +178,11 @@ tr:hover {
 		<div class="inner-wrapper" style="width: 80%" >
 			
 			<h1>전체 방문자 수: ${totalCount} / 오늘의 방문자 수: ${todayCount}</h1>
+			<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
+			<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
+			<button onclick="sendLetterPush('admin')" type="button">편지</button>
+			<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
+			
 			<!-- 컨텐츠 시작 -->
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>

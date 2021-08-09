@@ -2,9 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
+<link
+	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
+	rel="stylesheet">
+<script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
 <style>
 @font-face {
 	font-family: 'ONE-Mobile-Regular';
@@ -213,197 +217,352 @@ a[href^="https://maps.google.com/maps"] {
 
 .label-round {
 	display: inline-block !important;
-	font-size: 14px !important;
 	padding: 6px 15px 10px 15px;
 	background-color: #EFEFEF;
-	color: #979797 !important;
 	border-radius: 2rem;
 	margin: 0px 0px 6px 0px;
 }
 
-.matched {
-	background-color: #5596e6 !important;
-	color: #FFF !important;
-}
-
-.follow-area a {
-	font-size: 1rem !important;
+.label-round input {
+	width: 5rem;
+	font-size: 14px !important;
+	border: none;
+	outline: none;
+	background-color: transparent;
+	color: #979797 !important;
+	font-family: 'ONE-Mobile-Regular';
 }
 
 .view-wrapper {
 	padding: 80px 12px;
 }
 
-.friends-wrapper {
-	position: relative;
-	margin: 0 auto;
-	top: 0px;
+.field label {
+	font-size: .9rem;
+	font-weight: 500;
+	color: #393a4f;
+	width: 25%;
+}
+
+.field input {
+	width: 75%
+}
+
+#profile {
 	padding: 0;
-	min-height: auto;
+	width: 600px;
+	height: 200px;
+	outline: none;
+	border: 0;
+	resize: none;
 }
 
-.friend-name {
-	font-size: 1.2rem;
-	color: #393a4f !important;
-	font-weight: 600;
-}
-
-.friend-location {
-	color: #9b9b9b;
-	font-size: 0.85rem;
-}
+#deleteBtn { display: inline }
+#deleteBtn svg { vertical-align: bottom }
 </style>
 <script>
-	//팔로우 언팔로우 버튼
-	$('body').on('click', '#friend-follow-btn', function() {
-		var friend = $(this).val();
-		follow(true, friend);
+// DB에 입력되어있는 관심사 개수 카운트
+$(document).ready(function(){
+	var topicCnt = $('input:checkbox[name=topics]:checked').length;
+	$("#checked").text(topicCnt);
+	
+});
+
+	// 이메일 체크
+	$(function() {
+		$('#emailCheck').click(function() {
+			if ($('#email').val() == "") {
+				alert('이메일을 입력하세요.');
+				$('#email').focus();
+				return false;
+			}
+			//email 중복확인 ajax
+			$.ajax({
+				url : '${pageContext.request.contextPath}/userEmailCheck.do',
+				data : {
+					email : $('#email').val()
+				},
+				type : 'post',
+				success : function(data) {
+					if (data > 0) {
+						alert('이미 사용중입니다. 새로 입력해주세요.');
+						$('#email').val('');
+						$('#email').focus();
+					} else {
+						$('#email').attr("readonly", true);
+						$('#codeCheck').focus();
+						//중복확인 통과후 인증코드 메일보내는 ajax
+						$.ajax({
+							url : 'sendEmail.do',
+							data : {
+								email : $('#email').val()
+							},
+							type : 'post',
+							success : function(code) {
+								alert('메일이 전송되었습니다.');
+								$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
+									if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
+										alert('이메일 인증이 완료되었습니다.');
+										$('#codeCheck').val("checked");
+									} else {
+										alert('인증번호가 틀립니다');
+									}
+								})
+							},
+							error : function(err) {
+								alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+							}
+						}); // end of code check ajax
+					} // end of if
+				},
+				error : function(err) {
+					console.log(err);
+				}
+			}); // end of 중복확인 ajax
+		});
 	});
 
-	$('body').on('click', '#friend-unfollow-btn', function() {
-		var friend = $(this).val();
-		follow(false, friend);
-	});
+	//----------------------------------위치 조회-----------------------------------
+	function getLocation() {
+		$.getJSON("https://api.ipregistry.co/?key=f3cmlbb66kf0ewyi", function(
+				json) {
+			console.log(json);
 
-	function follow(check, friend) {
-		if (check) {
-			$.ajax({
-				url : '${pageContext.request.contextPath}/follow.do',
-				type : 'post',
-				data : JSON.stringify({
-					following : friend
-				}),
-				contentType : "application/json; charset=UTF-8",
-				success : function(result) {
-					console.log("result : " + result);
-					if (result === "FollowOK") {
-						console.log(friend);
-						// 팔로우버튼 지우고 언팔로우 버튼 달기
-						$('.' + friend + '-follow-area').empty();
-						$('.' + friend + '-follow-area').html('<button class="button" id="friend-unfollow-btn" value="' + friend + '">Unfollow</button>');
-					}
-				}
-			}); // end of follow ajax
-		} else {
-			$.ajax({
-				url : '${pageContext.request.contextPath}/unfollow.do',
-				type : 'post',
-				data : JSON.stringify({
-					following : friend
-				}),
-				contentType : "application/json; charset=UTF-8",
-				success : function(result) {
-					console.log("result : " + result);
-					if (result === "UnFollowOK") {
-						console.log(friend);
-						// 언팔로우 버튼 지우고 팔로우버튼 갈기
-						$('.' + friend + '-follow-area').empty();
-						$('.' + friend + '-follow-area').html('<button class="button" id="friend-follow-btn" value="' + friend + '">follow</button>');
-					}
-				}
-			}); // end of unfollow ajax
-		}
-		; // end of if
+			// 변수 담기
+			var country = json['location']['country']['name'];
+			var city = json['location']['region']['name'];
+			var timezone = json['time_zone']['id'];
+			var lat = json['location']['latitude'];
+			var lon = json['location']['longitude'];
+			var flag = json['location']['country']['flag']['emojitwo'];
+
+			// input에 값 넣기
+			$("#country").val(country);
+			$("#city").val(city);
+			$("#timezone").val(timezone);
+			$("#lat").val(lat);
+			$("#lon").val(lon);
+			$("#flag").val(flag);
+
+			$("#city2").text(city);
+			$("#country2").text(', ' + country);
+		});
 	};
+
+	
+	//----------------------------------TOPIC 카운트-----------------------------------
+	function getCheckedCnt(obj)  {
+		  // 선택된 목록 가져오기
+		  const query = 'input[name="topics"]:checked';
+		  const selectedElements = document.querySelectorAll(query);
+		  
+		  // 선택된 목록의 갯수 세기
+		  const selectedElementsCnt = selectedElements.length;
+		  
+		  if (selectedElementsCnt <= 30) {
+			  document.getElementById('checked').innerText
+			    = selectedElementsCnt;
+		  } else {
+			  alert("30개를 초과 선택 불가합니다.");
+			  obj.checked = false;
+			  selectedElementsCnt -= 1;
+		  };
+		};
+	
+	//-------------------------------다녀온 나라--------------------------------------
+	
+	// 더하기 버튼 누르면 추가
+	$(function() {
+		$('#addBtn').click(function() {
+			var add = "";
+			add += '<div class="label-round">';
+			add += '<input type="text" id="user-visited" value="${vo.visited }">';
+			add += '<span id="deleteBtn">';
+			add += '\<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+			add += '</span>';
+			add += '</div>';
+			$('.trip-area').append(add);
+		});
+	});	
+	
+	// x 누르면 삭제
+	$('body').on('click', '#deleteBtn', function() {
+			$(this).parent().remove();
+	});
+	
+	// 작성한 값과 기존의 값 넣어주기
+	$(function() {
+		$('#log').click(function() {
+			var leng = $("input[id=user-visited").length;
+			var visited = "";
+			for (var i=0; i<leng; i++) {
+				visited += $("input[id=user-visited").eq(i).val() + ',';
+			}
+			visited = visited.substr(0, visited.length -1);
+			$("#visited").val(visited);
+			console.log($("#visited").val());
+
+		});
+	});	
+	
 </script>
 <div style="padding: 0px 12px 0px 12px;">
 	<div class="container is-custom">
 		<div id="profile-main" class="view-wrap is-headless">
 			<div class="columns profile-contents">
-					<div id="profile-timeline-widgets" class="column is-5">
-                        <!-- Basic Infos widget -->
-                        <!-- html/partials/pages/profile/timeline/widgets/basic-infos-widget.html -->
-                        <div class="box-heading">
-                            <h4>Basic Infos</h4>
-                        </div>
-                        <div class="basic-infos-wrapper">
-                            <div class="card is-profile-info">
-                                <div class="info-row">
-                                    <div>
-                                        <span>가입일</span>
-                                        <span class="info">2021/08/02</span>
-                                    </div>
-                                </div>
-                                <div class="info-row">
-                                    <div>
-                                        <span>프로필 수정일</span>
-                                        <span class="info">2021/08/02</span>
-                                    </div>
-                                </div>
-                                <div class="info-row">
-                                    <div>
-                                        <span>생일</span>
-                                        <span class="info">1993/08/15</span>
-                                    </div>
-                                </div>
-                                <div class="info-row">
-                                    <div>
-                                        <span>성별</span>
-                                        <span class="info">
-	                                        남성
-	                                        
-	                                        
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="info-row" style="display: block">
-                                    <div>
-                                        <h4>About me</h4>
-										<span class="info" style="color:#6d6d6d !important"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 관심사 -->
-                        <div class="box-heading">
-                            <h4>Topics of Interest</h4>
-                        </div>
-                        <div class="friend-cards-list">
-                            <div class="card is-friend-card">
-                                <div class="friend-item">
-                                    <div class="text-content">
-		                                
-		                            		
-				                                
-													<span class="label-round">DIY</span>
-												
-													<span class="label-round">코딩</span>
-												
-													<span class="label-round">농인</span>
-												
-													<span class="label-round">SF</span>
-												
-													<span class="label-round">지속가능성</span>
-												
-		                            		
-		                            		
-		                            	
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Trips widget -->
-                        <!-- html/partials/pages/profile/timeline/widgets/trips-widget.html -->
-                        <div class="box-heading">
-                            <h4>Trips</h4>
-                        </div>
+				<div id="profile-timeline-widgets" class="column is-5">
+					<input type="hidden" id="visited" name="visited">
+					<input type="hidden" id="" name="">
+					<input type="hidden" id="" name="">
+					<input type="hidden" id="" name="">
+					<input type="hidden" id="" name="">
+					<input type="hidden" id="" name="">
+					<input type="hidden" id="" name="">
+					
+					<!-- Basic Infos widget -->
+					<div class="box-heading">
+						<h4>Edit Basic Infos</h4>
+					</div>
+					<div class="basic-infos-wrapper">
+						<div class="card is-profile-info">
+							<div class="info-row">
+								<div class="field">
+									<label>Email</label>
+									<div class="control">
+										<input type="text" class="input" id="email" name="email"
+											value="${profile.email }" style="width: 220px">
+										<button class="button is-solid dark-grey-button"
+											id="emailCheck">코드발송</button>
+									</div>
+								</div>
+							</div>
+							<div class="info-row">
+								<div class="field">
+									<label>Email Code</label>
+									<div class="control">
+										<input type="text" class="input" style="width: 220px"
+											id="inputCode" name="inputCode">
+										<button class="button is-solid dark-grey-button"
+											id="codeCheck" value="unchecked">코드확인</button>
+									</div>
+								</div>
+							</div>
+							<div class="info-row">
+								<div class="field">
+									<label>Password</label>
+									<div class="control">
+										<input type="password" class="input" id="password"
+											name="password">
+									</div>
+								</div>
+							</div>
+							<div class="info-row">
+								<div class="field">
+									<label>Password Check</label>
+									<div class="control">
+										<input type="password" class="input" id="password2"
+											name="password2">
+									</div>
+								</div>
+							</div>
+							<div class="info-row">
+								<div class="field">
+									<label>Language</label>
+									<div class="control">
+										<select name="language2_level" id="language2_level"
+											style="width: 75%; font-size: 12pt;">
+											<option value="1"
+												<c:if test="${profile.language2_level == 1}">selected</c:if>>Beginner</option>
+											<option value="2"
+												<c:if test="${profile.language2_level == 2}">selected</c:if>>Elementary</option>
+											<option value="3"
+												<c:if test="${profile.language2_level == 3}">selected</c:if>>Intermediate</option>
+											<option value="4"
+												<c:if test="${profile.language2_level == 4}">selected</c:if>>Advanced</option>
+											<option value="5"
+												<c:if test="${profile.language2_level == 5}">selected</c:if>>Proficient</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="info-row" style="justify-content: unset;">
+								<div class="field">
+									<label>Location</label>
+									<div class="control">
+										<a class="button is-solid dark-grey-button"
+											onclick="getLocation()" style="padding-top: 0.5rem;">위치확인</a>
+										<span id="city2" style="padding-left: 1rem"></span><span
+											id="country2"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                        <div class="trip-cards-list">
-                            <div class="card is-trip-card">
-                                <div class="trip-item">
-                                    <div class="text-content">
-															
-												<span class="label-round">Portland</span>
-															
-												<span class="label-round">Victoria</span>
-															
-												<span class="label-round">Seoul</span>
-										
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+				<div class="column is-7">
+					<!---------------------- 자기소개 -------------------------->
+					<div class="box-heading">
+						<h4>About Me</h4>
+					</div>
+					<div class="friend-cards-list">
+						<div class="card is-friend-card">
+							<div class="friend-item">
+								<div class="text-content">
+									<textarea id="profile">${profile.profile }</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!---------------------- 관심사 -------------------------->
+					<div class="box-heading">
+						<div class="left">
+							<h4>Topics of Interest</h4>
+						</div>
+						<div class="right">
+							(<span id="checked">0</span> / 30)
+						</div>
+					</div>
+					<div class="friend-cards-list">
+						<div class="card is-friend-card">
+							<div class="friend-item">
+								<div class="topic-list">
+									<c:set var="userTopic" value="${user.topic}," />
+									<c:forEach items="${topiclist }" var="vo">
+										<c:set var="topic" value="${vo.topic_id }," />
+										<input class="text-nicelabel" name="topics" <c:if test='${fn:contains(userTopic,topic)}'>checked="checked"</c:if>
+											data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
+											type="checkbox" value="${vo.topic_id }"
+											onclick="getCheckedCnt(this)">
+									</c:forEach>
+									<script>
+										$('input').nicelabel({});
+									</script>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!---------------------- 방문한 나라 -------------------------->
+					<div class="box-heading">
+						<h4>Trips</h4> <a id="addBtn"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
+					</div>
+								<button id="log">잘되나 보자</button>
+					<div class="trip-cards-list">
+						<div class="card is-trip-card">
+							<div class="trip-item">
+								<div class="text-content trip-area">
+									<c:forEach items="${mytrip }" var="vo">
+										<div class="label-round">
+										<input type="text" id="user-visited" value="${vo.visited }">
+										<span id="deleteBtn">
+											<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+										</span>
+										</div>
+									</c:forEach>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

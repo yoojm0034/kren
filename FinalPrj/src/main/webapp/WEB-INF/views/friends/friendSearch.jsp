@@ -195,6 +195,32 @@
     height: 25px;
     font-size: small;
 }
+.div-margin{
+	margin-bottom: 18px;
+	margin-top: 7px;
+}
+.input {
+    font-size: .9rem;
+    height: 28px;
+    width: 42px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+.append-label {
+	display: inline-block;
+	font-size: 14px;
+	padding: 1px 9px 2px 9px;
+	border-radius: 2rem;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	transition: all 0.2s;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	background-color: #6ba4e9;
+	color: white;
+	margin-left: 10px;
+}
 </style>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -231,14 +257,26 @@
 				});
 			});
 		});
-		
-		$('#country-op').children().on('click',function(){
-			console.log(this);
-		})
-		
-});
 
-	
+		
+		$('#country-op').on('change',function(){
+			var value = this.value;
+			$('#append-op').append('<span class="append-label" id="append-label">'+value+'</span>');
+		});
+
+		$('#dcountry-op').on('change',function(){
+			var value = this.value;
+			$('#append-dop').append('<span class="append-dlabel" id="append-dlabel">'+value+'</span>');
+		});
+		
+
+});
+	$('#append-label').on('click',function(){
+		console.log('클릭함');
+		console.log(this);
+		$(this).remove();
+	});
+
 </script>
 <body>
 	<!-- Pageloader -->
@@ -308,10 +346,12 @@
 			<div class="filters-panel" style="overflow: scroll;">
 				<div class="panel-inner">
 					<h3 class="panel-title">검색조건</h3>
-					<div>
-						<label class="search-label">나이</label> 
-						<input type="text" id="s_age" name="s_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"> AND 
-						<input type="text" id="e_age" name="e_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+					<div class="field">
+				        <div class="control">
+				        	<label class="search-label">나이</label>
+				            <input type="text" class="input" id="s_age" name="s_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">AND 
+				            <input type="text" class="input" id="e_age" name="e_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+				        </div>
 					</div>
 					<div>
 						<label class="search-label">성별</label> 
@@ -320,7 +360,7 @@
 						여<input type="radio" name="genderval" value="W">
 						기타<input type="radio" name="genderval" value="O">
 					</div>
-					<div style="margin-bottom: 5px;">
+					<div class="div-margin">
                        <div class="control">
 						<label class="search-label" >국가</label> 
                            <div class="select">
@@ -328,18 +368,24 @@
                                    <option value="">전체</option>
                                </select>
                            </div>
+                           <div id="append-op">
+                           </div>
                        </div>
 					</div>
 					<div>
-						<div class="control">
-						<label class="search-label" >언어</label> 
+					<div class="div-margin">
+                       <div class="control">
+						<label class="search-label">언어</label> 
                            <div class="select">
                                <select id="language1">
-                                   	<option value="">전체</option>
-									<option value="kr">한국어</option>
-									<option value="en">영어</option>
+	                            <option value="">전체</option>
+								<option value="kr">한국어</option>
+								<option value="en">영어</option>
                                </select>
                            </div>
+                       </div>
+					</div>
+						
 					</div>
 					<div>
 						<label class="search-label">관심사</label>
@@ -350,10 +396,12 @@
 						</div>
 					</div>
 					<h3 class="panel-title">제외조건</h3>
-					<div>
-						<label class="search-label" id="dis-age">나이</label>
-						<input type="text" id="s_dage" name="s_dage" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"> AND 
-						<input type="text" id="e_dage" name="e_dage" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+					<div class="field">
+				        <div class="control">
+				        	<label class="search-label">나이</label>
+				            <input type="text" class="input" id="s_dage" name="s_dage"  maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">AND 
+				            <input type="text" class="input" id="e_dage" name="e_dage" name="e_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+				        </div>
 					</div>
 					<div>
 						<label class="search-label">성별</label> 
@@ -361,16 +409,15 @@
 						여<input type="radio" name="dgenderval" value="W">
 						기타<input type="radio" name="dgenderval" value="O">
 					</div>
-					<div style="margin-bottom: 5px;">
-                       <div class="control has-icons-left">
+					<div class="div-margin">
+                       <div class="control">
 						<label class="search-label" >국가</label> 
                            <div class="select">
                                <select id="dcountry-op" >
                                    <option value="">전체</option>
                                </select>
                            </div>
-                           <div class="icon is-small is-left">
-                               <i class="mdi mdi-earth"></i>
+                           <div id="append-dop">
                            </div>
                        </div>
 					</div>
@@ -386,7 +433,9 @@
 						</div>
 					</div>
 				</div>
-				<button id="friendSearch" type="button">검색</button>
+				<div style="text-align: right;">
+				 <a class="button is-rounded" id="friendSearch">검색</a>
+				</div>
 			</div>
 		</form>
 

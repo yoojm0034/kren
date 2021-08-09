@@ -42,7 +42,7 @@ public interface UsersService {
 	public void logout(HttpSession session);
 	
 	//아이디 비밀번호 찾기...
-	public String findId(String email);
+	public UsersVO findId(String email);
 	public void findPw(UsersVO vo);
 	
 	
