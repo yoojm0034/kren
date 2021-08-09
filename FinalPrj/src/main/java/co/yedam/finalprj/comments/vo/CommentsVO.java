@@ -10,4 +10,7 @@ public class CommentsVO {
 	private Date reg_date;
 	private String content;
 	private String user_id;
+	
+	//추가
+	private String name;
 }
