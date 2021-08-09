@@ -109,6 +109,16 @@ public class UsersController {
 	// 프로필 업데이트
 	@RequestMapping("usersUpdateForm.do")
 	public String usersUpdateForm(UsersVO vo, Model model, Authentication auth) {
+		//로그인한 아이디 
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		
+		vo.setSession_id(Sessionid);
+		
+		model.addAttribute("profile", usersDao.usersSelect(vo));
+		model.addAttribute("mytopic", usersDao.myTopicList(vo));
+		model.addAttribute("mytrip", usersDao.myTripList(vo));
+		model.addAttribute("topiclist", topicDao.topicSelectList());
 		return "no/users/usersUpdateForm";
 	}	
 	

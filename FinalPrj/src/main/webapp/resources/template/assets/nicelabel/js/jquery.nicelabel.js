@@ -16,7 +16,7 @@
 			
 			//默认配置
 			
-			uselabel: true,				//如果是文本按钮,默认使用图标
+			uselabel: false,				//如果是文本按钮,默认使用图标
 			
 			checked_text: 'Checked',	//如果是文本按钮,默认选定文本
 			
