@@ -10,7 +10,7 @@
 		<definition name="empty/*" template="/WEB-INF/views/layout/empty.jsp">
           <put-attribute name="content" value="/WEB-INF/views/empty/{1}.jsp"></put-attribute>
     </definition>
-	<definition name="no/*/*" template="/WEB-INF/views/layout/empty.jsp">
+	<definition name="no/*/*" template="/WEB-INF/views/layout/noempty.jsp">
           <put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
 	</definition>
 	<!-- 템플릿 적용 받음 -->

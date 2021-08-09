@@ -9,6 +9,14 @@
 		 ORDER BY REG_DATE
 	</select>
 	
+	<select id="commentCnt" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="int">
+		SELECT COUNT(*) CMT
+		  FROM COMMENTS
+		 WHERE FEED_ID=#{feed_id}
+	</select>
+	
+	<!-- /댓글전체조회 -->
+	
 	<select id="commentSelect" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
 		SELECT comment_id, feed_id, reg_date, content, user_id
 		  FROM comments
@@ -20,12 +28,26 @@
 		 WHERE comment_id=#{comment_id}
 	</delete>
 	
+	<!-- 댓글작성 -->
 	<insert id="commentInsert" parameterType="co.yedam.finalprj.comments.vo.CommentsVO">
 		INSERT INTO COMMENTS
 			(COMMENT_ID, FEED_ID, CONTENT, USER_ID)
 		VALUES
 			('comment_'||comment_seq.nextval, #{feed_id}, #{content}, #{user_id})
 	</insert>
+	
+	<select id="commentInsertData" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
+			SELECT C.*, U.NAME, #{idx} as idx
+			  FROM COMMENTS C, USERS U
+			 WHERE C.USER_ID=U.USER_ID
+			   AND C.COMMENT_ID = (
+							SELECT DISTINCT FIRST_VALUE(COMMENT_ID) OVER(ORDER BY REG_DATE DESC) AS COMMENT_ID
+							  FROM COMMENTS
+							 WHERE FEED_ID=#{feed_id} AND USER_ID=#{user_id}
+							)
+	</select>
+	
+	<!-- /댓글작성 -->
 	
 	<update id="commentUpdate" parameterType="co.yedam.finalprj.comments.vo.CommentsVO">
 	</update>

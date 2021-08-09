@@ -13,4 +13,5 @@ public class CommentsVO {
 	
 	//추가
 	private String name;
+	private String idx;
 }

@@ -235,6 +235,44 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	   //-------태그등록---------
+	   var maxAppend = 0;
+	   document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
+	   function tagFunction() {
+	      if(event.keyCode==13){
+	          var tagval = $('#activities-autocpl').val();
+	          if(!tagval) {
+	            alert('태그를 입력해 주세요!');
+	         }else{
+	            if (maxAppend >= 5) return; 
+	            $('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
+	            $('#activities-autocpl').val('');
+	            maxAppend++;
+	            $.ajax({
+	               url: "tagInsert.do" ,
+	               type: "POST",
+	               data:{ tag_name : tagval } ,
+	               success: function(data){
+	               },
+	               error: function(err){
+	               }
+	            }); 
+	         }
+	      }else if(event.keyCode==35){
+	         event.preventDefault();
+	         event.returnValue = false;
+	      }else if(event.keyCode==44){
+	         event.preventDefault();
+	         event.returnValue = false;
+	      }
+	      
+	     $('.tagDelete').on('click', function () {
+	         $( this ).remove(); 
+	         maxAppend--;
+	     });
+	   }
+	
 	});
 	$(function(){
 	//-------최신글---------
@@ -491,13 +529,15 @@ $(document).ready(function(){
 		//-------댓글작성 그룹이벤트-------- 		
 		$('body').on('click','#post', function() {
 			var feedid = $(this).data('feedid');
-			var content = $('textarea[data-content="'+feedid+'"').val();
+			var scr = $(this).data('scr');//status.index
+			var content = $('textarea[data-content="'+feedid+'"]').val();
+			var scroll = $('div[data-scroll="'+scr+'"]');
 			if(content == "") {
 				alert('댓글을 입력해주세요');
 				return ;
 			}
-			console.log(feedid,content);
-			$.ajax({
+			console.log(feedid,content,scr);
+			$.ajax({//댓글입력
 				url: '${pageContext.request.contextPath}/commentInsert.do',
 				method: 'post',
 				data: JSON.stringify({
@@ -508,14 +548,58 @@ $(document).ready(function(){
 				contentType:'application/json; charset=UTF-8',
 				success: function() {
 					alert('댓글입력성공!');
-					location.reload(true);
+					$.ajax({//입력된 값 조회해서
+						url: '${pageContext.request.contextPath}/commentInsertData.do',
+						method: 'post',
+						data: {feed_id:feedid,user_id:'${user.user_id}',name:'${user.name}',idx:scr},
+						success: function(data) {//댓글수 확인 후 태그값 수정+태그추가
+							console.log(data);
+							scroll.append(data);
+// 							scroll.scrollTop();
+						}
+					});//입력된 값 조회
 				},
 				error: function() {
 					alert('댓글입력실패!');
 				}
-			});
+			});//댓글입력
+		});//#post
+		
+		//-------댓글삭제 그룹이벤트-------- 		
+		$('body').on('click','#del', function() {
+			var delcmt = $(this).data('delcmt');
+			var delcmtfeed = $(this).data('delcmtfeed');
+			var delidx = $(this).data('idx');
+			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
+			var span = $('span[data-minicmt="'+delidx+'"]');
+			if(confirm('삭제하시겠습니까?')) {//댓글삭제
+				$.ajax({
+					url: '${pageContext.request.contextPath}/commentDelete.do',
+					method: 'post',
+					data: JSON.stringify({comment_id:delcmt}),
+					contentType:'application/json; charset=UTF-8',
+					success: function(data) {
+						alert('댓글삭제성공!');
+						del.remove();
+						$.ajax({//댓글삭제하면 댓글수 확인 후 태그값 수정
+							url: '${pageContext.request.contextPath}/commentCnt.do',
+							method: 'post',
+							data: {feed_id:delcmtfeed},
+							success: function(cnt) {
+								var cnt = cnt;
+								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments('+cnt+')');
+								span.html(cnt);
+							}
+						});
+					},
+					error: function(e) {
+						alert('댓글삭제실패!');
+					}
+				});
+			}		
 		});
-	})
+		
+	});//end $function
 	
 </script>
 	<!-- Pageloader -->
@@ -1109,7 +1193,7 @@ $(document).ready(function(){
 
 						<div class="feedContents">
 							<!------------------------ 포스트 시작 ------------------------->
-							<c:forEach items="${feedList }" var="vo">
+							<c:forEach items="${feedList }" var="vo" varStatus="status">
 								<div id="feed-post-1" class="card is-post">
 									<!-- Main wrap -->
 									<div class="content-wrap">
@@ -1312,7 +1396,7 @@ $(document).ready(function(){
 														class="css-i6dzq1">
 														<path
 															d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-													<span>
+													<span id="minicmt" data-minicmt="${status.index }">
 													<c:if test="${vo.cmt eq 0 }">0</c:if>
 													<c:if test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
 													</span>
@@ -1338,7 +1422,7 @@ $(document).ready(function(){
 									<!-- Post #1 Comments -->
 									<div class="comments-wrap is-hidden">
 										<!-- Header -->
-										<div class="comments-heading">
+										<div class="comments-heading" data-card="${status.index }">
 											<h4>
 												Comments
 												<small>
@@ -1358,7 +1442,7 @@ $(document).ready(function(){
 										<!-- /Header -->
 
 										<!-- Comments body -->
-										<div class="comments-body has-slimscroll">
+										<div class="comments-body has-slimscroll" data-scroll="${status.index }">
 
 										<!-- Comment -->
 										<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">
@@ -1379,20 +1463,22 @@ $(document).ready(function(){
 												<div class="media-content">
 													<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
 													<span class="time">
+													
+													<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
 													 <script type="text/javascript">														
-														document.write(timeForToday('${cmt.reg_date}'));
+														document.write(timeForToday('${rg_dt}'));
 													</script>
 													</span>
 													<p>${cmt.content } </p>
 													<!-- Actions -->
+													<c:if test="${cmt.user_id eq user.user_id }">
 													<div class="controls">
-														<div class="reply">
-															<a href="#">Correcting</a>
-														</div>
 														<div class="edit">
-															<a href="#">X</a>
+															<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
+															data-idx="${status.index }">삭제</a>
 														</div>
 													</div>
+													</c:if>
 												</div>
 												<!-- Right side dropdown -->
 												<div class="media-right">
@@ -1425,8 +1511,7 @@ $(document).ready(function(){
 																		<line x1="4" y1="22" x2="4" y2="15"></line></svg>
 																	<div class="media-content">
 		                                                                <h3>Report</h3>
-		                                                                <small>Report this comment.</small>
-		                                                               </div>
+	                                                               	</div>
 		                                                        </div>
 	                                                        </a>
 	                                                    </div>
@@ -1463,7 +1548,7 @@ $(document).ready(function(){
 																data-user-popover="0" alt="">
 														</div>
 														<div class="toolbar">
-															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" >Post Comment</a>
+															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-scr="${status.index }">Post Comment</a>
 														</div>
 													</div>
 												</div>

@@ -14,7 +14,6 @@ public class CommentsServiceImpl implements CommentsService {
 	@Autowired
 	CommentsMap map;
 
-	
 	@Override
 	public List<CommentsVO> commentSelectList() {
 		return map.commentSelectList();
@@ -38,6 +37,16 @@ public class CommentsServiceImpl implements CommentsService {
 	@Override
 	public int commentDelete(CommentsVO vo) {
 		return map.commentDelete(vo);
+	}
+
+	@Override
+	public int commentCnt(CommentsVO vo) {
+		return map.commentCnt(vo);
+	}
+
+	@Override
+	public CommentsVO commentInsertData(CommentsVO vo) {
+		return map.commentInsertData(vo);
 	}
 
 }
