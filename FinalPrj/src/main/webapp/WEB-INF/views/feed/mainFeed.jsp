@@ -532,12 +532,13 @@ $(document).ready(function(){
 			var scr = $(this).data('scr');//status.index
 			var content = $('textarea[data-content="'+feedid+'"]').val();
 			var scroll = $('div[data-scroll="'+scr+'"]');
+			var span2 = $('span[data-minicmt="'+scr+'"]');
 			if(content == "") {
 				alert('댓글을 입력해주세요');
 				return ;
 			}
-			console.log(feedid,content,scr);
-			$.ajax({//댓글입력
+			//-------댓글입력-------
+			$.ajax({
 				url: '${pageContext.request.contextPath}/commentInsert.do',
 				method: 'post',
 				data: JSON.stringify({
@@ -548,21 +549,35 @@ $(document).ready(function(){
 				contentType:'application/json; charset=UTF-8',
 				success: function() {
 					alert('댓글입력성공!');
-					$.ajax({//입력된 값 조회해서
+					//입력된 값 조회 후 jsp
+					$.ajax({
 						url: '${pageContext.request.contextPath}/commentInsertData.do',
 						method: 'post',
 						data: {feed_id:feedid,user_id:'${user.user_id}',name:'${user.name}',idx:scr},
-						success: function(data) {//댓글수 확인 후 태그값 수정+태그추가
-							console.log(data);
+						success: function(data) {
 							scroll.append(data);
-// 							scroll.scrollTop();
+							scroll.scrollTop(scroll.prop('scrollHeight'));
 						}
-					});//입력된 값 조회
+					});
 				},
 				error: function() {
 					alert('댓글입력실패!');
 				}
 			});//댓글입력
+			
+			//-------댓글수+1-------
+			$.ajax({
+				url: '${pageContext.request.contextPath}/commentCnt.do',
+				method: 'post',
+				data: {feed_id:feedid},
+				success: function(cnt) {
+					var cnt = cnt;
+					console.log(cnt);
+					//$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
+					//span2.html(cnt);
+				}
+			});
+
 		});//#post
 		
 		//-------댓글삭제 그룹이벤트-------- 		
@@ -572,7 +587,8 @@ $(document).ready(function(){
 			var delidx = $(this).data('idx');
 			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
 			var span = $('span[data-minicmt="'+delidx+'"]');
-			if(confirm('삭제하시겠습니까?')) {//댓글삭제
+			//-------댓글삭제-------
+			if(confirm('삭제하시겠습니까?')) {
 				$.ajax({
 					url: '${pageContext.request.contextPath}/commentDelete.do',
 					method: 'post',
@@ -581,13 +597,14 @@ $(document).ready(function(){
 					success: function(data) {
 						alert('댓글삭제성공!');
 						del.remove();
-						$.ajax({//댓글삭제하면 댓글수 확인 후 태그값 수정
+						//-------댓글수-1-------
+						$.ajax({
 							url: '${pageContext.request.contextPath}/commentCnt.do',
 							method: 'post',
 							data: {feed_id:delcmtfeed},
 							success: function(cnt) {
 								var cnt = cnt;
-								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments('+cnt+')');
+								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments ('+cnt+')');
 								span.html(cnt);
 							}
 						});
