@@ -15,11 +15,11 @@ public interface FeedMap {
 	int feedDelete(FeedVO vo);									//피드삭제
 	int feedUpdate(FeedVO vo);									//피드수정
 	//친구
+	List<UsersVO> birthUser(FriendsVO vo);						//생일인유저
 	List<UsersVO> sameTopicList(UsersVO vo); 					//나와일치하는관심사수
 	List<UsersVO> searchFriend(UsersVO vo);						//친구검색 
-	List<UsersVO> birthUser(FriendsVO vo);						//생일인유저
-	List<FriendsVO> allUser(FriendsVO vo);
-	List<FriendsVO> newUser(FriendsVO vo);
+	List<UsersVO> allUser(UsersVO vo);
+	List<UsersVO> newUser(UsersVO vo);
 
 	
 	//관리자

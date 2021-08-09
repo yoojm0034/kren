@@ -144,14 +144,64 @@
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
+.img-container .flag {
+	position: absolute;
+	bottom: 0;
+	left: inherit;
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+	display: flex;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	align-items: center;
+	box-shadow: 0 14px 26px -12px rgb(61 112 178/ 42%), 0 4px 23px 0px
+		rgb(0 0 0/ 12%), 0 8px 10px -5px rgb(61 112 178/ 20%) !important;
+	transform: rotate(0);
+	transition: all .3s;
+	cursor: pointer;
+	z-index: 1;
+}
+.location-info {
+	position: absolute;
+	right: 6%;
+	top: 75%;
+	text-align: right;
+	background-color: #797979c4;
+	padding: 6px;
+	border-radius: 0.5rem;
+	color: white;
+}
+.friend-name {
+	font-size: 1.2rem;
+	color: #393a4f !important;
+	font-weight: 600;
+}
 
-
+.friend-location {
+	color: #9b9b9b;
+	font-size: 0.85rem;
+}
+.control.has-icons-left .icon.is-left {
+    left: 32px;
+    padding-bottom: 10px;
+}
+.control.has-icons-left .input, .control.has-icons-left .select select {
+    padding-left: 2.5em;
+    height: 29px;
+}
+.select:not(.is-multiple) {
+    height: 25px;
+    font-size: small;
+}
 </style>
 <script type="text/javascript">
 	$(document).ready(function() {
 
 		$('#friendSearch').on('click',function() {
 			var gender = $('input[name=genderval]:checked').val();
+			var dgender = $('input[name=dgenderval]:checked').val();
 			var country = $("#country-op option:selected").val();
 			var lan = $("#language1 option:selected").val();
 			var topic = "";
@@ -159,19 +209,17 @@
 			var discountry = $("#dcountry-op option:selected").val();
 			var distopic = "";
 
-			$("input[name=topic-label]:checked").each(function() {topic += $(this).val() + "|"; });
-			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ "|";});
+			$("input[name=topic-label]:checked").each(function() {topic += $(this).val() + ","; });
+			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ ",";});
 
 			$('#gender').val(gender);
 			$('#country').val(country);
 			$('#dcountry').val(discountry);
 			$('#language1').val(lan);
-			$('#dlanguage').val(topic);
 			$('#topic').val(topic);
 			$('#dtopic').val(distopic);
-			console.log('토픽2z' + topic);
-			console.log('d토픽2' + distopic);
-			//$('#frm').submit();
+			
+			$('#frm').submit();
 		});
 
 		$('#show-filters').on('click',function() {
@@ -251,10 +299,10 @@
 		<!-- 친구 찾기-->
 		<form id="frm" name="frm" method="post" action="searchList.do">
  			<input type="hidden" id="gender" name="gender"> 
+ 			<input type="hidden" id="dgender" name="dgender"> 
 			<input type="hidden" id="country" name="country"> 
 			<input type="hidden" id="dcountry" name="dcountry"> 
-			<input type="hidden" id="language1" name="language1"> 
-			<input type="hidden" id="dlanguage" name="dlanguage"> 
+			<input type="hidden" id="language1" name="language1">
 			<input type="hidden" id="topic" name="topic">
 			<input type="hidden" id="dtopic" name="dtopic">
 			<div class="filters-panel" style="overflow: scroll;">
@@ -272,21 +320,29 @@
 						여<input type="radio" name="genderval" value="W">
 						기타<input type="radio" name="genderval" value="O">
 					</div>
-					<div>
+					<div style="margin-bottom: 5px;">
+                       <div class="control">
 						<label class="search-label" >국가</label> 
-						<select id="country-op" multiple="multiple">
-							<option value="">All</option>
-						</select>
+                           <div class="select">
+                               <select id="country-op">
+                                   <option value="">전체</option>
+                               </select>
+                           </div>
+                       </div>
 					</div>
 					<div>
-						<label class="search-label">언어</label> <select id="language1">
-							<option value="">All</option>
-							<option value="kr">한국어</option>
-							<option value="en">영어</option>
-						</select>
+						<div class="control">
+						<label class="search-label" >언어</label> 
+                           <div class="select">
+                               <select id="language1">
+                                   	<option value="">전체</option>
+									<option value="kr">한국어</option>
+									<option value="en">영어</option>
+                               </select>
+                           </div>
 					</div>
 					<div>
-						<label class="search-label">관심사1</label>
+						<label class="search-label">관심사</label>
 						<div class="topic-list">
 							<c:forEach items="${topicList }" var="vo">
 								<input class="text-nicelabel" name="topic-label" data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}' type="checkbox" value="${vo.topic_id }">
@@ -300,10 +356,23 @@
 						<input type="text" id="e_dage" name="e_dage" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 					</div>
 					<div>
-						<label class="search-label">국가</label> 
-						<select id="dcountry-op" multiple="multiple">
-							<option value="">All</option>
-						</select>
+						<label class="search-label">성별</label> 
+						남<input type="radio" name="dgenderval" value="M"> 
+						여<input type="radio" name="dgenderval" value="W">
+						기타<input type="radio" name="dgenderval" value="O">
+					</div>
+					<div style="margin-bottom: 5px;">
+                       <div class="control has-icons-left">
+						<label class="search-label" >국가</label> 
+                           <div class="select">
+                               <select id="dcountry-op" >
+                                   <option value="">전체</option>
+                               </select>
+                           </div>
+                           <div class="icon is-small is-left">
+                               <i class="mdi mdi-earth"></i>
+                           </div>
+                       </div>
 					</div>
 					<div>
 						<label class="search-label">관심사</label>
@@ -337,17 +406,27 @@
 					<!--Friend-->
 					<c:forEach items="${searchList }" var="vo">
 						<div class="card-flex friend-card" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
-							<div class="img-container">
-								<img class="avatar" src="https://via.placeholder.com/300x300"
-									data-demo-src="resources/template/assets/img/avatars/david.jpg"
-									alt=""> <img class="country"
-									src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
-									alt="">
-							</div>
-							<div class="friend-info" >
-								<h3>${vo.name } 1</h3>
-								<p>Senior Developer</p>
-							</div>
+							<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
+								<div class="img-container">
+									<img class="avatar" src="https://via.placeholder.com/300x300"
+										data-demo-src="resources/template/assets/img/avatars/david.jpg"
+										alt=""> <img class="flag"
+										src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
+										alt="">
+								</div>
+								<div class="friend-info" >
+								<div class="friend-name textFilter-match">${vo.name }</div>
+									<div class="friend-location">
+										<span><svg viewBox="0 0 24 24" width="15"
+												height="15" stroke="currentColor" stroke-width="2"
+												fill="none" stroke-linecap="round"
+												stroke-linejoin="round" class="css-i6dzq1">
+												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+												<circle cx="12" cy="10" r="3"></circle></svg></span> <span
+											id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+									</div>
+								</div>
+							</a>
 							<div class="friend-stats">
 								<div class="stat-block">
 									<label>Following</label>
@@ -371,37 +450,6 @@
 						</div>
 					</a>
 					</c:forEach>
-					<!--Friend-->
-					<div class="card-flex friend-card">
-						<div class="star-friend">
-							<i data-feather="star"></i>
-						</div>
-						<div class="img-container">
-							<img class="avatar" src="https://via.placeholder.com/300x300"
-								data-demo-src="resources/template/assets/img/avatars/brian.jpg"
-								alt=""> <img class="country"
-								src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}svg"
-								alt="">
-						</div>
-						<div class="friend-info">
-							<h3>Brian Stevenson</h3>
-							<p>Accountant</p>
-						</div>
-						<div class="friend-stats">
-							<div class="stat-block">
-								<label>Friends</label>
-								<div class="stat-number">274</div>
-							</div>
-							<div class="stat-block">
-								<label>Posts</label>
-								<div class="stat-number">51</div>
-							</div>
-							<div class="stat-block">
-								<label>Likes</label>
-								<div class="stat-number">223</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 
@@ -414,20 +462,28 @@
 					<!--Friend-->
 					<c:forEach items="${allList }" var="vo">
 						<div class="card-flex friend-card">
-							<div class="star-friend is-active">
-								<i data-feather="star"></i>
-							</div>
-							<div class="img-container">
-								<img class="avatar" src="https://via.placeholder.com/300x300"
-									data-demo-src="resources/template/assets/img/avatars/david.jpg"
-									alt=""> <img class="country"
-									src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
-									alt="">
-							</div>
-							<div class="friend-info">
-								<h3>${vo.name }</h3>
-								<p>Senior Developer</p>
-							</div>
+							<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
+								<div class="img-container">
+									<img class="avatar" src="https://via.placeholder.com/300x300"
+										data-demo-src="resources/template/assets/img/avatars/david.jpg"
+										alt=""> <img class="flag"
+										src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
+										alt="">
+								</div>
+								<div class="friend-info" >
+								<div class="friend-name textFilter-match">${vo.name }</div>
+									<div class="friend-location">
+										<span><svg viewBox="0 0 24 24" width="15"
+												height="15" stroke="currentColor" stroke-width="2"
+												fill="none" stroke-linecap="round"
+												stroke-linejoin="round" class="css-i6dzq1">
+												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+												<circle cx="12" cy="10" r="3"></circle></svg></span> <span
+											id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+											<p style="">나와 일치하는 관심사 <span style="color: blue;">${vo.count }</span> 개</p>
+									</div>
+								</div>
+							</a>
 							<div class="friend-stats">
 								<div class="stat-block">
 									<label>Following</label>
@@ -463,23 +519,30 @@
 					<!--Friend-->
 					<c:forEach items="${newList }" var="vo">
 						<div class="card-flex friend-card">
-							<div class="star-friend is-active">
-								<i data-feather="star"></i>
-							</div>
-							<div class="img-container">
-								<img class="avatar" src="https://via.placeholder.com/300x300"
-									data-demo-src="resources/template/assets/img/avatars/stella.jpg"
-									alt=""> <img class="country"
-									src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
-									alt="">
-							</div>
-							<div class="friend-info">
-								<h3>${vo.name }</h3>
-								<p>
+							<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
+								<div class="img-container">
+									<img class="avatar" src="https://via.placeholder.com/300x300"
+										data-demo-src="resources/template/assets/img/avatars/david.jpg"
+										alt=""> <img class="flag"
+										src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
+										alt="">
+								</div>
+								<div class="friend-info" >
+								<div class="friend-name textFilter-match">${vo.name }</div>
 								<script type="text/javascript">														
 									document.write(timeForToday('${vo.reg_date}'));
 								</script>
-								 가입</p>
+									<div class="friend-location">
+										<span><svg viewBox="0 0 24 24" width="15"
+												height="15" stroke="currentColor" stroke-width="2"
+												fill="none" stroke-linecap="round"
+												stroke-linejoin="round" class="css-i6dzq1">
+												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+												<circle cx="12" cy="10" r="3"></circle></svg></span> <span
+											id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+									</div>
+								</div>
+						
 							</div>
 							<div class="friend-stats">
 								<div class="stat-block">
@@ -507,7 +570,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 
 	<div class="chat-wrapper">

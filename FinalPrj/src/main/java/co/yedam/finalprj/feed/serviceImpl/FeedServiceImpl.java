@@ -55,13 +55,12 @@ public class FeedServiceImpl implements FeedService {
 	public int feedUpdate(FeedVO vo) {
 		return map.feedUpdate(vo);
 	}
-
 	@Override
-	public List<FriendsVO> allUser(FriendsVO vo) {
+	public List<UsersVO> allUser(UsersVO vo) {
 		return map.allUser(vo);
 	}
 	@Override
-	public List<FriendsVO> newUser(FriendsVO vo) {
+	public List<UsersVO> newUser(UsersVO vo) {
 		return map.newUser(vo);
 	}
 	@Override
@@ -70,7 +69,6 @@ public class FeedServiceImpl implements FeedService {
 	}
 	@Override
 	public FeedVO oneSelectFeed(FeedVO vo) {
-		// TODO Auto-generated method stub
 		return map.oneSelectFeed(vo);
 	}
 

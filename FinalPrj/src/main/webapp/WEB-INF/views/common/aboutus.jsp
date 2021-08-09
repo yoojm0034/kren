@@ -64,9 +64,9 @@
 										<div class="wrapper">
 											<div class="demo-title">문의하기</div>
 											<div class="demo-link" data-theme="dark">
-												<a class="is-dm" href="/navbar-v1-feed.html">Contact Us
+												<div class="is-dm" onclick="location.href='${pageContext.request.contextPath}/userQnaWrite.do'">Contact Us
 													<i data-feather="chevron-right"></i>
-												</a>
+												</div>
 											</div>
 										</div>
 									</div>

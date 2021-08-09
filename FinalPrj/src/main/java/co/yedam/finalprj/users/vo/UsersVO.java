@@ -43,15 +43,17 @@ public class UsersVO {
 	private Double lon;
 	private String timezone;
 	private String flag;
-	private int count; // 일치하는관심사 수
-	private String session_id; // 세션아이디
-	private int followCheck; // 팔로잉 체크
+	private int count; 			// 일치하는관심사수
+	private int dcount; 		// 일치하지않는관심사수
+	private String session_id; 	// 세션아이디
+	private int followCheck; 	// 팔로잉 체크
 	
 	private int cnt;
 	private String s_age;		//검색시작나이
 	private String e_age;		//검색끝나이
 	private String s_dage;		//제외시작나이
 	private String e_dage;		//검색끝나이
+	private String dgender;		//제외성별
 	private String dcountry;	//제외국가
 	private String dtopic;		//제외관심사
 	private String feedCnt; 	//작성자글수

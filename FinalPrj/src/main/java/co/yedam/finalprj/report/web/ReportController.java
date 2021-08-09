@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.finalprj.block.service.BlockService;
+import co.yedam.finalprj.block.vo.BlockVO;
 import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.comments.vo.CommentsVO;
 import co.yedam.finalprj.feed.service.FeedService;
@@ -38,6 +40,8 @@ public class ReportController {
    @Autowired
    UsersService usersDao;
    
+   @Autowired
+   BlockService blockDao;
    //신고리스트
    @RequestMapping("admin/userReportList.do")
    public String reportList(ReportVO vo, Model model) {
@@ -47,13 +51,26 @@ public class ReportController {
    //신고입력
    @RequestMapping("reportInsert.do")
    @ResponseBody
-   public int reportInsert(@RequestBody ReportVO vo) {
-	   int n = reportDao.reportInsert(vo);
-	   if(n!=0 && vo.getBlocked()!=null) {
+   public int reportInsert(@RequestBody ReportVO vo, UsersVO uvo, BlockVO bvo) {
+	   int n = 0;
+	   if(vo.getBlocked()!=null) {
+		   n = reportDao.reportInsert(vo);
 		   //차단처리필요
-		   System.out.println(vo.getBlocked());
+		   bvo.setUser_id(vo.getUser_id());
+		   bvo.setBlocked(vo.getReported());
+		   int j = blockDao.blockInsert(bvo);
+		   System.out.println(j + "건 입력 및 "+vo.getReported()+"유저 차단");
+		   //신고후에 유저정보에 신고횟수 누적되어야함.
+		   uvo.setUser_id(vo.getReported());
+		   int k = usersDao.reportUpdatePlus(uvo);
+		   System.out.println(k + "건 입력");
+	   }else {
+		   n = reportDao.reportInsert(vo);
+		   uvo.setUser_id(vo.getReported());
+		   int k = usersDao.reportUpdatePlus(uvo);
+		   System.out.println(k + "건 입력");
 	   }
-	   //신고후에 유저정보에 신고횟수 누적되어야함.
+	   
       return n;
    }
    //신고리스트에서 해당 게시물번호 클릭시 팝업창으로 가지고갈 정보
@@ -98,8 +115,8 @@ public class ReportController {
 		   
 	   }else if(content.contains("letter")) {
 		   vo.setLetter_id(content);
-		   //r = letterDao. 삭제처리
-		   System.out.println(0 + "건 삭제처리");
+		   r = letterDao.updateAdminYN(vo);
+		   System.out.println(r + "건 삭제처리");
 		   //신고들어온 게시물 삭제 처리 후 그 게시물에 관한 신고 읽음으로 처리.
 		   rvo.setContent(content);
 		   int k = reportDao.reportUpdate(rvo);

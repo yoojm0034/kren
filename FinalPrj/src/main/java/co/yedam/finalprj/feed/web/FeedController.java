@@ -230,11 +230,13 @@ public class FeedController {
 
 	//친구검색화면 
 	@RequestMapping("friendSearch1.do")
-	public String allUserList(FriendsVO vo,Model model,Authentication auth){
+	public String allUserList(UsersVO vo,Model model,Authentication auth){
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
-
+		
 		vo.setUser_id(id);
+		vo = userDao.usersSelect(vo);	
+		vo.setTopic(vo.getTopic());
 		
 		model.addAttribute("allList",feedDao.allUser(vo));
 		model.addAttribute("searchList",feedDao.allUser(vo));
@@ -259,6 +261,9 @@ public class FeedController {
 		}
 		if(vo.getGender().equals("")) {
 			vo.setGender(null);
+		}
+		if(vo.getDgender().equals("")) {
+			vo.setDgender(null);
 		}
 		if(vo.getCountry().equals("")) {
 			vo.setCountry(null);
@@ -290,8 +295,7 @@ public class FeedController {
 		System.out.println(feedDao.searchFriend(vo));
 
 		model.addAttribute("searchList",feedDao.searchFriend(vo));
-		model.addAttribute("topicList",topicDao.topicSelectList());
-		return "friends/friendSearch";
+		return "friendSearch1.do";
 	}
 
 	

@@ -152,7 +152,17 @@ tr:hover {
 			        		// 정보 표시 숨기기
 			        		info: false,
 			        		// 페이징 기능 숨기기
-			        		paging: true
+			        		paging: true,
+			        		"language": {
+			        		        "search": "검색: ",
+			        		        "zeroRecords": "No data",
+			        		        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+			        		        "loadingRecords": "로딩중...",
+			        		        "paginate": {
+			        		            "next": ">",
+			        		            "previous": "<"
+			        		        }
+			        		 }
 			        	});
 									
 						
