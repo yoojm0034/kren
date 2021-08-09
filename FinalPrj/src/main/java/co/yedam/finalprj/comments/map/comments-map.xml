@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.comments.map.CommentsMap">
+	<!-- 댓글전체조회 -->
+	<select id="commentSelectList" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
+		SELECT C.COMMENT_ID, C.FEED_ID, C.REG_DATE, C.CONTENT, C.USER_ID, U.NAME
+		  FROM COMMENTS C, USERS U
+		 WHERE C.USER_ID=U.USER_ID  
+		 ORDER BY REG_DATE
+	</select>
+	
 	<select id="commentSelect" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
 		SELECT comment_id, feed_id, reg_date, content, user_id
-		FROM comments
-		WHERE comment_id=#{comment_id}
+		  FROM comments
+		 WHERE comment_id=#{comment_id}
 	</select>
 	
 	<delete id="commentDelete" parameterType="co.yedam.finalprj.comments.vo.CommentsVO">
 		DELETE FROM comments 
-		WHERE comment_id=#{comment_id}
+		 WHERE comment_id=#{comment_id}
 	</delete>
+	
+	<insert id="commentInsert" parameterType="co.yedam.finalprj.comments.vo.CommentsVO">
+		INSERT INTO COMMENTS
+			(COMMENT_ID, FEED_ID, CONTENT, USER_ID)
+		VALUES
+			('comment_'||comment_seq.nextval, #{feed_id}, #{content}, #{user_id})
+	</insert>
 	
 	
 </mapper>

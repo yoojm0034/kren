@@ -31,4 +31,7 @@ public class FeedVO {
 	
 	private MultipartFile file;
 	private String like_cnt;
+	
+	//comment
+	private int cmt;
 }

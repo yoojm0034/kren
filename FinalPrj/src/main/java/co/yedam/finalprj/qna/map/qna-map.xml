@@ -19,5 +19,9 @@
 		set answer = '답변완료'
 		where qna_id = #{qna_id}
 	</update>
+	<insert id="qnaInsert" parameterType="co.yedam.finalprj.qna.vo.QnaVO">
+		INSERT INTO qna (qna_id, email, content, qna_dt, answer)
+		VALUES ('qna_'||qna_seq.nextval, #{email}, #{content}, sysdate, '답변대기')
+	</insert>
 		
 </mapper>

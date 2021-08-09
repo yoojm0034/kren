@@ -16,6 +16,7 @@
 	overflow: auto;
 }
 
+`+ 
 .inbox-wrapper .inbox-wrapper-inner .inbox-center-container .inbox-center-container-inner .messages .action-buttons .button
 	{
 	max-height: 32px;

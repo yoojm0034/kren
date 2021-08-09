@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import co.yedam.finalprj.notice.service.NoticeService;
 import co.yedam.finalprj.notice.vo.NoticeVO;
+import co.yedam.finalprj.qna.service.QnaService;
+import co.yedam.finalprj.qna.vo.QnaVO;
 
 @Controller
 public class aboutusController {
 	@Autowired
 	NoticeService noticeDao;
+	@Autowired
+	QnaService qnaDao;
+	
 	//aboutus 페이지이동
 	@RequestMapping("aboutus.do")
 	public String aboutus() {
@@ -41,7 +46,17 @@ public class aboutusController {
 		return path;
 	}
 	
+	@RequestMapping("userQnaWrite.do") 
+	public String userQnaWrite() {
+		
+		return "common/userQnaWrite";
+	}
 	
-	
+	@RequestMapping("userQnaInsert.do") 
+	public String userQnaInsert(QnaVO vo) {
+		int r = qnaDao.qnaInsert(vo);
+		System.out.println(r + "건 입력");
+		return "redirect:aboutus.do";
+	}
 	
 }
