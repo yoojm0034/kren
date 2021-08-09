@@ -10,13 +10,8 @@
 	<div class="landing-wrapper">
 		<div id="demos-section" class="section demos-wrapper">
 			<div class="container is-desktop">
-				<div class="header-logo">
-					<img
-						src="${pageContext.request.contextPath}/resources/template/assets/img/logo/friendkit-white.svg"
-						alt="">
-				</div>
+					
 				<div class="demos-title has-text-centered">
-					<h3>Prebuilt pages to start with</h3>
 				</div>
 
 				<div class="demos-list">
@@ -28,7 +23,7 @@
 								src="${pageContext.request.contextPath}/resources/template/assets/img/icons/layouts/layout-navbar.svg"
 								alt="">
 							<div class="title-meta">
-								<h3>바로가기</h3>
+								<h3>Quick Menu</h3>
 							</div>
 						</div>
 
@@ -37,8 +32,8 @@
 							<div class="column is-4 has-text-centered">
 								<figure class="demo-wrapper">
 									<img
-										data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/blogging.svg"
-										alt="" data-lazy-load />
+										data-src="${pageContext.request.contextPath}/resources/template/assets/img/icons/questions/help.svg"
+										alt="" data-lazy-load width="100%" height="100%"/>
 									<div class="circle-overlay"></div>
 									<div class="demo-info has-text-centered">
 										<div class="wrapper">
@@ -57,7 +52,7 @@
 							<div class="column is-4 has-text-centered">
 								<figure class="demo-wrapper">
 									<img
-										data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/automotive.svg"
+										data-src="${pageContext.request.contextPath}/resources/template/assets/img/icons/questions/assistance.svg"
 										alt="" data-lazy-load />
 									<div class="circle-overlay"></div>
 									<div class="demo-info has-text-centered">
@@ -76,14 +71,14 @@
 							<div class="column is-4 has-text-centered">
 								<figure class="demo-wrapper">
 									<img
-										data-src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/questions/business.svg"
-										alt="" data-lazy-load />
+										data-src="${pageContext.request.contextPath}/resources/template/assets/img/icons/questions/cart.svg"
+										alt="" data-lazy-load height="372.03px" />
 									<div class="circle-overlay"></div>
 									<div class="demo-info has-text-centered">
 										<div class="wrapper">
-											<div class="demo-title">Feed page</div>
+											<div class="demo-title">우표상점</div>
 											<div class="demo-link" data-theme="light">
-												<a class="is-dm" href="/navbar-v1-feed-sidebar.html">Go to demo <i data-feather="chevron-right"></i></a>
+												<div class="is-dm" onclick="location.href='${pageContext.request.contextPath}/stampShopList.do'">Go to SHOP <i data-feather="chevron-right"></i></div>
 											</div>
 										</div>
 									</div>
@@ -93,13 +88,9 @@
 					</div>
 				</div>
 			</div>
+			<img src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/signup/type-3.svg"
+			alt="">
 		</div>
-		<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
-		<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
-		<button onclick="sendLetterPush('admin')" type="button">편지</button>
-		<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
-
-
 
 	</div>
 </body>

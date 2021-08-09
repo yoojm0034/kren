@@ -111,12 +111,15 @@
 
 								<div class="illustration">
 									<img class="light-image"
-										src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/settings/1.svg" alt=""> <img
+										src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/placeholders/2.svg" alt=""> <img
 										class="dark-image"
-										src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/settings/1-dark.svg" alt="">
+										src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/placeholders/2.svg" alt="">
+									<br>
 									<p>
-										궁금한 사항이 있으시면 문의해주세요.
+										※궁금한 사항이 있으시면 문의해주세요.<br>
+										※이메일은 정확하게 입력해주세요.
 									</p>
+								
 								</div>
 							</div>
 						</div>
