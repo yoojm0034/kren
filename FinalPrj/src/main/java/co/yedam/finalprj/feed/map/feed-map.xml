@@ -26,7 +26,8 @@
 	      				d.UUID 		"uuid",
 	        			d.DIRECTORY,
 	        			p.DELETE_YN "delete_yn",
-	        			nvl(likeCnt.LIKECNT,0) "like_cnt"
+	        			nvl(likeCnt.LIKECNT,0) "like_cnt",
+	        			F_COMMENT_CNT(f.feed_id) "cmt"
 			  FROM 		feed f JOIN users u
 						ON f.USER_ID = u.USER_ID
 	        			left outer join photo p

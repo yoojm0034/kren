@@ -3,13 +3,13 @@ package co.yedam.finalprj.comments.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import co.yedam.finalprj.comments.map.CommentsMap;
 import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.comments.vo.CommentsVO;
 
-@Service
+@Repository("CommentDao")
 public class CommentsServiceImpl implements CommentsService {
 	@Autowired
 	CommentsMap map;
@@ -39,6 +39,5 @@ public class CommentsServiceImpl implements CommentsService {
 	public int commentDelete(CommentsVO vo) {
 		return map.commentDelete(vo);
 	}
-
 
 }

@@ -246,6 +246,20 @@ $(function(){
 	});
 });
 
+//우표 히스토리 페이지로 이동
+$(function(){
+	$('#myStamp').on('click', function (){
+		$.ajax({
+			url: '${pageContext.request.contextPath}/myStamp.do',
+	    	type:'post',
+			success: function(result) {
+				$('.profile-contents').html(result);
+			}
+		});
+	});
+});
+
+
 
 // 팔로우 언팔로우 버튼
 $('body').on('click', '#follow-btn',  function() {
@@ -355,7 +369,7 @@ function follow(check) {
                         <div class="profile-menu is-hidden-mobile" style="min-height: 43px;">
                             <div class="menu-start">
                            		<c:if test="${user.user_id eq profile.user_id }">
-	                                <a href="profile-main.html" style="color: #999 !important; font-size: 0.85rem;">
+	                                <a id="myStamp" style="color: #999 !important; font-size: 0.85rem;">
 	                                	<img src="resources/template/assets/img/logo/stamp.png" style="width:35px; vertical-align: middle">
 	                               	 	MY STAMP <span class="menu-badge">${profile.stamp }</span>
 	                                </a>

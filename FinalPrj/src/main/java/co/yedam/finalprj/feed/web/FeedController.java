@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.service.LanguageService;
 import co.yedam.finalprj.feed.vo.FeedVO;
@@ -63,6 +63,9 @@ public class FeedController {
 	@Autowired
 	TopicService topicDao;
 	
+	@Autowired
+	CommentsService CommentDao;
+	
 	//메인피드
 	@RequestMapping("feed.do")
 	public String feedList(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
@@ -90,6 +93,9 @@ public class FeedController {
 		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 		System.out.println(feedDao.feedSelectList(vo));
+		
+		//댓글
+		model.addAttribute("commentList",CommentDao.commentSelectList());
 		return "feed/mainFeed";
 	}
 	
