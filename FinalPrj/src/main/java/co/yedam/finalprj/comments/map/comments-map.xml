@@ -27,5 +27,7 @@
 			('comment_'||comment_seq.nextval, #{feed_id}, #{content}, #{user_id})
 	</insert>
 	
+	<update id="commentUpdate" parameterType="co.yedam.finalprj.comments.vo.CommentsVO">
+	</update>
 	
 </mapper>

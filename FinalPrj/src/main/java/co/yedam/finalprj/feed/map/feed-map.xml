@@ -7,7 +7,8 @@
 		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
 		SELECT *
 	    FROM (SELECT
-	    				TRUNC(CAL(#{user_id} ,u.USER_ID),0) ,
+	    				<![CDATA[CASE WHEN #{user_id} <> U.USER_ID THEN TRUNC(CAL(#{user_id} ,U.USER_ID),0)
+	    				ELSE 0 END ]]>,
 						u.USER_ID 	"user_id",
 						u.EMAIL 	"email",
 						u.NAME 		"name",
@@ -69,8 +70,6 @@
 								    WHERE USER_ID = #{user_id}
 								 )
 	</select>
-	
-
 	
 	<!-- 나와 상대방의 일치하는 관심사 수 , 블락친구 제외, 이미 친구인 유저 제외 -->
 	<select id="sameTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">

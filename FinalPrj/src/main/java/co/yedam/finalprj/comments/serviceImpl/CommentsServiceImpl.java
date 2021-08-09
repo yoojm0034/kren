@@ -27,7 +27,7 @@ public class CommentsServiceImpl implements CommentsService {
 
 	@Override
 	public int commentInsert(CommentsVO vo) {
-		return map.commentUpdate(vo);
+		return map.commentInsert(vo);
 	}
 
 	@Override

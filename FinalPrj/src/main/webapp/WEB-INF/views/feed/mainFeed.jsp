@@ -485,6 +485,38 @@ $(document).ready(function(){
 			}
 		})
 	};
+	
+	//-------댓글-------- 
+	$(function() {
+		//-------댓글작성 그룹이벤트-------- 		
+		$('body').on('click','#post', function() {
+			var feedid = $(this).data('feedid');
+			var content = $('textarea[data-content="'+feedid+'"').val();
+			if(content == "") {
+				alert('댓글을 입력해주세요');
+				return ;
+			}
+			console.log(feedid,content);
+			$.ajax({
+				url: '${pageContext.request.contextPath}/commentInsert.do',
+				method: 'post',
+				data: JSON.stringify({
+					feed_id:feedid,
+					content:content,
+					user_id:'${user.user_id}'
+				}),
+				contentType:'application/json; charset=UTF-8',
+				success: function() {
+					alert('댓글입력성공!');
+					location.reload(true);
+				},
+				error: function() {
+					alert('댓글입력실패!');
+				}
+			});
+		});
+	})
+	
 </script>
 	<!-- Pageloader -->
 	<div class="infraloader is-active"></div>
@@ -1310,8 +1342,8 @@ $(document).ready(function(){
 											<h4>
 												Comments
 												<small>
-												<c:if test="${vo.cmt eq 0 }">(0)</c:if>
-												<c:if test="${vo.cmt gt 0 }">(${vo.cmt })</c:if>
+												<c:if test="${!empty vo.cmt and vo.cmt eq 0 }">(0)</c:if>
+												<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt })</c:if>
 												</small>
 											</h4>
 											<div class="close-comments">
@@ -1329,7 +1361,7 @@ $(document).ready(function(){
 										<div class="comments-body has-slimscroll">
 
 										<!-- Comment -->
-										<c:if test="${vo.cmt gt 0 }">
+										<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">
 											<c:forEach items="${commentList }" var="cmt">
 											<c:if test="${vo.feed_id eq cmt.feed_id }">
 											
