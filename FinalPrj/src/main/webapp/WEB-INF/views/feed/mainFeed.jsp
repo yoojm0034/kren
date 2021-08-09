@@ -1463,53 +1463,7 @@ $(document).ready(function(){
 									<button onclick="location.href='friendSearch1.do'">친구
 										찾으러 가쟝</button>
 								</h4>
-								<div class="dropdown is-spaced is-right dropdown-trigger">
-									<div>
-										<div class="button">
-											<svg viewBox="0 0 24 24" width="24" height="24"
-												stroke="currentColor" stroke-width="2" fill="none"
-												stroke-linecap="round" stroke-linejoin="round"
-												class="css-i6dzq1">
-												<line x1="8" y1="6" x2="21" y2="6"></line>
-												<line x1="8" y1="12" x2="21" y2="12"></line>
-												<line x1="8" y1="18" x2="21" y2="18"></line>
-												<line x1="3" y1="6" x2="3.01" y2="6"></line>
-												<line x1="3" y1="12" x2="3.01" y2="12"></line>
-												<line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-										</div>
-									</div>
-									<div class="dropdown-menu" role="menu">
-										<div class="dropdown-content">
-											<a href="#" class="dropdown-item">
-												<div class="media">
-													<i data-feather="users"></i>
-													<div class="media-content">
-														<h3>All Suggestions</h3>
-														<small>View all friend suggestions.</small>
-													</div>
-												</div>
-											</a> <a class="dropdown-item">
-												<div class="media">
-													<i data-feather="settings"></i>
-													<div class="media-content">
-														<h3>Settings</h3>
-														<small>Access widget settings.</small>
-													</div>
-												</div>
-											</a>
-											<hr class="dropdown-divider">
-											<a href="#" class="dropdown-item">
-												<div class="media">
-													<i data-feather="trash-2"></i>
-													<div class="media-content">
-														<h3>Remove</h3>
-														<small>Removes this widget from your feed.</small>
-													</div>
-												</div>
-											</a>
-										</div>
-									</div>
-								</div>
+								
 							</div>
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->

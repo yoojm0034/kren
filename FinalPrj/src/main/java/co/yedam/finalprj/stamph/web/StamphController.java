@@ -23,7 +23,7 @@ public class StamphController {
 		vo.setUser_id(id);
 		
 		mav.addObject("slist", stamphDao.stamphSelectList(vo));
-		mav.setViewName("stamp/myStamp");
+		mav.setViewName("no/stamp/myStamp");
 		
 		return mav;
 	}
