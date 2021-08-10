@@ -12,15 +12,15 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <link rel="icon" type="image/png"
-	href="resources/template/assets/img/favicon.png" />
+	href="${pageContext.request.contextPath}/resources/template/assets/img/favicon.png" />
 <!-- Core CSS -->
-<link rel="stylesheet" href="resources/template/assets/css/app.css">
-<link rel="stylesheet" href="resources/template/assets/css/core.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/app.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 <link
-	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
+	href="${pageContext.request.contextPath}/resources/template/assets/nicelabel/css/jquery-nicelabel.css"
 	rel="stylesheet">
-<script src="resources/template/assets/nicelabel/js/jquery.min.js"></script>
-<script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/nicelabel/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
 <style>
 @font-face {
 	font-family: 'ONE-Mobile-Regular';
@@ -223,7 +223,7 @@ $(function() {
 					$('#codeCheck').focus();
 					//중복확인 통과후 인증코드 메일보내는 ajax
 					$.ajax({
-						url : '${pageContext.request.contextPath}/userJoin/sendEmail.do',
+						url : '${pageContext.request.contextPath}/sendEmail.do',
 						data : {
 							email : $('#email').val()
 						},
@@ -346,7 +346,7 @@ $('#step5').click(function() {
 	<div class="signup-wrapper">
 		<div class="fake-nav">
 			<a href="home.do" class="logo"> <img
-				src="resources/template/assets/img/logo/logo2.png" width="112"
+				src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png" width="112"
 				height="28" alt="">
 			</a>
 		</div>
@@ -652,7 +652,7 @@ $('#step5').click(function() {
 				<div id="signup-panel-5" class="process-panel-wrap is-narrow">
 					<div class="form-panel">
 						<img class="success-image"
-							src="resources/template/assets/img/illustrations/signup/mailbox.svg"
+							src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/signup/mailbox.svg"
 							alt="">
 						<div class="success-text">
 							<h3>계정이 성공적으로 생성되었습니다.</h3>
@@ -685,36 +685,36 @@ $('#step5').click(function() {
 	</div>
 
 	<!-- Concatenated js plugins and jQuery -->
-	<script src="resources/template/assets/js/app.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/app.js"></script>
 	<script src="https://js.stripe.com/v3/"></script>
-	<script src="resources/template/assets/data/tipuedrop_content.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/data/tipuedrop_content.js"></script>
 
 	<!-- Core js -->
-	<script src="resources/template/assets/js/global.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/global.js"></script>
 
 	<!-- Navigation options js -->
-	<script src="resources/template/assets/js/navbar-v1.js"></script>
-	<script src="resources/template/assets/js/navbar-v2.js"></script>
-	<script src="resources/template/assets/js/navbar-mobile.js"></script>
-	<script src="resources/template/assets/js/navbar-options.js"></script>
-	<script src="resources/template/assets/js/sidebar-v1.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/navbar-v1.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/navbar-v2.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/navbar-mobile.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/navbar-options.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/sidebar-v1.js"></script>
 
 	<!-- Core instance js -->
-	<script src="resources/template/assets/js/main.js"></script>
-	<script src="resources/template/assets/js/chat.js"></script>
-	<script src="resources/template/assets/js/touch.js"></script>
-	<script src="resources/template/assets/js/tour.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/chat.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/touch.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
 
 	<!-- Components js -->
-	<script src="resources/template/assets/js/explorer.js"></script>
-	<script src="resources/template/assets/js/widgets.js"></script>
-	<script src="resources/template/assets/js/modal-uploader.js"></script>
-	<script src="resources/template/assets/js/popovers-users.js"></script>
-	<script src="resources/template/assets/js/popovers-pages.js"></script>
-	<script src="resources/template/assets/js/lightbox.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/explorer.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/widgets.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/modal-uploader.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/popovers-users.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/popovers-pages.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/lightbox.js"></script>
 
 	<!-- Signup page js -->
-	<script src="resources/template/assets/js/signup.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>
 
 </body>
 

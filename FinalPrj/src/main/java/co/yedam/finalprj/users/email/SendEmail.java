@@ -2,6 +2,7 @@ package co.yedam.finalprj.users.email;
 
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -24,8 +25,9 @@ public class SendEmail extends HttpServlet {
 		String from = "wjsgudals6@gmail.com";
 		String to = request.getParameter("email");
 		String subject = "KREN - Please confirm your email address.";
-		String code = new SHA256().getSHA256(to);
-		String content = "Your Code is [" + code + "]";
+		Random r = new Random();
+        int dice = r.nextInt(4589362) + 49311;
+		String content = "Your Code is [" + dice + "]";
 
 // SMTP에 접속하기 위한 정보를 기입합니다.
 
@@ -58,7 +60,7 @@ public class SendEmail extends HttpServlet {
 			response.getWriter().print("오류가 발생했습니다.");
 			return;
 		}
-		response.getWriter().print(code);
+		response.getWriter().print(dice);
 	}
 
 }
