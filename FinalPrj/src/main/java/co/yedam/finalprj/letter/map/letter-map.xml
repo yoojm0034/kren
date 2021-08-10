@@ -66,6 +66,13 @@
 		 WHERE USER_ID =#{user_id}
 	</select>
 	
+	<!-- 오늘보낸 편지횟수 체크 -->
+	<select id="cntLetterCheck" parameterType="co.yedam.finalprj.letterc.vo.LettercVO" resultType="int">
+		SELECT COUNT(*) FROM STAMPH
+		 WHERE USER_ID = #{user_id}
+		   AND TO_CHAR(SH_DT,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+	</select>
+	
 	<!-- 편지 작성 -->
 	<!-- 거리KM만큼 걸리는 시간+send_date = arrive_date 조건문 추가 필요-->
 	<insert id="insertLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">

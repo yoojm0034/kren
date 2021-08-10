@@ -214,25 +214,36 @@
 				success : function(data) {
 					if (data > 0) { //우표가 있으면
 						if(confirm("편지를 전송하시겠습니까?") ) {
-						    $.ajax({
-						    	url:'${pageContext.request.contextPath}/insertLetter.do',
-						    	type:'post',
-						    	data:JSON.stringify({
-						    		letter_id:send,
-						    		to_id:to,
-						    		content:txtarea,
-						    		gubun:'일반'
-						    	}),
-							    contentType : "application/json; charset=UTF-8",
-						    	success: function(data) {
-						    		alert('전송되었습니다.');
-						    		location.reload(true);
-						    		sendLetterPush(to);
-						    	},
-						    	error: function(e) {
-						    		alert('편지전송실패');
-						    	}
-						    });		    	
+							$.ajax({//편지전송횟수체크
+								url:'${pageContext.request.contextPath}/cntLetterCheck.do',
+								type:'post',
+								data:{user_id:'${user.user_id}'},
+								success: function(cnt) {
+									if(cnt < 5) {//하루에 5통만 전송가능
+									    $.ajax({//편지작성
+									    	url:'${pageContext.request.contextPath}/insertLetter.do',
+									    	type:'post',
+									    	data:JSON.stringify({
+									    		letter_id:send,
+									    		to_id:to,
+									    		content:txtarea,
+									    		gubun:'일반'
+									    	}),
+										    contentType : "application/json; charset=UTF-8",
+									    	success: function(data) {
+									    		alert('전송되었습니다.');
+									    		location.reload(true);
+									    		sendLetterPush(to);
+									    	},
+									    	error: function(e) {
+									    		alert('편지전송실패');
+									    	}
+									    });	//$ajax	   
+									} else {
+										alert('편지전송횟수 초과!');
+									}
+								}
+							});//$편지전송횟수
 					    } else {
 					    	if(confirm("편지를 저장하시겠습니까?") ) {
 							    $.ajax({

@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -184,6 +183,16 @@ public class LetterController {
 	public int stampLetterCheck(@RequestBody LetterVO vo) {
 		int cnt = letterDao.stampLetterCheck(vo);
 		if(letterDao.stampLetterCheck(vo) == 0) { //우표가 없으면 0
+			cnt = 0;
+		}
+		return cnt;
+	}
+	
+	@RequestMapping("cntLetterCheck.do")
+	@ResponseBody
+	public int cntLetterCheck(LetterVO vo) {
+		int cnt = letterDao.cntLetterCheck(vo); //오늘 보낸 편지횟수
+		if(letterDao.cntLetterCheck(vo) == 0) { //0이면 0
 			cnt = 0;
 		}
 		return cnt;

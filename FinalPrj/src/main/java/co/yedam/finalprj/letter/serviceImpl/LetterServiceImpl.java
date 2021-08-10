@@ -89,5 +89,10 @@ public class LetterServiceImpl implements LetterService {
 		return map.updateAdminYN(vo);
 	}
 
+	@Override
+	public int cntLetterCheck(LetterVO vo) {
+		return map.cntLetterCheck(vo);
+	}
+
 
 }
