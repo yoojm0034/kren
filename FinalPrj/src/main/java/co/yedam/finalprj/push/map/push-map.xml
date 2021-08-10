@@ -38,4 +38,20 @@
 			    AND TYPE = #{type}
 	</select>
 	
+	<update id="deletePush" parameterType="co.yedam.finalprj.push.vo.PushVO">
+		UPDATE PUSH
+		   SET CHECK_DT = SYSDATE
+		 WHERE TO_ID = #{to_id}
+		   AND CHECK_DT IS NULL
+		   AND Type <![CDATA[<>]]> 'letter'
+	</update>
+	
+	<update id="deleteLetterPush" parameterType="co.yedam.finalprj.push.vo.PushVO">
+		UPDATE PUSH
+		   SET CHECK_DT = SYSDATE
+		 WHERE TO_ID = #{to_id}
+		   AND CHECK_DT IS NULL
+		   AND Type = 'letter'
+	</update>
+	
 </mapper>

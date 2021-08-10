@@ -2,20 +2,17 @@ package co.yedam.finalprj.feed.web;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;  
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,17 +22,14 @@ import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.service.LanguageService;
 import co.yedam.finalprj.feed.vo.FeedVO;
-import co.yedam.finalprj.friends.service.FriendsService;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.TransService;
 import co.yedam.finalprj.letter.vo.TransVO;
-import co.yedam.finalprj.likes.service.LikesService;
-import co.yedam.finalprj.likes.vo.LikesVO;
 import co.yedam.finalprj.notice.service.NoticeService;
+import co.yedam.finalprj.push.service.PushService;
+import co.yedam.finalprj.push.vo.PushVO;
 import co.yedam.finalprj.tag.service.TagService;
-import co.yedam.finalprj.tag.vo.TagVO;
 import co.yedam.finalprj.topic.service.TopicService;
-import co.yedam.finalprj.users.email.returnMail;
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 
@@ -226,4 +220,5 @@ public class FeedController {
 	    }
 	    return result;
 	}
+	
 }

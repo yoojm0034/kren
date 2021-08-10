@@ -51,4 +51,9 @@ public class PushServiceImpl implements PushService {
 		return map.pushSelect2(vo);
 	}
 
+	@Override
+	public int deleteLetterPush(PushVO vo) {
+		return map.deleteLetterPush(vo);
+	}
+
 }
