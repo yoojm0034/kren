@@ -47,4 +47,19 @@ public class FriendsServiceImpl implements FriendsService {
 		return map.followerCnt(vo);
 	}
 
+	@Override
+	public List<UsersVO> searchFriend(UsersVO vo) {
+		return map.searchFriend(vo);
+	}
+
+	@Override
+	public List<UsersVO> allUser(UsersVO vo) {
+		return map.allUser(vo);
+	}
+
+	@Override
+	public List<UsersVO> newUser(UsersVO vo) {
+		return map.newUser(vo);
+	}
+
 }

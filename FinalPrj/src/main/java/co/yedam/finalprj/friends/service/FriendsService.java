@@ -13,4 +13,10 @@ public interface FriendsService {
 	int followingCnt(FriendsVO vo);	// 팔로잉 카운트
 	int followerCnt(FriendsVO vo);	// 팔로워 카운트
 
+
+	List<UsersVO> searchFriend(UsersVO vo);						 
+	List<UsersVO> allUser(UsersVO vo);
+	List<UsersVO> newUser(UsersVO vo);
+
+
 }
