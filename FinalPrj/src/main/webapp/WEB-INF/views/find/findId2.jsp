@@ -20,6 +20,13 @@
     <link rel="stylesheet" href="assets/css/core.css">
 </head>
 <body>
+<script>
+function() {
+	  $("#loginGo").on("click", function(){
+		  location.href = 'home.do';
+	  });
+};
+</script>
 	<!-- Pageloader -->
     <div class="pageloader"></div>
     <div class="infraloader is-active"></div>
@@ -32,25 +39,20 @@
                     <div class="column">
 
                         <h2 class="form-title has-text-centered">Find ID</h2>
-                        <h3 class="form-subtitle has-text-centered">Check the verification code.</h3>
+                        <h3 class="form-subtitle has-text-centered">Find your ID!</h3>
 
-                        <!--Form:받아온 인증코드를 컨트롤러로 넘겨서 일치하는지 확인-->
-                        <form action="findID2.do{dice}" method="post">
+                        <!--Form-->
                         <div class="login-form">
                             <div class="form-panel">
                                 <div class="field">
-                                    <label>Verification Code</label>
-                                    <div class="control">
-                                        <input type="text" class="input" id= "email_injeung" name="email_injeung" placeholder="Enter verification code">
-                                    </div>
+                                    ${user.user_id}
                                 </div>
                             </div>
 						<br>
                             <div class="buttons">
-                                <a class="button is-solid primary-button is-fullwidth raised" type="submit" onclick="findId2()">verification</a>
+                                <a class="button is-solid primary-button is-fullwidth raised" type="button" id="loginGo">Login</a>
                             </div>
                         </div>
-                        </form>
                     </div>
                 </div>
             </div>

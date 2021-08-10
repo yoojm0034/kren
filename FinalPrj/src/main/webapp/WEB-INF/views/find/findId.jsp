@@ -74,14 +74,15 @@
 			$.ajax({
 				url: 'mailCheck2.do',
 				data: { number: injeung },
-				success: function(res){
-					if(res == 2){
+				success: function(respones){
+					console.log(respones)
+					if(respones == true){
 						//세션에 담긴 인증번호와 동일할 경우...
-						location.href('find/findID2.do');
+						location.href = 'findID2.do';
 					}else{
 						//동일하지 않을 경우...
 						alert('인증번호가 일치하지 않습니다. 정확하게 입력해주세요.')
-					}
+					} 
 				},
 				error: function(error){
 					alert('관리자에게 문의 요망');
