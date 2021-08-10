@@ -303,7 +303,8 @@ function check(obj, condition, n) {
 //------------------- 마지막 NEXT 버튼 클릭 ---------------------
 $(function() {
 $('#step5').click(function() {
-	
+	var src = $('#upload-preview').attr("src");
+	console.log(src);
 	// topic 값 넣기
 	var topic = "";
 	$("input[name=topics]:checked").each(function() {
