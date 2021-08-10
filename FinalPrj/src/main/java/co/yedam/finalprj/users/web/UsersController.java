@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,35 +201,44 @@ public class UsersController {
 	    return "";
 	}
 	
-	//아이디비밀번호 찾기...
-	@RequestMapping("find.do")
+	//------------------------------------아이디/비밀번호 찾기...
+	@RequestMapping("find/find.do")
 	public String findIdPw() {
-		return "find/findIdPw";
+		return "no/find/findIdPw";
 	}
 	
-	//아이디찾기 1페이지
-	@RequestMapping("findID.do")
+	//아이디찾기 1페이지-이메일 인증...
+	@RequestMapping("find/findID.do")
 	public String findID(UsersVO vo, HttpServletRequest request) {
-		UsersVO ck = usersDao.findId(vo.getEmail());
-
-		if(!vo.getEmail().equals(ck.getEmail())) {
-			//DB에 없는 이메일...
+		
+		return "no/find/findId";
+	}
+	
+	//아이디찾기 2페이지-아이디 노출, 로그인 페이지로 이동...
+	@RequestMapping("find/findID2.do")
+	public String findID2() {
 			
-		}else{
-			//DB에 있는 이메일...
-			//mailCheck(vo, "findpw");
-		}
-		return "";
+		return "no/find/findId3";
 	}
 	
 	//인증번호 이메일 발송 기능...
-	@RequestMapping("mailCheck.do")
-	public ModelAndView mailCheck(ModelAndView mav, HttpServletRequest request, String e_mail, HttpServletResponse response_email) throws IOException {
+	@RequestMapping("find/mailCheck.do")
+	@ResponseBody
+	public int mailCheck(HttpServletRequest request, UsersVO vo) throws IOException {
+		UsersVO uvo = usersDao.emailCheck(vo.getEmail()); //쿼리 값을 받아옴
+		
+		if(uvo == null) {
+			//DB에 동일 이메일이 없을 경우...0으로 뷰의 res에 넘긴다.
+			return 0;
+		}
+		
+		//DB에 동일 이메일이 있으면...1로 뷰의 res에 넘기며 이메일을 발송한다.
+		
 		Random r = new Random();
         int dice = r.nextInt(4589362) + 49311; //이메일로 받는 인증코드 부분 (난수)
         
-        String setfrom = "5524yina@gamil.com";
-        String tomail = request.getParameter("email"); // 받는 사람 이메일
+        String setfrom = "5524yina@gamil.com"; //보내는 사람 이메일(삭제하면 기능하지않음)
+        String tomail = vo.getEmail(); // 받는 사람 이메일
         String title = "[kren]아이디 찾기-이메일 인증번호 발송"; // 이메일 제목
         String content =
         
@@ -244,6 +254,7 @@ public class UsersController {
         
         "인증번호를 홈페이지에 입력해 주세요."; // 내용
         
+        request.getSession().setAttribute("dice", dice); //인증번호 세션에 담아둠
         
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -257,66 +268,20 @@ public class UsersController {
             mailSender.send(message);
         } catch (Exception e) {
             System.out.println(e);
-        }
+        }  
         
-        ModelAndView mv = new ModelAndView();    //ModelAndView로 보낼 페이지를 지정하고, 보낼 값을 지정한다.
-        mv.setViewName("find/findId");     //뷰의이름
-        mv.addObject("dice", dice);
-        
-        System.out.println("mv : "+ mv);
-
-        response_email.setContentType("text/html; charset=UTF-8");
-        PrintWriter out_email = response_email.getWriter();
-        //out_email.println("<script>alert('인증번호 이메일이 발송되었습니다.');</script>");
-        out_email.flush();
-        
-        
-        return mv;
+        return 1;
 	}
 	
-	//아이디찾기 2페이지-인증번호 확인 기능...
-	@RequestMapping("mailCheck2.do{dice}")
-	public ModelAndView findID2(ModelAndView mav, String email_injeung, @PathVariable String dice, HttpServletResponse response_equals) throws IOException {
-		System.out.println("마지막 : email_injeung : "+email_injeung);
-        System.out.println("마지막 : dice : "+dice);
-        
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("find/findId2");
-        mv.addObject("e_mail",email_injeung);
-        
-        if (email_injeung.equals(dice)) {
-            //인증번호 일치할 경우...다음 페이지로 넘어간다
-            mv.setViewName("find/findId3");
-            mv.addObject("e_mail",email_injeung);
-            
-            response_equals.setContentType("text/html; charset=UTF-8");
-            PrintWriter out_equals = response_equals.getWriter();
-            //out_equals.println("<script>alert('인증번호가 일치하였습니다. 회원가입창으로 이동합니다.');</script>");
-            out_equals.flush();
-    
-            return mv;
-            
-        }else if (email_injeung != dice) {
-            //인증번호 불일치...페이지 이동없이 알림창을 띄운다
-            ModelAndView mv2 = new ModelAndView(); 
-            //mv2.setViewName("member/email_injeung");
-            
-            response_equals.setContentType("text/html; charset=UTF-8");
-            PrintWriter out_equals = response_equals.getWriter();
-            out_equals.println("<script>alert('인증번호가 일치하지않습니다. 인증번호를 다시 입력해주세요.'); history.go(-1);</script>");
-            out_equals.flush();
-            
-            return mv2;
-        }    
-        return mv;
-	}
-	
-	//아이디찾기 3페이지-아이디 노출, 로그인 페이지로 이동...
-	@RequestMapping("findID3.do")
-	public String findID3() {
-		
-		return "find/findId3";
-	}
+	/*
+	 * //인증번호 확인 기능...
+	 * 
+	 * @RequestMapping("find/mailCheck2.do") public int findID2(HttpServletResponse
+	 * response, HttpSession session) throws IOException { dice =
+	 * session.getAttribute("dice");
+	 * 
+	 * if(dice == null) { //세션값과 동일치 않으면...0으로 뷰의 res에 넘긴다. return 0; } return 1; }
+	 */
 	
 	@RequestMapping("findPW.do")
 	public String findPW() {

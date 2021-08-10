@@ -36,32 +36,59 @@
 			
 			alert('이메일을 입력하세요.');
 			$('#email').focus();
+			return;
 		}
 		
 		//이메일 DB 비교...
-		if(){
 			$.ajax({
 				url: 'mailCheck.do',
 				data: { email: $('#email').val() },
-				success: function(){
-					if(email == userEmail){
+				success: function(res){ //res= 컨트롤러에서 넘어오는 값
+					if(res == 1){
 						//회원정보와 동일한 이메일이 존재할 경우...
-						
-						
 						alert('인증번호가 이메일로 발송되었습니다.');
 					}else{
 						//동일 이메일이 없을 경우...
 						alert('입력한 이메일 주소로 회원이 조회되지 않습니다. 회원가입을 진행해주세요.');
 					}
 				},
-				error: function(error){}
+				error: function(error){
 					alert('관리자에게 문의 요망');
-				})
-		}
+				}
+			});
 		});
 	});
 	
 	//인증번호 체크...
+	$(function() {
+		  $("#injeungBtn").on("click", function(){
+			  var injeung = $('#email_injeung').val();
+			  
+			//인증번호 입력을 하지 않고 버튼을 누를 경우...
+			if(injeung == ""){
+				
+				alert('인증번호를 입력하세요.');
+				$('#email_injeung').focus();
+				return;
+			}
+			$.ajax({
+				url: 'mailCheck2.do',
+				data: { number: injeung },
+				success: function(res){
+					if(res == 1){
+						//세션에 담긴 인증번호와 동일할 경우...
+						location.href('find/findID2.do')
+					}else{
+						//동일하지 않을 경우...
+						alert('인증번호가 일치하지 않습니다. 정확하게 입력해주세요.')
+					}
+				},
+				error: function(error){
+					alert('관리자에게 문의 요망');
+				}
+			});
+		});
+	});
 	
 </script>
 
@@ -88,7 +115,7 @@
 										<div class="control">
 											<input type="text" class="input" id="email" name="email"
 												placeholder="Enter your email address">
-											<button id="findIdBtn" class="button is-solid accent-button raised">Check</button>
+											<button type="button" id="findIdBtn" class="button is-solid accent-button raised">Check</button>
 										</div>
 									</div>
 								</form>
@@ -103,7 +130,7 @@
 									<br>
 									<div class="buttons">
 										<a class="button is-solid primary-button is-fullwidth raised"
-											type="submit" id="mailCheck">Verification</a>
+											type="button" id="injeungBtn">Verification</a>
 										<!-- 
                                 <a class="button is-solid primary-button is-fullwidth raised" onclick="location.href='findID2.do'">button</a>
                                  -->
