@@ -1,7 +1,6 @@
 package co.yedam.finalprj.users.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +9,6 @@ import java.util.Random;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +21,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.vo.FeedVO;
@@ -188,15 +183,15 @@ public class UsersController {
 	// 회원가입 폼 제출
 	@RequestMapping("userJoin/userJoin.do")
 	public String userJoin(@ModelAttribute("UsersVO") UsersVO vo, Model model, byte[] imageByte) throws Exception {
+		
 //		ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
 //		BufferedImage bufferedImage = ImageIO.read(inputStream);
 //		ImageIO.write(bufferedImage, "png", new File("/resources/fileupload/image.png")); //저장하고자 하는 파일 경로를 입력합니다.
-		
+		System.out.println(vo);
 		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
 		vo.setPassword(scpwd.encode(vo.getPassword()));
-		usersDao.usersInsert(vo);
-		System.out.println("유저 등록 완료");
-	    return "";
+		//usersDao.usersInsert(vo);
+	    return "empty/home";
 	}
 	
 	//------------------------------------아이디/비밀번호 찾기...
