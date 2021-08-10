@@ -59,4 +59,6 @@ public class UsersVO {
 	private String feedCnt; 	//작성자글수
 	private String followingCnt;
 	private String followerCnt;
+	
+	private String base64Photo;
 }

@@ -36,4 +36,24 @@ public class PushController {
 		System.out.println(r + "건 입력");
 		return r;
 	}
+	
+	@RequestMapping("deletePushAll.do")
+	@ResponseBody
+	public int deletePush(Authentication auth, PushVO vo) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setTo_id(id);
+		int r = pushDao.deletePush(vo);
+		return r;
+	}
+	
+	@RequestMapping("deleteLetterPushAll.do")
+	@ResponseBody
+	public int deleteLetterPush(Authentication auth, PushVO vo) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setTo_id(id);
+		int r = pushDao.deleteLetterPush(vo);
+		return r;
+	}
 }

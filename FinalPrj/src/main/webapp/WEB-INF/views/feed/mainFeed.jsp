@@ -534,6 +534,7 @@ $(document).ready(function(){
 		//-------댓글작성 그룹이벤트-------- 		
 		$('body').on('click','#post', function() {
 			var feedid = $(this).data('feedid');
+			var feeduser = $(this).data('feeduser');
 			var scr = $(this).data('scr');//status.index
 			var content = $('textarea[data-content="'+feedid+'"]').val();
 			var scroll = $('div[data-scroll="'+scr+'"]');
@@ -563,6 +564,19 @@ $(document).ready(function(){
 							scroll.append(data);
 							scroll.scrollTop(scroll.prop('scrollHeight'));
 							$('textarea[data-content="'+feedid+'"]').val('');
+							//-------댓글수+1-------
+							$.ajax({
+								url: '${pageContext.request.contextPath}/commentCnt.do',
+								method: 'post',
+								data: {feed_id:feedid},
+								success: function(cnt) {
+									var cnt = cnt;
+									console.log(cnt);
+									$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
+									span2.html(cnt);
+									sendTextPush(feeduser, feedid);
+								}
+							});//댓글수+1
 						}
 					});
 				},
@@ -570,19 +584,6 @@ $(document).ready(function(){
 					alert('댓글입력실패!');
 				}
 			});//댓글입력
-			
-			//-------댓글수+1-------
-			$.ajax({
-				url: '${pageContext.request.contextPath}/commentCnt.do',
-				method: 'post',
-				data: {feed_id:feedid},
-				success: function(cnt) {
-					var cnt = cnt;
-					console.log(cnt);
-					$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
-					span2.html(cnt);
-				}
-			});
 
 		});//#post
 		
@@ -1651,7 +1652,7 @@ $(document).ready(function(){
 																data-user-popover="0" alt="">
 														</div>
 														<div class="toolbar">
-															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-scr="${status.index }">Post Comment</a>
+															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-feeduser="${vo.user_id }" data-scr="${status.index }">Post Comment</a>
 														</div>
 													</div>
 												</div>

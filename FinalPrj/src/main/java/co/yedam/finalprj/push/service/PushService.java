@@ -12,6 +12,7 @@ public interface PushService {
 	int insertPush(PushVO vo);
 	int updatePush(PushVO vo);
 	int deletePush(PushVO vo);
+	int deleteLetterPush(PushVO vo);
 	
 	
 }

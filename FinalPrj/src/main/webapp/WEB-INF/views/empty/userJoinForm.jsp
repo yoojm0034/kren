@@ -212,7 +212,6 @@ $(function() {
 			},
 			type : 'post',
 			success : function(data) {
-				console.log('data : ' + data);
 				if (data > 0) {
 					alert('이미 사용중입니다. 새로 입력해주세요.');
 					$('#email').val('');
@@ -305,7 +304,8 @@ function check(obj, condition, n) {
 $(function() {
 $('#step5').click(function() {
 	var src = $('#upload-preview').attr("src");
-	console.log(src);
+	$('#base64Photo').val(src);
+	
 	// topic 값 넣기
 	var topic = "";
 	$("input[name=topics]:checked").each(function() {
@@ -331,8 +331,9 @@ $('#step5').click(function() {
 	console.log('language2 : ' + $('#language2').val());
 	console.log('language2_level : ' + $('#language2_level option:selected').val());
 	console.log('topic : ' + $('#topic').val());								
+	console.log('base64 : ' + $('#base64Photo').val());								
 	
-	//frm.submit();
+	frm.submit();
 	
 	});
 });
@@ -387,7 +388,7 @@ $('#step5').click(function() {
 					<h2 id="step-title-5" class="step-title">환영합니다!</h2>
 				</div>
 
-				<form:form id="frm" action="userJoin.do" modelAttribute="UsersVO" method="post">
+				<form:form id="frm" action="/userJoin/userJoin.do" modelAttribute="UsersVO" method="post">
 
 					<!-------------- 페이지1 아이디/이메일 입력 ------------------->
 					<div id="signup-panel-1"
@@ -551,6 +552,7 @@ $('#step5').click(function() {
 						<form:hidden path="lat" />
 						<form:hidden path="lon" />
 						<form:hidden path="flag" />
+						<form:hidden path="base64Photo" />
 						<div class="form-panel" style="display: flex;">
 							<div id="map"></div>
 							<script async

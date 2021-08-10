@@ -189,15 +189,25 @@ public class UsersController {
 	// 회원가입 폼 제출
 	@RequestMapping("userJoin/userJoin.do")
 	public String userJoin(@ModelAttribute("UsersVO") UsersVO vo, Model model, byte[] imageByte) throws Exception {
+		
 //		ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
 //		BufferedImage bufferedImage = ImageIO.read(inputStream);
 //		ImageIO.write(bufferedImage, "png", new File("/resources/fileupload/image.png")); //저장하고자 하는 파일 경로를 입력합니다.
+<<<<<<< HEAD
 
+=======
+		System.out.println(vo);
+>>>>>>> branch 'main' of https://github.com/yoojm0034/kren.git
 		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
 		vo.setPassword(scpwd.encode(vo.getPassword()));
+<<<<<<< HEAD
 		usersDao.usersInsert(vo);
 		System.out.println("유저 등록 완료");
 		return "";
+=======
+		//usersDao.usersInsert(vo);
+	    return "empty/home";
+>>>>>>> branch 'main' of https://github.com/yoojm0034/kren.git
 	}
 
 	

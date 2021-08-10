@@ -19,6 +19,15 @@ h5:hover {
 	cursor: pointer;
 	color: silver;
 }
+#clearA:hover {
+	cursor: pointer;
+	color: silver;
+}
+#clearB:hover {
+	cursor: pointer;
+	color: silver;
+}
+
 .navbar-v1{
 	height: auto;
 }
@@ -206,6 +215,25 @@ h5:hover {
 			        }
 			});
 		});
+		
+		//push clear 
+		$('#clearA').click(function() {
+			$.ajax({
+				url:'${pageContext.request.contextPath}/deletePushAll.do',
+				success: function(data) {
+					$('#replyA').children().remove();
+				}
+			});
+		});
+		//push letter clear 
+		$('#clearB').click(function() {
+			$.ajax({
+				url:'${pageContext.request.contextPath}/deleteLetterPushAll.do',
+				success: function(data) {
+					$('#replyB').children().remove();
+				}
+			});
+		});
 	});
 
 	
@@ -323,6 +351,9 @@ h5:hover {
 
         return '방금전';
  	}
+	
+
+	
 </script>
 <!-- Pageloader -->
 <div class="pageloader"></div>
@@ -390,7 +421,7 @@ h5:hover {
 								<div class="nav-drop-body is-notifications" id="replyA" style="overflow:scroll;height:200px;">
 								</div>
 								<div class="nav-drop-footer">
-									<a href="#">View All</a>
+									<small id="clearA">Clear All</small>
 								</div>
 							</div>
 						</div>
@@ -409,7 +440,7 @@ h5:hover {
 								<div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
 								</div>
 								<div class="nav-drop-footer">
-									<a href="#">Clear All</a>
+									<small id="clearB">Clear All</small>
 								</div>
 							</div>
 						</div>
