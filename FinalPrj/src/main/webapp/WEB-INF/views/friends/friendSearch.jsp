@@ -221,30 +221,38 @@
 	color: white;
 	margin-left: 10px;
 }
+#append-op {
+    margin-top: 20px;
+}
 </style>
-<script type="text/javascript">
+<script>
+	var countryCnt =0;
+	var dcountryCnt =0;
 	$(document).ready(function() {
-
 		$('#friendSearch').on('click',function() {
 			var gender = $('input[name=genderval]:checked').val();
 			var dgender = $('input[name=dgenderval]:checked').val();
-			var country = $("#country-op option:selected").val();
-			var lan = $("#language1 option:selected").val();
+			var country= $("#append-op").children();
+			var discountry = $("#append-dop").children();
+			var lan = $("#language1-val option:selected").val();
 			var topic = "";
-			
-			var discountry = $("#dcountry-op option:selected").val();
 			var distopic = "";
-
+			
 			$("input[name=topic-label]:checked").each(function() {topic += $(this).val() + ","; });
 			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ ",";});
-
+			
+			country.each(function(){country += $(this).html()+ ",";});
+			discountry.each(function(){discountry += $(this).html()+ ",";});
+			
+			console.log('국가는 : '+country);
+			console.log('안국가는 : '+discountry);
+			console.log(JSON.stringify(country));
 			$('#gender').val(gender);
-			$('#country').val(country);
 			$('#dcountry').val(discountry);
 			$('#language1').val(lan);
 			$('#topic').val(topic);
 			$('#dtopic').val(distopic);
-			
+		
 			$('#frm').submit();
 		});
 
@@ -252,40 +260,36 @@
 			var url = '${pageContext.request.contextPath}/resources/template/assets/data/country.json';
 			$.getJSON(url,function(data) {
 				$.each(data,function(key,value) {
-					$('#country-op').append('<option value="' + value.CountryNameEN + '">'+ value.CountryNameKR+ '</option>');
-					$('#dcountry-op').append('<option value="' + value.CountryNameEN + '">'+ value.CountryNameKR+ '</option>');
+					$('#country-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
+					$('#dcountry-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
 				});
 			});
 		});
-
+		
 		
 		$('#country-op').on('change',function(){
 			var value = this.value;
-			$('#append-op').append('<span class="append-label" id="append-label">'+value+'</span>');
-		});
-
+			if (countryCnt == 5) return;
+			$('#append-op').append("<span class='append-label' id='"+value+"' onclick="+"'deleteCountry(\""+ value + "\")'>"+value+"</span>");
+			countryCnt++;
+		});		
+		
 		$('#dcountry-op').on('change',function(){
 			var value = this.value;
-			$('#append-dop').append('<span class="append-dlabel" id="append-dlabel">'+value+'</span>');
-		});
-		
-		$('#append-label').on('click',function(){
-			console.log('클릭함');
-			console.log(this);
-			$(this).remove();
-		});
-		
-		$('#append-dop > span').on('click',function(){
-			console.log('왜그러지');
-		})
-		
-		$('#append-label').on('click',function(){
-			console.log('클릭함');
-			console.log(this);
-			$(this).remove();
-		});
-
+			if (dcountryCnt == 5) return;
+			$('#append-dop').append("<span class='append-label' id='dis"+value+"' onclick="+"'deleteCountry(\"dis"+ value + "\")'>"+value+"</span>");
+			dcountryCnt++;
+		});	
 });
+	function deleteCountry(val) {
+ 		$('#'+val).remove();
+ 		
+ 		if(val.substring(0,3)=="dis"){
+ 			dcountryCnt--;
+ 		}else{
+	     	countryCnt--; 
+ 		}
+	};
 
 </script>
 <body>
@@ -372,7 +376,7 @@
 					</div>
 					<div class="div-margin">
                        <div class="control">
-						<label class="search-label" >국가</label> 
+						<label class="search-label">국가</label> 
                            <div class="select">
                                <select id="country-op">
                                    <option value="">전체</option>
@@ -387,7 +391,7 @@
                        <div class="control">
 						<label class="search-label">언어</label> 
                            <div class="select">
-                               <select id="language1">
+                               <select id="language1-val">
 	                            <option value="">전체</option>
 								<option value="kr">한국어</option>
 								<option value="en">영어</option>
@@ -2571,7 +2575,7 @@
 	</div>
 
 </body>
-<script>
+ <script>
 	feather.replace()
-</script>
+</script> 
 </html>
