@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.users.map.LoginMap;
 import co.yedam.finalprj.users.map.UsersMap;
 import co.yedam.finalprj.users.service.UsersService;

@@ -81,11 +81,11 @@
 													<button
 														class="button is-solid primary-button raised is-rounded"
 														style="border-color: #fff; background: #ffffff00; color: #fff"
-														type="button" onclick="location.href='userJoin/userJoinForm.do'">Sign Up</button>
+														type="button" onclick="location.href='${pageContext.request.contextPath}/userJoin/userJoinForm.do'">Sign Up</button>
 													<button
 														class="button is-solid primary-button raised is-rounded"
 														style="border-color: #fff; background: #ffffff00; color: #fff"
-														type="button" onclick="location.href='find/find.do'">forgot ID/password?</button>
+														type="button" onclick="location.href='${pageContext.request.contextPath}/find/find.do'">forgot ID/password?</button>
 												</div>
 											</div>
 										</div>

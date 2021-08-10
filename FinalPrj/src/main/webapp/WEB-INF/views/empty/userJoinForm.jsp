@@ -346,7 +346,7 @@ $('#step5').click(function() {
 	<div class="infraloader is-active"></div>
 	<div class="signup-wrapper">
 		<div class="fake-nav">
-			<a href="home.do" class="logo"> <img
+			<a href="/home.do" class="logo"> <img
 				src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png" width="112"
 				height="28" alt="">
 			</a>
@@ -388,7 +388,7 @@ $('#step5').click(function() {
 					<h2 id="step-title-5" class="step-title">환영합니다!</h2>
 				</div>
 
-				<form:form id="frm" action="/userJoin/userJoin.do" modelAttribute="UsersVO" method="post">
+				<form:form id="frm" action="${pageContext.request.contextPath}/userJoin/userJoin.do" modelAttribute="UsersVO" method="post">
 
 					<!-------------- 페이지1 아이디/이메일 입력 ------------------->
 					<div id="signup-panel-1"
@@ -635,7 +635,7 @@ $('#step5').click(function() {
                                 <a class="upload-button">
                                     <i data-feather="plus"></i>
                                 </a>
-                                <img id="upload-preview" src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/avatar-w.png" alt="">
+                                <img id="upload-preview" src="https://via.placeholder.com/150x150" data-demo-src="${pageContext.request.contextPath}/assets/img/avatars/avatar-w.png" alt="">
                                 <form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
                             </div>
                             <div class="limitation">

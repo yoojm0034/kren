@@ -1,6 +1,14 @@
 package co.yedam.finalprj.users.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +18,7 @@ import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,17 +191,104 @@ public class UsersController {
 	
 	// 회원가입 폼 제출
 	@RequestMapping("userJoin/userJoin.do")
-	public String userJoin(@ModelAttribute("UsersVO") UsersVO vo, Model model, byte[] imageByte) throws Exception {
+	public String userJoin(UsersVO vo, Model model, byte[] imageByte) throws Exception {
 		
 //		ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
 //		BufferedImage bufferedImage = ImageIO.read(inputStream);
 //		ImageIO.write(bufferedImage, "png", new File("/resources/fileupload/image.png")); //저장하고자 하는 파일 경로를 입력합니다.
+		String data = vo.getBase64Photo();
+		data = data.replaceAll("data:image/png;base64,","");
+
+		byte[] imgBytes = Base64.getDecoder().decode(data);
+		
+//		byte[] imgBytes = Base64.decodeBase64(data.getBytes());
+		
 		System.out.println(vo);
-		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
-		vo.setPassword(scpwd.encode(vo.getPassword()));
-		//usersDao.usersInsert(vo);
+//		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+//		vo.setPassword(scpwd.encode(vo.getPassword()));
+//		usersDao.usersInsert(vo);
 	    return "empty/home";
 	}
+	
+//	public BitMap ConvertToImage(String image){
+//	    try{
+//	    	InputStream stream = new ByteArrayInputStream(Base64.decode(image.getBytes(), Base64.DEFAULT));
+//	        Bitmap bitmap = BitmapFactory.decodeStream(stream);                 
+//	        return bitmap;  
+//	    }
+//	    catch (Exception e) {
+//	        return null;            
+//	    }
+//	}
+//	
+//	
+//	public boolean writeImageToDisk(FileItem item, File imageFile) {
+//	    // clear error message
+//	    String errorMessage = null;
+//	    FileOutputStream out = null;
+//	    boolean ret = false;
+//	    try {
+//	        // write thumbnail to output folder
+//	        out = createOutputStream(imageFile);
+//
+//	        // Copy input stream to output stream
+//	        byte[] headerBytes = new byte[22];
+//	        InputStream imageStream = item.getInputStream();
+//	        imageStream.read(headerBytes);
+//
+//	        String header = new String(headerBytes);
+//	        // System.out.println(header);
+//
+//	        byte[] b = new byte[4 * 1024];
+//	        byte[] decoded;
+//	        int read = 0;
+//	        while ((read = imageStream.read(b)) != -1) {
+//	            // System.out.println();
+//	            if (Base64.isArrayByteBase64(b)) {
+//	                decoded = Base64.decodeBase64(b);
+//	                out.write(decoded);
+//	            }
+//	        }
+//
+//	        ret = true;
+//	    } catch (IOException e) {
+//	        StringWriter sw = new StringWriter();
+//	        e.printStackTrace(new PrintWriter(sw));
+//	        errorMessage = "error: " + sw;
+//
+//	    } finally {
+//	        if (out != null) {
+//	            try {
+//	                out.close();
+//	            } catch (Exception e) {
+//	                StringWriter sw = new StringWriter();
+//	                e.printStackTrace(new PrintWriter(sw));
+//	                System.out.println("Cannot close outputStream after writing file to disk!" + sw.toString());
+//	            }
+//	        }
+//
+//	    }
+//
+//	    return ret;
+//	}
+
+	/**
+	 * Helper method for the creation of a file output stream.
+	 * 
+	 * @param imageFolder
+	 *            : folder where images are to be saved.
+	 * @param id
+	 *            : id of spcefic image file.
+	 * @return FileOutputStream object prepared to store images.
+	 * @throws FileNotFoundException
+	 */
+	protected FileOutputStream createOutputStream(File imageFile) throws FileNotFoundException {
+
+	    imageFile.getParentFile().mkdirs();
+
+	    return new FileOutputStream(imageFile);
+	}
+	
 	
 	//------------------------------------아이디/비밀번호 찾기...
 	@RequestMapping("find/find.do")

@@ -31,10 +31,10 @@
 <!-- 	</logger> -->
 
 	<!-- Root Logger -->
-
+<!-- 
 	<logger name="org.apache.commons">
 		<level value="info" />
-	</logger>
+	</logger> -->
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />
