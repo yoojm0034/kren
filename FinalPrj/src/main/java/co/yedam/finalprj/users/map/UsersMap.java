@@ -17,7 +17,7 @@ public interface UsersMap {
 	//회원가입
 	public UsersVO idCheck(String id);
 	public UsersVO nameCheck(String name);
-	public UsersVO emailCheck(String email);
+	public int emailCheck(String email);
 	
 	//프로필
 	List<UsersVO> myTopicList(UsersVO vo);	

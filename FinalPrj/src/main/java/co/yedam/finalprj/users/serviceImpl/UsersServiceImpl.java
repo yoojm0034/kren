@@ -89,7 +89,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public UsersVO emailCheck(String email) {
+	public int emailCheck(String email) {
 		return map.emailCheck(email);
 	}
 

@@ -267,7 +267,7 @@ a[href^="https://maps.google.com/maps"] {
 $(document).ready(function(){
 	//관심사 개수
 	var topicCnt = $('input:checkbox[name=topics]:checked').length;
-	$("#checked").text(topicCnt);
+	$("#checkedTopicCnt").text(topicCnt);
 	//자기소개 글자수
     var content = $('#profile').val();
     $('#contentCnt').text(content.length);
@@ -378,7 +378,7 @@ function getCheckedCnt(obj)  {
 	  const selectedElementsCnt = selectedElements.length;
 	  
 	  if (selectedElementsCnt <= 30) {
-		  document.getElementById('checked').innerText
+		  document.getElementById('checkedTopicCnt').innerText
 		    = selectedElementsCnt;
 	  } else {
 		  alert("30개를 초과 선택 불가합니다.");
@@ -408,42 +408,76 @@ $('body').on('click', '#deleteBtn', function() {
 		$(this).parent().remove();
 });
 
+//-------------------------------입력된 조건 확인------------------------------------
+function beforeSubmit() {
+	if ($('#codeCheck').val() == 'unchecked') {
+		alert("이메일 인증을 확인해주세요.");
+		return false;
+	}
+	if ($("#password").val() == "") {
+		alert("패스워드를 확인하세요.");
+		$('#password').focus();
+		return false;
+	}
+	if ($("#password").val() != $("#password2").val()) {
+		alert("패스워드가 일치하지 않습니다.");
+		$('#password').focus();
+		return false;
+	}
+	if (Number($("#checkedTopicCnt").text()) < 3) {
+		alert("관심사를 3개 이상 선택해주세요.");
+		return false;
+	}
+	return true;
+}
 
 //-------------------------------제출버튼 클릭--------------------------------------
 $(function() {
 	$('#saveBtn').click(function() { 
-		// 들어갈 값 : email, password, language2_level, country, city, lat, lon, timezone, flag
-		// profile, topic, visited
+		var result = false;
 		
-		// topic 값 넣기
-		var topic = "";
-		$("input[name=topics]:checked").each(function() {
-			topic += $(this).val() + ',';
-		});
-		topic = topic.substr(0, topic.length -1);
-		$('#topic').val(topic);
+		// 들어갈 값 : email, password, language2_level, country, city, lat, lon, timezone, flag, profile, topic, visited
 		
-		// 다녀온 나라 값 넣어주기 
-		var leng = $("input[id=user-visited").length;
-		var visited = "";
-		for (var i=0; i<leng; i++) {
-			visited += $("input[id=user-visited").eq(i).val() + ',';
+		// 이메일 변경되었는지 비교
+		if ('${profile.email}' == $("#email").val()) {
+			$('#codeCheck').val("checked");
+			result = beforeSubmit();
+			if (result == true) {
+				// topic 값 넣기
+				var topic = "";
+				$("input[name=topics]:checked").each(function() {
+					topic += $(this).val() + ',';
+				});
+				topic = topic.substr(0, topic.length -1);
+				$('#topic').val(topic);
+				
+				// 다녀온 나라 값 넣어주기 
+				var leng = $("input[id=user-visited").length;
+				var visited = "";
+				for (var i=0; i<leng; i++) {
+					visited += $("input[id=user-visited").eq(i).val() + ',';
+				}
+				visited = visited.substr(0, visited.length -1);
+				$("#visited").val(visited);
+				
+				console.log('email : ' + $("#email").val());		
+				console.log('emailCode : ' + $("#codeCheck").val());		
+				console.log('password : ' + $("#password").val());		
+				console.log('level : ' + $("#language2_level").val());
+				console.log('country : ' + $("#country").val());
+				console.log('city : ' + $("#city").val());
+				console.log('timezone: ' + $("#timezone").val());
+				console.log('lat : ' + $("#lat").val());
+				console.log('lon : ' + $("#lon").val());
+				console.log('flag : ' + $("#flag").val());
+				console.log('profile : ' + $('#profile').val());
+				console.log('topic : ' + $('#topic').val());
+				console.log('visited : ' + $("#visited").val());
+			}
+		} else {
+			alert("실패했음다");
+			return;
 		}
-		visited = visited.substr(0, visited.length -1);
-		$("#visited").val(visited);
-		
-		console.log('email : ' + $("#email").val());		
-		console.log('password : ' + $("#password").val());		
-		console.log('level : ' + $("#language2_level").val());
-		console.log('country : ' + $("#country").val());
-		console.log('city : ' + $("#city").val());
-		console.log('timezone: ' + $("#timezone").val());
-		console.log('lat : ' + $("#lat").val());
-		console.log('lon : ' + $("#lon").val());
-		console.log('flag : ' + $("#flag").val());
-		console.log('profile : ' + $('#profile').val());
-		console.log('topic : ' + $('#topic').val());
-		console.log('visited : ' + $("#visited").val());
 	});
 });	
 
@@ -453,16 +487,17 @@ $(function() {
 		<div id="profile-main" class="view-wrap is-headless">
 			<div class="columns profile-contents">
 				<div id="profile-timeline-widgets" class="column is-5">
-					<input type="hidden" id="country" name="country">
-					<input type="hidden" id="city" name="city">
-					<input type="hidden" id="lat" name="lat">
-					<input type="hidden" id="lon" name="lon">
-					<input type="hidden" id="timezone" name="timezone">
-					<input type="hidden" id="flag" name="flag">
+					<form id="profileUpdate" action="usersUpdate" method="post">
+					<input type="hidden" id="country" name="country" value="${profile.country}">
+					<input type="hidden" id="city" name="city" value="${profile.city}">
+					<input type="hidden" id="lat" name="lat" value="${profile.lat}">
+					<input type="hidden" id="lon" name="lon" value="${profile.lon}">
+					<input type="hidden" id="timezone" name="timezone" value="${profile.timezone}">
+					<input type="hidden" id="flag" name="flag" value="${profile.flag}">
 					<input type="hidden" id="visited" name="visited">
 					<input type="hidden" id="topic" name="topic">
 					<input type="hidden" id="language2_level" name="language2_level" value="${profile.language2_level }">
-					
+					</form>
 					<!-- Basic Infos widget -->
 					<div class="box-heading">
 						<h4>Edit Basic Infos</h4>
@@ -569,7 +604,7 @@ $(function() {
 							<h4>Topics of Interest</h4>
 						</div>
 						<div class="right">
-							(<span id="checked">0</span> / 30)
+							(<span id="checkedTopicCnt">0</span> / 30)
 						</div>
 					</div>
 					<div class="friend-cards-list">

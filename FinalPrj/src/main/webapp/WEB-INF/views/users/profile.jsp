@@ -205,7 +205,7 @@ $(document).ready(function() {
 				result = "◼◼◼◼◼";
 			    break;
 			}
-		$('#language2_level').text(result);
+		$('#level2').text(result);
 		};
 });
 
@@ -417,7 +417,7 @@ function follow(check) {
 							<div class="subheader-end is-hidden-mobile" style="display: flex">
 								<div class="language_label">
 									<div>${profile.language1}&nbsp;&nbsp;⇆&nbsp;&nbsp;${profile.language2 }</div>
-									<span>◼◼◼◼◼</span>&nbsp;&nbsp; <span id="language2_level"></span>
+									<span>◼◼◼◼◼</span>&nbsp;&nbsp; <span id="level2"></span>
 								</div>
 								<c:choose>
 									<c:when test="${user.user_id eq profile.user_id }">

@@ -12,24 +12,15 @@
 	<security:http>
 		<security:intercept-url pattern="/home.do"
 			access="permitAll()" />
-		<security:intercept-url pattern="/userJoinForm.do"
-			access="permitAll()" />
-		<security:intercept-url pattern="/userJoin.do"
+		<security:intercept-url pattern="/userJoin/**"
 			access="permitAll()" />
 		<security:intercept-url pattern="/qna/**"
 			access="permitAll()" />
 		<security:intercept-url pattern="/userQnaWrite.do"
 			access="permitAll()" />	
-		<security:intercept-url pattern="/find.do"
+		<security:intercept-url pattern="/find/**"
 			access="permitAll()" />
-		<security:intercept-url pattern="/findID.do"
-			access="permitAll()" />
-		<security:intercept-url pattern="/findID2.do"
-			access="permitAll()" />
-		<security:intercept-url pattern="/findID3.do"
-			access="permitAll()" />
-		<security:intercept-url pattern="/findPW.do"
-			access="permitAll()" />
+	
 			
 		<security:intercept-url pattern="/admin/**"
 			access="hasAuthority('ROLE_ADMIN')" />
