@@ -3,17 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-   <link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
-
-<!-- Core CSS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/app.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/vendor/datatables/dataTables.bootstrap4.css">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div class="media is-comment">
 	<!-- User image -->
 	<div class="media-left">

@@ -572,9 +572,8 @@ $(document).ready(function(){
 				data: {feed_id:feedid},
 				success: function(cnt) {
 					var cnt = cnt;
-					console.log(cnt);
-					//$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
-					//span2.html(cnt);
+					$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
+					span2.html(cnt);
 				}
 			});
 
