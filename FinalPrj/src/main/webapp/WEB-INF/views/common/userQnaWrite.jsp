@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -102,7 +103,9 @@
 										<div class="column is-12">
 											<div class="buttons">
 												<button type="button" id="btnQnaSubmit" class="button is-solid accent-button form-button">작성하기</button>
-												<button class="button is-light form-button" onclick="history.back()">뒤로가기</button>
+												<c:if test="${not empty user.user_id}">
+													<button class="button is-light form-button" onclick="history.back()">뒤로가기</button>
+												</c:if>
 											</div>
 										</div>
 
