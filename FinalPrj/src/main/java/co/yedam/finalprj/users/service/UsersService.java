@@ -17,7 +17,7 @@ public interface UsersService {
 	//------------------회원가입-------------------
 	public UsersVO idCheck(String id);
 	public UsersVO nameCheck(String name);
-	public UsersVO emailCheck(String email);
+	public int emailCheck(String email);
 	
 	//------------------프로필---------------------
 	//우표 구매시 보유 우표수 변경...

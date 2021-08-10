@@ -125,7 +125,7 @@ $(function() {
 		}
 		//중복체크
 		$.ajax({
-			url : 'userIdCheck.do',
+			url : '${pageContext.request.contextPath}/userJoin/userIdCheck.do',
 			data : {
 				id : $('#user_id').val()
 			},
@@ -171,7 +171,7 @@ $(function() {
 		}
 		//중복체크
 		$.ajax({
-			url : 'userNameCheck.do',
+			url : '${pageContext.request.contextPath}/userJoin/userNameCheck.do',
 			data : {
 				name : name
 			},
@@ -206,12 +206,13 @@ $(function() {
 		}
 		//email 중복확인 ajax
 		$.ajax({
-			url : '${pageContext.request.contextPath}/userEmailCheck.do',
+			url : '${pageContext.request.contextPath}/userJoin/userEmailCheck.do',
 			data : {
 				email : $('#email').val()
 			},
 			type : 'post',
 			success : function(data) {
+				console.log('data : ' + data);
 				if (data > 0) {
 					alert('이미 사용중입니다. 새로 입력해주세요.');
 					$('#email').val('');
@@ -222,7 +223,7 @@ $(function() {
 					$('#codeCheck').focus();
 					//중복확인 통과후 인증코드 메일보내는 ajax
 					$.ajax({
-						url : '${pageContext.request.contextPath}/sendEmail.do',
+						url : '${pageContext.request.contextPath}/userJoin/sendEmail.do',
 						data : {
 							email : $('#email').val()
 						},

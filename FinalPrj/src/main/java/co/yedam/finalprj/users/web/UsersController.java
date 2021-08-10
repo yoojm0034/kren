@@ -143,14 +143,14 @@ public class UsersController {
 	}	
 	
 	// 회원가입
-	@RequestMapping("userJoinForm.do")
+	@RequestMapping("userJoin/serJoinForm.do")
 	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model) {
 	model.addAttribute("topiclist", topicDao.topicSelectList());
 		return "empty/userJoinForm";
 	} 	
 	
 	// ID 중복체크
-	@RequestMapping("/userIdCheck.do")
+	@RequestMapping("userJoin/userIdCheck.do")
 	@ResponseBody
 	public int userIdCheck(HttpServletRequest request) {
 		String id = request.getParameter("id");
@@ -163,7 +163,7 @@ public class UsersController {
 	}
 
 	// 이름 중복체크
-	@RequestMapping("/userNameCheck.do")
+	@RequestMapping("userJoin/userNameCheck.do")
 	@ResponseBody
 	public int userNameCheck(HttpServletRequest request) {
 		String name = request.getParameter("name");
@@ -175,19 +175,17 @@ public class UsersController {
 	}
 	
 	// 이메일 중복체크
-	@RequestMapping("/userEmailCheck.do")
+	@RequestMapping("userJoin/userEmailCheck.do")
 	@ResponseBody
 	public int userEmailCheck(HttpServletRequest request) {
 		String email = request.getParameter("email");
-		int cnt = 0;
-		if(usersDao.emailCheck(email) != null) {
-			cnt = 1;
-		}
+		int cnt = usersDao.emailCheck(email);
+		System.out.println(cnt);
 		return cnt;
 	}
 	
 	// 회원가입 폼 제출
-	@RequestMapping("userJoin.do")
+	@RequestMapping("userJoin/userJoin.do")
 	public String userJoin(@ModelAttribute("UsersVO") UsersVO vo, Model model, byte[] imageByte) throws Exception {
 //		ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
 //		BufferedImage bufferedImage = ImageIO.read(inputStream);

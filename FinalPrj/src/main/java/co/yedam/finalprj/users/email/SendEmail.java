@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/sendEmail.do")
+@WebServlet("userJoin/sendEmail.do")
 public class SendEmail extends HttpServlet {
 
 	@Override

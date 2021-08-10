@@ -27,19 +27,21 @@
 		where user_id = #{user_id}
 	</update>
 	
+	
+	<!-- 회원가입 -->
 	<!-- 아이디 중복체크 -->	
-	<select id="idCheck" parameterType="string" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+	<select id="idCheck" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO" >
 		select * from users where user_id = #{user_id}
 	</select>
 
 	<!-- 이름중복체크 -->
-	<select id="nameCheck" parameterType="string" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+	<select id="nameCheck" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO" >
 		select * from users where name = #{name}
 	</select>
 	
 	<!-- 이메일중복체크 -->
-	<select id="emailCheck" parameterType="string" resultType="co.yedam.finalprj.users.vo.UsersVO" >
-		select * from users where email = #{email}
+	<select id="emailCheck" parameterType="String" resultType="int" >
+		select count(*) from users where email = #{email}
 	</select>
 	
 	<!-- 회원가입 insert -->
@@ -50,6 +52,7 @@
 			(#{email}, #{name}, #{password}, #{birth}, #{gender}, #{topic}, #{language1}, #{language2}, #{country}, #{city}, #{user_id}, #{lat}, #{lon}, #{flag}, #{language2_level}, #{timezone})
 	</insert>
 	
+	<!-- 프로필 -->
 	<!-- 프로필 topic list -->
 	<select id="myTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.topic.vo.TopicVO" >
 		with mytopic as (Select Regexp_Substr((select topic 
@@ -99,5 +102,14 @@
 						   from friends 
 						   where following=#{user_id})
 	</select>	
+	
+	<!-- 프로필 수정 -->
+	<update id="usersUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		update users
+		set (email, password, topic, country, city, visited, edit_dt, profile, lat, lon, timezone, flag, language2_level) 
+			= (select #{email}, #{password}, #{topic}, #{country}, #{city}, #{visited}, sysdate, #{profile}, #{lat}, #{lon}, #{timezone}, #{flag}, #{language2_level}          
+		  	   from dual)
+		where user_id = #{user_id}
+	</update>
 	
 </mapper>
