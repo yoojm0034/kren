@@ -682,6 +682,60 @@ $(document).ready(function(){
 	});	
 }); //$function
 //--------신고END----------------------------------------
+//--------교정START--------------------------------------
+	$(function() {
+		// 교정테이블 추가 그룹 이벤트
+		$("body").on('click', '#feedcor',  function() {
+		    var fid = $(this).data('fid');		//feed_id;
+		    var fidx = $(this).data('fidx');	//status.index;
+		    console.log(fid, fidx);
+		    add(fid, fidx);
+		});
+	});
+	
+	// 교정테이블 추가
+	function add(fid, fidx) {
+		var p = $('#tdiv'+fid).prev().text();//내용
+		
+	    var result = p.split(".");
+	    console.log(result);
+
+	    var div = $('div[data-table="'+fidx+'"]');//표가 그려질 영역
+		var tbl = $('<table>');
+
+// 		// 테이블 행제목
+// 		let thead = ['','']
+// 		var head = $('<tr>');
+// 		for (var field in thead) {
+// 			var name = $('<td>').text(thead[field].trim());
+// 			head.append(name);
+// 		}
+// 		tbl.append(head);
+// 		div.append(tbl);
+		
+// 		// 교정 테이블 출력
+		var rownum = 1;
+		var num = 0;
+		for(var i=0; i < result.length; i++) {
+			if(result[i].length != 0) { // 리스트가 비어있지않으면
+				num = i;
+				var tr = $('<tr>');
+				tr.append($('<td data-cont="'+i+'">').append(result[i]));
+				tr.append($('<td>').append($('<textarea id="correcting" data-corr="'+i+'">').val(result[i])));
+				tbl.append(tr);			
+			}
+		}
+		console.log('rnum:',rownum);
+		var tr2 = $('<tr>');
+		var col = $('<td colspan="2">');
+		var submit = $('<button type="button" id="frmBtn" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
+		col.append(submit);
+		tr2.append(col);
+		tbl.append(tr2)
+		div.append(tbl);
+	} //function add
+
+//--------교정END----------------------------------------
 </script>
 	<!-- Pageloader -->
 	<div class="infraloader is-active"></div>
@@ -1318,25 +1372,24 @@ $(document).ready(function(){
 													<div class="dropdown-content">
 														<a href="#" class="dropdown-item">
 															<div class="media">
-																<i data-feather="bookmark"></i>
 																<div class="media-content" id="${vo.content }"
 																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
 																	<h3>번역</h3>
 																</div>
 															</div>
-														</a> <a class="dropdown-item">
+														</a>
+														<c:if test="${vo.user_id ne user.user_id}">
+														<a class="dropdown-item">
 															<div class="media">
-																<i data-feather="bell"></i>
-																<div class="media-content">
+																<div class="media-content" id="feedcor" data-fid="${vo.feed_id }"
+																data-fidx="${status.index }">
 																	<h3>교정</h3>
 																</div>
 															</div>
 														</a>
-														<c:if test="${vo.user_id ne user.user_id}">
 															<hr class="dropdown-divider">
 															<a class="dropdown-item">
 																<div class="media">
-																	<i data-feather="bell"></i>
 																	<div class="media-content">
 																		<h3>신고</h3>
 																	</div>
@@ -1495,6 +1548,7 @@ $(document).ready(function(){
 												</div>
 											</div>
 										</div>
+										<div data-table="${status.index }"></div>
 										<!-- /Post footer -->
 									</div>
 									<!-- /Main wrap -->

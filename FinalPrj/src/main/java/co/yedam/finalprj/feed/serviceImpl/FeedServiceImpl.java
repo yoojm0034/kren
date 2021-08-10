@@ -56,18 +56,6 @@ public class FeedServiceImpl implements FeedService {
 		return map.feedUpdate(vo);
 	}
 	@Override
-	public List<UsersVO> allUser(UsersVO vo) {
-		return map.allUser(vo);
-	}
-	@Override
-	public List<UsersVO> newUser(UsersVO vo) {
-		return map.newUser(vo);
-	}
-	@Override
-	public List<UsersVO> searchFriend(UsersVO vo) {
-		return map.searchFriend(vo);
-	}
-	@Override
 	public FeedVO oneSelectFeed(FeedVO vo) {
 		return map.oneSelectFeed(vo);
 	}

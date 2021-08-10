@@ -81,9 +81,9 @@ public class FriendsController {
 		vo = userDao.usersSelect(vo);	
 		vo.setTopic(vo.getTopic());
 		System.out.println(vo);
-		model.addAttribute("allList",feedDao.allUser(vo));
-		model.addAttribute("searchList",feedDao.allUser(vo));
-		model.addAttribute("newList",feedDao.newUser(vo));
+//		model.addAttribute("allList",feedDao.allUser(vo));
+//		model.addAttribute("searchList",feedDao.allUser(vo));
+//		model.addAttribute("newList",feedDao.newUser(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
 		return "friends/friendSearch";
 	};
@@ -135,9 +135,9 @@ public class FriendsController {
 		System.out.println("토픽: "+vo.getTopic());
 		System.out.println("제외토픽: "+vo.getDtopic());
 		
-		System.out.println(feedDao.searchFriend(vo));
-
-		model.addAttribute("searchList",feedDao.searchFriend(vo));
+//		System.out.println(feedDao.searchFriend(vo));
+//
+//		model.addAttribute("searchList",feedDao.searchFriend(vo));
 		return "friendSearch1.do";
 	}
 	
