@@ -166,8 +166,8 @@ $(document).ready(function() {
 	initMap();
 	//지도 출력
 	function initMap() {
-		var lat = Number($('#lat').val());
-		var lon = Number($('#lon').val());
+		var lat = Number($('#lat2').val());
+		var lon = Number($('#lon2').val());
 		const city = { lat: lat, lng: lon};
 	    const map = new google.maps.Map(document.getElementById("map"), {
 	      zoom: 10,
@@ -337,8 +337,8 @@ function follow(check) {
 							<span>${profile.city }, ${profile.country }&nbsp;</span><span
 								id="localTime"></span>
 						</div>
-						<input type="text" id="lat" value="${profile.lat }" hidden="hidden" /> 
-						<input type="text" id="lon" value="${profile.lon }" hidden="hidden" /> 
+						<input type="text" id="lat2" value="${profile.lat }" hidden="hidden" /> 
+						<input type="text" id="lon2" value="${profile.lon }" hidden="hidden" /> 
 						<input type="text" id="timezone" value="${profile.timezone }" hidden="hidden" />
 						<input type="text" id="level" value="${profile.language2_level }" hidden="hidden" /> 
 						<input type="text" id="user_id" value="${profile.user_id }" hidden="hidden" />

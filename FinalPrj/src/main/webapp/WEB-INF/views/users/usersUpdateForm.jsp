@@ -284,7 +284,7 @@ $(function() {
 		}
 		//email 중복확인 ajax
 		$.ajax({
-			url : '${pageContext.request.contextPath}/userEmailCheck.do',
+			url : '${pageContext.request.contextPath}/userJoin/userEmailCheck.do',
 			data : {
 				email : $('#email').val()
 			},
@@ -298,7 +298,7 @@ $(function() {
 					$('#email').attr("readonly", true);
 					$('#codeCheck').focus();
 					$.ajax({ 	//중복확인 통과후 인증코드 메일보내는 ajax
-						url : 'sendEmail.do',
+						url : '${pageContext.request.contextPath}/sendEmail.do',
 						data : { email : $('#email').val() },
 						type : 'post',
 						success : function(code) {
@@ -410,6 +410,9 @@ $('body').on('click', '#deleteBtn', function() {
 
 //-------------------------------입력된 조건 확인------------------------------------
 function beforeSubmit() {
+	if ('${profile.email}' == $("#email").val()) {
+		$('#codeCheck').val('checked');
+	}
 	if ($('#codeCheck').val() == 'unchecked') {
 		alert("이메일 인증을 확인해주세요.");
 		return false;
@@ -439,8 +442,6 @@ $(function() {
 		// 들어갈 값 : email, password, language2_level, country, city, lat, lon, timezone, flag, profile, topic, visited
 		
 		// 이메일 변경되었는지 비교
-		if ('${profile.email}' == $("#email").val()) {
-			$('#codeCheck').val("checked");
 			result = beforeSubmit();
 			if (result == true) {
 				// topic 값 넣기
@@ -473,21 +474,19 @@ $(function() {
 				console.log('profile : ' + $('#profile').val());
 				console.log('topic : ' + $('#topic').val());
 				console.log('visited : ' + $("#visited").val());
-			}
-		} else {
-			alert("실패했음다");
-			return;
+				
+				profileUpdate.submit();
 		}
 	});
 });	
 
 </script>
+<form id="profileUpdate" action="${pageContext.request.contextPath}/usersUpdate.do" method="post">
 <div style="padding: 0px 12px 0px 12px;">
 	<div class="container is-custom">
 		<div id="profile-main" class="view-wrap is-headless">
 			<div class="columns profile-contents">
 				<div id="profile-timeline-widgets" class="column is-5">
-					<form id="profileUpdate" action="usersUpdate" method="post">
 					<input type="hidden" id="country" name="country" value="${profile.country}">
 					<input type="hidden" id="city" name="city" value="${profile.city}">
 					<input type="hidden" id="lat" name="lat" value="${profile.lat}">
@@ -497,7 +496,7 @@ $(function() {
 					<input type="hidden" id="visited" name="visited">
 					<input type="hidden" id="topic" name="topic">
 					<input type="hidden" id="language2_level" name="language2_level" value="${profile.language2_level }">
-					</form>
+					
 					<!-- Basic Infos widget -->
 					<div class="box-heading">
 						<h4>Edit Basic Infos</h4>
@@ -593,7 +592,7 @@ $(function() {
 						<div class="card is-friend-card">
 							<div class="friend-item">
 								<div class="text-content">
-									<textarea id="profile">${profile.profile }</textarea>
+									<textarea id="profile" name="profile">${profile.profile }</textarea>
 								</div>
 							</div>
 						</div>
@@ -651,3 +650,4 @@ $(function() {
 		</div>
 	</div>
 </div>
+</form>

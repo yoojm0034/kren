@@ -131,7 +131,7 @@ public class UsersController {
 		return "no/users/followerList";
 	}
 	
-	// 프로필 업데이트
+	// 프로필 업데이트 폼 호출
 	@RequestMapping("usersUpdateForm.do")
 	public String usersUpdateForm(UsersVO vo, Model model, Authentication auth) {
 		//로그인한 아이디 
@@ -146,6 +146,20 @@ public class UsersController {
 		model.addAttribute("topiclist", topicDao.topicSelectList());
 		return "no/users/usersUpdateForm";
 	}	
+	
+	// 프로필 업데이트 실행
+	@RequestMapping("usersUpdate.do")
+	public String usersUpdate(UsersVO vo, Model model, Authentication auth) {
+		//로그인한 아이디 
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setUser_id(Sessionid);
+		
+		System.out.println(vo);
+		usersDao.usersUpdate(vo);
+		return "redirect:profile.do?user_id="+Sessionid;
+	}	
+	
 	
 	// 회원가입
 	@RequestMapping("userJoin/userJoinForm.do")

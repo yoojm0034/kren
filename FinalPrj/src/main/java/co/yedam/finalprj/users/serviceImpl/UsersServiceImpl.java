@@ -34,7 +34,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public int usersUpdate(UsersVO vo) {
-		return 0;
+		return map.usersUpdate(vo);
 	}
 
 	@Override

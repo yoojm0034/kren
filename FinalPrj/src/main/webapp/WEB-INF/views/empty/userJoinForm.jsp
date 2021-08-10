@@ -346,7 +346,7 @@ $('#step5').click(function() {
 	<div class="infraloader is-active"></div>
 	<div class="signup-wrapper">
 		<div class="fake-nav">
-			<a href="/home.do" class="logo"> <img
+			<a href="${pageContext.request.contextPath}/home.do" class="logo"> <img
 				src="${pageContext.request.contextPath}/resources/template/assets/img/logo/logo2.png" width="112"
 				height="28" alt="">
 			</a>
