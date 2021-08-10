@@ -224,6 +224,9 @@
 #append-op {
     margin-top: 20px;
 }
+#append-dop {
+    margin-top: 20px;
+}
 </style>
 <script>
 	var countryCnt =0;
@@ -232,8 +235,10 @@
 		$('#friendSearch').on('click',function() {
 			var gender = $('input[name=genderval]:checked').val();
 			var dgender = $('input[name=dgenderval]:checked').val();
-			var country= $("#append-op").children();
-			var discountry = $("#append-dop").children();
+			var country_op= $("#append-op").children();
+			var discountry_op = $("#append-dop").children();
+			var country= "";
+			var discountry ="";
 			var lan = $("#language1-val option:selected").val();
 			var topic = "";
 			var distopic = "";
@@ -241,17 +246,29 @@
 			$("input[name=topic-label]:checked").each(function() {topic += $(this).val() + ","; });
 			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ ",";});
 			
-			country.each(function(){country += $(this).html()+ ",";});
-			discountry.each(function(){discountry += $(this).html()+ ",";});
+			country_op.each(function(i,v){country += v.id + ",";});
+			discountry_op.each(function(i,v){discountry += v.id + ",";});
 			
-			console.log('국가는 : '+country);
-			console.log('안국가는 : '+discountry);
-			console.log(JSON.stringify(country));
+			
 			$('#gender').val(gender);
+			$('#dgender').val(dgender);
+			$('#country').val(country);
 			$('#dcountry').val(discountry);
 			$('#language1').val(lan);
 			$('#topic').val(topic);
 			$('#dtopic').val(distopic);
+			
+			//console.log("나이 "+);
+			console.log("성별 "+$('#gender').val());
+			console.log("국가 "+$('#country').val());
+			console.log("언어 "+$('#language1').val());
+			console.log("관심사 "+$('#topic').val());
+			
+			//console.log("제외나이 "+);
+			console.log("제외성별 "+$('#dgender').val());
+			console.log("제외국가 "+$('#dcountry').val());
+			console.log("제외관심사 "+$('#dtopic').val());
+		
 		
 			$('#frm').submit();
 		});
@@ -543,7 +560,7 @@
 												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
 												<circle cx="12" cy="10" r="3"></circle></svg></span> <span
 											id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
-											<p style="">나와 일치하는 관심사 <span style="color: blue;">${vo.count }</span> 개</p>
+											<p style="">나와 일치하는 관심사 <span style="color: blue;">${vo.topicCnt }</span> 개</p>
 									</div>
 								</div>
 							</a>

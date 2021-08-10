@@ -80,9 +80,9 @@ public class FriendsController {
 		vo.setUser_id(id);
 		vo = userDao.usersSelect(vo);	
 		vo.setTopic(vo.getTopic());
-		System.out.println(vo);
-		model.addAttribute("allList",FriendsDao.allUser(vo));
+				
 		model.addAttribute("searchList",FriendsDao.allUser(vo));
+		model.addAttribute("allList",FriendsDao.allUser(vo));
 		model.addAttribute("newList",FriendsDao.newUser(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
 		return "friends/friendSearch";
@@ -95,6 +95,8 @@ public class FriendsController {
 		String id = (String) user.getUsername();
 
 		vo.setUser_id(id);
+		vo = userDao.usersSelect(vo);	
+		vo.setTopic(vo.getTopic());
 		
 		if(vo.getS_age().equals("") || vo.getE_age().equals("") ){
 			vo.setS_age(null);
@@ -124,21 +126,11 @@ public class FriendsController {
 			vo.setDtopic(null);
 		}
 		
-		System.out.println("시작 나이: "+vo.getS_age());
-		System.out.println("시작 나이2: "+vo.getE_age());
-		System.out.println("끝 나이: "+vo.getS_dage());
-		System.out.println("끝 나이2: "+vo.getE_dage());
-		System.out.println("성별: "+vo.getGender());
-		System.out.println("국가: "+vo.getCountry());
-		System.out.println("제외국가: "+vo.getDcountry());
-		System.out.println("언어: "+vo.getLanguage1());
-		System.out.println("토픽: "+vo.getTopic());
-		System.out.println("제외토픽: "+vo.getDtopic());
-		
-		System.out.println(FriendsDao.searchFriend(vo));
-
 		model.addAttribute("searchList",FriendsDao.searchFriend(vo));
-		return "friendSearch1.do";
+		model.addAttribute("allList",FriendsDao.allUser(vo));
+		model.addAttribute("newList",FriendsDao.newUser(vo));
+		model.addAttribute("topicList",topicDao.topicSelectList());
+		return "friends/friendSearch";
 	}
 	
 }

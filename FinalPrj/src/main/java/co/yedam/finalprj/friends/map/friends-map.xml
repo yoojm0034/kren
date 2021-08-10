@@ -47,7 +47,7 @@
         		NVL( fv.feedCnt,0) "feedCnt",
 		        NVL(fing.FOLLOWINGCNT,0) "followingCnt",
 		        NVL(fer.FOLLOWERCNT,0) "followerCnt",
-		        topic_cnt(#{topic},topic) as "count" 
+		        topic_cnt(#{topic},topic) "topicCnt" 
 		from 	users u LEFT OUTER JOIN feedCnt_v fv
 				on u.USER_ID =fv.USER_ID
 		   		LEFT OUTER JOIN followingCnt_v fing
@@ -112,9 +112,9 @@
 						u.email,
 						u.name,
 						u.birth,
-						u.gender,
+						u.gender "gender",
 						u.topic,
-						u.LANGUAGE1,
+						u.LANGUAGE1 "LANGUAGE1",
 						u.LANGUAGE2,
 						u.COUNTRY,
 						u.city,
@@ -124,16 +124,18 @@
 						u.STATUS,
 						u.FLAG,
 						a.age as cnt,
-		        		NVL( fv.feedCnt,0) "feedCnt",
-				        NVL(fing.FOLLOWINGCNT,0) "followingCnt",
-				        NVL(fer.FOLLOWERCNT,0) "followerCnt",
-				        TOPIC_CNT(#{topic},topic) as count,
-				        TOPIC_CNT(#{dtopic},topic) as dcount
+		        		NVL(fv.feedCnt,0) as feedCnt,
+				        NVL(fing.FOLLOWINGCNT,0) as followingCnt,
+				        NVL(fer.FOLLOWERCNT,0) as followerCnt,
+				        TOPIC_CNT(#{topic},topic) as topicCnt,
+				        TOPIC_CNT(#{dtopic},topic) as dtopicCnt,
+				        COUNTRY_CNT(upper(#{country}),upper(u.COUNTRY)) as countryCnt,
+				        COUNTRY_CNT(upper(#{dcountry}),upper(u.COUNTRY)) as dcountryCnt
 				FROM 	
 						users u join age_v a
 						on u.USER_ID = a.USER_ID
 					    LEFT OUTER JOIN feedCnt_v fv
-						on u.USER_ID =fv.USER_ID
+						on u.USER_ID = fv.USER_ID
 					    LEFT OUTER JOIN followingCnt_v fing
 					    on u.user_id = fing.USER_ID
 					    LEFT OUTER JOIN followerCnt_v fer
@@ -141,12 +143,12 @@
 				WHERE	
 						NOT u.user_id IN (#{user_id})
 					    AND NOT u.USER_ID IN (  SELECT BLOCKED
-					                            FROM block
-					                            WHERE USER_ID = #{user_id}
+					                            FROM   block
+					                            WHERE  USER_ID = #{user_id}
 							                 )
 						AND NOT u.USER_ID IN (  SELECT following
-					                            FROM friends
-					                            WHERE USER_ID = #{user_id}
+					                            FROM   friends
+					                            WHERE  USER_ID = #{user_id}
 							                  )
 					  )
 			WHERE status = '일반회원'
@@ -157,26 +159,25 @@
 			AND cnt NOT between #{s_dage} and #{e_dage} 
 		</if>
  		<if test="gender != null">
-			AND u.gender = #{gender}
+			AND gender = #{gender}
 		</if>
 		 <if test="dgender != null">
-			AND NOT u.gender IN #{dgender}
+			AND NOT gender IN #{dgender}
 		</if>
 		<if test="country != null">
-			AND upper(u.COUNTRY) = upper(#{country})
+			AND countryCnt >= 1
 		</if>
-		
 		<if test="dcountry != null">
-			AND NOT upper(u.COUNTRY) IN (upper(#{dcountry}))
+			AND dcountryCnt = 0
 		</if>
 		<if test="language1 != null">
-			AND  u.language1 = #{language1}
-		</if>
-  		<if test="dtopic != null">
-			AND dcount = 0
+			AND  LANGUAGE1 = #{language1}
 		</if>
 		 <if test="topic != null">
-			AND count >= 1
+			AND topicCnt >= 1
 		</if> 
+  		<if test="dtopic != null">
+			AND dtopicCnt = 0
+		</if>
 	</select>  
 </mapper>

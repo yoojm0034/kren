@@ -41,22 +41,19 @@ public class FriendsServiceImpl implements FriendsService {
 	public int followingCnt(FriendsVO vo) {
 		return map.followingCnt(vo);
 	}
-
 	@Override
 	public int followerCnt(FriendsVO vo) {
 		return map.followerCnt(vo);
 	}
-
 	@Override
 	public List<UsersVO> searchFriend(UsersVO vo) {
+		System.out.println("안녕"+map.searchFriend(vo));
 		return map.searchFriend(vo);
 	}
-
 	@Override
 	public List<UsersVO> allUser(UsersVO vo) {
 		return map.allUser(vo);
 	}
-
 	@Override
 	public List<UsersVO> newUser(UsersVO vo) {
 		return map.newUser(vo);
