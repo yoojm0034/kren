@@ -183,15 +183,15 @@ public class UsersController {
 	// 회원가입 폼 제출
 	@RequestMapping("userJoin/userJoin.do")
 	public String userJoin(@ModelAttribute("UsersVO") UsersVO vo, Model model, byte[] imageByte) throws Exception {
+		
 //		ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
 //		BufferedImage bufferedImage = ImageIO.read(inputStream);
 //		ImageIO.write(bufferedImage, "png", new File("/resources/fileupload/image.png")); //저장하고자 하는 파일 경로를 입력합니다.
-		
+		System.out.println(vo);
 		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
 		vo.setPassword(scpwd.encode(vo.getPassword()));
-		usersDao.usersInsert(vo);
-		System.out.println("유저 등록 완료");
-	    return "";
+		//usersDao.usersInsert(vo);
+	    return "empty/home";
 	}
 	
 	//------------------------------------아이디/비밀번호 찾기...
