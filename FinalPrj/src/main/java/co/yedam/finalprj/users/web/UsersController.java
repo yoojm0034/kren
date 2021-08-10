@@ -144,7 +144,7 @@ public class UsersController {
 	}	
 	
 	// 회원가입
-	@RequestMapping("userJoin/serJoinForm.do")
+	@RequestMapping("userJoin/userJoinForm.do")
 	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model) {
 	model.addAttribute("topiclist", topicDao.topicSelectList());
 		return "empty/userJoinForm";
