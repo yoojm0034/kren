@@ -126,6 +126,19 @@ table {
     width: 100%;
     text-align: left;
 }
+
+.content-wrap table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+}
+
+.content-wrap table textarea {
+    width: -webkit-fill-available;
+    border: none;
+    resize: none;
+    padding: revert;
+}
 </style>
 <script>
 $(document).ready(function(){
@@ -693,7 +706,7 @@ $(document).ready(function(){
 		});
 	});
 	
-	// 교정테이블 추가
+	//----------교정테이블 추가------------------------------
 	function add(fid, fidx) {
 		var p = $('#tdiv'+fid).prev().text();//내용
 		
@@ -703,17 +716,7 @@ $(document).ready(function(){
 	    var div = $('div[data-table="'+fidx+'"]');//표가 그려질 영역
 		var tbl = $('<table>');
 
-// 		// 테이블 행제목
-// 		let thead = ['','']
-// 		var head = $('<tr>');
-// 		for (var field in thead) {
-// 			var name = $('<td>').text(thead[field].trim());
-// 			head.append(name);
-// 		}
-// 		tbl.append(head);
-// 		div.append(tbl);
-		
-// 		// 교정 테이블 출력
+ 		// 교정 테이블 출력
 		var rownum = 1;
 		var num = 0;
 		for(var i=0; i < result.length; i++) {
@@ -1743,14 +1746,14 @@ $(document).ready(function(){
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
 								<c:forEach items="${sameTopic }" var="vo" end="10">
-									<c:if test="${vo.count ne  0 }">
+									<c:if test="${vo.topicCnt ne  0 }">
 										<div class="add-friend-block transition-block">
 											<img src="https://via.placeholder.com/300x300"
 												data-demo-src="assets/img/avatars/nelly.png"
 												data-user-popover="9" alt="">
 											<div class="page-meta">
 												<span>${vo.user_id }</span> <span>나와 일치하는 관심사
-													${vo.count }개</span>
+													${vo.topicCnt }개</span>
 											</div>
 											<div class="add-friend add-transition" id="${vo.user_id }"
 												onclick="addFriend('${vo.user_id }')">
