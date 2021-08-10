@@ -301,6 +301,10 @@
 			} else {
 				txt = radio;
 			}
+			if(txt == null) {//값이 선택되지 않았으면
+				alert('신고사유를 선택하세요');
+				return;
+			}
 			var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
 			console.log(report, repo, radio, chk, txt);
 			
@@ -732,7 +736,7 @@
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<input data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true"></input>
+								<input data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true" maxlength="30"></input>
                         		</td>
 	                        	</tr>
 	                        	</table>
