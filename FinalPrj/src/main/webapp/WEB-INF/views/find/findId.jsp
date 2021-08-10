@@ -66,18 +66,18 @@
 			  
 			//인증번호 입력을 하지 않고 버튼을 누를 경우...
 			if(injeung == ""){
-				
 				alert('인증번호를 입력하세요.');
 				$('#email_injeung').focus();
 				return;
 			}
+			
 			$.ajax({
 				url: 'mailCheck2.do',
 				data: { number: injeung },
 				success: function(res){
-					if(res == 1){
+					if(res == 2){
 						//세션에 담긴 인증번호와 동일할 경우...
-						location.href('find/findID2.do')
+						location.href('find/findID2.do');
 					}else{
 						//동일하지 않을 경우...
 						alert('인증번호가 일치하지 않습니다. 정확하게 입력해주세요.')
@@ -119,7 +119,7 @@
 										</div>
 									</div>
 								</form>
-								<form action="mailCheck2.do{dice}" method="post">
+								<form action="mailCheck2.do" method="post">
 									<div class="field">
 										<label>Verification Code</label>
 										<div class="control">
