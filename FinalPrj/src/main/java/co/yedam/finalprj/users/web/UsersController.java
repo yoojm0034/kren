@@ -1,6 +1,14 @@
 package co.yedam.finalprj.users.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +18,7 @@ import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,109 +191,104 @@ public class UsersController {
 	
 	// 회원가입 폼 제출
 	@RequestMapping("userJoin/userJoin.do")
-	public String userJoin(@ModelAttribute("UsersVO") UsersVO vo, Model model, byte[] imageByte) throws Exception {
+	public String userJoin(UsersVO vo, Model model, byte[] imageByte) throws Exception {
 		
 //		ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
 //		BufferedImage bufferedImage = ImageIO.read(inputStream);
 //		ImageIO.write(bufferedImage, "png", new File("/resources/fileupload/image.png")); //저장하고자 하는 파일 경로를 입력합니다.
+		String data = vo.getBase64Photo();
+		data = data.replaceAll("data:image/png;base64,","");
+
+		byte[] imgBytes = Base64.getDecoder().decode(data);
+		
+//		byte[] imgBytes = Base64.decodeBase64(data.getBytes());
+		
 		System.out.println(vo);
-		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
-		vo.setPassword(scpwd.encode(vo.getPassword()));
-		//usersDao.usersInsert(vo);
+//		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+//		vo.setPassword(scpwd.encode(vo.getPassword()));
+//		usersDao.usersInsert(vo);
 	    return "empty/home";
 	}
 	
-	//------------------------------------아이디/비밀번호 찾기...
-	@RequestMapping("find/find.do")
-	public String findIdPw() {
-		return "no/find/findIdPw";
-	}
-	
-	//아이디찾기 1페이지-이메일 인증...
-	@RequestMapping("find/findID.do")
-	public String findID(UsersVO vo, HttpServletRequest request) {
-		
-		return "no/find/findId";
-	}
-	
-	//아이디찾기 2페이지-아이디 노출, 로그인 페이지로 이동...
-	@RequestMapping("find/findID2.do")
-	public String findID2() {
-			
-		return "no/find/findId3";
-	}
-	
-	//인증번호 이메일 발송 기능...
-	@RequestMapping("find/mailCheck.do")
-	@ResponseBody
-	public int mailCheck(HttpServletRequest request, UsersVO vo) throws IOException {
-		String email = vo.getEmail();
-		int uvo = usersDao.emailCheck(email); //쿼리 값을 받아옴
-		
-		if(uvo == 0) {
-			//DB에 동일 이메일이 없을 경우...0으로 뷰의 res에 넘긴다.
-			return 0;
-		} else {
-			
-			Random r = new Random();
-	        int dice = r.nextInt(4589362) + 49311; //이메일로 받는 인증코드 부분 (난수)
-	        
-	        String setfrom = "5524yina@gamil.com"; //보내는 사람 이메일(삭제하면 기능하지않음)
-	        String tomail = vo.getEmail(); // 받는 사람 이메일
-	        String title = "[kren]아이디 찾기-이메일 인증번호 발송"; // 이메일 제목
-	        String content =
-	        
-	        System.getProperty("line.separator")+ //줄간격을 띄우기 위한 코드
-	        
-	        System.getProperty("line.separator")+
+//	public BitMap ConvertToImage(String image){
+//	    try{
+//	    	InputStream stream = new ByteArrayInputStream(Base64.decode(image.getBytes(), Base64.DEFAULT));
+//	        Bitmap bitmap = BitmapFactory.decodeStream(stream);                 
+//	        return bitmap;  
+//	    }
+//	    catch (Exception e) {
+//	        return null;            
+//	    }
+//	}
+//	
+//	
+//	public boolean writeImageToDisk(FileItem item, File imageFile) {
+//	    // clear error message
+//	    String errorMessage = null;
+//	    FileOutputStream out = null;
+//	    boolean ret = false;
+//	    try {
+//	        // write thumbnail to output folder
+//	        out = createOutputStream(imageFile);
+//
+//	        // Copy input stream to output stream
+//	        byte[] headerBytes = new byte[22];
+//	        InputStream imageStream = item.getInputStream();
+//	        imageStream.read(headerBytes);
+//
+//	        String header = new String(headerBytes);
+//	        // System.out.println(header);
+//
+//	        byte[] b = new byte[4 * 1024];
+//	        byte[] decoded;
+//	        int read = 0;
+//	        while ((read = imageStream.read(b)) != -1) {
+//	            // System.out.println();
+//	            if (Base64.isArrayByteBase64(b)) {
+//	                decoded = Base64.decodeBase64(b);
+//	                out.write(decoded);
+//	            }
+//	        }
+//
+//	        ret = true;
+//	    } catch (IOException e) {
+//	        StringWriter sw = new StringWriter();
+//	        e.printStackTrace(new PrintWriter(sw));
+//	        errorMessage = "error: " + sw;
+//
+//	    } finally {
+//	        if (out != null) {
+//	            try {
+//	                out.close();
+//	            } catch (Exception e) {
+//	                StringWriter sw = new StringWriter();
+//	                e.printStackTrace(new PrintWriter(sw));
+//	                System.out.println("Cannot close outputStream after writing file to disk!" + sw.toString());
+//	            }
+//	        }
+//
+//	    }
+//
+//	    return ret;
+//	}
 
-	        " 인증번호 " +dice+ ". "
-	        
-	        +System.getProperty("line.separator")+
-	        
-	        System.getProperty("line.separator")+
-	        
-	        "인증번호를 홈페이지에 입력해 주세요."; // 내용
-	        
-	        request.getSession().setAttribute("dice", dice); //인증번호 세션에 담아둠
-	        
-	        try {
-	            MimeMessage message = mailSender.createMimeMessage();
-	            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-
-	            messageHelper.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
-	            messageHelper.setTo(tomail); // 받는사람 이메일
-	            messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
-	            messageHelper.setText(content); // 메일 내용
-	            
-	            mailSender.send(message);
-	        } catch (Exception e) {
-	            System.out.println(e);
-	        }  
-	        return 1;
-		}
-		
-		//DB에 동일 이메일이 있으면...1로 뷰의 res에 넘기며 이메일을 발송한다.
-	
-        
-	}
-	
-	/*
-	 * //인증번호 확인 기능...
+	/**
+	 * Helper method for the creation of a file output stream.
 	 * 
-	 * @RequestMapping("find/mailCheck2.do") public int findID2(HttpServletResponse
-	 * response, HttpSession session) throws IOException { dice =
-	 * session.getAttribute("dice");
-	 * 
-	 * if(dice == null) { //세션값과 동일치 않으면...0으로 뷰의 res에 넘긴다. return 0; } return 1; }
+	 * @param imageFolder
+	 *            : folder where images are to be saved.
+	 * @param id
+	 *            : id of spcefic image file.
+	 * @return FileOutputStream object prepared to store images.
+	 * @throws FileNotFoundException
 	 */
-	
-	@RequestMapping("findPW.do")
-	public String findPW() {
-		
-		return "find/findPw";
+	protected FileOutputStream createOutputStream(File imageFile) throws FileNotFoundException {
+
+	    imageFile.getParentFile().mkdirs();
+
+	    return new FileOutputStream(imageFile);
 	}
-	
+
 	//관리자 
 	//유저목록
 	@RequestMapping("admin/usersList.do")
