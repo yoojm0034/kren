@@ -269,13 +269,23 @@
 			$('#append-dop').append('<span class="append-dlabel" id="append-dlabel">'+value+'</span>');
 		});
 		
+		$('#append-label').on('click',function(){
+			console.log('클릭함');
+			console.log(this);
+			$(this).remove();
+		});
+		
+		$('#append-dop > span').on('click',function(){
+			console.log('왜그러지');
+		})
+		
+		$('#append-label').on('click',function(){
+			console.log('클릭함');
+			console.log(this);
+			$(this).remove();
+		});
 
 });
-	$('#append-label').on('click',function(){
-		console.log('클릭함');
-		console.log(this);
-		$(this).remove();
-	});
 
 </script>
 <body>

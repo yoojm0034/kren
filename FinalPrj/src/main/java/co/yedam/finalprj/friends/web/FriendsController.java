@@ -72,8 +72,8 @@ public class FriendsController {
 	
 
 	//친구검색화면 
-	@RequestMapping("friendSearch11.do")
-	public String allUserList1(UsersVO vo,Model model,Authentication auth){
+	@RequestMapping("friendSearch1.do")
+	public String allUserList(UsersVO vo,Model model,Authentication auth){
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		
@@ -89,8 +89,8 @@ public class FriendsController {
 	};
 	
 	//친구검색
-	@RequestMapping("searchList1.do")
-	public String friendSearchList1(Model model,UsersVO vo,Authentication auth) {
+	@RequestMapping("searchList.do")
+	public String friendSearchList(Model model,UsersVO vo,Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 
