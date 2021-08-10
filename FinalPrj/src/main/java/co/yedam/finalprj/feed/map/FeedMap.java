@@ -5,8 +5,6 @@ import java.util.Map;
 
 import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.vo.FriendsVO;
-import co.yedam.finalprj.likes.vo.LikesVO;
-import co.yedam.finalprj.tag.vo.TagVO;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface FeedMap {
@@ -17,11 +15,7 @@ public interface FeedMap {
 	//친구
 	List<UsersVO> birthUser(FriendsVO vo);						//생일인유저
 	List<UsersVO> sameTopicList(UsersVO vo); 					//나와일치하는관심사수
-	List<UsersVO> searchFriend(UsersVO vo);						//친구검색 
-	List<UsersVO> allUser(UsersVO vo);
-	List<UsersVO> newUser(UsersVO vo);
 
-	
 	//관리자
 	//피드1건조회
 	FeedVO oneSelectFeed(FeedVO vo);

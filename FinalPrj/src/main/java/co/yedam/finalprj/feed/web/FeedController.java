@@ -26,8 +26,6 @@ import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.TransService;
 import co.yedam.finalprj.letter.vo.TransVO;
 import co.yedam.finalprj.notice.service.NoticeService;
-import co.yedam.finalprj.push.service.PushService;
-import co.yedam.finalprj.push.vo.PushVO;
 import co.yedam.finalprj.tag.service.TagService;
 import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
