@@ -18,7 +18,8 @@
 			access="permitAll()" />
 		<security:intercept-url pattern="/qna/**"
 			access="permitAll()" />
-			
+		<security:intercept-url pattern="/userQnaWrite.do"
+			access="permitAll()" />	
 		<security:intercept-url pattern="/find.do"
 			access="permitAll()" />
 		<security:intercept-url pattern="/findID.do"
