@@ -206,7 +206,7 @@ $(function() {
 		}
 		//email 중복확인 ajax
 		$.ajax({
-			url : 'userEmailCheck.do',
+			url : '${pageContext.request.contextPath}/userEmailCheck.do',
 			data : {
 				email : $('#email').val()
 			},
@@ -222,7 +222,7 @@ $(function() {
 					$('#codeCheck').focus();
 					//중복확인 통과후 인증코드 메일보내는 ajax
 					$.ajax({
-						url : 'sendEmail.do',
+						url : '${pageContext.request.contextPath}/sendEmail.do',
 						data : {
 							email : $('#email').val()
 						},
