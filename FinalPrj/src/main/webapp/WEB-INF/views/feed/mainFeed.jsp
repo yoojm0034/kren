@@ -701,9 +701,19 @@ $(document).ready(function(){
 		$("body").on('click', '#feedcor',  function() {
 		    var fid = $(this).data('fid');		//feed_id;
 		    var fidx = $(this).data('fidx');	//status.index;
+		    var a = $('div[data-fidx="'+fidx+'"]');
 		    console.log(fid, fidx);
 		    add(fid, fidx);
+		    a.remove();
 		});
+		
+		// 전송버튼을 누르면 교정문장 전달
+		$("body").on('click', '#frmBtn',  function() {
+		    var num = $(this).data('num');			//row
+		    var frmbtn = $(this).data('frmbtn');	//idx
+		    commentc(num, frmbtn);
+		});
+		
 	});
 	
 	//----------교정테이블 추가------------------------------
@@ -717,7 +727,6 @@ $(document).ready(function(){
 		var tbl = $('<table>');
 
  		// 교정 테이블 출력
-		var rownum = 1;
 		var num = 0;
 		for(var i=0; i < result.length; i++) {
 			if(result[i].length != 0) { // 리스트가 비어있지않으면
@@ -728,7 +737,6 @@ $(document).ready(function(){
 				tbl.append(tr);			
 			}
 		}
-		console.log('rnum:',rownum);
 		var tr2 = $('<tr>');
 		var col = $('<td colspan="2">');
 		var submit = $('<button type="button" id="frmBtn" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
@@ -737,6 +745,54 @@ $(document).ready(function(){
 		tbl.append(tr2)
 		div.append(tbl);
 	} //function add
+	
+	function commentc(row, idx) {
+	    var corr = ""; // 교정문장
+	    var cont = ""; // 원문장
+		for (var i=0; i <= row; i++) {
+			if(i == row) {
+				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "");
+				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "");
+			} else {
+				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "")+",";
+				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "")+",";
+			}
+		}
+		var letter = $('input[data-leid="'+idx+'"]').val(); //편지번호
+		
+		var rows = ""; // 행숫자만큼 숫자를 리스트에 담아줌
+		for(var i=0; i<=row; i++) {
+			if(i != row) {
+				rows += i +",";	
+			} else {
+				rows += i;
+			}
+		}
+
+		var Data = {
+			"letter_id":letter,
+			"line":rows,
+			"origin":cont,
+			"correcting":corr
+		};
+			
+		console.log(Data);
+		
+		
+// 		$.ajax({
+// 			url:"${pageContext.request.contextPath}/insertCorLetter.do",
+// 			type:"post",
+// 		    data: JSON.stringify(Data),
+// 		    contentType : "application/json; charset=UTF-8",
+// 			success:function(v){
+// 				alert("작성되었습니다!");
+// 				$('#tbl'+letter).remove(); // 교정 테이블 삭제
+// 				location.reload(true);
+// 			},error:function(e){
+// 				console.log(e);
+// 			}
+// 		});
+	} //function commentc
 
 //--------교정END----------------------------------------
 </script>
