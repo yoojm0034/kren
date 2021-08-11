@@ -2,9 +2,6 @@ package co.yedam.finalprj.users.map;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
-import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface UsersMap {

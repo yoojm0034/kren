@@ -112,4 +112,9 @@
 		where user_id = #{user_id}
 	</update>
 	
+	<!-- 유저 삭제 -->
+	<delete id="usersDelete" statementType="CALLABLE" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		{ CALL user_delete( #{user_id}) } 
+	</delete>	
+	
 </mapper>

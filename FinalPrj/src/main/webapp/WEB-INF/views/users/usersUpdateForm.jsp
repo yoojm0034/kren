@@ -580,7 +580,7 @@ $(function() {
 							</div>
 						</div>
 							<div>
-							<button class="button" type="button" onclick="location.href='usersDelete.do'">계정삭제</button>
+							<button class="button" type="button" onclick="location.href='usersDeleteForm.do'">계정삭제</button>
 							</div>
 					</div>
 				</div>

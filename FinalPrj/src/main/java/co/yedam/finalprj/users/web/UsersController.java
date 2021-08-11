@@ -299,9 +299,23 @@ public class UsersController {
 	}
 
 	//회원탈퇴 페이지
+	@RequestMapping("usersDeleteForm.do")
+	public String usersDeleteForm() {
+		return "users/usersDeleteForm";
+	} 	
+
+	//회원탈퇴 실행
 	@RequestMapping("usersDelete.do")
-	public String usersDelete() {
-		return "users/usersDelete";
+	@ResponseBody
+	public int usersDelete(UsersVO vo, Model model, Authentication auth) {
+		
+		//로그인한 아이디 
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setUser_id(Sessionid);
+		
+		int r = usersDao.usersDelete(vo);
+		return r;
 	} 	
 	
 	//관리자 
