@@ -698,17 +698,22 @@ $(document).ready(function(){
 //--------신고END----------------------------------------
 //--------교정START--------------------------------------
 	$(function() {
+		$('#load').each(function(i, el){
+			var cid = $(this).data('cid');//cc_id.line
+			var cdc = $(this).data('cdc');//content
+			var cdo = $(this).data('cdo');//origin
+			test_diff(cid,cdc,cdo);
+		});
+		
 		// 문자열 비교; diffButty.js; String
-		function test_diff(dif,ori) {
-			console.log(dif, ori);
-// 			var original = $('#div1').text().toString();
-// 			var revised = $('#div2').text().toString();
-// 			var original = ori;
-// 			var revised = dif;
-// 			var output = $('<pre>');
-// 			var html = diffButty(original, revised);
-// 			output.html(html);
-// 			$(this).append(output);
+		function test_diff(cid,dif,ori) {
+			var original = ori;
+			var revised = dif;
+			var output = $('<pre>');
+			var html = diffButty(original, revised);
+			output.html(html);
+			var div = $('div[data-cid="'+cid+'"]');
+			div.html(output);
 		} 
 		
 		// 교정테이블 추가 그룹 이벤트
@@ -1792,7 +1797,9 @@ $(document).ready(function(){
 													<!-- 교정댓글이면, line을 반복 -->
 													<c:forEach items="${cdList }" var="cd" varStatus="stat">
 														<c:if test="${cmt.comment_id eq cd.cc_id }">
-														<p>${cd.content}</p>
+														<div id="load" data-cid="${cd.cc_id }${cd.line}"
+														data-cdc="${cd.content }"
+														data-cdo="${cd.origin }">${cd.content }</div>
 														</c:if>
 													</c:forEach>
 													<!-- Actions -->
