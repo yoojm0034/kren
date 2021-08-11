@@ -316,7 +316,7 @@ tr:hover {
 													<thead>
 														<tr>
 															<th>글번호</th>
-															<th width="30%">신고사유</th>
+															<th width="50%">신고사유</th>
 															<th>등록일</th>
 															<th>피신고자</th>
 															<th>신고컨텐츠</th>

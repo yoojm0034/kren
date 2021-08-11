@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.finalprj.common.map.SearchMap">
+	<select id="allSearchUser" parameterType="co.yedam.finalprj.common.vo.SearchVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select *
+		from users
+		where name like '%'||#{search}||'%'
+		or profile like '%'||#{search}||'%'
+	</select>
+	
+	<select id="allSearchNotice" parameterType="co.yedam.finalprj.common.vo.SearchVO" resultType="co.yedam.finalprj.notice.vo.NoticeVO">
+		select * 
+		from notice 
+		where content like '%'||#{search}||'%'
+		or title like '%'||#{search}||'%'	
+	</select>
+	
+	<select id="allSearchFeed" parameterType="co.yedam.finalprj.common.vo.SearchVO" resultType="co.yedam.finalprj.feed.vo.FeedVO">
+		select * 
+		from feed
+		where content like '%'||#{search}||'%'
+		or tags like '%'||#{search}||'%'
+	</select>
+	
+	<select id="allSearchComments" parameterType="co.yedam.finalprj.common.vo.SearchVO" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
+		select *
+		from COMMENTS
+		where content like '%'||#{search}||'%'
+	</select>
+	
+	<select id="allSearchCommentc" parameterType="co.yedam.finalprj.common.vo.SearchVO" resultType="co.yedam.finalprj.commentc.vo.CommentcVO">
+		select a.*, b.line, b.origin, b.content
+		from COMMENTC a , comment_detail b
+		where a.CC_ID = b.CC_ID
+		and (content like '%'||#{search}||'%' or origin like '%'||#{search}||'%')
+	</select>
+	
+</mapper>

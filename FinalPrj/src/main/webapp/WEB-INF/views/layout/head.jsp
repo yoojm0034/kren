@@ -234,6 +234,13 @@ h5:hover {
 				}
 			});
 		});
+		$('#search').keydown(function() {
+			 if (event.keyCode === 13) {
+				  console.
+				  searchForm.submit();
+			 };
+		});
+		
 	});
 
 	
@@ -388,20 +395,20 @@ h5:hover {
 				</ul>
 			</div>
 			<div class="navbar-end">
-
-				<div class="navbar-item">
-					<div id="global-search" class="control">
-						<input id="tipue_drop_input" class="input is-rounded" type="text"
-							placeholder="Search" required> <span id="clear-search"
-							class="reset-search"> <i data-feather="x"></i>
-						</span> <span class="search-icon"> <i data-feather="search"></i>
-						</span>
-
-						<div id="tipue_drop_content" class="tipue-drop-content"></div>
+				<form id="searchForm" action="${pageContext.request.contextPath}/allSearch.do" method="POST">
+					<div class="navbar-item">
+						<div id="global-search" class="control">
+							<input id="search" name="search" class="input is-rounded" type="text"
+								placeholder="Search" required> <span id="clear-search"
+								class="reset-search"> <i data-feather="x"></i>
+							</span> <span class="search-icon"> <i data-feather="search"></i>
+							</span>
+	
+							<div id="tipue_drop_content" class="tipue-drop-content"></div>
+						</div>
+	
 					</div>
-
-				</div>
-
+				</form>
 				<div class="navbar-start">
 					<!-- Navbar Search -->
 					<!-- 알람아이콘 -->

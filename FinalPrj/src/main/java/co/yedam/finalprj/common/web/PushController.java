@@ -6,9 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.finalprj.commentc.vo.CommentcVO;
+import co.yedam.finalprj.comments.vo.CommentsVO;
+import co.yedam.finalprj.common.service.SearchService;
+import co.yedam.finalprj.common.vo.SearchVO;
+import co.yedam.finalprj.feed.vo.FeedVO;
+import co.yedam.finalprj.notice.vo.NoticeVO;
 import co.yedam.finalprj.push.service.PushService;
 import co.yedam.finalprj.push.vo.PushVO;
 import co.yedam.finalprj.users.vo.UsersVO;
@@ -17,6 +24,8 @@ import co.yedam.finalprj.users.vo.UsersVO;
 public class PushController {
 	@Autowired
 	PushService pushDao;
+	@Autowired
+	SearchService searchDao;
 	
 	@RequestMapping("pushSelectList.do")
 	@ResponseBody
@@ -56,4 +65,17 @@ public class PushController {
 		int r = pushDao.deleteLetterPush(vo);
 		return r;
 	}
+	
+	@RequestMapping("allSearch.do")
+	public String allSearch(SearchVO vo, UsersVO uvo, FeedVO fvo, NoticeVO nvo, CommentcVO cvo, CommentsVO svo, Model model) {
+		
+		model.addAttribute("members", searchDao.allSearchUser(vo));
+		model.addAttribute("feeds", searchDao.allSearchFeed(vo));
+		model.addAttribute("notices", searchDao.allSearchNotice(vo));
+		model.addAttribute("commentsList", searchDao.allSearchComments(vo));
+		model.addAttribute("commentcList", searchDao.allSearchCommentc(vo));
+		
+		return "common/searchResult";
+	}
+	
 }
