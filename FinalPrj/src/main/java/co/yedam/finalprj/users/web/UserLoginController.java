@@ -127,7 +127,11 @@ public class UserLoginController {
 		System.out.println("세션에 담긴 인증번호: " + dice);
 
 		if (dice.equals(num)) {
-			session.setAttribute("email");
+			
+			//여기다가 아이디 호출...해야함
+//			String userEmail = request.getParameter("email");
+//			
+//			System.out.println("이메일: " + userEmail);
 			
 			return true;
 		} 
@@ -140,8 +144,8 @@ public class UserLoginController {
 		String userEmail = request.getParameter(email);
 		java.lang.String uvo = request.getParameter("user_id");
 		
-		System.out.println("vo: " + vo);
-		System.out.println("이메일: " + email);
+		System.out.println("vo: " + uvo);
+		
 		
 		model.addAttribute("id", vo);
 //		String id = vo.getUser_id();
