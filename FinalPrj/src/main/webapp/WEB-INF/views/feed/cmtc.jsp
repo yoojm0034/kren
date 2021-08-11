@@ -26,7 +26,7 @@
 		<!-- Actions -->
 		<div class="controls">
 			<div class="edit">
-				<a id="del" data-delcmt="${cc.cc_id }" data-delcmtfeed="${cc.feed_id }"
+				<a id="cdel" data-delcmt="${cc.cc_id }" data-delcmtfeed="${cc.feed_id }"
 				data-idx="${cc.idx }">삭제</a>
 			</div>
 		</div>

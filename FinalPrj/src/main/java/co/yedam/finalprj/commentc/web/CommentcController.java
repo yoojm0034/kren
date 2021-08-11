@@ -22,6 +22,17 @@ public class CommentcController {
 		}
 		return n;
 	}
+
+	@RequestMapping("commentcDelete.do")
+	@ResponseBody
+	public int commentcDelete(CommentcVO vo) {
+		System.out.println(vo);
+		int n = commentcDao.commentcDelete(vo);
+		if(n == 0) {
+			n = 0;
+		}
+		return n;
+	}
 	
 	
 }

@@ -735,6 +735,42 @@ $(document).ready(function(){
 		    commentc(num, frmbtn, fd, fu);
 		});
 		
+// 		//-------교정댓글삭제 그룹이벤트-------- 		
+// 		$('body').on('click','#cdel', function() {
+// 			var delcmt = $(this).data('delcmt');
+// 			var delcmtfeed = $(this).data('delcmtfeed');
+// 			var delidx = $(this).data('idx');
+// 			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
+// 			var span = $('span[data-minicmt="'+delidx+'"]');
+// 			//-------댓글삭제-------
+// 			if(confirm('삭제하시겠습니까?')) {
+// 				$.ajax({
+// 					url: '${pageContext.request.contextPath}/commentcDelete.do',
+// 					method: 'post',
+// 					data: JSON.stringify({cc_id:delcmt}),
+// 					contentType:'application/json; charset=UTF-8',
+// 					success: function(data) {
+// 						alert('댓글삭제성공!');
+// 						del.remove();
+// 						//-------댓글수-1-------
+// 						$.ajax({
+// 							url: '${pageContext.request.contextPath}/commentCnt.do',
+// 							method: 'post',
+// 							data: {feed_id:delcmtfeed},
+// 							success: function(cnt) {
+// 								var cnt = cnt;
+// 								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments ('+cnt+')');
+// 								span.html(cnt);
+// 							}
+// 						});
+// 					},
+// 					error: function(e) {
+// 						alert('댓글삭제실패!');
+// 					}
+// 				});
+// 			}		
+// 		});
+		
 	});
 	
 	//----------교정테이블 추가------------------------------
@@ -816,30 +852,35 @@ $(document).ready(function(){
 		 			success:function(r){
 		 				alert("작성되었습니다!");
 		 				$('div[data-table="'+idx+'"]').remove();//교정테이블 삭제
-// 						//입력된 값 조회 후 jsp
-// 						$.ajax({
-// 							url: '${pageContext.request.contextPath}/commentDetailData.do',
-// 							method: 'post',
-// 							data: {feed_id:fid,user_id:'${user.user_id}',name:'${user.name}',idx:idx},
-// 							success: function(data) {
-// 								console.log(data);
+						//입력된 값 조회 후 jsp
+						$.ajax({
+							url: '${pageContext.request.contextPath}/commentDetailData.do',
+							method: 'post',
+							data: {feed_id:fid,user_id:'${user.user_id}',name:'${user.name}',idx:idx},
+							success: function(data) {
+								console.log(data);
+								$('div[data-crap="'+idx+'"]').addClass('is-hidden').removeClass('is-active');
+								$('div[data-card="'+idx+'"]').parent().addClass('is-active').removeClass('is-hidden');
+								var scroll = $('div[data-scroll="'+idx+'"]');
+								scroll.append(data);
+								scroll.scrollTop(scroll.prop('scrollHeight'));
 								
-								
-// 								//-------댓글수+1-------
-// 								$.ajax({
-// 									url: '${pageContext.request.contextPath}/commentCnt.do',
-// 									method: 'post',
-// 									data: {feed_id:fid},
-// 									success: function(cnt) {
-// 										var cnt = cnt;
-// 										console.log(cnt);
-// 										$('div[data-card="'+idx+'"]').children().eq(0).html('Comments ('+cnt+')');
-// 										span2.html(cnt);
-// 										sendTextPush(fuser, fid);
-// 									}
-// 								});//댓글수+1
-// 							}
-// 						});
+								//-------댓글수+1-------
+								$.ajax({
+									url: '${pageContext.request.contextPath}/commentCnt.do',
+									method: 'post',
+									data: {feed_id:fid},
+									success: function(cnt) {
+										var cnt = cnt;
+										console.log(cnt);
+										$('div[data-card="'+idx+'"]').children().eq(0).html('Comments ('+cnt+')');
+										var span2 = $('span[data-minicmt="'+idx+'"]');
+										span2.html(cnt);
+										sendTextPush(fuser, fid);
+									}
+								});//댓글수+1
+							}
+						});
 		 			},error:function(e){
 		 				console.log(e);
 		 			}
@@ -1831,7 +1872,7 @@ $(document).ready(function(){
 													<c:if test="${cmt.user_id eq user.user_id }">
 													<div class="controls">
 														<div class="edit">
-															<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
+															<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
 															data-idx="${status.index }">삭제</a>
 														</div>
 													</div>
