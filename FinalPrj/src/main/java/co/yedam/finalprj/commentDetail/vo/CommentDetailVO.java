@@ -10,7 +10,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class CommentDetailVO {
-	private int line;
+	private String line;
 	private String content;
+	private String origin;
 	private String cc_id;
+	
+	//추가
+	private String cc_seq;
 }

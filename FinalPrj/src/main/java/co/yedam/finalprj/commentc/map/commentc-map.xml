@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="co.yedam.finalprj.commentc.map.commentc-map">
-	<insert id="commentcInsert">
-		INSERT INTO COMMENTC(CC_ID, FEED_ID, REG_DATE, USER_ID)
-		VALUES('cc_'||cc_seq.nextval, #{feed_id}, SYSDATE, #{user_id})
-	</insert>
+<mapper namespace="co.yedam.finalprj.commentc.map.CommentcMap">
 
+	<select id="commentcList" resultType="co.yedam.finalprj.commentc.vo.CommentcVO">
+		SELECT * FROM COMMENTC
+	</select>
+	
+	<select id="commentcSelect" parameterType="co.yedam.finalprj.commentc.vo.CommentcVO">
+		SELECT cc_id FROM COMMENTC
+    	WHERE feed_id = #{feed_id}
+	</select>
+
+	<insert id="commentcInsert" parameterType="co.yedam.finalprj.commentc.vo.CommentcVO">
+		INSERT INTO COMMENTC
+			(CC_ID, FEED_ID, REG_DATE, USER_ID)
+		VALUES
+			('cc_'||cc_seq.nextval, #{feed_id}, SYSDATE, #{user_id})
+	</insert>
+	
+	<delete id="commentcDelete" parameterType="co.yedam.finalprj.commentc.vo.CommentcVO">
+		DELETE FROM COMMENTC
+		WHERE CC_ID=#{cc_id}
+	</delete>
 </mapper>

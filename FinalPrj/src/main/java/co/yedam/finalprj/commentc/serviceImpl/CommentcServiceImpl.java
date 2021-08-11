@@ -2,34 +2,34 @@ package co.yedam.finalprj.commentc.serviceImpl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import co.yedam.finalprj.commentc.map.CommentcMap;
 import co.yedam.finalprj.commentc.service.CommentcService;
 import co.yedam.finalprj.commentc.vo.CommentcVO;
 
+@Repository("commentcDao")
 public class CommentcServiceImpl implements CommentcService {
-
+	@Autowired CommentcMap map;
+	
 	@Override
 	public List<CommentcVO> commentcList() {
-		return null;
+		return map.commentcList();
 	}
 
 	@Override
 	public CommentcVO commentcSelect(CommentcVO vo) {
-		return null;
+		return map.commentcSelect(vo);
 	}
 
 	@Override
 	public int commentcInsert(CommentcVO vo) {
-		return 0;
-	}
-
-	@Override
-	public int commentcUpdate(CommentcVO vo) {
-		return 0;
+		return map.commentcInsert(vo);
 	}
 
 	@Override
 	public int commentcDelete(CommentcVO vo) {
-		return 0;
+		return map.commentcDelete(vo);
 	}
 
 }

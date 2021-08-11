@@ -711,7 +711,8 @@ $(document).ready(function(){
 		$("body").on('click', '#frmBtn',  function() {
 		    var num = $(this).data('num');			//row
 		    var frmbtn = $(this).data('frmbtn');	//idx
-		    commentc(num, frmbtn);
+		    var fd = $(this).data('fd');	//feed_id
+		    commentc(num, frmbtn, fd);
 		});
 		
 	});
@@ -739,14 +740,14 @@ $(document).ready(function(){
 		}
 		var tr2 = $('<tr>');
 		var col = $('<td colspan="2">');
-		var submit = $('<button type="button" id="frmBtn" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
+		var submit = $('<button type="button" id="frmBtn" data-fd="'+fid+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
 		col.append(submit);
 		tr2.append(col);
 		tbl.append(tr2)
 		div.append(tbl);
 	} //function add
 	
-	function commentc(row, idx) {
+	function commentc(row, idx, fid) {
 	    var corr = ""; // 교정문장
 	    var cont = ""; // 원문장
 		for (var i=0; i <= row; i++) {
@@ -754,44 +755,56 @@ $(document).ready(function(){
 				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "");
 				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "");
 			} else {
-				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "")+",";
-				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "")+",";
+				corr += $('textarea[data-corr="'+i+'"]').val().replace(/,/g, "")+".,";
+				cont += $('td[data-cont="'+i+'"]').text().replace(/,/g, "")+".,";
 			}
 		}
-		var letter = $('input[data-leid="'+idx+'"]').val(); //편지번호
 		
 		var rows = ""; // 행숫자만큼 숫자를 리스트에 담아줌
+		var feed = "";
 		for(var i=0; i<=row; i++) {
 			if(i != row) {
 				rows += i +",";	
+				feed += fid+",";	
 			} else {
 				rows += i;
+				feed += fid;
 			}
 		}
-
+		
 		var Data = {
-			"letter_id":letter,
+			"feed_id":feed,
 			"line":rows,
 			"origin":cont,
-			"correcting":corr
+			"content":corr
 		};
 			
 		console.log(Data);
+		console.log(fid, '${user.user_id}');
 		
-		
-// 		$.ajax({
-// 			url:"${pageContext.request.contextPath}/insertCorLetter.do",
-// 			type:"post",
-// 		    data: JSON.stringify(Data),
-// 		    contentType : "application/json; charset=UTF-8",
-// 			success:function(v){
-// 				alert("작성되었습니다!");
-// 				$('#tbl'+letter).remove(); // 교정 테이블 삭제
-// 				location.reload(true);
-// 			},error:function(e){
-// 				console.log(e);
-// 			}
-// 		});
+		$.ajax({//commentC
+			url:"${pageContext.request.contextPath}/commentcInsert.do",
+			type:"post",
+		    data: {"feed_id":fid,"user_id":'${user.user_id}'},
+			success:function(data){
+				$.ajax({//commentD
+					url:"${pageContext.request.contextPath}/insertCommentDetail.do",
+		 			type:"post",
+		 		    traditional:true,
+		 		    data: JSON.stringify(Data),
+		 		    contentType : "application/json; charset=UTF-8",
+		 			success:function(r){
+		 				alert("작성되었습니다!");
+		 				$('div[data-table="'+idx+'"]').remove();
+		 			},error:function(e){
+		 				console.log(e);
+		 			}
+				});
+			},error:function(e){
+				console.log(e);
+			}
+			
+		});
 	} //function commentc
 
 //--------교정END----------------------------------------
@@ -1390,7 +1403,7 @@ $(document).ready(function(){
 							<c:forEach items="${feedList }" var="vo" varStatus="status">
 								<div id="feed-post-1" class="card is-post">
 									<!-- Main wrap -->
-									<div class="content-wrap">
+									<div class="content-wrap" data-crap="${status.index }">
 										<!-- Post header -->
 										<div class="card-heading">
 											<!-- User meta -->

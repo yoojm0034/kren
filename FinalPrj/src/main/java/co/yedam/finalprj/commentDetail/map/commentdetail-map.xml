@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper
-	namespace="co.yedam.finalprj.commentDetail.map.CommentDetailMap">
+<mapper namespace="co.yedam.finalprj.commentDetail.map.CommentDetailMap">
+	<select id="CommentDetailList" resultType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO">
+		SELECT * FROM COMMENT_DETAIL
+		 ORDER BY CC_ID, LINE
+	</select>
+	
+	<select id="CommentDetailSelect" parameterType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO"
+		 resultType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO">
+		SELECT * FROM COMMENT_DETAIL
+	</select>
+	
+	<!-- commentc 작성 후 작동 -->
+	<insert id="insertCommentDetail" parameterType="java.util.List">
+		<selectKey resultType="String" keyProperty="cc_seq" order="BEFORE">
+			SELECT 'cc_'||cc_seq.currval FROM DUAL
+		</selectKey>
+		
+	   <foreach collection="list" item="item" open="INSERT ALL" close="SELECT * FROM DUAL">
+			INTO COMMENT_DETAIL
+				(CC_ID, LINE, ORIGIN, CONTENT)
+			VALUES
+				(#{cc_seq}, #{item.line}, TRIM(#{item.origin}), TRIM(#{item.content}))
+	   </foreach>
+	</insert>
+	
+	<delete id="deleteCommentDetail" parameterType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO">
+			
+	</delete>
 </mapper>
