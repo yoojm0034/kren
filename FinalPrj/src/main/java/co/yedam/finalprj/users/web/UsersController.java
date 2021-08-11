@@ -308,7 +308,6 @@ public class UsersController {
 	@RequestMapping("usersDelete.do")
 	@ResponseBody
 	public int usersDelete(UsersVO vo, Model model, Authentication auth) {
-		
 		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();

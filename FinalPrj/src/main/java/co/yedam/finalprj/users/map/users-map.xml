@@ -114,7 +114,7 @@
 	
 	<!-- 유저 삭제 -->
 	<delete id="usersDelete" statementType="CALLABLE" parameterType="co.yedam.finalprj.users.vo.UsersVO">
-		{ CALL user_delete( #{user_id}) } 
+		{CALL user_delete(#{user_id})} 
 	</delete>	
 	
 </mapper>

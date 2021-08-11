@@ -26,9 +26,9 @@ $(function() {
 			    	type:'post',
 					success: function(result) {
 						console.log(result);
-						if (result > 0) { 
+						if (result != 0) { 
 							alert("탈퇴처리 되었습니다.");
-							location.href = "${pageContext.request.contextPath}/empty/home.do"
+							location.href = "${pageContext.request.contextPath}/home.do"
 						}
 					},
 					error : function(err) {
