@@ -39,7 +39,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public int usersDelete(UsersVO vo) {
-		return 0;
+		return map.usersDelete(vo);
 	}
 	
 	//admin user update
