@@ -12,36 +12,103 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 $(function(){
-	var colors = ['red','blue']
-	var options = {
-		title : '시간대별 접속자수',
-		width : 1000,
-		height : 500
-	};
-	google.load('visualization', '1.0', {
-		'packages' : [ 'corechart' ]
-	});
-	google.setOnLoadCallback(function() {
-		//차트에 넣을 data를 ajax 요청해서 가져옴
-		$.ajax({
-			url : "${pageContext.request.contextPath}/getChartData.do",
-			method : "post",
-			type : "json",
-			success : function(data) {
-				//ajax결과를 chart에 맞는 data 형태로 가공
-				var chartData = [];
-				chartData.push([ '시간대', '접속자수', { role: 'style' } ])
-				for (i = 0; i < data.length; i++) {
-					var subarr = [ data[i].TIME+" ", parseInt(data[i].CNT) , colors[i%2] ];
-					chartData.push(subarr);
+	$('#btnDay').click(function(){
+		var colors = ['red','blue'];
+		var options = {
+			title : '시간대별 접속자수',
+			width : 1000,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data=0",
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '시간대', '접속자수', { role: 'style' } ])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].TIME+" ", parseInt(data[i].CNT) , colors[i%2] ];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
 				}
-				//챠트 그리기
-				var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
-				chart.draw(google.visualization.arrayToDataTable(chartData),options);
-			}
+			});
 		});
 	});
+	$('#btnWeek').click(function(){
+		console.log(1)
+		var options = {
+			title : '일별 접속자수',
+			width : 1000,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data=1",
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '일별', '접속자수'])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].TIME+"일", parseInt(data[i].CNT)];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
+				}
+			});
+		});
+
+	});
+	$('#btnYear').click(function(){
+		console.log(1)
+		var options = {
+			title : '월별 접속자수',
+			width : 1000,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data=3",
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '월별', '접속자수'])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].TIME+"월", parseInt(data[i].CNT)];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
+				}
+			});
+		});
+
+	});
 });	
+
 </script>
 
 </head>
@@ -160,11 +227,6 @@ $(function(){
 		</div>
 		<div class="stories-container">
 			<div class="settings-wrapper">
-				<div class="stories-content">
-					<div class="section-title main-section-title">
-						<h2>통계페이지</h2>
-					</div>
-				</div>
 				<div id="general-settings" class="settings-section is-active">
 					<div class="settings-panel">
 
@@ -184,9 +246,18 @@ $(function(){
 				<div id="general-settings" class="settings-section is-active">
 					<div class="settings-panel">
 						<div class="title-wrap">
+							<button id="btnDay" class="button">시간대별</button>
+							<button id="btnWeek" class="button">일별</button>
+							<button id="btnMonth" class="button">월별</button>
+							<button id="btnYear" class="button">연별</button>
+						</div>
+					</div>
+					<div class="settings-panel">
+						<div class="title-wrap">
 							<div id="chart_div"></div>
 						</div>
 					</div>
+				
 				</div>
 				<br>
 				<div id="general-settings" class="settings-section is-active">

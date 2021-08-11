@@ -3,6 +3,7 @@ package co.yedam.finalprj.report.map;
 import java.util.List;
 
 import co.yedam.finalprj.report.vo.ReportVO;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface ReportMap {
 	List<ReportVO> reportSelectList();
@@ -12,4 +13,7 @@ public interface ReportMap {
 	int reportUpdateUser(ReportVO vo);
 	int reportAllUpdate(ReportVO vo);
 	int reportDelete(ReportVO vo);
+	
+	//정지회원으로 변경시 관려 데이터 일괄삭제
+	int stopUserUpdate(UsersVO vo);
 }

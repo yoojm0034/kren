@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -87,8 +89,17 @@ public class PushController {
 
 	@RequestMapping("getChartData.do")
 	@ResponseBody
-	public List<Map<String, Object>> getChartData() {
-		return visitDao.dayCount();
+	public List<Map<String, Object>> getChartData(HttpServletRequest req) {
+		String data = req.getParameter("data");
+		if(data.equals("1")) {
+			return visitDao.weekCount();
+		}else if(data.equals("3")) {
+			return visitDao.yearCount();
+		}else {
+			return visitDao.dayCount();
+		}
+		
+		
 	}
 
 }
