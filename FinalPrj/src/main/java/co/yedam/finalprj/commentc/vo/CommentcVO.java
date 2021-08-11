@@ -16,4 +16,7 @@ public class CommentcVO {
 	private String feed_id;
 	private Date reg_date;
 	private String user_id;
+	private int line;
+	private String origin;
+	private String content;
 }

@@ -41,17 +41,19 @@
 						
 						<div class="settings-form-wrapper">
 							<div class="illustration">
-								<c:forEach items="${notices }" var="list">
-									<div class="link-content">
-											<div class="link-icon">
-												<i data-feather="monitor"></i>
-											</div>
-											<a class="setting-sublink" href="${pageContext.request.contextPath}/userSelectNotice.do?notice_id=${list.notice_id}">
-												<h4>${list.title }</h4>
-											</a>	
-											<hr>
-									</div>
-								</c:forEach>
+								<div class="link-content">
+								<table class="table">
+									<c:forEach items="${notices}" var="list">
+										<tr>
+											<td>	
+												<a class="setting-sublink" href="${pageContext.request.contextPath}/userSelectNotice.do?notice_id=${list.notice_id}">
+													${list.title }
+												</a>
+											</td>	
+										</tr>	
+									</c:forEach>
+								</table>
+								</div>
 							</div>
 							<div class="illustration">
 								<img alt="" src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/characters/friends.svg">
