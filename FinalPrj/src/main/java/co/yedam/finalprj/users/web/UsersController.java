@@ -1,30 +1,22 @@
 package co.yedam.finalprj.users.web;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.inject.Inject;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -84,9 +76,6 @@ public class UsersController {
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
 		
-		System.out.println("Session : " + Sessionid);
-		System.out.println("UserID : "+ user_id);
-		
 		vo.setSession_id(Sessionid);
 		vo.setUser_id(user_id);
 		
@@ -112,8 +101,6 @@ public class UsersController {
 		String Sessionid = (String) user.getUsername();
 		vo.setSession_id(Sessionid);
 		
-		System.out.println(vo);
-		
 		model.addAttribute("followingList", usersDao.followingList(vo));
 		return "no/users/followingList";
 	}
@@ -125,8 +112,6 @@ public class UsersController {
 		String Sessionid = (String) user.getUsername();
 		vo.setSession_id(Sessionid);
 		
-		System.out.println(vo);
-		
 		model.addAttribute("followerList", usersDao.followerList(vo));
 		return "no/users/followerList";
 	}
@@ -137,7 +122,6 @@ public class UsersController {
 		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
-		
 		vo.setSession_id(Sessionid);
 		
 		model.addAttribute("profile", usersDao.usersSelect(vo));
@@ -155,6 +139,7 @@ public class UsersController {
 		String Sessionid = (String) user.getUsername();
 		vo.setUser_id(Sessionid);
 		
+		// 비밀번호 암호화
 		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
 		vo.setPassword(scpwd.encode(vo.getPassword()));
 		
@@ -314,6 +299,7 @@ public class UsersController {
 		vo.setUser_id(Sessionid);
 		
 		int r = usersDao.usersDelete(vo);
+		SecurityContextHolder.clearContext();	// 세션끊어주기
 		return r;
 	} 	
 	
@@ -344,14 +330,10 @@ public class UsersController {
 			int r = reportDao.reportUpdateUser(vo);
 			System.out.println(r + "건 수정");
 			//피드 - 회원아이디로 회원이작성한 모든 댓글, 좋아요, 피드, 삭제해야됨
-			
 			//편지 - 회원아이디로 회원이 작성한 편지 모두 삭제
-	
 		}
 		data.put("result", true);
 		data.put("data", memberData.updatedRows);
 		return data;
 	}	
-	
-	
 }
