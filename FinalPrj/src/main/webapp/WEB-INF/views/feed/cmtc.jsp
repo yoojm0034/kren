@@ -8,21 +8,23 @@
 	<div class="media-left">
 		<div class="image">
 			<img src="https://via.placeholder.com/300x300"
-				data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1"
-				alt="">
+				data-demo-src="assets/img/avatars/dan.jpg"
+				data-user-popover="1" alt="">
 		</div>
 	</div>
-
 	<!-- Content -->
 	<div class="media-content">
 		<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
 		<span class="time">방금전</span>
-		<p>${cmt.content }</p>
+		<!-- 교정댓글이면, line을 반복 -->
+		<div id="load" data-cid="${cd.cc_id }${cd.line}"
+		data-cdc="${cd.content }"
+		data-cdo="${cd.origin }">${cd.content }</div>
 		<!-- Actions -->
 		<div class="controls">
-		<div class="edit">
-				<a id="del" data-delcmt="${cmt.comment_id }"
-					data-delcmtfeed="${cmt.feed_id }" data-idx="${cmt.idx }">삭제</a>
+			<div class="edit">
+				<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
+				data-idx="${status.index }">삭제</a>
 			</div>
 		</div>
 	</div>

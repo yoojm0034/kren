@@ -814,7 +814,31 @@ $(document).ready(function(){
 		 		    contentType : "application/json; charset=UTF-8",
 		 			success:function(r){
 		 				alert("작성되었습니다!");
-		 				$('div[data-table="'+idx+'"]').remove();
+		 				$('div[data-table="'+idx+'"]').remove();//교정테이블 삭제
+						//입력된 값 조회 후 jsp
+// 						$.ajax({
+// 							url: '${pageContext.request.contextPath}/commentInsertData.do',
+// 							method: 'post',
+// 							data: {feed_id:feedid,user_id:'${user.user_id}',name:'${user.name}',idx:scr},
+// 							success: function(data) {
+// 								scroll.append(data);
+// 								scroll.scrollTop(scroll.prop('scrollHeight'));
+// 								$('textarea[data-content="'+feedid+'"]').val('');
+// 								//-------댓글수+1-------
+// 								$.ajax({
+// 									url: '${pageContext.request.contextPath}/commentCnt.do',
+// 									method: 'post',
+// 									data: {feed_id:feedid},
+// 									success: function(cnt) {
+// 										var cnt = cnt;
+// 										console.log(cnt);
+// 										$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
+// 										span2.html(cnt);
+// 										sendTextPush(feeduser, feedid);
+// 									}
+// 								});//댓글수+1
+// 							}
+// 						});
 		 			},error:function(e){
 		 				console.log(e);
 		 			}
