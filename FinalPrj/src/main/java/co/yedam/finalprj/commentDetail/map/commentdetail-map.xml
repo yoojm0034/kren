@@ -9,9 +9,11 @@
 	<select id="CommentDetailSelect" parameterType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO"
 		 resultType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO">
 		SELECT * FROM COMMENT_DETAIL
+	     WHERE CC_ID = #{cc_id}
+		 ORDER BY CC_ID, LINE
 	</select>
 	
-	<!-- commentc 작성 후 작동 -->
+	<!-- COMMENTC 작성 후 작동 -->
 	<insert id="insertCommentDetail" parameterType="java.util.List">
 		<selectKey resultType="String" keyProperty="cc_seq" order="BEFORE">
 			SELECT 'cc_'||cc_seq.currval FROM DUAL

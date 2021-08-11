@@ -19,6 +19,7 @@
 	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
 	rel="stylesheet">
 <script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/template/assets/js/diffButty.js"></script>
 <meta charset="UTF-8">
 <title>Main Feed</title>
 <style>
@@ -697,6 +698,24 @@ $(document).ready(function(){
 //--------신고END----------------------------------------
 //--------교정START--------------------------------------
 	$(function() {
+		$('#load').each(function(i, el){
+			var cid = $(this).data('cid');//cc_id.line
+			var cdc = $(this).data('cdc');//content
+			var cdo = $(this).data('cdo');//origin
+			test_diff(cid,cdc,cdo);
+		});
+		
+		// 문자열 비교; diffButty.js; String
+		function test_diff(cid,dif,ori) {
+			var original = ori;
+			var revised = dif;
+			var output = $('<pre>');
+			var html = diffButty(original, revised);
+			output.html(html);
+			var div = $('div[data-cid="'+cid+'"]');
+			div.html(output);
+		} 
+		
 		// 교정테이블 추가 그룹 이벤트
 		$("body").on('click', '#feedcor',  function() {
 		    var fid = $(this).data('fid');		//feed_id;
@@ -1634,7 +1653,7 @@ $(document).ready(function(){
 												Comments
 												<small>
 												<c:if test="${!empty vo.cmt and vo.cmt eq 0 }">(0)</c:if>
-												<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt })</c:if>
+												<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt})</c:if>
 												</small>
 											</h4>
 											<div class="close-comments">
@@ -1654,7 +1673,11 @@ $(document).ready(function(){
 										<!-- Comment -->
 										<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">
 											<c:forEach items="${commentList }" var="cmt">
+											<!-- 피드번호가 같으면 -->
 											<c:if test="${vo.feed_id eq cmt.feed_id }">
+											<c:choose>
+											<c:when test="${cmt.content ne '-'}">
+											<!-- 일반댓글이면 -->
 											<div class="media is-comment">
 												<!-- User image -->
 												<div class="media-left">
@@ -1668,7 +1691,6 @@ $(document).ready(function(){
 												<div class="media-content">
 													<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
 													<span class="time">
-													
 													<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
 													 <script type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
@@ -1750,7 +1772,116 @@ $(document).ready(function(){
 												<!-- /Right side dropdown -->
 												</c:if>
 												</div>
+												<!-- /일반댓글이면 -->
+											</c:when>
+											<c:otherwise>
+											<!-- 교정댓글이면 -->
+											<div class="media is-comment">
+												<!-- User image -->
+												<div class="media-left">
+													<div class="image">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/dan.jpg"
+															data-user-popover="1" alt="">
+													</div>
+												</div>
+												<!-- Content -->
+												<div class="media-content">
+													<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
+													<span class="time">
+													<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
+													 <script type="text/javascript">														
+														document.write(timeForToday('${rg_dt}'));
+													</script>
+													</span>
+													<!-- 교정댓글이면, line을 반복 -->
+													<c:forEach items="${cdList }" var="cd" varStatus="stat">
+														<c:if test="${cmt.comment_id eq cd.cc_id }">
+														<div id="load" data-cid="${cd.cc_id }${cd.line}"
+														data-cdc="${cd.content }"
+														data-cdo="${cd.origin }">${cd.content }</div>
+														</c:if>
+													</c:forEach>
+													<!-- Actions -->
+													<c:if test="${cmt.user_id eq user.user_id }">
+													<div class="controls">
+														<div class="edit">
+															<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
+															data-idx="${status.index }">삭제</a>
+														</div>
+													</div>
+													</c:if>
+												</div>
+												<c:if test="${user.user_id ne cmt.user_id}">
+												<!-- Right side dropdown -->
+												<div class="media-right">
+													<div
+														class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+														<div>
+															<div class="button">
+																<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+							                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+							                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+							                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+															</div>
+														</div>
+														<div class="dropdown-menu" role="menu">
+	                                                    <div class="dropdown-content">
+	                                                        <div class="media">
+	                                                        <table>
+								                        	<tr>
+							                        		<td>
+							                        		<input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
+									                        	   maxlength="30"></input>
+							                        		</td>
+								                        	</tr>
+								                        	</table>
+	                                                        </div>
+	                                                        <div class="dropdown-divider"></div>
+									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } 차단
+															<button id="rbtn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
+	                                                    </div>
+		                                               </div>
+													</div>
+												</div>
+												<!-- /Right side dropdown -->
 												</c:if>
+												</div>
+											<!-- /교정댓글이면 -->
+											</c:otherwise>
+											</c:choose>
+												</c:if>
+												<!-- /피드번호가 같으면 -->
 												</c:forEach>
 											</c:if>
 											<!-- /Comment -->

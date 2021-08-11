@@ -1,5 +1,8 @@
 package co.yedam.finalprj.friends.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,5 +134,21 @@ public class FriendsController {
 		model.addAttribute("topicList",topicDao.topicSelectList());
 		return "friends/friendSearch";
 	}
+	
+	/*
+	 * //더보기
+	 * 
+	 * @RequestMapping(value = "searchMore.do", produces =
+	 * "application/text;charset=UTF-8", method=RequestMethod.POST)
+	 * 
+	 * @ResponseBody public String searchMore(@RequestParam Map<String,String>
+	 * param) throws Exception { Map<String, String> searchParam = new
+	 * HashMap<String, String>(); // search 파라미터 생성 searchParam.put("startIndex",
+	 * param.get("startIndex")); searchParam.put("endIndex", param.get("endIndex"));
+	 * searchParam.put("m_id", param.get("m_id")); // startIndex ~ endIndex 범위에 해당하는
+	 * list 조회
+	 * 
+	 * List return null; }
+	 */
 	
 }

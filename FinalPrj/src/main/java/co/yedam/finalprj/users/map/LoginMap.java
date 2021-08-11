@@ -20,8 +20,8 @@ public interface LoginMap {
 	public void logout(HttpSession session);
 	
 	//아이디 비밀번호 찾기...
-	public UsersVO findId(String user_id);
-	public UsersVO findPw(UsersVO vo);
+	UsersVO findId(String email);
+	int findPwUpdate(UsersVO vo);
 	
 	//우표 구매시 보유 우표수 변경...
 	public int stampUpdate(UsersVO vo);

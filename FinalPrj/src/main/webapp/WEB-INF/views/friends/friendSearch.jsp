@@ -101,6 +101,11 @@
 	margin-left: 15px;
 	overflow:auto;
 }
+.filters-panel .panel-inner {
+	padding-left: 19px;
+    padding-right: 12px;
+    font-size: xx-small;
+}
 .filters-panel::-webkit-scrollbar  {
 	width: 0 !important;
   	display: none; 
@@ -108,6 +113,7 @@
 .search-label {
 	font-size: .7rem;
 	font-weight: 500;
+	margin-right: 21px;
 }
 
 .topic-label>.left {
@@ -123,6 +129,7 @@
 	overflow:auto;
 	height: 200px;
 	-ms-overflow-style: none;
+	margin-top: 15px;
 }
 .topic-list::-webkit-scrollbar  {
 	display: inline-block;
@@ -205,6 +212,7 @@
     width: 42px;
     -webkit-transition: all .3s;
     transition: all .3s;
+    border-radius: 142px;
 }
 .append-label {
 	display: inline-block;
@@ -240,12 +248,32 @@
     -ms-flex-pack: center;
     justify-content: center;
 }
+#friendSearch{
+    left: 286px;
+}
+
+.title {
+    padding-top: 11px;
+}
+.field label {
+    font-size: .7rem; 
+    /* font-weight: 500;
+     color: #393a4f;*/
+}
+.radio {
+	 margin-left: 5px;
+}
+.load-more-wrap {
+    padding: 40px 0;
+    POSITION: relative;
+    right: 50%;
+    left: 42%;
+}
 </style>
 <script>
-
+$(document).ready(function() {
 	 var countryCnt =0;
 	 var dcountryCnt =0;
-$(document).ready(function() {
 	 $('#friendSearch').on('click',function() {
 		 var gender = $('input[name=genderval]:checked').val();
 		 var dgender = $('input[name=dgenderval]:checked').val();
@@ -270,14 +298,7 @@ $(document).ready(function() {
 		 $('#language1').val(lan);
 		 $('#topic').val(topic);
 		 $('#dtopic').val(distopic);
-		
-		 console.log("성별 "+$('#gender').val());
-		 console.log("국가 "+$('#country').val());
-		 console.log("언어 "+$('#language1').val());
-		 console.log("관심사 "+$('#topic').val());
-		 console.log("제외성별 "+$('#dgender').val());
-		 console.log("제외국가 "+$('#dcountry').val());
-		 console.log("제외관심사 "+$('#dtopic').val());
+		 
 		 $('#frm').submit();
 	 });
 
@@ -305,20 +326,102 @@ $(document).ready(function() {
 		 $('#append-dop').append("<span class='append-label' id='dis"+value+"' onclick="+"'deleteCountry(\"dis"+ value + "\")'>"+value+"</span>");
 		 dcountryCnt++;
 	 });	
-	
-	
+	 
+	  // load more
+	  var increment;
+	  var startFilter;
+	  var endFilter;
+	  var $this;
+	  var elementLength;
+	  increment =12;
+	  startFilter=0;
+	  endFilter=increment;
+	  
+	  $this = $('#searchRow');						
+	  elementLength = $this.children().length;
+	  $('.listLength').text(elementLength);
+	   
+	  // show/hide the Load More button
+	  if (elementLength > 2) { $('.buttonToogle').show();}
+	  $('#searchRow #searchItem').slice(startFilter, endFilter).addClass('shown');
+	  $('.shownLength').text(endFilter);
+	  $('#searchRow #searchItem').not('.shown').hide();
+	   
+	  $('#buttonToogle .load-more-button').on('click', function() {
+	  	if (elementLength > endFilter) {
+		      startFilter += increment;
+		      endFilter += increment;
+		      $('#searchRow #searchItem').slice(startFilter, endFilter).not('.shown').addClass('shown').toggle(500);
+		      $('.shownLength').text((endFilter > elementLength) ? elementLength : endFilter);
+		      if (elementLength <= endFilter) {
+		          $(this).remove();
+		      }
+		}
+	  });
+	  
+	   $('#allTab').on('click',function(){
+			increment = 12;
+			startFilter = 0;
+			endFilter = increment;
+		    
+			$this = $('#allRow');						
+		    elementLength = $this.children().length;
+	   		$('.listLength2').text(elementLength);
+	   		
+	 	    if (elementLength > 2) { $('.buttonToogle').show();}
+	 	   
+			$('#allRow #allItem').slice(startFilter, endFilter).addClass('shown');
+		   	$('.shownLength2').text(endFilter);
+		   	$('#allRow #allItem').not('.shown').hide();
+	   		
+		   	$('#buttonToogle1 .load-more-button').on('click', function() {
+		   		if (elementLength > endFilter) {
+			       startFilter += increment;
+			       endFilter += increment;
+			   	   $('#allRow #allItem').slice(startFilter, endFilter).not('.shown').addClass('shown').toggle(500);
+			       $('.shownLength2').text((endFilter > elementLength) ? elementLength : endFilter);
+			       if (elementLength <= endFilter) {
+			           $(this).remove();
+			       }
+			     }
+		   });
+	   })
+	   
+	   $('#newTab').on('click',function(){
+		    increment = 12;
+		    startFilter = 0;
+		    endFilter = increment;
+		    $this = $('#newRow');						
+		    elementLength = $this.children().length;
+	   		$('.listLength3').text(elementLength);
+	   		
+	 	    if (elementLength > 2) { $('.buttonToogle').show();}
+	 	   
+			$('#newRow #newItem').slice(startFilter, endFilter).addClass('shown');
+		   	$('.shownLength3').text(endFilter);
+		   	$('#newRow #newItem').not('.shown').hide();
+		   	
+		   	$('#buttonToogle2 .load-more-button').on('click', function() {
+		   		if (elementLength > endFilter) {
+			       startFilter += increment;
+			       endFilter += increment;
+			       $('#newRow #newItem').slice(startFilter, endFilter).not('.shown').addClass('shown').toggle(500);
+			       $('.shownLength3').text((endFilter > elementLength) ? elementLength : endFilter);
+			       if (elementLength <= endFilter) {
+			           $(this).remove();
+			       }
+			     }
+		   });
+	   })
 });
-	
 	 function deleteCountry(val) {
 		 $('#'+val).remove();
-	
 		 if(val.substring(0,3)=="dis"){
 		 	dcountryCnt--;
 		 }else{
 		 	countryCnt--; 
 		 }
 	 };
-	
 </script>
 <body>
 	<!-- Pageloader -->
@@ -335,17 +438,17 @@ $(document).ready(function() {
 							stroke-width="2" fill="none" stroke-linecap="round"
 							stroke-linejoin="round" class="css-i6dzq1">
 							<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-					</a> <a id="hide-filters" class="nav-item is-icon is-hidden"> <i
-						data-feather="x"></i>
+					</a> <a id="hide-filters" class="nav-item is-icon is-hidden"> 
+					<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 					</a>
 					<div class="option-tabs is-friends">
-						<a class="option-tab is-active" data-tab="all-friends"> 
+						<a class="option-tab is-active" id="searchTab" data-tab="all-friends"> 
 						<span>Search</span>
 						</a> 
-						<a class="option-tab" data-tab="starred-friends"> 
+						<a class="option-tab" id="allTab" data-tab="starred-friends"> 
 						<span>All</span>
 						</a>
-						<a class="option-tab" data-tab="new-friends"> 
+						<a class="option-tab" id="newTab" data-tab="new-friends"> 
 						<span>New</span>
 						</a>
 						<div class="option-naver"></div>
@@ -355,8 +458,7 @@ $(document).ready(function() {
 							friends</div>
 						<div id="subsearch" class="nav-item is-search is-hidden">
 							<div class="control">
-								<input type="text" class="input textFilter-input"
-									placeholder="친구를 검색해 보세요">
+								<input type="text" class="input textFilter-input">
 							</div>
 						</div>
 						<a id="show-subsearch" class="nav-item is-icon"> <svg
@@ -387,20 +489,23 @@ $(document).ready(function() {
 			<input type="hidden" id="dtopic" name="dtopic">
 			<div class="filters-panel" style="overflow: scroll;">
 				<div class="panel-inner">
-					<h3 class="panel-title">검색조건</h3>
-					<div class="field">
+				<div class="title">				
+					<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+					<a class="button is-rounded" id="friendSearch">검색</a>
+				</div>
+					<div class="field" style=" font-size: .7rem;">
 				        <div class="control">
 				        	<label class="search-label">나이</label>
-				            <input type="text" class="input" id="s_age" name="s_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">AND 
+				            <input type="text" class="input" id="s_age" name="s_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"><small> AND </small>  
 				            <input type="text" class="input" id="e_age" name="e_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 				        </div>
 					</div>
 					<div>
 						<label class="search-label">성별</label> 
-						무관<input type="radio" name="genderval" value="" checked="checked"> 
-						남<input type="radio" name="genderval" value="M"> 
-						여<input type="radio" name="genderval" value="W">
-						기타<input type="radio" name="genderval" value="O">
+						무관<input class="radio" type="radio" name="genderval" value="" checked="checked"> 
+						남<input class="radio" type="radio" name="genderval" value="M"> 
+						여<input class="radio" type="radio" name="genderval" value="W">
+						기타<input class="radio" type="radio" name="genderval" value="O">
 					</div>
 					<div class="div-margin">
                        <div class="control">
@@ -437,19 +542,21 @@ $(document).ready(function() {
 							</c:forEach>
 						</div>
 					</div>
-					<h3 class="panel-title">제외조건</h3>
-					<div class="field">
+					<div class="title">		
+						<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
+					</div>
+					<div class="field" style=" font-size: .7rem;">
 				        <div class="control">
 				        	<label class="search-label">나이</label>
-				            <input type="text" class="input" id="s_dage" name="s_dage"  maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">AND 
+				            <input type="text" class="input" id="s_dage" name="s_dage"  maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"><small> AND </small>  
 				            <input type="text" class="input" id="e_dage" name="e_dage" name="e_age" maxlength = "2" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 				        </div>
 					</div>
 					<div>
 						<label class="search-label">성별</label> 
-						남<input type="radio" name="dgenderval" value="M"> 
-						여<input type="radio" name="dgenderval" value="W">
-						기타<input type="radio" name="dgenderval" value="O">
+						남<input class="radio" type="radio" name="dgenderval" value="M"> 
+						여<input class="radio" type="radio" name="dgenderval" value="W">
+						기타<input class="radio" type="radio" name="dgenderval" value="O">
 					</div>
 					<div class="div-margin">
                        <div class="control">
@@ -475,9 +582,6 @@ $(document).ready(function() {
 						</div>
 					</div>
 				</div>
-				<div style="text-align: right;">
-				 <a class="button is-rounded" id="friendSearch">검색</a>
-				</div>
 			</div>
 		</form>
 
@@ -487,12 +591,11 @@ $(document).ready(function() {
 		</div>
 
 		<div id="friends-page" class="friends-wrapper main-container">
-
 			<!--First tab-->
 			<div id="all-friends" class="card-row-wrap is-active">
 				<div class="card-row-placeholder is-hidden">No matching
 					results</div>
-				<div class="card-row">
+				<div class="card-row" id="searchRow">
 					<!-- /partials/pages/friends/friend-lists/all-friends.html -->
 					<!--Friend-->
 					<c:choose>
@@ -501,7 +604,7 @@ $(document).ready(function() {
 					    </c:when>
 					    <c:otherwise>
 							<c:forEach items="${searchList }" var="vo">
-									<div class="card-flex friend-card" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
+									<div class="card-flex friend-card" id="searchItem" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
 										<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 											<div class="img-container">
 												<img class="avatar" src="https://via.placeholder.com/300x300"
@@ -544,22 +647,23 @@ $(document).ready(function() {
 											</div>
 										</div>
 									</div>
-								</a>
 							</c:forEach>
 					     </c:otherwise>
 					 </c:choose>
+					<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
+						<a href="javascript:;" class="load-more-button">Load More</a>
+					</div>
 				</div>
 			</div>
-
 			<!--Second tab-->
 			<div id="starred-friends" class="card-row-wrap">
 				<div class="card-row-placeholder is-hidden">No matching
 					results</div>
-				<div class="card-row">
+				<div class="card-row" id="allRow">
 					<!-- /partials/pages/friends/friend-lists/all-friends.html -->
 					<!--Friend-->
 					<c:forEach items="${allList }" var="vo">
-						<div class="card-flex friend-card">
+						<div class="card-flex friend-card" id="allItem">
 							<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 								<div class="img-container">
 									<img class="avatar" src="https://via.placeholder.com/300x300"
@@ -605,6 +709,9 @@ $(document).ready(function() {
 							</div>
 						</div>
 					</c:forEach>
+					<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle1">
+						<a href="javascript:;" class="load-more-button">Load More</a>
+					</div>
 				</div>
 			</div>
 			
@@ -612,70 +719,62 @@ $(document).ready(function() {
 			<div id="new-friends" class="card-row-wrap">
 				<div class="card-row-placeholder is-hidden">No matching
 					results</div>
-				<div class="card-row">
+				<div class="card-row" id="newRow">
 					<!-- /partials/pages/friends/friend-lists/starred-friends.html -->
 					<!--Friend-->
-					<c:choose>
-					    <c:when test="${fn:length(newList) == 0}">
-					       <div class="no-result">No matching results</div>
-					    </c:when>
-					    <c:otherwise>
-								<c:forEach items="${newList }" var="vo">
-								<div class="card-flex friend-card">
-									<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
-										<div class="img-container">
-											<img class="avatar" src="https://via.placeholder.com/300x300"
-												data-demo-src="resources/template/assets/img/avatars/david.jpg"
-												alt=""> <img class="flag"
-												src="${vo.flag }"
-												alt="">
-										</div>
-										<div class="friend-info" >
-										<div class="friend-name textFilter-match">${vo.name }</div>
-										<script type="text/javascript">														
-											document.write(timeForToday('${vo.reg_date}'));
-										</script>
-											<div class="friend-location">
-												<span><svg viewBox="0 0 24 24" width="15"
-														height="15" stroke="currentColor" stroke-width="2"
-														fill="none" stroke-linecap="round"
-														stroke-linejoin="round" class="css-i6dzq1">
-														<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-														<circle cx="12" cy="10" r="3"></circle></svg></span> <span
-													id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
-											</div>
-										</div>
-								
-									</div>
-									<div class="friend-stats">
-										<div class="stat-block">
-											<label>Following</label>
-											<div class="stat-number" >
-											${vo.followingCnt }
-			
-											</div>
-										</div>
-										<div class="stat-block">
-											<label>Posts</label>
-											<div class="stat-number">
-												${vo.feedCnt }
-											</div>
-										</div>
-										<div class="stat-block">
-											<label>Followers</label>
-											<div class="stat-number">
-												${vo.followerCnt }
-											</div>
-										</div>
+					<c:forEach items="${newList }" var="vo">
+						<div class="card-flex friend-card" id="newItem">
+							<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
+								<div class="img-container">
+									<img class="avatar" src="https://via.placeholder.com/300x300"
+										data-demo-src="resources/template/assets/img/avatars/david.jpg"
+										alt=""> <img class="flag"
+										src="${vo.flag }"
+										alt="">
+								</div>
+								<div class="friend-info" >
+								<div class="friend-name textFilter-match">${vo.name }</div>
+									<div class="friend-location">
+										<span><svg viewBox="0 0 24 24" width="15"
+												height="15" stroke="currentColor" stroke-width="2"
+												fill="none" stroke-linecap="round"
+												stroke-linejoin="round" class="css-i6dzq1">
+												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+												<circle cx="12" cy="10" r="3"></circle></svg></span> <span
+											id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+											<p style="">나와 일치하는 관심사 <span style="color: blue;">${vo.topicCnt }</span> 개</p>
 									</div>
 								</div>
-							</c:forEach>
-					     </c:otherwise>
-					 </c:choose>
+							</a>
+							<div class="friend-stats">
+								<div class="stat-block">
+									<label>Following</label>
+									<div class="stat-number" >
+									 ${vo.followingCnt }
+	
+									</div>
+								</div>
+								<div class="stat-block">
+									<label>Posts</label>
+									<div class="stat-number">
+										${vo.feedCnt }
+									</div>
+								</div>
+								<div class="stat-block">
+									<label>Followers</label>
+									<div class="stat-number">
+										${vo.followerCnt }
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+					<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle2">
+						<a href="javascript:;" class="load-more-button">Load More</a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
 	<div class="chat-wrapper">
 		<div class="chat-inner">

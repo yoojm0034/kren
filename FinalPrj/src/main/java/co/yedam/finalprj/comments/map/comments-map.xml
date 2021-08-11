@@ -2,17 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.finalprj.comments.map.CommentsMap">
 	<!-- 댓글전체조회 -->
-	<select id="commentSelectList" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
-		SELECT C.COMMENT_ID, C.FEED_ID, C.REG_DATE, C.CONTENT, C.USER_ID, U.NAME
-		  FROM COMMENTS C, USERS U
-		 WHERE C.USER_ID=U.USER_ID  
-		 ORDER BY REG_DATE
+	<select id="commentSelectList" resultType="co.yedam.finalprj.comments.vo.CommentsVO">
+		SELECT cmt.* FROM
+		(	  
+				(SELECT C.COMMENT_ID, C.FEED_ID, C.REG_DATE, C.CONTENT, C.USER_ID, U.NAME
+				   FROM COMMENTS C, USERS U
+				  WHERE C.USER_ID=U.USER_ID)
+		UNION
+				(SELECT CC.CC_ID, CC.FEED_ID, CC.REG_DATE, '-' as content, CC.USER_ID, U.NAME
+				   FROM COMMENTC CC, USERS U, COMMENT_DETAIL d
+				  WHERE CC.USER_ID=U.USER_ID and cc.cc_id=d.cc_id)
+		) CMT
+		ORDER BY feed_id, REG_DATE, comment_id
 	</select>
 	
 	<select id="commentCnt" parameterType="co.yedam.finalprj.comments.vo.CommentsVO" resultType="int">
-		SELECT COUNT(*) CMT
-		  FROM COMMENTS
-		 WHERE FEED_ID=#{feed_id}
+		SELECT F_COMMENT_CNT(#{feed_id}) CMT
+		  FROM DUAL
 	</select>
 	
 	<!-- /댓글전체조회 -->

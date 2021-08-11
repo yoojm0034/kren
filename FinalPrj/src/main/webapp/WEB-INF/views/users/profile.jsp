@@ -320,8 +320,30 @@ function follow(check) {
 	}; // end of if
 };
 
+// 새 편지 쓰기
+function writePopup() {
+	var winWidth = 860;
+    var winHeight = 580;
+    var popupOption= "width="+winWidth+", height="+winHeight;
+	
+	var target ='pop';
+	var url = '${pageContext.request.contextPath}/writeLetter.do';
+	window.open('',target,popupOption);
+
+	var letterform = document.letterform;
+	letterform.action=url;
+	letterform.target=target;
+	letterform.submit();	
+}
+
 </script>
 <body>
+<form id="letterform" name="letterform" method="post">
+<input type="hidden" id="to_id" name="to_id" value="${profile.user_id }">
+<input type="hidden" id="user_id" value="${user.user_id }">
+<input type="hidden" id="to_name" name="to_name" value="${profile.name }">
+<input type="hidden" id="name" name="name" value="${user.name }">
+</form>
 	<!-- Container -->
 	<div class="container is-custom">
 		<!-- Profile page main wrapper -->
@@ -426,7 +448,7 @@ function follow(check) {
 										</div>
 									</c:when>
 									<c:otherwise>
-										<a class="button is-solid primary-button">✍🏻 Write a
+										<a class="button is-solid primary-button" id="btnLetter" onclick="writePopup()">✍🏻 Write a
 											letter</a>
 										<div class="follow-area">
 											<c:choose>
