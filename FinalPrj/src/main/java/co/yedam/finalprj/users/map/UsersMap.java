@@ -22,10 +22,6 @@ public interface UsersMap {
 	int postCnt(UsersVO vo);
 	List<UsersVO> followingList(UsersVO vo);
 	List<UsersVO> followerList(UsersVO vo);
-	
-	//아이디 비밀번호 찾기...
-	public UsersVO findId(String user_id);
-	public UsersVO findPw(UsersVO vo);
 
 	//admin
 	int adminUsersUpdate(UsersVO vo);

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.yedam.finalprj.commentDetail.service.CommentDetailService;
 import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.service.LanguageService;
@@ -57,6 +58,9 @@ public class FeedController {
 	
 	@Autowired
 	CommentsService CommentDao;
+
+	@Autowired
+	CommentDetailService commentDetailDao;
 	
 	//메인피드
 	@RequestMapping("feed.do")
@@ -88,6 +92,7 @@ public class FeedController {
 		
 		//댓글
 		model.addAttribute("commentList",CommentDao.commentSelectList());
+		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
 		return "feed/mainFeed";
 	}
 	
