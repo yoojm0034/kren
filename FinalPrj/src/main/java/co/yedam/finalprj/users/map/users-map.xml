@@ -30,12 +30,12 @@
 	
 	<!-- 회원가입 -->
 	<!-- 아이디 중복체크 -->	
-	<select id="idCheck" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+	<select id="idCheck" parameterType="String" resultType="int" >
 		select * from users where user_id = #{user_id}
 	</select>
 
 	<!-- 이름중복체크 -->
-	<select id="nameCheck" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO" >
+	<select id="nameCheck" parameterType="String" resultType="int" >
 		select * from users where name = #{name}
 	</select>
 	

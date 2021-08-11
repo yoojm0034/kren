@@ -30,9 +30,9 @@
 	rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500"
 	rel="stylesheet">
-<link
-	href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css"
-	rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
+
 </head>
 <style>
 .options-nav {
@@ -227,87 +227,98 @@
 #append-dop {
     margin-top: 20px;
 }
+.no-result {
+    min-height: calc(100vh - 280px);
+    min-width: -webkit-fill-available;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
 </style>
 <script>
-	var countryCnt =0;
-	var dcountryCnt =0;
-	$(document).ready(function() {
-		$('#friendSearch').on('click',function() {
-			var gender = $('input[name=genderval]:checked').val();
-			var dgender = $('input[name=dgenderval]:checked').val();
-			var country_op= $("#append-op").children();
-			var discountry_op = $("#append-dop").children();
-			var country= "";
-			var discountry ="";
-			var lan = $("#language1-val option:selected").val();
-			var topic = "";
-			var distopic = "";
-			
-			$("input[name=topic-label]:checked").each(function() {topic += $(this).val() + ","; });
-			$("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ ",";});
-			
-			country_op.each(function(i,v){country += v.id + ",";});
-			discountry_op.each(function(i,v){discountry += v.id + ",";});
-			
-			
-			$('#gender').val(gender);
-			$('#dgender').val(dgender);
-			$('#country').val(country);
-			$('#dcountry').val(discountry);
-			$('#language1').val(lan);
-			$('#topic').val(topic);
-			$('#dtopic').val(distopic);
-			
-			//console.log("나이 "+);
-			console.log("성별 "+$('#gender').val());
-			console.log("국가 "+$('#country').val());
-			console.log("언어 "+$('#language1').val());
-			console.log("관심사 "+$('#topic').val());
-			
-			//console.log("제외나이 "+);
-			console.log("제외성별 "+$('#dgender').val());
-			console.log("제외국가 "+$('#dcountry').val());
-			console.log("제외관심사 "+$('#dtopic').val());
-		
-		
-			$('#frm').submit();
-		});
 
-		$('#show-filters').on('click',function() {
-			var url = '${pageContext.request.contextPath}/resources/template/assets/data/country.json';
-			$.getJSON(url,function(data) {
-				$.each(data,function(key,value) {
-					$('#country-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
-					$('#dcountry-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
-				});
-			});
-		});
+	 var countryCnt =0;
+	 var dcountryCnt =0;
+$(document).ready(function() {
+	 $('#friendSearch').on('click',function() {
+		 var gender = $('input[name=genderval]:checked').val();
+		 var dgender = $('input[name=dgenderval]:checked').val();
+		 var country_op= $("#append-op").children();
+		 var discountry_op = $("#append-dop").children();
+		 var country= "";
+		 var discountry ="";
+		 var lan = $("#language1-val option:selected").val();
+		 var topic = "";
+		 var distopic = "";
+	
+		 $("input[name=topic-label]:checked").each(function() {topic += $(this).val() + ","; });
+		 $("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ ",";});
 		
+		 country_op.each(function(i,v){country += v.id + ",";});
+		 discountry_op.each(function(i,v){discountry += v.id + ",";});
 		
-		$('#country-op').on('change',function(){
-			var value = this.value;
-			if (countryCnt == 5) return;
-			$('#append-op').append("<span class='append-label' id='"+value+"' onclick="+"'deleteCountry(\""+ value + "\")'>"+value+"</span>");
-			countryCnt++;
-		});		
+		 $('#gender').val(gender);
+		 $('#dgender').val(dgender);
+		 $('#country').val(country);
+		 $('#dcountry').val(discountry);
+		 $('#language1').val(lan);
+		 $('#topic').val(topic);
+		 $('#dtopic').val(distopic);
 		
-		$('#dcountry-op').on('change',function(){
-			var value = this.value;
-			if (dcountryCnt == 5) return;
-			$('#append-dop').append("<span class='append-label' id='dis"+value+"' onclick="+"'deleteCountry(\"dis"+ value + "\")'>"+value+"</span>");
-			dcountryCnt++;
-		});	
+		 console.log("성별 "+$('#gender').val());
+		 console.log("국가 "+$('#country').val());
+		 console.log("언어 "+$('#language1').val());
+		 console.log("관심사 "+$('#topic').val());
+		 console.log("제외성별 "+$('#dgender').val());
+		 console.log("제외국가 "+$('#dcountry').val());
+		 console.log("제외관심사 "+$('#dtopic').val());
+		 $('#frm').submit();
+	 });
+
+	 $('#show-filters').on('click',function() {
+	 var url = '${pageContext.request.contextPath}/resources/template/assets/data/country.json';
+		 $.getJSON(url,function(data) {
+			 $.each(data,function(key,value) {
+				 $('#country-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
+				 $('#dcountry-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
+	 		});
+		 });
+	 });
+	
+	
+	 $('#country-op').on('change',function(){
+		 var value = this.value;
+		 if (countryCnt == 5) return;
+		 $('#append-op').append("<span class='append-label' id='"+value+"' onclick="+"'deleteCountry(\""+ value + "\")'>"+value+"</span>");
+		 countryCnt++;
+	 });		
+	
+	 $('#dcountry-op').on('change',function(){
+		 var value = this.value;
+		 if (dcountryCnt == 5) return;
+		 $('#append-dop').append("<span class='append-label' id='dis"+value+"' onclick="+"'deleteCountry(\"dis"+ value + "\")'>"+value+"</span>");
+		 dcountryCnt++;
+	 });	
+	
+	
 });
-	function deleteCountry(val) {
- 		$('#'+val).remove();
- 		
- 		if(val.substring(0,3)=="dis"){
- 			dcountryCnt--;
- 		}else{
-	     	countryCnt--; 
- 		}
-	};
-
+	
+	 function deleteCountry(val) {
+		 $('#'+val).remove();
+	
+		 if(val.substring(0,3)=="dis"){
+		 	dcountryCnt--;
+		 }else{
+		 	countryCnt--; 
+		 }
+	 };
+	
 </script>
 <body>
 	<!-- Pageloader -->
@@ -484,52 +495,59 @@
 				<div class="card-row">
 					<!-- /partials/pages/friends/friend-lists/all-friends.html -->
 					<!--Friend-->
-					<c:forEach items="${searchList }" var="vo">
-						<div class="card-flex friend-card" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
-							<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
-								<div class="img-container">
-									<img class="avatar" src="https://via.placeholder.com/300x300"
-										data-demo-src="resources/template/assets/img/avatars/david.jpg"
-										alt=""> <img class="flag"
-										src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
-										alt="">
-								</div>
-								<div class="friend-info" >
-								<div class="friend-name textFilter-match">${vo.name }</div>
-									<div class="friend-location">
-										<span><svg viewBox="0 0 24 24" width="15"
-												height="15" stroke="currentColor" stroke-width="2"
-												fill="none" stroke-linecap="round"
-												stroke-linejoin="round" class="css-i6dzq1">
-												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-												<circle cx="12" cy="10" r="3"></circle></svg></span> <span
-											id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+					<c:choose>
+					    <c:when test="${fn:length(searchList) == 0}">
+					       <div class="no-result">No matching results</div>
+					    </c:when>
+					    <c:otherwise>
+							<c:forEach items="${searchList }" var="vo">
+									<div class="card-flex friend-card" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
+										<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
+											<div class="img-container">
+												<img class="avatar" src="https://via.placeholder.com/300x300"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag"
+													src="${vo.flag }"
+													alt="">
+											</div>
+											<div class="friend-info" >
+											<div class="friend-name textFilter-match">${vo.name }</div>
+												<div class="friend-location">
+													<span><svg viewBox="0 0 24 24" width="15"
+															height="15" stroke="currentColor" stroke-width="2"
+															fill="none" stroke-linecap="round"
+															stroke-linejoin="round" class="css-i6dzq1">
+															<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+															<circle cx="12" cy="10" r="3"></circle></svg></span> <span
+														id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+												</div>
+											</div>
+										</a>
+										<div class="friend-stats">
+											<div class="stat-block">
+												<label>Following</label>
+												<div class="stat-number" >
+												${vo.followingCnt }
+												</div>
+											</div>
+											<div class="stat-block">
+												<label>Posts</label>
+												<div class="stat-number">
+													${vo.feedCnt }
+												</div>
+											</div>
+											<div class="stat-block">
+												<label>Followers</label>
+												<div class="stat-number">
+													${vo.followerCnt }
+												</div>
+											</div>
+										</div>
 									</div>
-								</div>
-							</a>
-							<div class="friend-stats">
-								<div class="stat-block">
-									<label>Following</label>
-									<div class="stat-number" >
-									${vo.followingCnt }
-									</div>
-								</div>
-								<div class="stat-block">
-									<label>Posts</label>
-									<div class="stat-number">
-										${vo.feedCnt }
-									</div>
-								</div>
-								<div class="stat-block">
-									<label>Followers</label>
-									<div class="stat-number">
-										${vo.followerCnt }
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-					</c:forEach>
+								</a>
+							</c:forEach>
+					     </c:otherwise>
+					 </c:choose>
 				</div>
 			</div>
 
@@ -547,7 +565,7 @@
 									<img class="avatar" src="https://via.placeholder.com/300x300"
 										data-demo-src="resources/template/assets/img/avatars/david.jpg"
 										alt=""> <img class="flag"
-										src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
+										src="${vo.flag }"
 										alt="">
 								</div>
 								<div class="friend-info" >
@@ -597,56 +615,63 @@
 				<div class="card-row">
 					<!-- /partials/pages/friends/friend-lists/starred-friends.html -->
 					<!--Friend-->
-					<c:forEach items="${newList }" var="vo">
-						<div class="card-flex friend-card">
-							<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
-								<div class="img-container">
-									<img class="avatar" src="https://via.placeholder.com/300x300"
-										data-demo-src="resources/template/assets/img/avatars/david.jpg"
-										alt=""> <img class="flag"
-										src="resources/template/assets/img/icons/flags/${fn:toLowerCase(vo.country)}.svg"
-										alt="">
-								</div>
-								<div class="friend-info" >
-								<div class="friend-name textFilter-match">${vo.name }</div>
-								<script type="text/javascript">														
-									document.write(timeForToday('${vo.reg_date}'));
-								</script>
-									<div class="friend-location">
-										<span><svg viewBox="0 0 24 24" width="15"
-												height="15" stroke="currentColor" stroke-width="2"
-												fill="none" stroke-linecap="round"
-												stroke-linejoin="round" class="css-i6dzq1">
-												<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-												<circle cx="12" cy="10" r="3"></circle></svg></span> <span
-											id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+					<c:choose>
+					    <c:when test="${fn:length(newList) == 0}">
+					       <div class="no-result">No matching results</div>
+					    </c:when>
+					    <c:otherwise>
+								<c:forEach items="${newList }" var="vo">
+								<div class="card-flex friend-card">
+									<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
+										<div class="img-container">
+											<img class="avatar" src="https://via.placeholder.com/300x300"
+												data-demo-src="resources/template/assets/img/avatars/david.jpg"
+												alt=""> <img class="flag"
+												src="${vo.flag }"
+												alt="">
+										</div>
+										<div class="friend-info" >
+										<div class="friend-name textFilter-match">${vo.name }</div>
+										<script type="text/javascript">														
+											document.write(timeForToday('${vo.reg_date}'));
+										</script>
+											<div class="friend-location">
+												<span><svg viewBox="0 0 24 24" width="15"
+														height="15" stroke="currentColor" stroke-width="2"
+														fill="none" stroke-linecap="round"
+														stroke-linejoin="round" class="css-i6dzq1">
+														<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+														<circle cx="12" cy="10" r="3"></circle></svg></span> <span
+													id="friend-city textFilter-match">${vo.city}, ${vo.country}</span>
+											</div>
+										</div>
+								
+									</div>
+									<div class="friend-stats">
+										<div class="stat-block">
+											<label>Following</label>
+											<div class="stat-number" >
+											${vo.followingCnt }
+			
+											</div>
+										</div>
+										<div class="stat-block">
+											<label>Posts</label>
+											<div class="stat-number">
+												${vo.feedCnt }
+											</div>
+										</div>
+										<div class="stat-block">
+											<label>Followers</label>
+											<div class="stat-number">
+												${vo.followerCnt }
+											</div>
+										</div>
 									</div>
 								</div>
-						
-							</div>
-							<div class="friend-stats">
-								<div class="stat-block">
-									<label>Following</label>
-									<div class="stat-number" >
-									${vo.followingCnt }
-	
-									</div>
-								</div>
-								<div class="stat-block">
-									<label>Posts</label>
-									<div class="stat-number">
-										${vo.feedCnt }
-									</div>
-								</div>
-								<div class="stat-block">
-									<label>Followers</label>
-									<div class="stat-number">
-										${vo.followerCnt }
-									</div>
-								</div>
-							</div>
-						</div>
-					</c:forEach>
+							</c:forEach>
+					     </c:otherwise>
+					 </c:choose>
 				</div>
 			</div>
 		</div>
@@ -2592,7 +2617,12 @@
 	</div>
 
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
  <script>
 	feather.replace()
+	
+	$('select').select2({
+		placeholder: '선택하여 주십시오.'
+	});
 </script> 
 </html>

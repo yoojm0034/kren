@@ -326,7 +326,7 @@ $(function() {
 });
 
 //----------------------------------언어 레벨-----------------------------------
-function level(e) {
+function levelChange(e) {
 	$("#language2_level").val(e);
 };
 
@@ -509,7 +509,7 @@ $(function() {
 									<div class="control">
 										<input type="text" class="input" id="email" name="email"
 											value="${profile.email }" style="width: 220px">
-										<button class="button is-solid dark-grey-button"
+										<button class="button is-solid dark-grey-button" type="button"
 											id="emailCheck">코드발송</button>
 									</div>
 								</div>
@@ -520,7 +520,7 @@ $(function() {
 									<div class="control">
 										<input type="text" class="input" style="width: 220px"
 											id="inputCode" name="inputCode">
-										<button class="button is-solid dark-grey-button"
+										<button class="button is-solid dark-grey-button" type="button"
 											id="codeCheck" value="unchecked">코드확인</button>
 									</div>
 								</div>
@@ -547,7 +547,7 @@ $(function() {
 								<div class="field">
 									<label>Language</label>
 									<div class="control">
-										<select name="level" id="level" onchange="level(this.options[this.selectedIndex].value)"
+										<select name="level" id="level" onchange="levelChange(this.options[this.selectedIndex].value)"
 											style="width: 75%; font-size: 12pt;">
 											<option value="1"
 												<c:if test="${profile.language2_level == 1}">selected</c:if>>Beginner</option>

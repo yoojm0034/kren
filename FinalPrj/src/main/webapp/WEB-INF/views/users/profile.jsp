@@ -182,11 +182,11 @@ $(document).ready(function() {
     
 		// 시간출력
 		var date = new Date();
-		var a = moment.tz(date, $('#timezone').val());
+		var a = moment.tz(date, $('#timezone2').val());
 		$('#localTime').text(a.format('LT'));
 
 		// 언어 레벨 
-		var level = Number($('#level').val());
+		var level = Number($('#language2_level2').val());
 		var result = "";
 			switch(level) {
 			  case 1 : 
@@ -339,8 +339,8 @@ function follow(check) {
 						</div>
 						<input type="text" id="lat2" value="${profile.lat }" hidden="hidden" /> 
 						<input type="text" id="lon2" value="${profile.lon }" hidden="hidden" /> 
-						<input type="text" id="timezone" value="${profile.timezone }" hidden="hidden" />
-						<input type="text" id="level" value="${profile.language2_level }" hidden="hidden" /> 
+						<input type="text" id="timezone2" value="${profile.timezone }" hidden="hidden" />
+						<input type="text" id="language2_level2" value="${profile.language2_level }" hidden="hidden" /> 
 						<input type="text" id="user_id" value="${profile.user_id }" hidden="hidden" />
 						<script async
 							src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>

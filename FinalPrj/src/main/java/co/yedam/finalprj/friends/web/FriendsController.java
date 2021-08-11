@@ -31,10 +31,6 @@ public class FriendsController {
 	
 	@Autowired TopicService topicDao;
 	
-	@RequestMapping("friendSearch.do")
-	public String feiendSearch() {
-		return "friends/friendSearch";
-	}
 	
 	// 팔로우
 	@RequestMapping(value="follow.do", method = RequestMethod.POST)
@@ -72,7 +68,7 @@ public class FriendsController {
 	
 
 	//친구검색화면 
-	@RequestMapping("friendSearch1.do")
+	@RequestMapping("friendSearch.do")
 	public String allUserList(UsersVO vo,Model model,Authentication auth){
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
@@ -95,9 +91,7 @@ public class FriendsController {
 		String id = (String) user.getUsername();
 
 		vo.setUser_id(id);
-		vo = userDao.usersSelect(vo);	
-		vo.setTopic(vo.getTopic());
-		
+
 		if(vo.getS_age().equals("") || vo.getE_age().equals("") ){
 			vo.setS_age(null);
 		}
@@ -127,7 +121,12 @@ public class FriendsController {
 		}
 		
 		model.addAttribute("searchList",FriendsDao.searchFriend(vo));
-		model.addAttribute("allList",FriendsDao.allUser(vo));
+		
+		UsersVO uvo = new UsersVO();
+		uvo = userDao.usersSelect(vo);	
+		uvo.setTopic(uvo.getTopic());
+
+		model.addAttribute("allList",FriendsDao.allUser(uvo));
 		model.addAttribute("newList",FriendsDao.newUser(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
 		return "friends/friendSearch";
