@@ -42,8 +42,8 @@ public interface UsersService {
 	public void logout(HttpSession session);
 	
 	//아이디 비밀번호 찾기...
-	public UsersVO findId(String email);
-	public void findPw(UsersVO vo);
+	UsersVO findId(String user_id);
+	UsersVO findPw(UsersVO vo);
 	
 	
 	//-----------------관리자-----------------------
@@ -52,4 +52,6 @@ public interface UsersService {
 	//-----------------신고-----------------------
 	int reportUpdatePlus(UsersVO vo);
 	int reportUpdateMinus(UsersVO vo);
+	
+	
 }

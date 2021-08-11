@@ -63,18 +63,7 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public void logout(HttpSession session) {
 		
-	}
 
-	//아이디 비밀번호 찾기...
-	@Override
-	public UsersVO findId(String email) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void findPw(UsersVO vo) {
-		
 	}
 
 	@Override
@@ -133,6 +122,19 @@ public class UsersServiceImpl implements UsersService {
 	public int reportUpdateMinus(UsersVO vo) {
 		// TODO Auto-generated method stub
 		return loginmap.reportUpdateMinus(vo);
+	}
+
+	//아이디, 비밀번호 찾기
+	@Override
+	public UsersVO findId(String user_id) {
+		// TODO Auto-generated method stub
+		return loginmap.findId(user_id);
+	}
+
+	@Override
+	public UsersVO findPw(UsersVO vo) {
+		// TODO Auto-generated method stub
+		return loginmap.findPw(vo);
 	}
 
 }

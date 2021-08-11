@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,7 +47,7 @@ public class UserLoginController {
 		return vo;
 	}
 
-	// ------------------------------------아이디/비밀번호 찾기...
+	// ------------------------------------아이디 찾기...
 	@RequestMapping("find/find.do")
 	public String findIdPw() {
 		return "no/find/findIdPw";
@@ -59,23 +60,15 @@ public class UserLoginController {
 		return "no/find/findId";
 	}
 
-	// 아이디찾기 2페이지-아이디 노출, 로그인 페이지로 이동...
-	@RequestMapping("find/findID2.do")
-	public ModelAndView findID2(ModelAndView mav, HttpServletRequest request, UsersVO vo) {
-//		String email = request.getParameter("email");
-//
-//		mav.addObject(usersDao.findId(email));
-		mav.setViewName("no/find/findId2");
-
-		return mav;
-	}
-
 	// 인증번호 이메일 발송 기능...
 	@RequestMapping("find/mailCheck.do")
 	@ResponseBody
 	public int mailCheck(HttpServletRequest request, UsersVO vo) throws IOException {
 		String email = vo.getEmail();
 		int uvo = usersDao.emailCheck(email); // 쿼리 값을 받아옴
+		
+		request.getSession().setAttribute("email", email);
+		System.out.println("세션에 담긴 이메일: " + email);
 
 		if (uvo == 0) {
 			// DB에 동일 이메일이 없을 경우...0으로 뷰의 res에 넘긴다.
@@ -138,10 +131,93 @@ public class UserLoginController {
 		return false;
 	}
 
-	@RequestMapping("findPW.do")
+	// 아이디찾기 2페이지-아이디 노출, 로그인 페이지로 이동...
+	@RequestMapping("find/findID2.do")
+	public String findID2(Model model, HttpServletRequest request, UsersVO vo) {
+		String id = vo.getUser_id();
+		System.out.println("넘어와야하는 아이디값: " + id);
+
+		return "no/find/findId2";
+	}
+
+	// ------------------------------------비밀번호 찾기...
+	@RequestMapping("find/findPW.do")
 	public String findPW() {
 
-		return "find/findPw";
+		return "no/find/findPw";
+	}
+	
+	// 아이디 체크...
+	@RequestMapping("find/idCheck.do")
+	@ResponseBody
+	public boolean idCheck(HttpServletRequest request, UsersVO vo)throws IOException {
+		String id = vo.getUser_id();
+		//UsersVO uvo = usersDao.findId(id);
+		java.lang.String uvo2 = request.getParameter("user_id");
+		
+		System.out.println("input 아이디: " + id);
+		//System.out.println("조회된 아이디: " + (uvo != null? uvo.getUser_id() :"없다"));
+		System.out.println("조회된 아이디2: " + (uvo2));
+
+		if (uvo2 != null) {
+			return true;
+		} 
+		return false;
+	}
+	
+	// 임시비밀번호 이메일 발송
+	@RequestMapping("find/pwSendMail.do")
+	@ResponseBody
+	public int pwSendMail(HttpServletRequest request, UsersVO vo) throws IOException {
+		String email = vo.getEmail();
+		int uvo = usersDao.emailCheck(email); // 쿼리 값을 받아옴
+			
+		request.getSession().setAttribute("email", email);
+
+		if (uvo == 0) {
+			// DB에 동일 이메일이 없을 경우...0으로 뷰의 res에 넘긴다.
+			return 0;
+		} else {
+
+			Random r = new Random();
+			int imsiPw = r.nextInt(4589362) + 49311; // 임시비밀번호 생성 (난수)
+
+			String setfrom = "5524yina@gamil.com"; // 보내는 사람 이메일(삭제하면 기능하지않음)
+			String tomail = vo.getEmail(); // 받는 사람 이메일
+			String title = "[kren]아이디 찾기-이메일 인증번호 발송"; // 이메일 제목
+			String content =
+
+							System.getProperty("line.separator") + // 줄간격을 띄우기 위한 코드
+
+							System.getProperty("line.separator") +
+
+							" 임시비밀번호: " + imsiPw + ". "
+
+							+ System.getProperty("line.separator") +
+
+							System.getProperty("line.separator") +
+
+							"일회성 비밀번호이기 때문에 로그인 후 비밀번호를 꼭 변경해주세요."; // 내용
+			
+			System.out.println("발송된 인증번호: " + imsiPw);
+			request.getSession().setAttribute("imsiPw", imsiPw); 
+			//임시비밀번호 update 필요함...
+
+			try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+				messageHelper.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+				messageHelper.setTo(tomail); // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content); // 메일 내용
+
+				mailSender.send(message);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			return 1; // DB에 동일 이메일이 있으면...1로 뷰의 res에 넘기며 이메일을 발송한다.
+		}
 	}
 
 }

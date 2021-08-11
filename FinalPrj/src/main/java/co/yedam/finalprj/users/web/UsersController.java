@@ -298,6 +298,12 @@ public class UsersController {
 	    return new FileOutputStream(imageFile);
 	}
 
+	//회원탈퇴 페이지
+	@RequestMapping("usersDelete.do")
+	public String usersDelete() {
+		return "users/usersDelete";
+	} 	
+	
 	//관리자 
 	//유저목록
 	@RequestMapping("admin/usersList.do")

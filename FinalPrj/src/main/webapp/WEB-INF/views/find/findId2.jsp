@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -45,7 +46,7 @@ function() {
                         <div class="login-form">
                             <div class="form-panel">
                                 <div class="field">
-                                    ${user.user_id}
+                                    ${id}
                                 </div>
                             </div>
 						<br>

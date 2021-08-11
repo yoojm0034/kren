@@ -257,6 +257,10 @@ a[href^="https://maps.google.com/maps"] {
 	resize: none;
 }
 
+.button {
+	font-family: 'ONE-Mobile-Regular';
+}
+
 #deleteBtn { display: inline; cursor: pointer;}
 
 #deleteBtn svg { vertical-align: bottom;}
@@ -567,14 +571,17 @@ $(function() {
 								<div class="field">
 									<label>Location</label>
 									<div class="control">
-										<a class="button is-solid dark-grey-button"
-											onclick="getLocation()" style="padding-top: 0.5rem;">위치확인</a>
+										<button class="button is-solid dark-grey-button" type="button"
+											onclick="getLocation()">내 위치조회</button>
 										<span id="city2" style="padding-left: 1rem"></span><span
 											id="country2"></span>
 									</div>
 								</div>
 							</div>
 						</div>
+							<div>
+							<button class="button" type="button" onclick="location.href='usersDelete.do'">계정삭제</button>
+							</div>
 					</div>
 				</div>
 
