@@ -735,41 +735,40 @@ $(document).ready(function(){
 		    commentc(num, frmbtn, fd, fu);
 		});
 		
-// 		//-------교정댓글삭제 그룹이벤트-------- 		
-// 		$('body').on('click','#cdel', function() {
-// 			var delcmt = $(this).data('delcmt');
-// 			var delcmtfeed = $(this).data('delcmtfeed');
-// 			var delidx = $(this).data('idx');
-// 			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
-// 			var span = $('span[data-minicmt="'+delidx+'"]');
-// 			//-------댓글삭제-------
-// 			if(confirm('삭제하시겠습니까?')) {
-// 				$.ajax({
-// 					url: '${pageContext.request.contextPath}/commentcDelete.do',
-// 					method: 'post',
-// 					data: JSON.stringify({cc_id:delcmt}),
-// 					contentType:'application/json; charset=UTF-8',
-// 					success: function(data) {
-// 						alert('댓글삭제성공!');
-// 						del.remove();
-// 						//-------댓글수-1-------
-// 						$.ajax({
-// 							url: '${pageContext.request.contextPath}/commentCnt.do',
-// 							method: 'post',
-// 							data: {feed_id:delcmtfeed},
-// 							success: function(cnt) {
-// 								var cnt = cnt;
-// 								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments ('+cnt+')');
-// 								span.html(cnt);
-// 							}
-// 						});
-// 					},
-// 					error: function(e) {
-// 						alert('댓글삭제실패!');
-// 					}
-// 				});
-// 			}		
-// 		});
+		//-------교정댓글삭제 그룹이벤트-------- 		
+		$('body').on('click','#cdel', function() {
+			var delcmt = $(this).data('delcmt');
+			var delcmtfeed = $(this).data('delcmtfeed');
+			var delidx = $(this).data('idx');
+			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
+			var span = $('span[data-minicmt="'+delidx+'"]');
+			//-------댓글삭제-------
+			if(confirm('삭제하시겠습니까?')) {
+				$.ajax({
+					url: '${pageContext.request.contextPath}/commentcDelete.do',
+					method: 'post',
+					data: {cc_id:delcmt},
+					success: function(data) {
+						alert('댓글삭제성공!');
+						del.remove();
+						//-------댓글수-1-------
+						$.ajax({
+							url: '${pageContext.request.contextPath}/commentCnt.do',
+							method: 'post',
+							data: {feed_id:delcmtfeed},
+							success: function(cnt) {
+								var cnt = cnt;
+								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments ('+cnt+')');
+								span.html(cnt);
+							}
+						});
+					},
+					error: function(e) {
+						alert('댓글삭제실패!');
+					}
+				});
+			}		
+		});
 		
 	});
 	
