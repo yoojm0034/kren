@@ -6,13 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.finalprj.commentDetail.service.CommentDetailService;
 import co.yedam.finalprj.commentDetail.vo.CommentDetailVO;
+import co.yedam.finalprj.comments.vo.CommentsVO;
 
 @Controller
 public class CommentDetailController {
@@ -55,5 +59,17 @@ public class CommentDetailController {
 	    }
 		return r;
 	}
+	
+//	// 댓글입력 jsp
+//	@RequestMapping("commentInsertData.do")
+//	public String commentInsertData(CommentsVO vo, Model model, Authentication auth) {
+//		User user = (User) auth.getPrincipal();
+//		String Sessionid = (String) user.getUsername();
+//		vo.setUser_id(Sessionid);
+//	
+//		model.addAttribute("cmt", CommentDao.commentInsertData(vo));
+//		System.out.println(CommentDao.commentInsertData(vo));
+//	return "no/feed/comment";
+//	}
 	
 }
