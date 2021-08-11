@@ -27,6 +27,34 @@
 	   </foreach>
 	</insert>
 	
+	<!-- INSERT 정보 -->
+	<select id="commentDetailData" parameterType="co.yedam.finalprj.comments.vo.CommentsVO"
+	resultType="co.yedam.finalprj.comments.vo.CommentsVO">
+		SELECT C.*, U.NAME, D.LINE, D.CONTENT, D.ORIGIN, #{idx} AS IDX
+		FROM USERS U, COMMENTC C, COMMENT_DETAIL D
+		WHERE U.USER_ID=C.USER_ID AND C.CC_ID=D.CC_ID
+		AND
+		    D.CC_ID = (
+		                SELECT DISTINCT FIRST_VALUE(CC_ID) OVER(ORDER BY REG_DATE DESC) AS CC_ID
+		                FROM COMMENTC
+		                WHERE FEED_ID=#{feed_id} AND USER_ID=#{user_id}
+		                )
+		ORDER BY LINE
+	</select>
+	
+	<!-- INSERT 정보 -->
+	<select id="commentDetailDataOne" parameterType="co.yedam.finalprj.comments.vo.CommentsVO"
+	resultType="co.yedam.finalprj.comments.vo.CommentsVO">
+		SELECT CC_ID, FEED_ID, USER_ID, REG_DATE, #{idx} AS IDX
+		FROM  COMMENTC
+		WHERE CC_ID = (
+		                SELECT DISTINCT FIRST_VALUE(CC_ID) OVER(ORDER BY REG_DATE DESC) AS CC_ID
+		                FROM COMMENTC
+		                WHERE FEED_ID=#{feed_id} AND USER_ID=#{user_id}
+		                )
+	</select>
+	<!-- /COMMENTC 작성 후 작동 -->
+	
 	<delete id="deleteCommentDetail" parameterType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO">
 			
 	</delete>

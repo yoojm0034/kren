@@ -60,16 +60,17 @@ public class CommentDetailController {
 		return r;
 	}
 	
-//	// 댓글입력 jsp
-//	@RequestMapping("commentInsertData.do")
-//	public String commentInsertData(CommentsVO vo, Model model, Authentication auth) {
-//		User user = (User) auth.getPrincipal();
-//		String Sessionid = (String) user.getUsername();
-//		vo.setUser_id(Sessionid);
-//	
-//		model.addAttribute("cmt", CommentDao.commentInsertData(vo));
-//		System.out.println(CommentDao.commentInsertData(vo));
-//	return "no/feed/comment";
-//	}
+	// 댓글입력 jsp
+	@RequestMapping("commentDetailData.do")
+	public String commentInsertData(CommentsVO vo, Model model, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setUser_id(Sessionid);
+	
+		model.addAttribute("cc", commentDetailDao.commentDetailDataOne(vo));
+		model.addAttribute("cd", commentDetailDao.commentDetailData(vo));
+		System.out.println(commentDetailDao.commentDetailData(vo));
+	return "no/feed/cmtc";
+	}
 	
 }

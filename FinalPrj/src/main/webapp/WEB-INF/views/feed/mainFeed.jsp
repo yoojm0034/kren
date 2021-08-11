@@ -698,7 +698,7 @@ $(document).ready(function(){
 //--------신고END----------------------------------------
 //--------교정START--------------------------------------
 	$(function() {
-		$('#load').each(function(i, el){
+		$("div[id^='load_'").each(function(i, el){
 			var cid = $(this).data('cid');//cc_id.line
 			var cdc = $(this).data('cdc');//content
 			var cdo = $(this).data('cdo');//origin
@@ -720,9 +720,9 @@ $(document).ready(function(){
 		$("body").on('click', '#feedcor',  function() {
 		    var fid = $(this).data('fid');		//feed_id;
 		    var fidx = $(this).data('fidx');	//status.index;
+		    var fuser = $(this).data('fuser');	//feed_user_id;
 		    var a = $('div[data-fidx="'+fidx+'"]');
-		    console.log(fid, fidx);
-		    add(fid, fidx);
+		    add(fid, fidx, fuser);
 		    a.remove();
 		});
 		
@@ -731,13 +731,14 @@ $(document).ready(function(){
 		    var num = $(this).data('num');			//row
 		    var frmbtn = $(this).data('frmbtn');	//idx
 		    var fd = $(this).data('fd');	//feed_id
-		    commentc(num, frmbtn, fd);
+		    var fu = $(this).data('fu');	//feed_user_id
+		    commentc(num, frmbtn, fd, fu);
 		});
 		
 	});
 	
 	//----------교정테이블 추가------------------------------
-	function add(fid, fidx) {
+	function add(fid, fidx, fuser) {
 		var p = $('#tdiv'+fid).prev().text();//내용
 		
 	    var result = p.split(".");
@@ -759,14 +760,14 @@ $(document).ready(function(){
 		}
 		var tr2 = $('<tr>');
 		var col = $('<td colspan="2">');
-		var submit = $('<button type="button" id="frmBtn" data-fd="'+fid+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
+		var submit = $('<button type="button" id="frmBtn" data-fd="'+fid+'" data-fu="'+fuser+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
 		col.append(submit);
 		tr2.append(col);
 		tbl.append(tr2)
 		div.append(tbl);
 	} //function add
 	
-	function commentc(row, idx, fid) {
+	function commentc(row, idx, fid, fuser) {
 	    var corr = ""; // 교정문장
 	    var cont = ""; // 원문장
 		for (var i=0; i <= row; i++) {
@@ -815,26 +816,26 @@ $(document).ready(function(){
 		 			success:function(r){
 		 				alert("작성되었습니다!");
 		 				$('div[data-table="'+idx+'"]').remove();//교정테이블 삭제
-						//입력된 값 조회 후 jsp
+// 						//입력된 값 조회 후 jsp
 // 						$.ajax({
-// 							url: '${pageContext.request.contextPath}/commentInsertData.do',
+// 							url: '${pageContext.request.contextPath}/commentDetailData.do',
 // 							method: 'post',
-// 							data: {feed_id:feedid,user_id:'${user.user_id}',name:'${user.name}',idx:scr},
+// 							data: {feed_id:fid,user_id:'${user.user_id}',name:'${user.name}',idx:idx},
 // 							success: function(data) {
-// 								scroll.append(data);
-// 								scroll.scrollTop(scroll.prop('scrollHeight'));
-// 								$('textarea[data-content="'+feedid+'"]').val('');
+// 								console.log(data);
+								
+								
 // 								//-------댓글수+1-------
 // 								$.ajax({
 // 									url: '${pageContext.request.contextPath}/commentCnt.do',
 // 									method: 'post',
-// 									data: {feed_id:feedid},
+// 									data: {feed_id:fid},
 // 									success: function(cnt) {
 // 										var cnt = cnt;
 // 										console.log(cnt);
-// 										$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
+// 										$('div[data-card="'+idx+'"]').children().eq(0).html('Comments ('+cnt+')');
 // 										span2.html(cnt);
-// 										sendTextPush(feeduser, feedid);
+// 										sendTextPush(fuser, fid);
 // 									}
 // 								});//댓글수+1
 // 							}
@@ -1497,7 +1498,7 @@ $(document).ready(function(){
 														<a class="dropdown-item">
 															<div class="media">
 																<div class="media-content" id="feedcor" data-fid="${vo.feed_id }"
-																data-fidx="${status.index }">
+																data-fidx="${status.index }" data-fuser="${vo.user_id }" >
 																	<h3>교정</h3>
 																</div>
 															</div>
@@ -1819,9 +1820,9 @@ $(document).ready(function(){
 													</script>
 													</span>
 													<!-- 교정댓글이면, line을 반복 -->
-													<c:forEach items="${cdList }" var="cd" varStatus="stat">
+													<c:forEach items="${cdList }" var="cd">
 														<c:if test="${cmt.comment_id eq cd.cc_id }">
-														<div id="load" data-cid="${cd.cc_id }${cd.line}"
+														<div id="load_${cd.cc_id }${cd.line}" data-cid="${cd.cc_id }${cd.line}"
 														data-cdc="${cd.content }"
 														data-cdo="${cd.origin }">${cd.content }</div>
 														</c:if>

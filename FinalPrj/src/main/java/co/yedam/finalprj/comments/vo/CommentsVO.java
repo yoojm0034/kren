@@ -15,4 +15,6 @@ public class CommentsVO {
 	private String name;
 	private String idx;
 	private int line;
+	private String origin;
+	private String cc_id;
 }
