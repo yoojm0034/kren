@@ -126,15 +126,15 @@ public class UsersServiceImpl implements UsersService {
 
 	//아이디, 비밀번호 찾기
 	@Override
-	public UsersVO findId(String user_id) {
+	public UsersVO findId(String email) {
 		// TODO Auto-generated method stub
-		return loginmap.findId(user_id);
+		return loginmap.findId(email);
 	}
 
 	@Override
-	public UsersVO findPw(UsersVO vo) {
+	public int findPwUpdate(UsersVO vo) {
 		// TODO Auto-generated method stub
-		return loginmap.findPw(vo);
+		return loginmap.findPwUpdate(vo);
 	}
 
 }
