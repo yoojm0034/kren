@@ -78,12 +78,12 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public UsersVO idCheck(String id) {
+	public int idCheck(String id) {
 		return map.idCheck(id);
 	}
 
 	@Override
-	public UsersVO nameCheck(String name) {
+	public int nameCheck(String name) {
 		return map.nameCheck(name);
 	}
 

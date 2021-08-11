@@ -155,13 +155,16 @@ public class UsersController {
 		String Sessionid = (String) user.getUsername();
 		vo.setUser_id(Sessionid);
 		
+		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+		vo.setPassword(scpwd.encode(vo.getPassword()));
+		
 		System.out.println(vo);
 		usersDao.usersUpdate(vo);
 		return "redirect:profile.do?user_id="+Sessionid;
 	}	
 	
 	
-	// 회원가입
+	// 회원가입 폼
 	@RequestMapping("userJoin/userJoinForm.do")
 	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model) {
 	model.addAttribute("topiclist", topicDao.topicSelectList());
@@ -173,11 +176,7 @@ public class UsersController {
 	@ResponseBody
 	public int userIdCheck(HttpServletRequest request) {
 		String id = request.getParameter("id");
-		System.out.println(id);
-		int cnt = 0;
-		if(usersDao.idCheck(id) != null) {
-			cnt = 1;
-		}
+		int cnt = usersDao.idCheck(id);
 		return cnt;
 	}
 
@@ -186,10 +185,7 @@ public class UsersController {
 	@ResponseBody
 	public int userNameCheck(HttpServletRequest request) {
 		String name = request.getParameter("name");
-		int cnt = 0;
-		if(usersDao.nameCheck(name) != null) {
-			cnt = 1;
-		}
+		int cnt = usersDao.nameCheck(name);
 		return cnt;
 	}
 	
@@ -199,7 +195,6 @@ public class UsersController {
 	public int userEmailCheck(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		int cnt = usersDao.emailCheck(email);
-		System.out.println(cnt);
 		return cnt;
 	}
 	
@@ -218,9 +213,9 @@ public class UsersController {
 //		byte[] imgBytes = Base64.decodeBase64(data.getBytes());
 		
 		System.out.println(vo);
-//		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
-//		vo.setPassword(scpwd.encode(vo.getPassword()));
-//		usersDao.usersInsert(vo);
+		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+		vo.setPassword(scpwd.encode(vo.getPassword()));
+		usersDao.usersInsert(vo);
 	    return "empty/home";
 	}
 	
