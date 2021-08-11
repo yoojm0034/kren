@@ -25,7 +25,7 @@
 	<select id="findId" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		SELECT * 
 		FROM users 
-		WHERE EMAIL = #{email}
+		WHERE EMAIL = #{value}
 	</select>
 	<select id="findPw" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		SELECT * 
