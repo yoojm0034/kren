@@ -22,11 +22,11 @@
 </head>
 <body>
 <script>
-function() {
+/* function() {
 	  $("#loginGo").on("click", function(){
 		  location.href = 'home.do';
 	  });
-};
+}; */
 </script>
 	<!-- Pageloader -->
     <div class="pageloader"></div>

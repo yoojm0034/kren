@@ -127,6 +127,12 @@ public class UserLoginController {
 		System.out.println("세션에 담긴 인증번호: " + dice);
 
 		if (dice.equals(num)) {
+			
+			//여기다가 아이디 호출...해야함
+//			String userEmail = request.getParameter("email");
+//			
+//			System.out.println("이메일: " + userEmail);
+			
 			return true;
 		} 
 		return false;
@@ -134,14 +140,18 @@ public class UserLoginController {
 
 	// 아이디찾기 2페이지-아이디 노출, 로그인 페이지로 이동...
 	@RequestMapping("find/findID2.do")
-	public String findID2(Model model, HttpServletRequest request, UsersVO vo) {
-		request.getParameter("email");
-//		String id = usersDao.findId();
-//		
-//		request.setAttribute("userId", id);
-//		
-//		System.out.println(email);
-
+	public String findID2(Model model, HttpServletRequest request, UsersVO vo, String email) {
+		String userEmail = request.getParameter(email);
+		java.lang.String uvo = request.getParameter("user_id");
+		
+		System.out.println("vo: " + uvo);
+		
+		
+		model.addAttribute("id", vo);
+//		String id = vo.getUser_id();
+//		System.out.println("조회된 아이디: " + id);
+		
+		//String id = usersDao.findId(id);
 		return "no/find/findId2";
 	}
 

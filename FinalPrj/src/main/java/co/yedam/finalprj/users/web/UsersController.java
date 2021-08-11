@@ -330,6 +330,9 @@ public class UsersController {
 			int r = reportDao.reportUpdateUser(vo);
 			System.out.println(r + "건 수정");
 			//피드 - 회원아이디로 회원이작성한 모든 댓글, 좋아요, 피드, 삭제해야됨
+			//uvo.setUser_id(memberData.updatedRows.get(i).getUser_id());
+			//int k = reportDao.stopUserUpdate(uvo);
+			//System.out.println(k + "건 수정");
 			//편지 - 회원아이디로 회원이 작성한 편지 모두 삭제
 		}
 		data.put("result", true);

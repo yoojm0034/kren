@@ -6,55 +6,115 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- chart.js -->
-<!-- include application-chart.min.css -->
-<link rel="stylesheet"
-	href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
-<script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
 </head>
 </head>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-	$(function() {
+$(function(){
+	$('#btnDay').click(function(){
+		var colors = ['red','blue'];
+		var options = {
+			title : '시간대별 접속자수',
+			width : 1000,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data=0",
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '시간대', '접속자수', { role: 'style' } ])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].TIME+" ", parseInt(data[i].CNT) , colors[i%2] ];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
+				}
+			});
+		});
+	});
+	$('#btnWeek').click(function(){
+		console.log(1)
+		var options = {
+			title : '일별 접속자수',
+			width : 1000,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data=1",
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '일별', '접속자수'])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].TIME+"일", parseInt(data[i].CNT)];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
+				}
+			});
+		});
 
-	      const el = document.getElementById('chart-area');
-	      const data = {
-	        categories: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-	        series: [
-	          {
-	            name: '방문자',
-	            data: [5000, 3000, 5000, 7000, 6000, 4000, 1000],
-	          },
-	          {
-	            name: '회원가입수',
-	            data: [8000, 4000, 7000, 2000, 6000, 3000, 5000],
-	          },
-	          {
-	            name: '새로운피드',
-	            data: [4000, 4000, 6000, 3000, 4000, 5000, 7000],
-	          },
-	          {
-	            name: 'Debt',
-	            data: [3000, 4000, 3000, 1000, 2000, 4000, 3000],
-	          },
-	        ],
-	      };
-	      const options = {
-	        chart: { title: 'Monthly Revenue', width: 900, height: 400 },
-	        xAxis: { pointOnColumn: false, title: { text: 'Month' } },
-	        yAxis: { title: 'Amount' },
-	      };
+	});
+	$('#btnYear').click(function(){
+		console.log(1)
+		var options = {
+			title : '월별 접속자수',
+			width : 1000,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data=3",
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '월별', '접속자수'])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].TIME+"월", parseInt(data[i].CNT)];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
+				}
+			});
+		});
 
-	      const chart = toastui.Chart.areaChart({ el, data, options });	
-	      
+	});
+});	
 
-	})
-	
 </script>
 
 </head>
 <body>
 	<div class="stories-wrapper is-home">
-
+		
 		<!-- 사이드바시작 -->
 		<div class="stories-sidebar is-active">
 			<div class="stories-sidebar-inner">
@@ -157,43 +217,47 @@
 			</div>
 		</div>
 		<!-- 사이드바 종료 -->
-		
+
 		<!-- 컨텐츠 시작 -->
 		<div class="inner-wrapper" style="width: 80%">
-			전체 방문자 수: ${totalCount} 오늘의 방문자 수: ${todayCount}
-			<div id="chart-area"></div>
-		
 
-			
+			<div id="chart-area"></div>
+
+
 		</div>
 		<div class="stories-container">
 			<div class="settings-wrapper">
-				<div class="stories-content">
-					<div class="section-title main-section-title">
-						<h2>통계페이지</h2>
-					</div>
-				</div>
-				<!-- /partials/settings/sections/general-settings.html -->
 				<div id="general-settings" class="settings-section is-active">
 					<div class="settings-panel">
 
 						<div class="title-wrap">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>통계그래프</h2>
-
+							<h2>전체 방문자 수: ${totalCount}</h2>
 						</div>
-
-						<div class="settings-form-wrapper">
-							<div class="illustration">
-
-								<p>
-									If you'd like to learn more about general settings, you can
-									read about it in the <a>user guide</a>.
-								</p>
-							</div>
+						<div class="illustration">
+							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
+							</a>
+							<h2>오늘의 방문자 수: ${todayCount}</h2>
 						</div>
 					</div>
+				</div>
+				<!-- /partials/settings/sections/general-settings.html -->
+				<div id="general-settings" class="settings-section is-active">
+					<div class="settings-panel">
+						<div class="title-wrap">
+							<button id="btnDay" class="button">시간대별</button>
+							<button id="btnWeek" class="button">일별</button>
+							<button id="btnMonth" class="button">월별</button>
+							<button id="btnYear" class="button">연별</button>
+						</div>
+					</div>
+					<div class="settings-panel">
+						<div class="title-wrap">
+							<div id="chart_div"></div>
+						</div>
+					</div>
+				
 				</div>
 				<br>
 				<div id="general-settings" class="settings-section is-active">
@@ -215,140 +279,7 @@
 						</div>
 					</div>
 				</div>
-				<br>
-				<div id="general-settings" class="settings-section is-active">
-					<div class="settings-panel">
-						<div class="title-wrap">
-							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
-							</a>
-							<h2>통계그래프</h2>
-						</div>
-						<div class="settings-form-wrapper">
-							<div class="settings-form">
-								<div class="columns is-multiline flex-portrait">
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="monitor"></i>
-												</div>
-												<h4>Devices</h4>
-												<p>Manage connected devices</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="codesandbox"></i>
-												</div>
-												<h4>Authentication</h4>
-												<p>Authentication settings</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="box"></i>
-												</div>
-												<h4>API</h4>
-												<p>API settings</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="search"></i>
-												</div>
-												<h4>Search</h4>
-												<p>Search settings</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="cloud-snow"></i>
-												</div>
-												<h4>Cloud Settings</h4>
-												<p>Manage storage</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="cpu"></i>
-												</div>
-												<h4>Cache</h4>
-												<p>Cache settings</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="gift"></i>
-												</div>
-												<h4>Reedeem</h4>
-												<p>Reedeem your points</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="command"></i>
-												</div>
-												<h4>Shortcuts</h4>
-												<p>manage shortcuts</p>
-											</div>
-										</a>
-									</div>
-									<!--link-->
-									<div class="column is-4">
-										<a class="setting-sublink">
-											<div class="link-content">
-												<div class="link-icon">
-													<i data-feather="layout"></i>
-												</div>
-												<h4>Layout</h4>
-												<p>Layout settings</p>
-											</div>
-										</a>
-									</div>
-								</div>
-							</div>
-
-							<div class="illustration">
-								<p>
-									If you'd like to learn more about preferences settings, you can
-									read about it in the <a>user guide</a>.
-								</p>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-
+			
 
 			</div>
 		</div>

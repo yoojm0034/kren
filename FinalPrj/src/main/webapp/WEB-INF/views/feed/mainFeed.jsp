@@ -698,7 +698,7 @@ $(document).ready(function(){
 //--------신고END----------------------------------------
 //--------교정START--------------------------------------
 	$(function() {
-		$('#load').each(function(i, el){
+		$("div[id^='load_'").each(function(i, el){
 			var cid = $(this).data('cid');//cc_id.line
 			var cdc = $(this).data('cdc');//content
 			var cdo = $(this).data('cdo');//origin
@@ -720,9 +720,9 @@ $(document).ready(function(){
 		$("body").on('click', '#feedcor',  function() {
 		    var fid = $(this).data('fid');		//feed_id;
 		    var fidx = $(this).data('fidx');	//status.index;
+		    var fuser = $(this).data('fuser');	//feed_user_id;
 		    var a = $('div[data-fidx="'+fidx+'"]');
-		    console.log(fid, fidx);
-		    add(fid, fidx);
+		    add(fid, fidx, fuser);
 		    a.remove();
 		});
 		
@@ -731,13 +731,50 @@ $(document).ready(function(){
 		    var num = $(this).data('num');			//row
 		    var frmbtn = $(this).data('frmbtn');	//idx
 		    var fd = $(this).data('fd');	//feed_id
-		    commentc(num, frmbtn, fd);
+		    var fu = $(this).data('fu');	//feed_user_id
+		    commentc(num, frmbtn, fd, fu);
 		});
+		
+// 		//-------교정댓글삭제 그룹이벤트-------- 		
+// 		$('body').on('click','#cdel', function() {
+// 			var delcmt = $(this).data('delcmt');
+// 			var delcmtfeed = $(this).data('delcmtfeed');
+// 			var delidx = $(this).data('idx');
+// 			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
+// 			var span = $('span[data-minicmt="'+delidx+'"]');
+// 			//-------댓글삭제-------
+// 			if(confirm('삭제하시겠습니까?')) {
+// 				$.ajax({
+// 					url: '${pageContext.request.contextPath}/commentcDelete.do',
+// 					method: 'post',
+// 					data: JSON.stringify({cc_id:delcmt}),
+// 					contentType:'application/json; charset=UTF-8',
+// 					success: function(data) {
+// 						alert('댓글삭제성공!');
+// 						del.remove();
+// 						//-------댓글수-1-------
+// 						$.ajax({
+// 							url: '${pageContext.request.contextPath}/commentCnt.do',
+// 							method: 'post',
+// 							data: {feed_id:delcmtfeed},
+// 							success: function(cnt) {
+// 								var cnt = cnt;
+// 								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments ('+cnt+')');
+// 								span.html(cnt);
+// 							}
+// 						});
+// 					},
+// 					error: function(e) {
+// 						alert('댓글삭제실패!');
+// 					}
+// 				});
+// 			}		
+// 		});
 		
 	});
 	
 	//----------교정테이블 추가------------------------------
-	function add(fid, fidx) {
+	function add(fid, fidx, fuser) {
 		var p = $('#tdiv'+fid).prev().text();//내용
 		
 	    var result = p.split(".");
@@ -759,14 +796,14 @@ $(document).ready(function(){
 		}
 		var tr2 = $('<tr>');
 		var col = $('<td colspan="2">');
-		var submit = $('<button type="button" id="frmBtn" data-fd="'+fid+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
+		var submit = $('<button type="button" id="frmBtn" data-fd="'+fid+'" data-fu="'+fuser+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
 		col.append(submit);
 		tr2.append(col);
 		tbl.append(tr2)
 		div.append(tbl);
 	} //function add
 	
-	function commentc(row, idx, fid) {
+	function commentc(row, idx, fid, fuser) {
 	    var corr = ""; // 교정문장
 	    var cont = ""; // 원문장
 		for (var i=0; i <= row; i++) {
@@ -814,7 +851,36 @@ $(document).ready(function(){
 		 		    contentType : "application/json; charset=UTF-8",
 		 			success:function(r){
 		 				alert("작성되었습니다!");
-		 				$('div[data-table="'+idx+'"]').remove();
+		 				$('div[data-table="'+idx+'"]').remove();//교정테이블 삭제
+						//입력된 값 조회 후 jsp
+						$.ajax({
+							url: '${pageContext.request.contextPath}/commentDetailData.do',
+							method: 'post',
+							data: {feed_id:fid,user_id:'${user.user_id}',name:'${user.name}',idx:idx},
+							success: function(data) {
+								console.log(data);
+								$('div[data-crap="'+idx+'"]').addClass('is-hidden').removeClass('is-active');
+								$('div[data-card="'+idx+'"]').parent().addClass('is-active').removeClass('is-hidden');
+								var scroll = $('div[data-scroll="'+idx+'"]');
+								scroll.append(data);
+								scroll.scrollTop(scroll.prop('scrollHeight'));
+								
+								//-------댓글수+1-------
+								$.ajax({
+									url: '${pageContext.request.contextPath}/commentCnt.do',
+									method: 'post',
+									data: {feed_id:fid},
+									success: function(cnt) {
+										var cnt = cnt;
+										console.log(cnt);
+										$('div[data-card="'+idx+'"]').children().eq(0).html('Comments ('+cnt+')');
+										var span2 = $('span[data-minicmt="'+idx+'"]');
+										span2.html(cnt);
+										sendTextPush(fuser, fid);
+									}
+								});//댓글수+1
+							}
+						});
 		 			},error:function(e){
 		 				console.log(e);
 		 			}
@@ -1473,7 +1539,7 @@ $(document).ready(function(){
 														<a class="dropdown-item">
 															<div class="media">
 																<div class="media-content" id="feedcor" data-fid="${vo.feed_id }"
-																data-fidx="${status.index }">
+																data-fidx="${status.index }" data-fuser="${vo.user_id }" >
 																	<h3>교정</h3>
 																</div>
 															</div>
@@ -1795,9 +1861,9 @@ $(document).ready(function(){
 													</script>
 													</span>
 													<!-- 교정댓글이면, line을 반복 -->
-													<c:forEach items="${cdList }" var="cd" varStatus="stat">
+													<c:forEach items="${cdList }" var="cd">
 														<c:if test="${cmt.comment_id eq cd.cc_id }">
-														<div id="load" data-cid="${cd.cc_id }${cd.line}"
+														<div id="load_${cd.cc_id }${cd.line}" data-cid="${cd.cc_id }${cd.line}"
 														data-cdc="${cd.content }"
 														data-cdo="${cd.origin }">${cd.content }</div>
 														</c:if>
@@ -1806,7 +1872,7 @@ $(document).ready(function(){
 													<c:if test="${cmt.user_id eq user.user_id }">
 													<div class="controls">
 														<div class="edit">
-															<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
+															<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
 															data-idx="${status.index }">삭제</a>
 														</div>
 													</div>

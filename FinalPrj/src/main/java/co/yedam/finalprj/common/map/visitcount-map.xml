@@ -14,4 +14,55 @@
 		from TB_VISITOR
 		where substr(to_char(v_date), 1, 9) = to_date(sysdate, 'yy/MM/dd')
 	</select>
+	
+	<select id="dayCount" resultType="map">
+		select b.time, nvl(a.cnt, 0) as cnt
+		from (select TO_CHAR(V_DATE,'HH24') as time, count(*) as cnt
+		      from tb_visitor                           
+		      where to_char(sysdate, 'yyyy/mm/dd') = to_char(v_date, 'yyyy/mm/dd')
+		      group by TO_CHAR(V_DATE,'HH24')
+		      order by 1) a
+		      ,(SELECT level as time, 0 as cnt 
+		        FROM DUAL 
+		        CONNECT BY LEVEL <![CDATA[<=]]>23
+		        union all
+		        select 0 , 0 from dual) b
+		where  a.time(+) = b.time
+		order by b.time
+	</select>
+
+	<select id="weekCount" resultType="map">
+		select b.time, nvl(a.cnt, 0) as cnt
+		from (  select TO_CHAR(V_DATE,'DD') as time,count(*) as cnt
+		        from tb_visitor
+		        where TO_CHAR(TRUNC(sysdate,'IW'), 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+1, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+2, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+3, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+4, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+5, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+6, 'DD') = TO_CHAR(V_DATE,'DD')
+		        group by TO_CHAR(V_DATE,'DD')
+		        order by 1) a
+		      ,(SELECT (TO_CHAR(TRUNC(sysdate,'IW'), 'DD')+ level-1) as time , 0 as cnt 
+	            FROM DUAL 
+	            CONNECT BY level <![CDATA[<=]]>7) b
+		where  a.time(+) = b.time
+		order by b.time
+	</select>
+	
+	<select id="yearCount" resultType="map">
+		select b.time, nvl(a.cnt, 0) as cnt
+		from (select TO_CHAR(V_DATE,'MM') as time,count(*) as cnt
+	          from tb_visitor 
+	          where TO_CHAR(V_DATE,'YYYY') = TO_CHAR(sysdate,'YYYY')
+	          group by TO_CHAR(V_DATE,'MM')
+	          order by 1) a
+		      ,(SELECT level as time , 0 as cnt 
+	            FROM DUAL 
+	            CONNECT BY level <![CDATA[<=]]>12) b
+		where  a.time(+) = b.time
+		order by b.time
+	</select>
+	
 </mapper>
