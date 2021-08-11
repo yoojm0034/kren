@@ -3,6 +3,7 @@ package co.yedam.finalprj.report.service;
 import java.util.List;
 
 import co.yedam.finalprj.report.vo.ReportVO;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface ReportService {
 	List<ReportVO> reportSelectList();
@@ -12,4 +13,6 @@ public interface ReportService {
 	int reportUpdateUser(ReportVO vo);
 	int reportAllUpdate(ReportVO vo);
 	int reportDelete(ReportVO vo);
+	
+	int stopUserUpdate(UsersVO vo);
 }	

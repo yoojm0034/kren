@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import co.yedam.finalprj.report.map.ReportMap;
 import co.yedam.finalprj.report.service.ReportService;
 import co.yedam.finalprj.report.vo.ReportVO;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 @Repository("reportDao")
 public class ReportServiceImpl implements ReportService {
@@ -54,6 +55,12 @@ public class ReportServiceImpl implements ReportService {
 	public int reportUpdateUser(ReportVO vo) {
 		// TODO Auto-generated method stub
 		return map.reportUpdateUser(vo);
+	}
+
+	@Override
+	public int stopUserUpdate(UsersVO vo) {
+		// TODO Auto-generated method stub
+		return map.stopUserUpdate(vo);
 	}
 
 }
