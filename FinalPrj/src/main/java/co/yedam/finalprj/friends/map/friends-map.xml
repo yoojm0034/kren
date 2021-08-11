@@ -171,7 +171,7 @@
 			AND dcountryCnt = 0
 		</if>
 		<if test="language1 != null">
-			AND  LANGUAGE1 = #{language1}
+			AND upper(LANGUAGE1) = upper(#{language1})
 		</if>
 		 <if test="topic != null">
 			AND topicCnt >= 1
