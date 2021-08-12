@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html>
@@ -113,14 +115,14 @@ $(function() {
 	$('#idCheck').click(function() {
 		//공백체크
 		if ($('#user_id').val() == "") {
-			alert('아이디를 입력하세요.');
+			alert('<spring:message code="userJoin.id.blank"/>');
 			$('#user_id').focus();
 			return;
 		}
 		//유효성검사
 		var re = /^[a-zA-Z0-9]{4,12}$/;
 		if (!re.test($('#user_id').val())) {
-			alert("아이디는 4~12자의 영문 대소문자와 숫자로만 입력하세요.");
+			alert('<spring:message code="userJoin.id.enter"/>');
 			return;
 		}
 		//중복체크
@@ -132,18 +134,18 @@ $(function() {
 			type : 'post',
 			success : function(data) {
 				if (data > 0) {
-					alert('이미 사용중입니다. 새로 입력해주세요.');
+					alert('<spring:message code="userJoin.name.inuse"/>');
 					$('#user_id').val('');
 					$('#user_id').focus();
 				} else {
-					alert('사용가능합니다.');
+					alert('<spring:message code="userJoin.name.avail"/>');
 					$('#idCheck').val("checked");
 					$('#user_id').attr("readonly", true);
 					$('#name').focus();
 				}
 			},
 			error : function(err) {
-				alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+				alert('<spring:message code="errormsg"/>');
 			}
 		});
 	});
@@ -159,14 +161,14 @@ $(function() {
 		
 		//공백체크
 		if (name == "") {
-			alert('닉네임을 입력하세요.');
+			alert('<spring:message code="userJoin.name.blank"/>');
 			$('#name').focus();
 			return;
 		}
 		//유효성검사
 		var re = /^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,10}$/;
 		if (!re.test(name)) {
-			alert("영문 혹은 한글로 시작하는 2~10자의 닉네임을 입력하세요.");
+			alert('<spring:message code="userJoin.name.enter"/>');
 			return;
 		}
 		//중복체크
@@ -178,11 +180,11 @@ $(function() {
 			type : 'post',
 			success : function(data) {
 				if (data > 0) {
-					alert('이미 사용중입니다. 새로 입력해주세요.');
+					alert('<spring:message code="userJoin.name.inuse"/>');
 					$('#name').val('');
 					$('#name').focus();
 				} else {
-					alert('사용가능합니다.');
+					alert('<spring:message code="userJoin.name.avail"/>');
 					$('#name').val(name);
 					$('#nameCheck').val("checked");
 					$('#name').attr("readonly", true);
@@ -190,7 +192,7 @@ $(function() {
 				}
 			},
 			error : function(err) {
-				alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+				alert('<spring:message code="errormsg"/>');
 			}
 		});
 	});
@@ -200,7 +202,7 @@ $(function() {
 $(function() {
 	$('#emailCheck').click(function() {
 		if ($('#email').val() == "") {
-			alert('이메일을 입력하세요.');
+			alert('<spring:message code="userJoin.email.blank"/>');
 			$('#email').focus();
 			return false;
 		}
@@ -213,7 +215,7 @@ $(function() {
 			type : 'post',
 			success : function(data) {
 				if (data > 0) {
-					alert('이미 사용중입니다. 새로 입력해주세요.');
+					alert('<spring:message code="userJoin.email.inuse"/>');
 					$('#email').val('');
 					$('#email').focus();
 				} else {
@@ -228,18 +230,18 @@ $(function() {
 						},
 						type : 'post',
 						success : function(code) {
-							alert('메일이 전송되었습니다.');
+							alert('<spring:message code="userJoin.email.sendmail"/>');
 							$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
 								if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
-									alert('이메일 인증이 완료되었습니다.');
+									alert('<spring:message code="userJoin.email.checked"/>');
 									$('#codeCheck').val("checked");
 								} else {
-									alert('인증번호가 틀립니다');
+									alert('<spring:message code="userJoin.email.wrong"/>');
 								}
 							})
 						},
 						error : function(err) {
-							alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+							alert('<spring:message code="errormsg"/>');
 						}
 					});
 				}
@@ -254,9 +256,9 @@ $(function() {
 //--------------------------- 언어체크 -------------------------
 function language(e) {
 	if (e == 'Korean') {
-		$('input[name=language2]').attr('value', 'English');
+		$('input[name=language2]').attr('value', 'EN');
 	} else {
-		$('input[name=language2]').attr('value', 'Korean');
+		$('input[name=language2]').attr('value', 'KR');
 	}
 };
 
@@ -271,7 +273,7 @@ function fchk() {
 		}
 	}
 	if (checked < 3) {
-		alert("항목을 3개 선택해주세요.");
+		alert('<spring:message code="userJoin.topic.min"/>');
 		return;
 	}
 }
@@ -296,7 +298,7 @@ function check_q1(chk_obj) {
 function check(obj, condition, n) {
 	if (condition == false) {
 		obj.checked = false;
-		alert(n + "개를 초과 선택 불가합니다.");
+		alert('<spring:message code="userJoin.topic.max"/>');
 	}
 }
 
@@ -395,12 +397,11 @@ $('#step5').click(function() {
 			<div class="outer-panel-inner">
 				<div class="process-title">
 					<h2 id="step-title-1" class="step-title is-active"
-						style="margin-top: 5%">시작해볼까요?</h2>
-					<h2 id="step-title-2" class="step-title">위치를 공유해주세요.</h2>
-					<h2 id="step-title-3" class="step-title" style="margin-top: 5%">관심있는
-						언어와 주제를 선택해주세요.</h2>
-					<h2 id="step-title-4" class="step-title">당신을 표현할 사진을 골라주세요.</h2>
-					<h2 id="step-title-5" class="step-title">환영합니다!</h2>
+						style="margin-top: 5%"><spring:message code="userJoin.step1"/></h2>
+					<h2 id="step-title-2" class="step-title"><spring:message code="userJoin.step2"/></h2>
+					<h2 id="step-title-3" class="step-title" style="margin-top: 5%"><spring:message code="userJoin.step3"/></h2>
+					<h2 id="step-title-4" class="step-title"><spring:message code="userJoin.step4"/></h2>
+					<h2 id="step-title-5" class="step-title"><spring:message code="userJoin.step5"/></h2>
 				</div>
 
 				<form:form id="frm" name="frm" modelAttribute="UsersVO" method="post">
@@ -413,73 +414,82 @@ $('#step5').click(function() {
 								<div class="field block">
 									<label>ID</label>
 									<div class="control">
+										<spring:message code="userJoin.id.enter" var="placeholder1" />
 										<form:input class="input" path="user_id"
-											placeholder="아이디를 입력하세요" />
+											placeholder="${placeholder1}"/>
 									</div>
 								</div>
 								<button class="button is-solid dark-grey-button raised"
-									id="idCheck" type="button" value="unChecked">중복확인</button>
+									id="idCheck" type="button" value="unChecked"><spring:message code="btn.check"/></button>
 							</div>
 							<div style="display: flex">
 								<div class="field block">
 									<label>NAME</label>
 									<div class="control">
+										<spring:message code="userJoin.name.enter" var="placeholder2" />
 										<form:input class="input" path="name"
-											placeholder="사용할 닉네임을 입력하세요" />
+											placeholder="${placeholder2}" />
 									</div>
 								</div>
 								<button class="button is-solid dark-grey-button raised"
-									id="nameCheck" type="button" value="unChecked">중복확인</button>
+									id="nameCheck" type="button" value="unChecked"><spring:message code="btn.check"/></button>
 							</div>
 							<div class="field block">
 								<label>BIRTH</label>
 								<div class="gender">
-									<input type="date" id="birth" name="birth">
+									<input type="date" id="birth" name="birth" min="1920-01-01" max="2008-01-01">
 								</div>
 							</div>
 							<div class="field block">
 								<label>GENDER</label>
 								<div class="gender">
-									<form:radiobutton path="gender" value="M" label="남" />
-									<form:radiobutton path="gender" value="W" label="여" />
-									<form:radiobutton path="gender" value="O" label="기타" />
+									<spring:message code="gender.male" var="genderm" />
+									<spring:message code="gender.female" var="genderfm" />
+									<spring:message code="gender.other" var="gendero" />
+									<form:radiobutton path="gender" value="M" label="${genderm }" />
+									<form:radiobutton path="gender" value="W" label="${genderfm }" />
+									<form:radiobutton path="gender" value="O" label="${gendero }" />
 								</div>
 							</div>
 							<div class="field block">
 								<label>PASSWORD</label>
 								<div class="control">
+									<spring:message code="userJoin.password.enter" var="placeholder3" />
 									<form:password class="input" path="password"
-										placeholder="비밀번호를 입력하세요" />
+										placeholder="${placeholder3 }" />
 								</div>
 							</div>
 							<div class="field block">
 								<label>PASSWORD CHECK</label>
 								<div class="control">
+									<spring:message code="userJoin.password.enter2" var="placeholder4" />
 									<input type="password" class="input" id="pw2" name="pw2"
-										placeholder="비밀번호를 재입력하세요">
+										placeholder="${placeholder4 }">
 								</div>
 							</div>
 							<div style="display: flex">
 								<div class="field block">
 									<label>EMAIL</label>
 									<div class="control">
+										<spring:message code="userJoin.email.enter" var="placeholder5" />
 										<form:input class="input" path="email"
-											placeholder="이메일을 입력하세요" />
+											placeholder="${placeholder5 }" />
 									</div>
 								</div>
 								<button class="button is-solid dark-grey-button raised"
-									id="emailCheck" type="button" value="unChecked">코드발송</button>
+									id="emailCheck" type="button" value="unChecked"><spring:message code="userJoin.email.btn"/></button>
 							</div>
 							<div>
 								<div style="display: flex">
 									<div class="field block">
 										<div class="control">
+											<spring:message code="userJoin.email.entercode" var="placeholder6" />
 											<input type="text" class="input" id="inputCode"
-												placeholder="인증코드를 입력하세요">
+												placeholder="${placeholder6 }">
 										</div>
 									</div>
 									<button class="button is-solid dark-grey-button raised"
-										id="codeCheck" type="button" value="unChecked">코드확인</button>
+										id="codeCheck" type="button" value="unChecked"><spring:message code="userJoin.email.checkbtn"/></button>
 								</div>
 							</div>
 						</div>
@@ -558,7 +568,7 @@ $('#step5').click(function() {
 					<div id="signup-panel-2" class="process-panel-wrap is-narrow">
 						<div align="center">
 							<a class="button is-solid accent-button raised"
-								onclick="getLocation()">위치확인</a>
+								onclick="getLocation()"><spring:message code="userJoin.getlocation"/></a>
 						</div>
 						<br>
 						<form:hidden path="city" />
@@ -588,7 +598,7 @@ $('#step5').click(function() {
 						<div class="form-panel">
 							<div class="dropbox" style="text-align: center;">
 								<div class="control" style="display: inline-grid; margin: 1rem;">
-									<b><label>Native</label></b> 
+									<b><label><spring:message code="userJoin.native"/></label></b> 
 									<select name="language1" id="language1" onchange="language(this.options[this.selectedIndex].text)" style="width: 100px; font-size: 12pt;">
 										<option value="" selected hidden="hidden">Native</option>
 										<option value="KR">Korean</option>
@@ -596,7 +606,7 @@ $('#step5').click(function() {
 									</select>
 								</div>
 								<div class="control" style="display: inline-grid; margin: 1rem;">
-									<b><label>Learn</label></b>
+									<b><label><spring:message code="userJoin.learn"/></label></b>
 									<form:input path="language2" readonly="true"
 										style="font-size: 12pt; width: 100px;" />
 									<select name="language2_level" id="language2_level"
@@ -614,7 +624,7 @@ $('#step5').click(function() {
 								<br>
 								<div class="topic-label">
 									<div class="left">
-										<label><b>Topics of Interest</b></label>
+										<label><b><spring:message code="topic"/></b></label>
 									</div>
 									<div class="right">
 										( <span id="checked">0</span> / 30)
@@ -654,7 +664,7 @@ $('#step5').click(function() {
                                 <form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
                             </div>
                             <div class="limitation">
-                                <small>Only images with a size lower than 3MB are allowed.</small>
+                                <small><spring:message code="userJoin.imgsize"/></small>
                             </div>
                         </div>
                     </div>
@@ -672,8 +682,8 @@ $('#step5').click(function() {
 							src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/signup/mailbox.svg"
 							alt="">
 						<div class="success-text">
-							<h3>계정이 성공적으로 생성되었습니다.</h3>
-							<a id="signup-finish" href="${pageContext.request.contextPath}/home.do" class="button is-fullwidth">로그인 페이지로 이동</a>
+							<h3><spring:message code="userJoin.welcome"/></h3>
+							<a id="signup-finish" href="${pageContext.request.contextPath}/home.do" class="button is-fullwidth">HOME</a>
 						</div>
 					</div>
 				</div>

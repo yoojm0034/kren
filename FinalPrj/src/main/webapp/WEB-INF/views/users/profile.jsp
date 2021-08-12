@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -480,7 +481,8 @@ function writePopup() {
 						<div class="card is-profile-info">
 							<div class="info-row">
 								<div>
-									<span>가입일</span> <span class="info"><fmt:formatDate
+									<span><spring:message code="profile.regdt"/></span>
+									<span class="info"><fmt:formatDate
 											value="${profile.reg_date }" pattern="YYYY/MM/dd" /></span>
 								</div>
 							</div>
