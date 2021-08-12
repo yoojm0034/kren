@@ -6,6 +6,6 @@ import co.yedam.finalprj.stamph.vo.StamphVO;
 
 public interface StamphService {
 	List<StamphVO> stamphSelectList(StamphVO vo);
-	StamphVO stamphLoginCheck(StamphVO vo);
+	int stamphLoginCheck(StamphVO vo);
 	int stamphLoginInsert(StamphVO vo);
 }

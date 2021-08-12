@@ -20,7 +20,7 @@ public class StamphServiceImpl implements StamphService {
 	}
 
 	@Override
-	public StamphVO stamphLoginCheck(StamphVO vo) {
+	public int stamphLoginCheck(StamphVO vo) {
 		return map.stamphLoginCheck(vo);
 	}
 
