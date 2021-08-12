@@ -186,6 +186,21 @@ $(document).ready(function(){
 </head>
 <body>
 <script>
+	//-------친구 추천 팔로우--------	 안됨 
+	function addFriend(id){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/follow.do",
+			type:"POST",
+			data:{following : id },
+			dataType:"JSON",
+			success:function(){
+				alert(userId+'친구로 추가 되었습니다');
+			},
+			error:function(err){
+				console.log(err);
+			}
+		})
+	};
 
 	//-------좋아요--------
 	function likeIt(feedId){
@@ -239,6 +254,45 @@ $(document).ready(function(){
 			}
 		});  
 	};
+	
+	function feedUpdate(feedId){
+		var maxCnt = 0;
+		$('.app-overlay').addClass('is-active');
+		$('.is-new-content').addClass('is-highlighted');
+		$('#publish').focus();
+		
+		var tags = $('#update'+feedId).children(1).children(":eq(0)").val();
+		var content = $('#update'+feedId).children(1).children(":eq(1)").val();
+		var photo = $('#update'+feedId).children(1).children(":eq(2)").val(); 
+		var fphoto = $('#update'+feedId).children(1).children(":eq(3)").val(); 
+		var retag = tags.replace(/,/g, "#");	
+		var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
+		
+		$('#feedid').val(feedId);	
+		$('#publish').val(content);
+		document.getElementById('photo').value = fphoto;
+		if(retag != ""){
+			$('#append_tag').append("#"+retag);			
+		}
+		
+		if(photo != ""){	
+		  if(maxCnt >= 1 ) return;
+		  var deleteIcon = feather.icons.x.toSvg();
+		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
+		  $('#feed-upload').append(template);
+		  maxCnt++;
+		  maxValue++;
+		}
+
+	  	$('.remove-file').on('click', function () {
+	         $(this).closest('.upload-wrap').remove();
+	         photoChk.val(1);
+	         maxCnt--;
+	         maxValue--;
+	  	});
+
+		
+	}
 
 	$(function(){
 	//-------태그라벨---------
@@ -259,45 +313,43 @@ $(document).ready(function(){
 		});
 	});
 	
-	   //-------태그등록---------
-	   var maxAppend = 0;
-	   document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
-	   function tagFunction() {
-	      if(event.keyCode==13){
-	          var tagval = $('#activities-autocpl').val();
-	          if(!tagval) {
-	            alert('태그를 입력해 주세요!');
-	         }else{
-	            if (maxAppend >= 5) return; 
-	            $('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
-	            $('#activities-autocpl').val('');
-	            maxAppend++;
-	            $.ajax({
-	               url: "tagInsert.do" ,
-	               type: "POST",
-	               data:{ tag_name : tagval } ,
-	               success: function(data){
-	               },
-	               error: function(err){
-	               }
-	            }); 
-	         }
-	      }else if(event.keyCode==35){
-	         event.preventDefault();
-	         event.returnValue = false;
-	      }else if(event.keyCode==44){
-	         event.preventDefault();
-	         event.returnValue = false;
-	      }
-	      
-	     $('.tagDelete').on('click', function () {
-	         $( this ).remove(); 
-	         maxAppend--;
-	     });
-	   }
-	
-	});
-	$(function(){
+   //-------태그등록---------
+   var maxAppend = 0;
+   document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
+   function tagFunction() {
+      if(event.keyCode==13){
+          var tagval = $('#activities-autocpl').val();
+          if(!tagval) {
+            alert('태그를 입력해 주세요!');
+         }else{
+            if (maxAppend >= 5) return; 
+            $('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
+            $('#activities-autocpl').val('');
+            maxAppend++;
+            $.ajax({
+               url: "tagInsert.do" ,
+               type: "POST",
+               data:{ tag_name : tagval } ,
+               success: function(data){
+               },
+               error: function(err){
+               }
+            }); 
+         }
+      }else if(event.keyCode==35){
+         event.preventDefault();
+         event.returnValue = false;
+      }else if(event.keyCode==44){
+         event.preventDefault();
+         event.returnValue = false;
+      }
+      
+     $('.tagDelete').on('click', function () {
+         $( this ).remove(); 
+         maxAppend--;
+     });
+   }
+
 	//-------최신글---------
 	$('#allSearch').on('click',function(){
 		$.ajax({
@@ -312,8 +364,8 @@ $(document).ready(function(){
 			}
 		});
 	});
-	});
-	$(function(){
+	
+	
 	//-------내근처--------- 
 	$('#searchNear').on('click',function(){
 		$.ajax({
@@ -328,8 +380,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	});
-	$(function(){
+
 	//-------언어별 Ko---------
 	$('#searchKo').on('click',function(){
 		$.ajax({
@@ -345,8 +396,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	});
-	$(function(){
+
 	//-------언어별 En---------
 	$('#searchEn').on('click',function(){
 		$.ajax({
@@ -362,9 +412,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	});
 
-	$(function(){
 	//-------피드 등록---------
 	$('#publish-button').on('click', function(){
 		var feedId = $('#feedid').val();
@@ -379,9 +427,7 @@ $(document).ready(function(){
 		document.getElementById('tags').value = tagval;					
 		$('#feedInsert').submit();
 	});
-	});
-	
-	$(function(){
+
 	//-------피드 Reset---------
 	$('.close-publish').on('click',function(){
 		$('#publish').val('');
@@ -390,231 +436,159 @@ $(document).ready(function(){
 		$('#feed-upload').empty();
 		$('#feedid').val('');
 	}); 
+
+	//-------프로필클릭시---------
+	$('.user-info').on('click',function(){
+		var userId= this.id;
+		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
+			
+	});
+	});
+	
+	$(function(){
+	//-------태그자동완성---------
+	if ($('#activities-autocpl').length) {
+	    var html = '';
+	    var activitiesOptions = {
+	      url: "${pageContext.request.contextPath}/autocpl.do",
+	      getValue: "tag_name",
+		      template: {
+	        type: "custom",
+	        method: function method(value) {
+	          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+	        }
+	      }, 
+	      highlightPhrase: false,
+	      list: {
+	        maxNumberOfElements: 5,
+	        showAnimation: {
+	          type: "slide",
+	          time: 400,
+	          callback: function callback() {}
+	        },
+	        match: {
+	          enabled: true
+	        }
+	      }
+	    };
+	    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
+	 };
+
+	//-------태그---------
+	$('#searchTag').on('click',function(){
+		var display = $("#SearchDiv").css('display');
+		if(display == "none"){
+			$("#SearchDiv").css('display', 'block'); 
+			if ($('#tagInput').length) {
+			    var html = '';
+			    var activitiesOptions = {
+			      url: "${pageContext.request.contextPath}/autocpl.do",
+			      getValue: "tag_name",
+		 	      template: {
+			        type: "custom",
+			        method: function method(value) {
+			          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+			        }
+			      }, 
+			      highlightPhrase: false,
+			      list: {
+			        maxNumberOfElements: 5,
+			        showAnimation: {
+							          type: "slide",
+							          time: 400,
+							          callback: function callback() {}
+			        },
+			        match: {
+			          enabled: true
+			        }
+			      }
+			    }
+			    $("#tagInput").easyAutocomplete(activitiesOptions);
+			  };
+			document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
+			function tagsFunction() {
+				if(event.keyCode==13){
+			    	var tagval=$('#tagInput').val();
+			    	if(!tagval) {
+						alert('태그를 입력해 주세요!');
+					}else{
+						$.ajax({
+							url:"${pageContext.request.contextPath}/feedSelect.do",
+							data:{tags : tagval },
+							success:function(result){
+								console.log('태그검색결과');
+								$('.feedContents').html(result);
+							},
+							error:function(err){
+								console.log(err);
+							}
+						});
+					}
+				}
+			};
+		}else{
+			$("#SearchDiv").css('display', 'none'); 
+		}
+	});
+	//신고
+	$('body').on('click','#frbtn',function(){
+		$('.reportMenu').toggle();
 	}); 
 	
-	
-	
-	function feedUpdate(feedId){
-		var maxCnt = 0;
-		$('.app-overlay').addClass('is-active');
-		$('.is-new-content').addClass('is-highlighted');
-		$('#publish').focus();
-		
-		var tags = $('#update'+feedId).children(1).children(":eq(0)").val();
-		var content = $('#update'+feedId).children(1).children(":eq(1)").val();
-		var photo = $('#update'+feedId).children(1).children(":eq(2)").val(); 
-		var fphoto = $('#update'+feedId).children(1).children(":eq(3)").val(); 
-		var retag = tags.replace(/,/g, "#");	
-		var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
-		console.log($('#'+feedId).children(1).children(":eq(0)"));
-		
-		
-		$('#feedid').val(feedId);	
-		$('#publish').val(content);
-		document.getElementById('photo').value = fphoto;
-		if(retag != ""){
-			$('#append_tag').append("#"+retag);			
+	$('body').on('click','#fmsg',function(){
+		var select = $(this);
+		var repo = select.attr('name');
+		var msg = $("input:radio[name='"+repo+"']:checked").val();
+		if(msg == '기타') {
+			$('input[data-rftxt="'+repo+'"]').attr('hidden',false);				
+		}else{
+			$('input[data-rftxt="'+repo+'"]').attr('hidden',true);				
 		}
-		
-		if(photo != ""){	
-		  if(maxCnt >= 1 ) return;
-		  var deleteIcon = feather.icons.x.toSvg();
-		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
-		  $('#feed-upload').append(template);
-		  maxCnt++;
-		  maxValue++;
-		 
-		}
-
-		  	$('.remove-file').on('click', function () {
-		         $(this).closest('.upload-wrap').remove();
-		         photoChk.val(1);
-		         maxCnt--;
-		         maxValue--;
-		  	});
-
-		
-	}
-
-	$(function(){
-		//-------태그자동완성---------
-		if ($('#activities-autocpl').length) {
-		    var html = '';
-		    var activitiesOptions = {
-		      url: "${pageContext.request.contextPath}/autocpl.do",
-		      getValue: "tag_name",
-			      template: {
-		        type: "custom",
-		        method: function method(value) {
-		          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
-		        }
-		      }, 
-		      highlightPhrase: false,
-		      list: {
-		        maxNumberOfElements: 5,
-		        showAnimation: {
-		          type: "slide",
-		          time: 400,
-		          callback: function callback() {}
-		        },
-		        match: {
-		          enabled: true
-		        }
-		      }
-		    };
-		    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
-		 };
 	});
-	
-	$(function(){
-		//-------태그---------
-		$('#searchTag').on('click',function(){
-			var display = $("#SearchDiv").css('display');
-			if(display == "none"){
-				$("#SearchDiv").css('display', 'block'); 
-				if ($('#tagInput').length) {
-				    var html = '';
-				    var activitiesOptions = {
-				      url: "${pageContext.request.contextPath}/autocpl.do",
-				      getValue: "tag_name",
-			 	      template: {
-				        type: "custom",
-				        method: function method(value) {
-				          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
-				        }
-				      }, 
-				      highlightPhrase: false,
-				      list: {
-				        maxNumberOfElements: 5,
-				        showAnimation: {
-								          type: "slide",
-								          time: 400,
-								          callback: function callback() {}
-				        },
-				        match: {
-				          enabled: true
-				        }
-				      }
-				    }
-				    $("#tagInput").easyAutocomplete(activitiesOptions);
-				  };
-				document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
-				function tagsFunction() {
-					if(event.keyCode==13){
-				    	var tagval=$('#tagInput').val();
-				    	if(!tagval) {
-							alert('태그를 입력해 주세요!');
-						}else{
-							$.ajax({
-								url:"${pageContext.request.contextPath}/feedSelect.do",
-								data:{tags : tagval },
-								success:function(result){
-									console.log('태그검색결과');
-									$('.feedContents').html(result);
-								},
-								error:function(err){
-									console.log(err);
-								}
-							});
-						}
-					}
-				};
-			}else{
-				$("#SearchDiv").css('display', 'none'); 
-			}
-		});
 		
-		//신고
-		$('body').on('click','#frbtn',function(){
-			$('.reportMenu').toggle();
-			
-			var report = $(this).data('report');	//name 
-			var repo = $(this).data('repo')			//feed_id
-			var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
-			
-			var msg = $("input:radio[name='"+repo+"']:checked").val();
-			var txt = "";
-			console.log(radio);
-	
-			var chk = $("input:checkbox[data-rfchk='"+repo+"']:checked").val(); //체크된값
-			console.log(report, repo, radio, chk, txt);
-			
-			$('#report-btn').on('click',function(){
-				if(radio == '기타') {
-					txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
-				} else {
-					txt = radio;
+	$('body').on('click','#report-btn',function(){
+		var report = $(this).data('report');	//name 
+		var repo = $(this).data('repo')			//feed_id
+		var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
+		var txt = "";
+		var chk = $("input:checkbox[data-rfchk='"+repo+"']:checked").val(); //체크된값
+		
+		if(radio == '기타') {
+			txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
+		} else {
+			txt = radio;
+		}
+		if(txt == null) {//값이 선택되지 않았으면
+			alert('신고사유를 선택하세요');
+			return;
+		} 
+		
+		console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부 : "  +chk +"체크사유 & 기타사유"+ txt);	
+		
+ 		if(confirm('신고하시겠습니까?')) {
+			$.ajax({
+				url:'${pageContext.request.contextPath}/reportInsert.do',
+				type:'post',
+				data:JSON.stringify({
+					user_id:'${user.user_id}',	//신고자
+					content:repo,				//피드아이디
+					msg:txt,					//신고냐용
+					reported:report,			//신고당한자
+					blocked:chk					//블락체크여부
+				}),
+				contentType : "application/json; charset=UTF-8",
+				success: function(data) {
+					alert('신고되었습니다.');
+					location.reload(true);
+				},
+				error: function(err) {
+					alert('관리자에게 문의해주세요.');
 				}
-				if(txt == null) {//값이 선택되지 않았으면
-					alert('신고사유를 선택하세요');
-					return;
-				} 
-				console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부" +chk +"체크사유 & 기타사유"+ txt);	
-				
-/* 			if(confirm('신고하시겠습니까?')) {
-				$.ajax({
-					url:'${pageContext.request.contextPath}/reportInsert.do',
-					type:'post',
-					data:JSON.stringify({
-						user_id:'${user.user_id}',	//신고자
-						content:repo,				//피드아이디
-						msg:txt,					//신고냐용
-						reported:report,			//신고당한자
-						blocked:chk					//블락체크여부
-					}),
-					contentType : "application/json; charset=UTF-8",
-					success: function(data) {
-						alert('신고되었습니다.');
-						location.reload(true);
-					},
-					error: function(err) {
-						alert('관리자에게 문의해주세요.');
-					}
-				});
-			} */
-				});
-		})
-		
-/* 		$('body').on('click','#fmsg', function() { //기타를 누르면 값을 입력할 수 있도록
-			var select = $(this);
-			var repo = select.attr('name');
-			var msg = $("input:radio[name='"+repo+"']:checked").val();
-			if(msg == '기타') {
-				$('input[data-rftxt="'+repo+'"]').attr('hidden',false);				
-			} else {
-				$('input[data-rftxt="'+repo+'"]').attr('hidden',true);				
-			}
-			
-		});	 */
-		
-	});
+			})
+		} 
+	})
+	})
 
-
-	$(function(){
-		//-------프로필클릭시---------
-		$('.user-info').on('click',function(){
-			var userId= this.id;
-			location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
-				
-		});
-	});
-	
-	//-------친구 추천 팔로우--------	 안됨 
-	function addFriend(id){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/follow.do",
-			type:"POST",
-			data:{following : id },
-			dataType:"JSON",
-			success:function(){
-				alert(userId+'친구로 추가 되었습니다');
-			},
-			error:function(err){
-				console.log(err);
-			}
-		})
-	};
-	
 	//-------댓글-------- 
 	$(function() {
 		//-------댓글작성 그룹이벤트-------- 		
@@ -1665,7 +1639,7 @@ $(document).ready(function(){
 								                        	</table>
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
-									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.user_name } 차단
+									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name } 차단
 															<button id="report-btn"  data-repo="${vo.feed_id  }" data-report="${vo.user_id }">신고</button>
 	                                                    </div>
 		                                               </div>
