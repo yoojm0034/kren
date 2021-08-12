@@ -9,4 +9,15 @@
 		order by SH_DT DESC
 	</select>
 
+	<select id="stamphLoginCheck" parameterType="co.yedam.finalprj.stamph.vo.StamphVO" resultType="co.yedam.finalprj.stamph.vo.StamphVO">
+		SELECT COUNT(*) AS CNT
+		  FROM STAMPH
+		 WHERE TO_CHAR(SH_DT,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+		   AND SH_TYPE='로그인'
+		   AND USER_ID=#{user_id}
+	</select>
+	
+	<insert id="stamphLoginInsert">
+	
+	</insert>
 </mapper>

@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.finalprj.stamph.service.StamphService;
@@ -27,4 +28,11 @@ public class StamphController {
 		
 		return mav;
 	}
+	
+	@RequestMapping("stamphLoginCheck.do")
+	@ResponseBody
+	public StamphVO commentCnt(StamphVO vo) {
+		return stamphDao.stamphLoginCheck(vo);
+	}
+	
 }
