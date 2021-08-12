@@ -22,17 +22,16 @@
 }
 
 .menu-badge {
-	margin-left: auto;
-	height: 25px;
-	font-size: 1rem;
-	font-weight: 500;
-	padding: 7px;
-	line-height: 1.3;
-	min-width: 22px;
-	text-align: center;
-	border-radius: 100px;
-	background: #e5e5e5;
-	color: #393a4f;
+    height: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background: #e5e5e5;
+    color: #393a4f;
+    width: 30px;
+    display: inline-block;
 }
 
 a[href^="http://maps.google.com/maps"] {
