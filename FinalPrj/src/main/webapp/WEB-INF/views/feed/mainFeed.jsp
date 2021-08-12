@@ -144,6 +144,10 @@ table {
 	margin-top: 9px;
 }
 
+#todayCheck {
+	cursor: pointer;
+}
+
 </style>
 <script>
 $(document).ready(function(){
@@ -153,6 +157,47 @@ $(document).ready(function(){
 		var noticeId= this.id;
 		location.href="${pageContext.request.contextPath}/userSelectNotice.do?notice_id="+noticeId
 	});
+	
+	//-------출석체크-------
+	$('#todayCheck').on('click', function() {
+		console.log('출석신청');
+		$.ajax({//----------출석 여부 확인----------
+			url:'${pageContext.request.contextPath}/stamphLoginCheck.do',
+			data:{'user_id':'${user.user_id}'},
+			success:function(cnt){
+				console.log('cnt:',cnt);
+				if(cnt > 0) {
+					alert('하루에 한번만 가능합니다.');
+				} else {
+					$.ajax({//---------유저 우표추가---------
+						url: '${pageContext.request.contextPath}/stamphLoginUserPlus.do',
+						data:{'user_id':'${user.user_id}'},
+						success:function(stamp) {
+							if(stamp>0) {
+								$.ajax({//---------우표내역 추가---------
+									url: '${pageContext.request.contextPath}/stamphLoginInsert.do',
+									data:{'user_id':'${user.user_id}'},
+									success:function(result) {
+										alert('우표 하나 받았어요!');
+										$('#todayCheck').children().html('출석완료');
+									},
+									error:function() {
+										alert('관리자에게 문의해주세요');										
+									}
+								});
+							}
+						},
+						error:function() {
+							alert('관리자에게 문의해주세요');
+						}
+					});
+				}
+			},
+			error:function(e) {
+				alert('관리자에게 문의해주세요.');
+			}
+		});
+	});//출석체크
 });
 </script>
 </head>
@@ -1239,6 +1284,25 @@ $(document).ready(function(){
 							</div>
 						</div>
 						<!------------------------ 공지사항 끝 ------------------------->
+						<!------------------------ 출석 시작 ------------------------->
+						<div id="latest-activity-2" class="card">
+							<div class="card-heading is-bordered">
+								<h4>출석체크</h4>
+							</div>
+							<div class="card-body no-padding">
+								<div class="add-friend-block" id="todayCheck">
+									<c:choose>
+									<c:when test="${loginStamp eq 0}">
+										<span>여기를 눌러주세요!</span>
+									</c:when>
+									<c:otherwise>
+										<span>출석완료</span>
+									</c:otherwise>
+									</c:choose>
+								</div>
+							</div>
+						</div>
+						<!------------------------ 출석 끝 ------------------------->
 					</div>
 					<!--------------------------- 왼쪽사이드바 끝 ------------------------------>
 
