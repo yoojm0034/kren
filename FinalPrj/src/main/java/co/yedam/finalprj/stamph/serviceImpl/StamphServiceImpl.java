@@ -28,4 +28,9 @@ public class StamphServiceImpl implements StamphService {
 	public int stamphLoginInsert(StamphVO vo) {
 		return map.stamphLoginInsert(vo);
 	}
+
+	@Override
+	public int stamphLoginUserPlus(StamphVO vo) {
+		return map.stamphLoginUserPlus(vo);
+	}
 }

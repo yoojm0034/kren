@@ -23,4 +23,10 @@
 		VALUES
 			('stamph_'||STAMPH_SEQ.NEXTVAL,#{user_id},'로그인',SYSDATE,1)
 	</insert>
+	
+	<update id="stamphLoginUserPlus" parameterType="co.yedam.finalprj.stamph.vo.StamphVO">
+		UPDATE USERS
+		SET STAMP = STAMP + 1
+		WHERE USER_ID=#{user_id}
+	</update>
 </mapper>

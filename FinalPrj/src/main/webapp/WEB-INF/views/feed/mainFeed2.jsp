@@ -193,13 +193,22 @@ $(document).ready(function(){
 				if(cnt > 0) {
 					alert('하루에 한번만 가능합니다.');
 				} else {
-					$.ajax({//---------로그인 우표주기---------
-						url: '${pageContext.request.contextPath}/stamphLoginInsert.do',
+					$.ajax({//---------유저 우표추가---------
+						url: '${pageContext.request.contextPath}/stamphLoginUserPlus.do',
 						data:{'user_id':'${user.user_id}'},
-						success:function(result) {
-							if(result>0) {
-								alert('우표 하나 받았어요!');
-								$('#todayCheck').children().html('출석완료');								
+						success:function(stamp) {
+							if(stamp>0) {
+								$.ajax({//---------우표내역 추가---------
+									url: '${pageContext.request.contextPath}/stamphLoginInsert.do',
+									data:{'user_id':'${user.user_id}'},
+									success:function(result) {
+										alert('우표 하나 받았어요!');
+										$('#todayCheck').children().html('출석완료');
+									},
+									error:function() {
+										alert('관리자에게 문의해주세요');										
+									}
+								});
 							}
 						},
 						error:function() {

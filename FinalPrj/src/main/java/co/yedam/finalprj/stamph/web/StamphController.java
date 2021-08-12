@@ -44,6 +44,18 @@ public class StamphController {
 		}
 		return n;
 	}
+
+	@RequestMapping("stamphLoginUserPlus.do")
+	@ResponseBody
+	public int stamphLoginUserPlus(StamphVO vo) {
+		int n = stamphDao.stamphLoginUserPlus(vo);
+		if(n == 0) {
+			n = 0;
+		}
+		return n;
+	}
+	
+	
 	
 	
 	
