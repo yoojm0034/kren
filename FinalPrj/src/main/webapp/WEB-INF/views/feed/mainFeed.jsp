@@ -140,61 +140,68 @@ table {
     resize: none;
     padding: revert;
 }
+.user-info .time {
+	margin-top: 9px;
+}
 
 </style>
 <script>
 $(document).ready(function(){
-/* 	//-------생일롤링---------
-	var height =  $(".notice").height();
-	var num = $(".rolling li").length;
-	var max = height * num;
-	var move = 0;
-	
-	function noticeRolling() {
-		move += height;
-		$(".rolling").animate({"top":-move},600,function(){
-			if( move >= max ){
-				$(this).css("top",0);
-				move = 0;
-			};
-		});
-	};
-	
-	noticeRollingOff = setInterval(noticeRolling,3000);
-	$(".rolling").append($(".rolling li").first().clone());
-	$(".notice").mouseover(function(){
-		clearInterval(noticeRollingOff);
-		$(this).css("cursor", "pointer");
-	});
-	$(".notice").mouseout(function(){
-		noticeRollingOff = setInterval(noticeRolling,5000);
-		$(this).css("cursor", "default");
-	}); */
-
 	$('.reportMenu').hide();
 	//-------공지사항이동---------
 	$('.page-block').on('click',function(){
 		var noticeId= this.id;
 		location.href="${pageContext.request.contextPath}/userSelectNotice.do?notice_id="+noticeId
-			
 	});
-	
-
-	
 });
 </script>
 </head>
 <body>
 <script>
-	//-------친구 추천 팔로우--------	 안됨 
+	function loadMore(){
+	 // load more
+	  var increment=5;	
+	  var startFilter=0;
+	  var endFilter=increment;
+	  
+	  var $this = $('.feedContents');						
+	  var elementLength = $this.children('#feed-post-1').length;
+	  // $('.listLength').text(elementLength);
+	  // show/hide the Load More button
+	  if (elementLength > 5) { 
+		  $('#buttonToogle').show();
+	  }else{
+		  $('#buttonToogle').hide();
+	  }
+	  
+	  $('.feedContents #feed-post-1').slice(startFilter, endFilter).addClass('shown');
+	  //$('.shownLength').text(endFilter);
+	  $('.feedContents #feed-post-1').not('.shown').hide();
+	  $('body').off('click','.load-more-button');
+	  
+	  $('body').on('click','.load-more-button',function() {
+	  	if (elementLength > endFilter) {
+		      startFilter += increment;
+		      endFilter += increment;
+		      $('.feedContents #feed-post-1').slice(startFilter, endFilter).not('.shown').addClass('shown').toggle(500);
+		      $('.shownLength').text((endFilter > elementLength) ? elementLength : endFilter);
+		      if (elementLength <= endFilter) {
+		          $(this).remove();
+		      }
+		}
+	  });
+	} 
+	
+	//-------친구 추천 팔로우--------
 	function addFriend(id){
+		var data = {following : id};
 		$.ajax({
 			url:"${pageContext.request.contextPath}/follow.do",
 			type:"POST",
-			data:{following : id },
-			dataType:"JSON",
-			success:function(){
-				alert(userId+'친구로 추가 되었습니다');
+			data: JSON.stringify(data),
+			contentType: 'application/json; charset=utf-8',
+			success:function(data){
+				alert(data);
 			},
 			error:function(err){
 				console.log(err);
@@ -290,11 +297,10 @@ $(document).ready(function(){
 	         maxCnt--;
 	         maxValue--;
 	  	});
-
-		
 	}
-
+	
 	$(function(){
+	loadMore();
 	//-------태그라벨---------
 	$('.tag-label').on('click',function(){
 		var tagName = this.id;
@@ -306,6 +312,7 @@ $(document).ready(function(){
 			success:function(result){
 				$('.feedContents').html(result);
 				datePosdst();
+				loadMore();
 			},
 			error:function(err){
 				console.log(err);
@@ -358,6 +365,7 @@ $(document).ready(function(){
 				console.log(result);
 				$('.feedContents').html(result);
 				datePosdst();
+				loadMore();
 			},
 			error:function(err){
 				console.log(err);
@@ -374,6 +382,7 @@ $(document).ready(function(){
 			success:function(result){
 				$('.feedContents').html(result);
 				datePosdst();
+				loadMore();
 			},
 			error:function(err){
 				console.log(err);
@@ -390,6 +399,7 @@ $(document).ready(function(){
 				console.log('한국어만 나옴');
 				$('.feedContents').html(result);
 				datePosdst();
+				loadMore();
 			},
 			error:function(err){
 				console.log(err);
@@ -406,6 +416,7 @@ $(document).ready(function(){
 				console.log('영어만 나옴');
 				$('.feedContents').html(result);
 				datePosdst();
+				loadMore();
 			},
 			error:function(err){
 				console.log(err);
@@ -417,13 +428,11 @@ $(document).ready(function(){
 	$('#publish-button').on('click', function(){
 		var feedId = $('#feedid').val();
 		var tagval = $('#append_tag').text();
-		
 		if(tagval == ""){
 		}else{
 			tagval= tagval.replace("#","");
 			tagval= tagval.replace(/#/g,",");
 		}
-		
 		document.getElementById('tags').value = tagval;					
 		$('#feedInsert').submit();
 	});
@@ -441,13 +450,15 @@ $(document).ready(function(){
 	$('.user-info').on('click',function(){
 		var userId= this.id;
 		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
-			
 	});
 	});
 	
 	$(function(){
 	//-------태그자동완성---------
 	if ($('#activities-autocpl').length) {
+		var data1 = $(this);
+		console.log(data1);
+		console.log(this);
 	    var html = '';
 	    var activitiesOptions = {
 	      url: "${pageContext.request.contextPath}/autocpl.do",
@@ -471,10 +482,10 @@ $(document).ready(function(){
 	        }
 	      }
 	    };
-	    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
+	    $('#activities-autocpl').easyAutocomplete(activitiesOptions);
 	 };
 
-	//-------태그---------
+	//-------태그검색---------
 	$('#searchTag').on('click',function(){
 		var display = $("#SearchDiv").css('display');
 		if(display == "none"){
@@ -530,7 +541,8 @@ $(document).ready(function(){
 			$("#SearchDiv").css('display', 'none'); 
 		}
 	});
-	//신고
+	
+	//---------피드신고---------
 	$('body').on('click','#frbtn',function(){
 		$('.reportMenu').toggle();
 	}); 
@@ -1545,7 +1557,7 @@ $(document).ready(function(){
 														data-user-popover="1" alt="">
 												</div>
 												<div class="user-info" id="${vo.user_id }">
-													<a href="#">${vo.feed_id } : ${vo.name } :
+													<a href="#">${vo.name } <svg viewBox="0 0 24 24" width="21" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
 														${vo.write_lan } </a> <span class="time"> <script
 															type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
@@ -2080,12 +2092,11 @@ $(document).ready(function(){
 								</div>
 							</c:forEach>
 							<!------------------------ 포스트 끝 ------------------------->
-						</div>
-						<div class=" load-more-wrap narrow-top has-text-centered">
-							<a href="#" class="load-more-button">Load More</a>
+							<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
+								<a href="javascript:;" class="load-more-button">Load More</a>
+							</div>
 						</div>
 						<!-- /Load more posts -->
-
 					</div>
 					<!-- /Middle column -->
 					<!-- Right side column -->
