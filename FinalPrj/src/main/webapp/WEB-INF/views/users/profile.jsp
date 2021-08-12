@@ -132,17 +132,6 @@ a[href^="https://maps.google.com/maps"] {
 	font-weight: 400;
 	color: #999 !important;
 }
-
-.label-round {
-	display: inline-block !important;
-	font-size: 14px !important;
-	padding: 6px 15px 10px 15px;
-	background-color: #EFEFEF;
-	color: #979797 !important;
-	border-radius: 2rem;
-	margin: 0px 0px 6px 0px;
-}
-
 .matched {
 	background-color: #5596e6 !important;
 	color: #FFF !important;

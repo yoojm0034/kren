@@ -76,7 +76,7 @@
 	<select id="sameTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		SELECT 
 				topic_cnt(#{topic},topic) as "topicCnt" , 
-				user_id
+				user_id, name
 		FROM 	
 				users
 		WHERE 	not user_id IN (#{user_id})

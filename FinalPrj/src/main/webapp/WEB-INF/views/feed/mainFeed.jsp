@@ -70,24 +70,6 @@ table {
 	line-height: 50px;
 }
 
-.tag-label {
-	display: inline-block;
-	font-size: 14px;
-	padding: 6px 15px 10px 15px;
-	border-radius: 2rem;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-	transition: all 0.2s;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	background-color: #EFEFEF;
-	color: #979797;
-	margin-left: 10px;
-	margin-top: 6px;
-	margin-bottom: 5px;
-}
-
 .view-wrapper {
 	padding: 40px 12px;
 }
@@ -110,7 +92,6 @@ table {
 }
 
 .tdiv {
-	font-weight: bold;
 	text-shadow: 0 0 black;
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -131,7 +112,7 @@ table {
 .content-wrap table {
     table-layout: fixed;
     width: 100%;
-    text-align: center;
+    text-align: left;
 }
 
 .content-wrap table textarea {
@@ -141,16 +122,61 @@ table {
     padding: revert;
 }
 .user-info .time {
-	margin-top: 9px;
+	margin-top: 5px;
 }
 
 #todayCheck {
 	cursor: pointer;
 }
 
+.menu{ /*기본 menu 버튼 style 속성*/   
+    position: relative;
+    color: #5f6368;
+    border: solid 1px #dadce0;
+    border-radius: 1vw;
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    width: 14%;
+    text-align: center;
+    margin: 1rem 0.5rem 1rem 0;
+    font-size: 0.9rem;
+}
+	
+.clicked_menu{ /*클릭 시 적용되는 style 속성*/
+		color: ;border-color: #4285f4;
+		color: #4285f4;
+		background: #e9f1fe;
+}
+
+#correcting-table td { font-size: 0.9rem; padding: 2.5%; border-top: solid 1px #f1f1f1; }
+
+#report-table td { font-size: 0.9rem; padding: 7px; }
+
+.is-comment .media-content { line-height: 1.6; }
+
+.card.is-post .comments-wrap .comments-body .is-comment .media-content a, .shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .comments-wrap .comments-body .is-comment .media-content a { display: inline; font-weight: 600 !important; font-size: 0.9rem;}
+
+.is-comment > .media-content > .time {
+	display: inline !important;
+	font-size: .8rem !important;
+    color: #888da8;
+    margin-bottom: 10px;
+    margin-left: 0.5rem;
+}
+
 </style>
 <script>
 $(document).ready(function(){
+	
+	$('.menu').each(function(index){
+		$(this).attr('menu-index', index);
+	}).click(function(){
+		var index = $(this).attr('menu-index');
+		$('.menu[menu-index=' + index + ']').addClass('clicked_menu');
+		$('.menu[menu-index!=' + index + ']').removeClass('clicked_menu');
+	});
+	
 	$('.reportMenu').hide();
 	//-------공지사항이동---------
 	$('.page-block').on('click',function(){
@@ -884,7 +910,7 @@ $(document).ready(function(){
 	    console.log(result);
 
 	    var div = $('div[data-table="'+fidx+'"]');//표가 그려질 영역
-		var tbl = $('<table>');
+		var tbl = $('<table id="correcting-table">');
 
  		// 교정 테이블 출력
 		var num = 0;
@@ -898,8 +924,8 @@ $(document).ready(function(){
 			}
 		}
 		var tr2 = $('<tr>');
-		var col = $('<td colspan="2">');
-		var submit = $('<button type="button" id="frmBtn" data-fd="'+fid+'" data-fu="'+fuser+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('전송');
+		var col = $('<td colspan="2" align="right">');
+		var submit = $('<button type="button" class="button" id="frmBtn" data-fd="'+fid+'" data-fu="'+fuser+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('댓글달기');
 		col.append(submit);
 		tr2.append(col);
 		tbl.append(tr2)
@@ -1258,11 +1284,11 @@ $(document).ready(function(){
 							<div class="card-heading is-bordered">
 								<h4>지금 인기있는 주제</h4>
 							</div>
-							<div class="card-body no-padding">
+							<div class="card-body">
 								<c:forEach var="vo" items="${likeTag }" end="9">
 									<!-- Recommended Page -->
 									<label class="nicelabel-default-position"> <span
-										class="tag-label" id="${vo.tag_name }">#${vo.tag_name }</span>
+										class="label-round tag-label" id="${vo.tag_name }">#${vo.tag_name }</span>
 									</label>
 								</c:forEach>
 							</div>
@@ -1271,7 +1297,7 @@ $(document).ready(function(){
 						<!------------------------ 공지사항 시작 ------------------------->
 						<div id="latest-activity-1" class="card">
 							<div class="card-heading is-bordered">
-								<h4>운영자부터로의 편지</h4>
+								<h4>공지사항</h4>
 							</div>
 							<div class="card-body no-padding">
 								<c:forEach items="${noticeList }" var="vo" end="3">
@@ -1558,8 +1584,8 @@ $(document).ready(function(){
 										<!-- General basic options -->
 										<div id="basic-options" class="compose-options">
 											<!-- Upload action -->
-											<div class="compose-option">
-												<i data-feather="camera"></i> <span>Media</span> <input
+											<div class="compose-option" style="height: 32px">
+												<span>📷 PHOTO</span> <input
 													id="feed-upload-input-2" name="file" type="file"
 													accept=".png, .jpg, .jpeg" onchange="readURL(this)">
 											</div>
@@ -1585,13 +1611,11 @@ $(document).ready(function(){
 						</form>
 
 						<!-------------- 검색 태그 부분------------ -->
-						<label class="nicelabel-default-position"> <span
-							class="search-label" id="allSearch">최신글</span> <span
-							class="search-label" id="searchNear">내 근처</span> <span
-							class="search-label" id="searchTag">태그</span> <span
-							class="search-label" id="searchKo">한국어</span> <span
-							class="search-label" id="searchEn">영어</span>
-						</label>
+						<div class="menu" id="allSearch">최신글</div>
+						<div class="menu" id="searchNear">내 근처</div>
+						<div class="menu" id="searchTag">태그</div>
+						<div class="menu" id="searchKo">한국어</div>
+						<div class="menu" id="searchEn">영어</div>
 
 						<div id="SearchDiv" class="control has-margin"
 							style="display: none;">
@@ -1621,11 +1645,12 @@ $(document).ready(function(){
 														data-user-popover="1" alt="">
 												</div>
 												<div class="user-info" id="${vo.user_id }">
-													<a href="#">${vo.name } <svg viewBox="0 0 24 24" width="21" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-														${vo.write_lan } </a> <span class="time"> <script
-															type="text/javascript">														
+													<a href="#" style="font-size:1rem; display: inline">${vo.name }</a>
+													<svg viewBox="0 0 24 24" width="21" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+														${vo.write_lan }  <span class="time">
+													<script type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
-												</script>
+													</script>
 													</span>
 												</div>
 											</div>
@@ -1675,42 +1700,42 @@ $(document).ready(function(){
 														<div class="dropdown-menu">
 	                                                    <div class="dropdown-content reportMenu">
 	                                                        <div class="media freport" style="border: 0px;">
-	                                                        <table>
-								                        	<tr>
-							                        		<td>
-							                        		<input type="radio" id="fmsg" name="${vo.feed_id }" value="스팸 게시물">스팸 게시물
-							                        		</td>
+	                                                        <table id="report-table">
+									                        <tr>
+									                        	<td>
+									                        		<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="스팸 게시물">스팸 게시물</label>
+									                        	</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">가짜정보 제공
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">가짜정보 제공</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="fmsg" name="${vo.feed_id }" value="성적인 내용">성적인 내용
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="성적인 내용">성적인 내용</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="fmsg" name="${vo.feed_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="데이트가 목적인 내용">데이트가 목적인 내용</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="fmsg" name="${vo.feed_id }" value="욕설/비방">욕설/비방
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="욕설/비방">욕설/비방</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="fmsg" name="${vo.feed_id }" value="기타">기타
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="기타">기타</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input  placeholder="신고이유" hidden="true"  data-rftxt="${vo.feed_id }"
-									                        	   maxlength="30"></input>
-							                        		</td>
+								                        		<td>
+																	<input  placeholder="신고이유" hidden="true"  data-rftxt="${vo.feed_id }"
+										                        	   maxlength="30"></input>
+								                        		</td>
 								                        	</tr>
 								                        	</table>
 	                                                        </div>
@@ -1757,7 +1782,7 @@ $(document).ready(function(){
 										<div class="card-body">
 											<!-- Post body text -->
 											<div class="post-text">
-												<p>${vo.content }</p>
+												<p style="font-size: 1rem; color: #5f5f5f; line-height: 1.5;">${vo.content }</p>
 												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 												<div class="twdiv" id="${vo.write_lan }"></div>
 											</div>
@@ -1826,27 +1851,6 @@ $(document).ready(function(){
 
 										<!-- Post footer -->
 										<div class="card-footer">
-											<!-- Followers avatars -->
-											<div class="likers-group">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/dan.jpg"
-													data-user-popover="1" alt=""> <img
-													src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/david.jpg"
-													data-user-popover="4" alt=""> <img
-													src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/edward.jpeg"
-													data-user-popover="5" alt=""> <img
-													src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/milly.jpg"
-													data-user-popover="7" alt="">
-											</div>
-
-											<!-- Followers text -->
-											<div class="likers-text">
-												<p></p>
-											</div>
-
 											<!-- Post statistics -->
 											<div class="social-count">
 												<div class="comments-count">
@@ -1930,17 +1934,19 @@ $(document).ready(function(){
 													 <script type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script>
-													</span>
-													<p>${cmt.content } </p>
 													<!-- Actions -->
 													<c:if test="${cmt.user_id eq user.user_id }">
-													<div class="controls">
+													<div class="controls" style="display: inline-block">
 														<div class="edit">
 															<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
-															data-idx="${status.index }">삭제</a>
+															data-idx="${status.index }">
+															<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+															</a>
 														</div>
 													</div>
 													</c:if>
+													</span>
+													<p style="color: #525252">${cmt.content } </p>
 												</div>
 												<c:if test="${user.user_id ne cmt.user_id}">
 												<!-- Right side dropdown -->
@@ -1958,42 +1964,42 @@ $(document).ready(function(){
 														<div class="dropdown-menu" role="menu">
 	                                                    <div class="dropdown-content">
 	                                                        <div class="media">
-	                                                        <table>
+	                                                        <table id="report-table">
 								                        	<tr>
-							                        		<td>
-							                        		<input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물
-							                        		</td>
+								                        		<td>
+								                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타
-							                        		</td>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타</label>
+								                        		</td>
 								                        	</tr>
 								                        	<tr>
-							                        		<td>
-															<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
-									                        	   maxlength="30"></input>
-							                        		</td>
+								                        		<td>
+																	<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
+										                        	   maxlength="30"></input>
+								                        		</td>
 								                        	</tr>
 								                        	</table>
 	                                                        </div>
@@ -2063,43 +2069,43 @@ $(document).ready(function(){
 														<div class="dropdown-menu" role="menu">
 	                                                    <div class="dropdown-content">
 	                                                        <div class="media">
-	                                                        <table>
-								                        	<tr>
-							                        		<td>
-							                        		<input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물
-							                        		</td>
-								                        	</tr>
-								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공
-							                        		</td>
-								                        	</tr>
-								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용
-							                        		</td>
-								                        	</tr>
-								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
-							                        		</td>
-								                        	</tr>
-								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방
-							                        		</td>
-								                        	</tr>
-								                        	<tr>
-							                        		<td>
-															<input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타
-							                        		</td>
-								                        	</tr>
-								                        	<tr>
-							                        		<td>
-															<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
-									                        	   maxlength="30"></input>
-							                        		</td>
-								                        	</tr>
+	                                                        <table id="report-table">
+									                        	<tr>
+									                        		<td>
+									                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물</label>
+									                        		</td>
+									                        	</tr>
+									                        	<tr>
+									                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공</label>
+									                        		</td>
+									                        	</tr>
+									                        	<tr>
+									                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용</label>
+									                        		</td>
+									                        	</tr>
+									                        	<tr>
+									                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용</label>
+									                        		</td>
+									                        	</tr>
+									                        	<tr>
+									                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방</label>
+									                        		</td>
+									                        	</tr>
+									                        	<tr>
+									                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타</label>
+									                        		</td>
+									                        	</tr>
+									                        	<tr>
+									                        		<td>
+																	<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
+											                        	   maxlength="30"></input>
+									                        		</td>
+									                        	</tr>
 								                        	</table>
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
@@ -2179,8 +2185,8 @@ $(document).ready(function(){
 												data-demo-src="assets/img/avatars/nelly.png"
 												data-user-popover="9" alt="">
 											<div class="page-meta">
-												<span>${vo.user_id }</span> <span>나와 일치하는 관심사
-													${vo.topicCnt }개</span>
+												<span style="font-size:0.9rem">${vo.name }</span>
+												<span style="font-size:0.75rem">일치하는 관심사 ${vo.topicCnt }개</span>
 											</div>
 											<div class="add-friend add-transition" id="${vo.user_id }"
 												onclick="addFriend('${vo.user_id }')">
