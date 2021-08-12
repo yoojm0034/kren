@@ -303,8 +303,6 @@ function check(obj, condition, n) {
 //------------------- 마지막 NEXT 버튼 클릭 ---------------------
 $(function() {
 $('#step5').click(function() {
-	var src = $('#upload-preview').attr("src");
-	$('#base64Photo').val(src);
 	
 	// topic 값 넣기
 	var topic = "";
@@ -331,11 +329,28 @@ $('#step5').click(function() {
 	console.log('language2 : ' + $('#language2').val());
 	console.log('language2_level : ' + $('#language2_level option:selected').val());
 	console.log('topic : ' + $('#topic').val());								
-	console.log('base64 : ' + $('#base64Photo').val());								
+	//console.log('base64 : ' + $('#base64Photo').val());								
 	
-	frm.submit();
-	
+	var src = $('#upload-preview').attr("src");
+	//$('#base64Photo').val(src);
+	const base64 = src;//'data:image/png;base64,....' // Place your base64 url here.
+	fetch(base64)
+	.then(res => res.blob())
+	.then(blob => {
+	  const fd = new FormData(document.frm);
+	  const file = new File([blob], "profile.jpeg");
+	  fd.append('base64Photo', file)
+	  
+	 // Let's upload the file
+	 // Don't set contentType manually → https://github.com/github/fetch/issues/505#issuecomment-293064470
+	 // form에있는 파일 다 묶어서 컨트롤러로 보낸다.
+	 const API_URL = '${pageContext.request.contextPath}/userJoin/userJoin.do'
+	 fetch(API_URL, {method: 'POST', body: fd})
+	 .then(res => res.json()) 
+	 .then(res => console.log(res))
+		alert("회원가입완료");
 	});
+});
 });
 	
 	
@@ -388,7 +403,7 @@ $('#step5').click(function() {
 					<h2 id="step-title-5" class="step-title">환영합니다!</h2>
 				</div>
 
-				<form:form id="frm" action="${pageContext.request.contextPath}/userJoin/userJoin.do" modelAttribute="UsersVO" method="post">
+				<form:form id="frm" name="frm" modelAttribute="UsersVO" method="post">
 
 					<!-------------- 페이지1 아이디/이메일 입력 ------------------->
 					<div id="signup-panel-1"
@@ -658,7 +673,7 @@ $('#step5').click(function() {
 							alt="">
 						<div class="success-text">
 							<h3>계정이 성공적으로 생성되었습니다.</h3>
-							<a id="signup-finish" class="button is-fullwidth">HOME</a>
+							<a id="signup-finish" href="${pageContext.request.contextPath}/home.do" class="button is-fullwidth">로그인 페이지로 이동</a>
 						</div>
 					</div>
 				</div>

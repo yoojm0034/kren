@@ -31,12 +31,12 @@
 	<!-- 회원가입 -->
 	<!-- 아이디 중복체크 -->	
 	<select id="idCheck" parameterType="String" resultType="int" >
-		select * from users where user_id = #{user_id}
+		select count(*) from users where user_id = #{user_id}
 	</select>
 
 	<!-- 이름중복체크 -->
 	<select id="nameCheck" parameterType="String" resultType="int" >
-		select * from users where name = #{name}
+		select count(*) from users where name = #{name}
 	</select>
 	
 	<!-- 이메일중복체크 -->
@@ -117,4 +117,8 @@
 		{CALL user_delete(#{user_id})} 
 	</delete>	
 	
+	<!-- 유저인서트 / 포토 / 포토디테일 한번에 -->
+	<insert id="usersPhotoInsert" statementType="CALLABLE" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		{ CALL uphoto_insert(#{email},#{name},#{password},#{birth},#{gender},#{topic},#{language1},#{language2},#{country},#{city},#{lat},#{lon},#{flag},#{language2_level},#{timezone}, #{user_id}, #{original_name}, #{uuid}, #{file_size}, #{directory} )} 
+	</insert>
 </mapper>

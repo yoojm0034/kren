@@ -8,6 +8,7 @@ public interface UsersMap {
 	List<UsersVO> usersSelectList();
 	UsersVO usersSelect(UsersVO vo);
 	int usersInsert(UsersVO vo);
+	int usersPhotoInsert(UsersVO vo);
 	int usersUpdate(UsersVO vo);
 	int usersDelete(UsersVO vo);
 	

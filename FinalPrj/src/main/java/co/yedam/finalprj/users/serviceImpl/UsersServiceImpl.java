@@ -137,4 +137,10 @@ public class UsersServiceImpl implements UsersService {
 		return loginmap.findPwUpdate(vo);
 	}
 
+	@Override
+	public int usersPhotoInsert(UsersVO vo) {
+		// TODO Auto-generated method stub
+		return map.usersPhotoInsert(vo);
+	}
+
 }
