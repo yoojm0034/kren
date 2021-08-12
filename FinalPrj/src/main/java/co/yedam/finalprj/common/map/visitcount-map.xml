@@ -96,4 +96,18 @@
 		GROUP BY w    
 		ORDER BY w
 	</select>
+	
+	<select id="getPayment" resultType="map">
+		SELECT b.time, nvl(a.p, 0) as p
+		FROM (select to_char(pay_dt, 'mm') as time, sum(price) p   
+		        from payment
+		        where to_char(pay_dt, 'yyyy') = to_char(sysdate, 'yyyy')
+		        group by to_char(pay_dt, 'mm')
+		        order by 1) a
+		        ,(SELECT level as time , 0 as p 
+		          FROM DUAL 
+		          CONNECT BY level <![CDATA[<=]]>12) b
+		WHERE  a.time(+) = b.time
+		ORDER BY b.time
+	</select>
 </mapper>

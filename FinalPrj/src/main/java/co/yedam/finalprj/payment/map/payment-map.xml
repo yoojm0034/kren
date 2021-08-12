@@ -24,21 +24,8 @@
 		select sum(price) 
 		from payment
 	</select>
-<!-- 	<select id="daySales" resultType="int">
-		select sum(price) 
-		from payment
-		where to_char(pay_dt, 'yy/MM/dd') = to_char(sysdate, 'yy/MM/dd')
-	</select>
-	<select id="weekSales" resultType="int">
-		select sum(price) 
-		from payment  
-		where pay_dt BETWEEN TRUNC(sysdate, 'iw') AND TRUNC(sysdate,'iw')+6
-	</select> -->
-	<select id="monthSales" resultType="int">
-		select sum(price) 
-		from payment  
-		where pay_dt BETWEEN TRUNC(sysdate,'MM') AND LAST_DAY(sysdate)
-	</select>
+
+
 	<select id="yearSales" resultType="int">
 		select sum(price) 
 		from payment  

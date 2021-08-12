@@ -97,6 +97,8 @@ public class PushController {
 			return visitDao.yearCount();
 		}else if(data.contains("2021")) {
 			return visitDao.monthCount(data);
+		}else if(data.equals("4")) {
+			return visitDao.getPayment();
 		}else {
 			return visitDao.dayCount();
 		}

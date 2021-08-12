@@ -57,4 +57,10 @@ public class VisitCountServiceImpl implements VisitCountService {
 		return map.monthCount(date);
 	}
 
+	@Override
+	public List<Map<String, Object>> getPayment() {
+		// TODO Auto-generated method stub
+		return map.getPayment();
+	}
+
 }

@@ -142,7 +142,36 @@ $(function(){
 				}
 			});
 		});
-
+	});
+	$('#btnPay').click(function(){
+		var options = {
+			title : '월별 매출액',
+			width : 1200,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data=4",
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '월별', '매출액'])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].TIME+"월", parseInt(data[i].P)];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div2'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
+				}
+			});
+		});
 	});
 });	
 
@@ -256,12 +285,6 @@ $(function(){
 		<!-- 사이드바 종료 -->
 
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 80%">
-
-			<div id="chart-area"></div>
-
-
-		</div>
 		<div class="stories-container">
 			<div class="settings-wrapper">
 				<div id="general-settings" class="settings-section is-active">
@@ -270,12 +293,12 @@ $(function(){
 						<div class="title-wrap">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>전체 방문자 수: ${totalCount}</h2>
+							<h2>방문자 통계</h2>
 						</div>
 						<div class="illustration">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>오늘의 방문자 수: ${todayCount}</h2>
+							<h2>전체 방문자 수: ${totalCount}  오늘의 방문자 수: ${todayCount}</h2>
 						</div>
 					</div>
 				</div>
@@ -309,7 +332,38 @@ $(function(){
 							<div id="chart_div"></div>
 						</div>
 					</div>
-				
+				</div>
+			</div>
+		</div>
+		<div class="stories-container">
+			<div class="settings-wrapper">
+				<div id="general-settings" class="settings-section is-active">
+					<div class="settings-panel">
+
+						<div class="title-wrap">
+							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
+							</a>
+							<h2>매출액 통계</h2>
+						</div>
+						<div class="illustration">
+							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
+							</a>
+							<h2>전체 매출액: ${all}원  올해 매출액: ${year}원</h2>
+						</div>
+					</div>
+				</div>
+				<!-- /partials/settings/sections/general-settings.html -->
+				<div id="general-settings" class="settings-section is-active">
+					<div class="settings-panel">
+						<div class="title-wrap">
+							<button id="btnPay" class="button">월별 매출액</button>
+						</div>
+					</div>
+					<div class="settings-panel">
+						<div class="title-wrap">
+							<div id="chart_div2"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

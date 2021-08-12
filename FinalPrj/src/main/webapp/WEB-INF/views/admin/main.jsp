@@ -1,73 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>회원리스트</title>
-  <link rel="stylesheet" href="/bootstrap-3.3.2-dist/css/bootstrap.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <style>
 .pagination {
-    display: flex;
-    padding-left: 0;
-    list-style: none;
-    border-radius: .35rem;
+	display: flex;
+	padding-left: 0;
+	list-style: none;
+	border-radius: .35rem;
 }
- 
+
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-    margin: 2px 0;
-    white-space: nowrap;
-    justify-content: flex-end;
+	margin: 2px 0;
+	white-space: nowrap;
+	justify-content: flex-end;
 }
 
 .page-link {
-    position: relative;
-    display: block;
-    padding: .5rem .75rem;
-    margin-left: -1px;
-    line-height: 1.25;
-    color: #4e73df;
-    background-color: #fff;
-    border: 1px solid #dddfeb;
+	position: relative;
+	display: block;
+	padding: .5rem .75rem;
+	margin-left: -1px;
+	line-height: 1.25;
+	color: #4e73df;
+	background-color: #fff;
+	border: 1px solid #dddfeb;
 }
 
 *, ::after, ::before {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 div.dataTables_wrapper div.dataTables_paginate {
-    margin: 0;
-    white-space: nowrap;
-    text-align: right;
+	margin: 0;
+	white-space: nowrap;
+	text-align: right;
 }
-tr:hover { 
-	cursor: pointer; 
+
+tr:hover {
+	cursor: pointer;
 	background-color: silver;
-	}
+}
 </style>
 <script>
-     $(function() {
-        	$("#table").DataTable({
-        		// 표시 건수기능 숨기기
-        		lengthChange: true,
-        		lengthMenu: [ 10, 20, 30, 40, 50 ],
-        		// 검색 기능 숨기기
-        		searching: true,
-        		// 정렬 기능 숨기기
-        		ordering: true,
-        		// 정보 표시 숨기기
-        		info: false,
-        		// 페이징 기능 숨기기
-        		paging: true
-        	});
-           
-        	
-    });
-    </script>
+	$(function() {
+		$("#table").DataTable({
+			// 표시 건수기능 숨기기
+			lengthChange : true,
+			lengthMenu : [ 10, 20, 30, 40, 50 ],
+			// 검색 기능 숨기기
+			searching : true,
+			// 정렬 기능 숨기기
+			ordering : true,
+			// 정보 표시 숨기기
+			info : false,
+			// 페이징 기능 숨기기
+			paging : true
+		});
+	});
+</script>
 </head>
 <body>
 	<div class="stories-wrapper is-home">
@@ -175,14 +175,14 @@ tr:hover {
 		</div>
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 80%" >
-			
+		<div class="inner-wrapper" style="width: 80%">
+
 			<h1>전체 방문자 수: ${totalCount} / 오늘의 방문자 수: ${todayCount}</h1>
 			<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
 			<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
 			<button onclick="sendLetterPush('admin')" type="button">편지</button>
 			<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
-			
+
 			<!-- 컨텐츠 시작 -->
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
@@ -207,7 +207,8 @@ tr:hover {
 									<div class="card shadow mb-4">
 										<div class="card-body">
 											<div class="table-responsive">
-												<table class="table table-bordered" id="table" style="width:100%;cellspacing:0;" >
+												<table class="table table-bordered" id="table"
+													style="width: 100%; cellspacing: 0;">
 													<thead>
 														<tr>
 															<th>이메일</th>
@@ -225,7 +226,8 @@ tr:hover {
 																<td>${vo.email}</td>
 																<td>${vo.user_id }</td>
 																<td>${vo.name }</td>
-																<fmt:formatDate  var="birth" value="${vo.birth}" type="DATE" pattern="yyyy/MM/dd"/>
+																<fmt:formatDate var="birth" value="${vo.birth}"
+																	type="DATE" pattern="yyyy/MM/dd" />
 																<td>${birth }</td>
 																<td>${vo.gender }</td>
 																<td>${vo.country }</td>
@@ -237,19 +239,18 @@ tr:hover {
 											</div>
 										</div>
 									</div>
-									</div>
-									</div>
 								</div>
-								<!-- /.container-fluid -->
-
 							</div>
-							<!-- End of Main Content -->
+						</div>
+						<!-- /.container-fluid -->
+
+					</div>
+					<!-- End of Main Content -->
 				</form>
 			</div>
 		</div>
-		<!-- 컨텐츠 종료 -->
-			
 	</div>
+	<!-- 컨텐츠 종료 -->
 
 
 

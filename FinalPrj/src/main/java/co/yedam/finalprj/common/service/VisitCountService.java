@@ -11,5 +11,6 @@ public interface VisitCountService {
 	public List<Map<String, Object>> weekCount();
 	public List<Map<String, Object>> monthCount(String date);
 	public List<Map<String, Object>> yearCount();
+	public List<Map<String, Object>> getPayment();
 	
 }
