@@ -31,8 +31,20 @@ public class StamphController {
 	
 	@RequestMapping("stamphLoginCheck.do")
 	@ResponseBody
-	public StamphVO commentCnt(StamphVO vo) {
+	public int stamphLoginCheck(StamphVO vo) {
 		return stamphDao.stamphLoginCheck(vo);
 	}
+	
+	@RequestMapping("stamphLoginInsert.do")
+	@ResponseBody
+	public int stamphLoginInsert(StamphVO vo) {
+		int n = stamphDao.stamphLoginInsert(vo);
+		if(n == 0) {
+			n = 0;
+		}
+		return n;
+	}
+	
+	
 	
 }

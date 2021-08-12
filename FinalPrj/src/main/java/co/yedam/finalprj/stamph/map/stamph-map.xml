@@ -9,7 +9,7 @@
 		order by SH_DT DESC
 	</select>
 
-	<select id="stamphLoginCheck" parameterType="co.yedam.finalprj.stamph.vo.StamphVO" resultType="co.yedam.finalprj.stamph.vo.StamphVO">
+	<select id="stamphLoginCheck" parameterType="co.yedam.finalprj.stamph.vo.StamphVO" resultType="int">
 		SELECT COUNT(*) AS CNT
 		  FROM STAMPH
 		 WHERE TO_CHAR(SH_DT,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
@@ -18,6 +18,9 @@
 	</select>
 	
 	<insert id="stamphLoginInsert">
-	
+		INSERT INTO STAMPH
+			(STAMPH_ID, USER_ID, SH_TYPE, SH_DT, CNT)
+		VALUES
+			('stamph_'||STAMPH_SEQ.NEXTVAL,#{user_id},'로그인',SYSDATE,1)
 	</insert>
 </mapper>

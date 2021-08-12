@@ -185,16 +185,33 @@ $(document).ready(function(){
 	//-------출석체크-------
 	$('#todayCheck').on('click', function() {
 		console.log('출석신청');
-// 		$.ajax({
-// 			url:'${pageContext.request.contextPath}/stamphLoginCheck.do',
-// 			data:{"user_id":'${user.user_id}'},
-// 			success:function(cnt){
-// 			},
-// 			error:function(e) {
-// 				alert('관리자에게 문의해주세요.');
-// 				console.log(e)
-// 			}
-// 		});
+		$.ajax({//----------출석 여부 확인----------
+			url:'${pageContext.request.contextPath}/stamphLoginCheck.do',
+			data:{'user_id':'${user.user_id}'},
+			success:function(cnt){
+				console.log('cnt:',cnt);
+				if(cnt > 0) {
+					alert('하루에 한번만 가능합니다.');
+				} else {
+					$.ajax({//---------로그인 우표주기---------
+						url: '${pageContext.request.contextPath}/stamphLoginInsert.do',
+						data:{'user_id':'${user.user_id}'},
+						success:function(result) {
+							if(result>0) {
+								alert('우표 하나 받았어요!');
+								$('#todayCheck').children().html('출석완료');								
+							}
+						},
+						error:function() {
+							alert('관리자에게 문의해주세요');
+						}
+					});
+				}
+			},
+			error:function(e) {
+				alert('관리자에게 문의해주세요.');
+			}
+		});
 	});
 	
 });
@@ -1206,18 +1223,11 @@ $(document).ready(function(){
 							<div class="card-body no-padding">
 								<div class="add-friend-block" id="todayCheck">
 									<c:choose>
-									<c:when test="${!empty user.user_id }">
+									<c:when test="${loginStamp eq 0}">
 										<span>여기를 눌러주세요!</span>
 									</c:when>
 									<c:otherwise>
-										<span>이미 누르셨어요!</span>
-										<div class="page-meta">
-											<svg viewBox="0 0 24 24" width="24" height="24"
-												stroke="currentColor" stroke-width="2" fill="none"
-												stroke-linecap="round" stroke-linejoin="round"
-												class="css-i6dzq1">
-												<polyline points="20 6 9 17 4 12"></polyline></svg>
-										</div>
+										<span>출석완료</span>
 									</c:otherwise>
 									</c:choose>
 								</div>

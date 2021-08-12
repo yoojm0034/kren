@@ -19,6 +19,8 @@ import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.TransService;
 import co.yedam.finalprj.notice.service.NoticeService;
+import co.yedam.finalprj.stamph.service.StamphService;
+import co.yedam.finalprj.stamph.vo.StamphVO;
 import co.yedam.finalprj.tag.service.TagService;
 import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
@@ -35,6 +37,7 @@ public class FeedController2 {
 	@Autowired TopicService topicDao;
 	@Autowired CommentsService CommentDao;
 	@Autowired CommentDetailService commentDetailDao;
+	@Autowired StamphService stamphDao;
 	
 	@RequestMapping("feed2.do")
 	public String feed(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
@@ -66,6 +69,11 @@ public class FeedController2 {
 		//댓글
 		model.addAttribute("commentList",CommentDao.commentSelectList());
 		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
+		
+		//출석여부
+		StamphVO sh = new StamphVO();
+		sh.setUser_id(id);
+		model.addAttribute("loginStamp",stamphDao.stamphLoginCheck(sh));
 		return "feed/mainFeed2";
 	} 
 	
