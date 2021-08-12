@@ -499,13 +499,9 @@
 						<c:if test="${!empty friends }">
 						<c:forEach items="${friends }" var="vo">
 							<c:choose>
-							<c:when test="${param.user_id eq vo.user_id }">
+							<c:when test="${req.user_id eq vo.user_id }">
 								<a data-id="${vo.user_id}" class="item is-active">
 									<span class="name">${vo.name }</span>
-									<c:if test="${!empty replyLetter }">
-										<span>↙</span>									
-										<span>↗</span>									
-									</c:if>
 								</a>
 							</c:when>
 							<c:otherwise>
@@ -627,7 +623,12 @@
 												<p>${vo.content }</p>
 											</c:if>
 											<c:if test="${arrive_dt > today }">
-												<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
+												<c:if test="${vo.user_id ne user.user_id }">
+													<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
+												</c:if>
+												<c:if test="${vo.user_id eq user.user_id }">
+													<p>편지가 가고있어요. 조금만 기다려주세요. 편지 배달중입니다.</p>
+												</c:if>
 											</c:if>											
 											</div>
 										</div>
