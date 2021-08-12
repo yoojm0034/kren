@@ -198,6 +198,47 @@
 		    }
 		});
 		
+
+//---------글자수--------------------------------
+		function getTextLength(str) {//영어1, 한글2
+		    var len = 0;
+		    for (var i = 0; i < str.length; i++) {
+		        if (escape(str.charAt(i)).length == 6) {
+		            len++;
+		        }
+		        len++;
+		    }
+		    return len;
+		}
+		
+		String.prototype.cut = function(len) {//원하는 크기대로 문자열자르기
+            var str = this;
+            var l = 0;
+            for (var i=0; i<str.length; i++) {
+                    l += (str.charCodeAt(i) > 128) ? 2 : 1;
+                    if (l > len) return str.substring(0,i);
+            }
+            return str;
+    	}
+		
+		$('textarea[data-letter^="letter_"]').each(function(i, el) {
+			$(el).keyup(function(e) {
+			var content = $(el).val();
+			var span = $(el).parent().parent().parent().parent().parent().parent().parent().parent().children().eq(0).children().children();
+			span.text(getTextLength(content));
+			
+				if (getTextLength(content) > 10000) {
+					$(el).get(0).blur();
+					$(el).val(content.cut(10000));
+					$(el).get(0).focus();					
+					span.text('10000');
+					alert("최대 10000자까지 입력 가능합니다.");
+					return ;
+				}
+			});
+		});
+		
+		
 //--------편지입력--------------------------------
 		$("body").on('click', '#send', function() {
 			var send = $(this).data('send'); //letter_id
@@ -205,6 +246,16 @@
 			var sendbtn = $('button[data-send="'+send+'"]');
 			var txtarea = $('textarea[data-letter="'+send+'"]').val();
 			console.log(txtarea);
+			if(txtarea == "") {
+				alert('내용을 입력하세요.');
+				$('textarea[data-letter="'+send+'"]').focus();
+				return ;
+			}
+			if (getTextLength(txtarea) < 100) {
+				alert("최소 100자 이상 입력해주세요.");
+				return ;
+			}
+			
 			//우표수량 체크
 			$.ajax({
 				url : '${pageContext.request.contextPath}/stampLetterCheck.do',
@@ -499,13 +550,9 @@
 						<c:if test="${!empty friends }">
 						<c:forEach items="${friends }" var="vo">
 							<c:choose>
-							<c:when test="${param.user_id eq vo.user_id }">
+							<c:when test="${req.user_id eq vo.user_id }">
 								<a data-id="${vo.user_id}" class="item is-active">
 									<span class="name">${vo.name }</span>
-									<c:if test="${!empty replyLetter }">
-										<span>↙</span>									
-										<span>↗</span>									
-									</c:if>
 								</a>
 							</c:when>
 							<c:otherwise>
@@ -627,7 +674,12 @@
 												<p>${vo.content }</p>
 											</c:if>
 											<c:if test="${arrive_dt > today }">
-												<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
+												<c:if test="${vo.user_id ne user.user_id }">
+													<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
+												</c:if>
+												<c:if test="${vo.user_id eq user.user_id }">
+													<p>편지가 가고있어요. 조금만 기다려주세요. 편지 배달중입니다.</p>
+												</c:if>
 											</c:if>											
 											</div>
 										</div>
@@ -796,6 +848,9 @@
 						<div class="reply-wrapper">
 							<div class="reply-title">
 							Write
+							<div class="right">
+								(<span>0</span> / 10000)
+							</div>
 							</div>
 							<div class="reply-wrapper-inner">
 								<div class="flex-form">

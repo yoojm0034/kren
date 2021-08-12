@@ -3,9 +3,17 @@
 <mapper namespace="co.yedam.finalprj.letter.map.LetterMap">
 	<!-- 나에게 편지를 보낸 친구목록 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT F.USER_ID, U.NAME FROM (SELECT DISTINCT USER_ID
-								         FROM LETTER
-								        WHERE TO_ID = #{to_id}) F, USERS U
+		SELECT F.USER_ID, U.NAME FROM (select * from(
+													(
+													SELECT DISTINCT USER_ID FROM LETTER
+													 WHERE TO_ID=#{to_id}
+													)
+													 UNION
+													(
+													SELECT DISTINCT TO_ID FROM LETTER
+													WHERE USER_ID=#{to_id}
+													)
+									  )) F, USERS U
 		 WHERE F.USER_ID = U.USER_ID
 	     ORDER BY NAME
 	</select>

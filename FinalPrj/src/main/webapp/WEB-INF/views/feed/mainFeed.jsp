@@ -140,52 +140,74 @@ table {
     resize: none;
     padding: revert;
 }
+.user-info .time {
+	margin-top: 9px;
+}
 
 </style>
 <script>
 $(document).ready(function(){
-/* 	//-------생일롤링---------
-	var height =  $(".notice").height();
-	var num = $(".rolling li").length;
-	var max = height * num;
-	var move = 0;
-	
-	function noticeRolling() {
-		move += height;
-		$(".rolling").animate({"top":-move},600,function(){
-			if( move >= max ){
-				$(this).css("top",0);
-				move = 0;
-			};
-		});
-	};
-	
-	noticeRollingOff = setInterval(noticeRolling,3000);
-	$(".rolling").append($(".rolling li").first().clone());
-	$(".notice").mouseover(function(){
-		clearInterval(noticeRollingOff);
-		$(this).css("cursor", "pointer");
-	});
-	$(".notice").mouseout(function(){
-		noticeRollingOff = setInterval(noticeRolling,5000);
-		$(this).css("cursor", "default");
-	}); */
-
 	$('.reportMenu').hide();
 	//-------공지사항이동---------
 	$('.page-block').on('click',function(){
 		var noticeId= this.id;
 		location.href="${pageContext.request.contextPath}/userSelectNotice.do?notice_id="+noticeId
-			
 	});
-	
-
-	
 });
 </script>
 </head>
 <body>
 <script>
+	function loadMore(){
+	 // load more
+	  var increment=5;	
+	  var startFilter=0;
+	  var endFilter=increment;
+	  
+	  var $this = $('.feedContents');						
+	  var elementLength = $this.children('#feed-post-1').length;
+	  // $('.listLength').text(elementLength);
+	  // show/hide the Load More button
+	  if (elementLength > 5) { 
+		  $('#buttonToogle').show();
+	  }else{
+		  $('#buttonToogle').hide();
+	  }
+	  
+	  $('.feedContents #feed-post-1').slice(startFilter, endFilter).addClass('shown');
+	  //$('.shownLength').text(endFilter);
+	  $('.feedContents #feed-post-1').not('.shown').hide();
+	  $('body').off('click','.load-more-button');
+	  
+	  $('body').on('click','.load-more-button',function() {
+	  	if (elementLength > endFilter) {
+		      startFilter += increment;
+		      endFilter += increment;
+		      $('.feedContents #feed-post-1').slice(startFilter, endFilter).not('.shown').addClass('shown').toggle(500);
+		      $('.shownLength').text((endFilter > elementLength) ? elementLength : endFilter);
+		      if (elementLength <= endFilter) {
+		          $(this).remove();
+		      }
+		}
+	  });
+	} 
+	
+	//-------친구 추천 팔로우--------
+	function addFriend(id){
+		var data = {following : id};
+		$.ajax({
+			url:"${pageContext.request.contextPath}/follow.do",
+			type:"POST",
+			data: JSON.stringify(data),
+			contentType: 'application/json; charset=utf-8',
+			success:function(data){
+				alert(data);
+			},
+			error:function(err){
+				console.log(err);
+			}
+		})
+	};
 
 	//-------좋아요--------
 	function likeIt(feedId){
@@ -239,160 +261,6 @@ $(document).ready(function(){
 			}
 		});  
 	};
-
-	$(function(){
-	//-------태그라벨---------
-	$('.tag-label').on('click',function(){
-		var tagName = this.id;
-		console.log(tagName);
-		console.log('왜');
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do" ,
-			data:{tags : tagName},
-			success:function(result){
-				$('.feedContents').html(result);
-				datePosdst();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-	
-	   //-------태그등록---------
-	   var maxAppend = 0;
-	   document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
-	   function tagFunction() {
-	      if(event.keyCode==13){
-	          var tagval = $('#activities-autocpl').val();
-	          if(!tagval) {
-	            alert('태그를 입력해 주세요!');
-	         }else{
-	            if (maxAppend >= 5) return; 
-	            $('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
-	            $('#activities-autocpl').val('');
-	            maxAppend++;
-	            $.ajax({
-	               url: "tagInsert.do" ,
-	               type: "POST",
-	               data:{ tag_name : tagval } ,
-	               success: function(data){
-	               },
-	               error: function(err){
-	               }
-	            }); 
-	         }
-	      }else if(event.keyCode==35){
-	         event.preventDefault();
-	         event.returnValue = false;
-	      }else if(event.keyCode==44){
-	         event.preventDefault();
-	         event.returnValue = false;
-	      }
-	      
-	     $('.tagDelete').on('click', function () {
-	         $( this ).remove(); 
-	         maxAppend--;
-	     });
-	   }
-	
-	});
-	$(function(){
-	//-------최신글---------
-	$('#allSearch').on('click',function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do",
-			success:function(result){
-				console.log(result);
-				$('.feedContents').html(result);
-				datePosdst();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-	});
-	$(function(){
-	//-------내근처--------- 
-	$('#searchNear').on('click',function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do",
-			data:{location : 'true' },
-			success:function(result){
-				$('.feedContents').html(result);
-				datePosdst();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-	});
-	$(function(){
-	//-------언어별 Ko---------
-	$('#searchKo').on('click',function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do",
-			data:{write_lan : 'ko' },
-			success:function(result){
-				console.log('한국어만 나옴');
-				$('.feedContents').html(result);
-				datePosdst();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-	});
-	$(function(){
-	//-------언어별 En---------
-	$('#searchEn').on('click',function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do",
-			data:{write_lan : 'en' },
-			success:function(result){
-				console.log('영어만 나옴');
-				$('.feedContents').html(result);
-				datePosdst();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-	});
-
-	$(function(){
-	//-------피드 등록---------
-	$('#publish-button').on('click', function(){
-		var feedId = $('#feedid').val();
-		var tagval = $('#append_tag').text();
-		
-		if(tagval == ""){
-		}else{
-			tagval= tagval.replace("#","");
-			tagval= tagval.replace(/#/g,",");
-		}
-		
-		document.getElementById('tags').value = tagval;					
-		$('#feedInsert').submit();
-	});
-	});
-	
-	$(function(){
-	//-------피드 Reset---------
-	$('.close-publish').on('click',function(){
-		$('#publish').val('');
-		$('#append_tag').text('');
-		$('#photoChk').val('');
-		$('#feed-upload').empty();
-		$('#feedid').val('');
-	}); 
-	}); 
-	
-	
 	
 	function feedUpdate(feedId){
 		var maxCnt = 0;
@@ -406,8 +274,6 @@ $(document).ready(function(){
 		var fphoto = $('#update'+feedId).children(1).children(":eq(3)").val(); 
 		var retag = tags.replace(/,/g, "#");	
 		var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
-		console.log($('#'+feedId).children(1).children(":eq(0)"));
-		
 		
 		$('#feedid').val(feedId);	
 		$('#publish').val(content);
@@ -423,198 +289,318 @@ $(document).ready(function(){
 		  $('#feed-upload').append(template);
 		  maxCnt++;
 		  maxValue++;
-		 
 		}
 
-		  	$('.remove-file').on('click', function () {
-		         $(this).closest('.upload-wrap').remove();
-		         photoChk.val(1);
-		         maxCnt--;
-		         maxValue--;
-		  	});
-
-		
+	  	$('.remove-file').on('click', function () {
+	         $(this).closest('.upload-wrap').remove();
+	         photoChk.val(1);
+	         maxCnt--;
+	         maxValue--;
+	  	});
 	}
-
-	$(function(){
-		//-------태그자동완성---------
-		if ($('#activities-autocpl').length) {
-		    var html = '';
-		    var activitiesOptions = {
-		      url: "${pageContext.request.contextPath}/autocpl.do",
-		      getValue: "tag_name",
-			      template: {
-		        type: "custom",
-		        method: function method(value) {
-		          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
-		        }
-		      }, 
-		      highlightPhrase: false,
-		      list: {
-		        maxNumberOfElements: 5,
-		        showAnimation: {
-		          type: "slide",
-		          time: 400,
-		          callback: function callback() {}
-		        },
-		        match: {
-		          enabled: true
-		        }
-		      }
-		    };
-		    $("#activities-autocpl").easyAutocomplete(activitiesOptions);
-		 };
-	});
 	
 	$(function(){
-		//-------태그---------
-		$('#searchTag').on('click',function(){
-			var display = $("#SearchDiv").css('display');
-			if(display == "none"){
-				$("#SearchDiv").css('display', 'block'); 
-				if ($('#tagInput').length) {
-				    var html = '';
-				    var activitiesOptions = {
-				      url: "${pageContext.request.contextPath}/autocpl.do",
-				      getValue: "tag_name",
-			 	      template: {
-				        type: "custom",
-				        method: function method(value) {
-				          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
-				        }
-				      }, 
-				      highlightPhrase: false,
-				      list: {
-				        maxNumberOfElements: 5,
-				        showAnimation: {
-								          type: "slide",
-								          time: 400,
-								          callback: function callback() {}
-				        },
-				        match: {
-				          enabled: true
-				        }
-				      }
-				    }
-				    $("#tagInput").easyAutocomplete(activitiesOptions);
-				  };
-				document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
-				function tagsFunction() {
-					if(event.keyCode==13){
-				    	var tagval=$('#tagInput').val();
-				    	if(!tagval) {
-							alert('태그를 입력해 주세요!');
-						}else{
-							$.ajax({
-								url:"${pageContext.request.contextPath}/feedSelect.do",
-								data:{tags : tagval },
-								success:function(result){
-									console.log('태그검색결과');
-									$('.feedContents').html(result);
-								},
-								error:function(err){
-									console.log(err);
-								}
-							});
-						}
-					}
-				};
-			}else{
-				$("#SearchDiv").css('display', 'none'); 
-			}
-		});
-		
-		//신고
-		$('body').on('click','#frbtn',function(){
-			$('.reportMenu').toggle();
-			
-			var report = $(this).data('report');	//name 
-			var repo = $(this).data('repo')			//feed_id
-			var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
-			
-			var msg = $("input:radio[name='"+repo+"']:checked").val();
-			var txt = "";
-			console.log(radio);
-	
-			var chk = $("input:checkbox[data-rfchk='"+repo+"']:checked").val(); //체크된값
-			console.log(report, repo, radio, chk, txt);
-			
-			$('#report-btn').on('click',function(){
-				if(radio == '기타') {
-					txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
-				} else {
-					txt = radio;
-				}
-				if(txt == null) {//값이 선택되지 않았으면
-					alert('신고사유를 선택하세요');
-					return;
-				} 
-				console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부" +chk +"체크사유 & 기타사유"+ txt);	
-				
-/* 			if(confirm('신고하시겠습니까?')) {
-				$.ajax({
-					url:'${pageContext.request.contextPath}/reportInsert.do',
-					type:'post',
-					data:JSON.stringify({
-						user_id:'${user.user_id}',	//신고자
-						content:repo,				//피드아이디
-						msg:txt,					//신고냐용
-						reported:report,			//신고당한자
-						blocked:chk					//블락체크여부
-					}),
-					contentType : "application/json; charset=UTF-8",
-					success: function(data) {
-						alert('신고되었습니다.');
-						location.reload(true);
-					},
-					error: function(err) {
-						alert('관리자에게 문의해주세요.');
-					}
-				});
-			} */
-				});
-		})
-		
-/* 		$('body').on('click','#fmsg', function() { //기타를 누르면 값을 입력할 수 있도록
-			var select = $(this);
-			var repo = select.attr('name');
-			var msg = $("input:radio[name='"+repo+"']:checked").val();
-			if(msg == '기타') {
-				$('input[data-rftxt="'+repo+'"]').attr('hidden',false);				
-			} else {
-				$('input[data-rftxt="'+repo+'"]').attr('hidden',true);				
-			}
-			
-		});	 */
-		
-	});
-
-
-	$(function(){
-		//-------프로필클릭시---------
-		$('.user-info').on('click',function(){
-			var userId= this.id;
-			location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
-				
-		});
-	});
-	
-	//-------친구 추천 팔로우--------	 안됨 
-	function addFriend(id){
+	loadMore();
+	//-------태그라벨---------
+	$('.tag-label').on('click',function(){
+		var tagName = this.id;
+		console.log(tagName);
+		console.log('왜');
 		$.ajax({
-			url:"${pageContext.request.contextPath}/follow.do",
-			type:"POST",
-			data:{following : id },
-			dataType:"JSON",
-			success:function(){
-				alert(userId+'친구로 추가 되었습니다');
+			url:"${pageContext.request.contextPath}/feedSelect.do" ,
+			data:{tags : tagName},
+			success:function(result){
+				$('.feedContents').html(result);
+				datePosdst();
+				loadMore();
 			},
 			error:function(err){
 				console.log(err);
 			}
-		})
-	};
+		});
+	});
 	
+   //-------태그등록---------
+   var maxAppend = 0;
+   document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
+   function tagFunction() {
+      if(event.keyCode==13){
+          var tagval = $('#activities-autocpl').val();
+          if(!tagval) {
+            alert('태그를 입력해 주세요!');
+         }else{
+            if (maxAppend >= 5) return; 
+            $('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
+            $('#activities-autocpl').val('');
+            maxAppend++;
+            $.ajax({
+               url: "tagInsert.do" ,
+               type: "POST",
+               data:{ tag_name : tagval } ,
+               success: function(data){
+               },
+               error: function(err){
+               }
+            }); 
+         }
+      }else if(event.keyCode==35){
+         event.preventDefault();
+         event.returnValue = false;
+      }else if(event.keyCode==44){
+         event.preventDefault();
+         event.returnValue = false;
+      }
+      
+     $('.tagDelete').on('click', function () {
+         $( this ).remove(); 
+         maxAppend--;
+     });
+   }
+
+	//-------최신글---------
+	$('#allSearch').on('click',function(){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do",
+			success:function(result){
+				console.log(result);
+				$('.feedContents').html(result);
+				datePosdst();
+				loadMore();
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
+	});
+	
+	
+	//-------내근처--------- 
+	$('#searchNear').on('click',function(){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do",
+			data:{location : 'true' },
+			success:function(result){
+				$('.feedContents').html(result);
+				datePosdst();
+				loadMore();
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
+	});
+
+	//-------언어별 Ko---------
+	$('#searchKo').on('click',function(){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do",
+			data:{write_lan : 'ko' },
+			success:function(result){
+				console.log('한국어만 나옴');
+				$('.feedContents').html(result);
+				datePosdst();
+				loadMore();
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
+	});
+
+	//-------언어별 En---------
+	$('#searchEn').on('click',function(){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do",
+			data:{write_lan : 'en' },
+			success:function(result){
+				console.log('영어만 나옴');
+				$('.feedContents').html(result);
+				datePosdst();
+				loadMore();
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
+	});
+
+	//-------피드 등록---------
+	$('#publish-button').on('click', function(){
+		var feedId = $('#feedid').val();
+		var tagval = $('#append_tag').text();
+		if(tagval == ""){
+		}else{
+			tagval= tagval.replace("#","");
+			tagval= tagval.replace(/#/g,",");
+		}
+		document.getElementById('tags').value = tagval;					
+		$('#feedInsert').submit();
+	});
+
+	//-------피드 Reset---------
+	$('.close-publish').on('click',function(){
+		$('#publish').val('');
+		$('#append_tag').text('');
+		$('#photoChk').val('');
+		$('#feed-upload').empty();
+		$('#feedid').val('');
+	}); 
+
+	//-------프로필클릭시---------
+	$('.user-info').on('click',function(){
+		var userId= this.id;
+		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
+	});
+	});
+	
+	$(function(){
+	//-------태그자동완성---------
+	if ($('#activities-autocpl').length) {
+		var data1 = $(this);
+		console.log(data1);
+		console.log(this);
+	    var html = '';
+	    var activitiesOptions = {
+	      url: "${pageContext.request.contextPath}/autocpl.do",
+	      getValue: "tag_name",
+		      template: {
+	        type: "custom",
+	        method: function method(value) {
+	          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+	        }
+	      }, 
+	      highlightPhrase: false,
+	      list: {
+	        maxNumberOfElements: 5,
+	        showAnimation: {
+	          type: "slide",
+	          time: 400,
+	          callback: function callback() {}
+	        },
+	        match: {
+	          enabled: true
+	        }
+	      }
+	    };
+	    $('#activities-autocpl').easyAutocomplete(activitiesOptions);
+	 };
+
+	//-------태그검색---------
+	$('#searchTag').on('click',function(){
+		var display = $("#SearchDiv").css('display');
+		if(display == "none"){
+			$("#SearchDiv").css('display', 'block'); 
+			if ($('#tagInput').length) {
+			    var html = '';
+			    var activitiesOptions = {
+			      url: "${pageContext.request.contextPath}/autocpl.do",
+			      getValue: "tag_name",
+		 	      template: {
+			        type: "custom",
+			        method: function method(value) {
+			          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+			        }
+			      }, 
+			      highlightPhrase: false,
+			      list: {
+			        maxNumberOfElements: 5,
+			        showAnimation: {
+							          type: "slide",
+							          time: 400,
+							          callback: function callback() {}
+			        },
+			        match: {
+			          enabled: true
+			        }
+			      }
+			    }
+			    $("#tagInput").easyAutocomplete(activitiesOptions);
+			  };
+			document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
+			function tagsFunction() {
+				if(event.keyCode==13){
+			    	var tagval=$('#tagInput').val();
+			    	if(!tagval) {
+						alert('태그를 입력해 주세요!');
+					}else{
+						$.ajax({
+							url:"${pageContext.request.contextPath}/feedSelect.do",
+							data:{tags : tagval },
+							success:function(result){
+								console.log('태그검색결과');
+								$('.feedContents').html(result);
+							},
+							error:function(err){
+								console.log(err);
+							}
+						});
+					}
+				}
+			};
+		}else{
+			$("#SearchDiv").css('display', 'none'); 
+		}
+	});
+	
+	//---------피드신고---------
+	$('body').on('click','#frbtn',function(){
+		$('.reportMenu').toggle();
+	}); 
+	
+	$('body').on('click','#fmsg',function(){
+		var select = $(this);
+		var repo = select.attr('name');
+		var msg = $("input:radio[name='"+repo+"']:checked").val();
+		if(msg == '기타') {
+			$('input[data-rftxt="'+repo+'"]').attr('hidden',false);				
+		}else{
+			$('input[data-rftxt="'+repo+'"]').attr('hidden',true);				
+		}
+	});
+		
+	$('body').on('click','#report-btn',function(){
+		var report = $(this).data('report');	//name 
+		var repo = $(this).data('repo')			//feed_id
+		var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
+		var txt = "";
+		var chk = $("input:checkbox[data-rfchk='"+repo+"']:checked").val(); //체크된값
+		
+		if(radio == '기타') {
+			txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
+		} else {
+			txt = radio;
+		}
+		if(txt == null) {//값이 선택되지 않았으면
+			alert('신고사유를 선택하세요');
+			return;
+		} 
+		
+		console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부 : "  +chk +"체크사유 & 기타사유"+ txt);	
+		
+ 		if(confirm('신고하시겠습니까?')) {
+			$.ajax({
+				url:'${pageContext.request.contextPath}/reportInsert.do',
+				type:'post',
+				data:JSON.stringify({
+					user_id:'${user.user_id}',	//신고자
+					content:repo,				//피드아이디
+					msg:txt,					//신고냐용
+					reported:report,			//신고당한자
+					blocked:chk					//블락체크여부
+				}),
+				contentType : "application/json; charset=UTF-8",
+				success: function(data) {
+					alert('신고되었습니다.');
+					location.reload(true);
+				},
+				error: function(err) {
+					alert('관리자에게 문의해주세요.');
+				}
+			})
+		} 
+	})
+	})
+
 	//-------댓글-------- 
 	$(function() {
 		//-------댓글작성 그룹이벤트-------- 		
@@ -1571,7 +1557,7 @@ $(document).ready(function(){
 														data-user-popover="1" alt="">
 												</div>
 												<div class="user-info" id="${vo.user_id }">
-													<a href="#">${vo.feed_id } : ${vo.name } :
+													<a href="#">${vo.name } <svg viewBox="0 0 24 24" width="21" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
 														${vo.write_lan } </a> <span class="time"> <script
 															type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
@@ -1665,7 +1651,7 @@ $(document).ready(function(){
 								                        	</table>
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
-									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.user_name } 차단
+									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name } 차단
 															<button id="report-btn"  data-repo="${vo.feed_id  }" data-report="${vo.user_id }">신고</button>
 	                                                    </div>
 		                                               </div>
@@ -2106,12 +2092,11 @@ $(document).ready(function(){
 								</div>
 							</c:forEach>
 							<!------------------------ 포스트 끝 ------------------------->
-						</div>
-						<div class=" load-more-wrap narrow-top has-text-centered">
-							<a href="#" class="load-more-button">Load More</a>
+							<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
+								<a href="javascript:;" class="load-more-button">Load More</a>
+							</div>
 						</div>
 						<!-- /Load more posts -->
-
 					</div>
 					<!-- /Middle column -->
 					<!-- Right side column -->

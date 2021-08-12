@@ -62,6 +62,8 @@ public class LetterController {
 
 		// 교정편지 조회
 		model.addAttribute("lettercs", lettercDao.selectLetterC());
+		model.addAttribute("req",vo);
+		
 		return "letter/selectLetters";
 	}
 

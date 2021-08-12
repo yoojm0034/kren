@@ -26,15 +26,22 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-	
-<script src="${pageContext.request.contextPath}/resources/template/assets/js/global.js"></script>
-<script src="${pageContext.request.contextPath}/resources/template/assets/js/app.js"></script>
-<script src="${pageContext.request.contextPath}/resources/template/assets/js/webcam.js"></script>
-<script src="${pageContext.request.contextPath}/resources/template/assets/js/compose.js"></script>
-<script src="${pageContext.request.contextPath}/resources/template/assets/js/autocompletes.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
+
+<script
+	src="${pageContext.request.contextPath}/resources/template/assets/js/global.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/template/assets/js/app.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/template/assets/js/webcam.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/template/assets/js/compose.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/template/assets/js/autocompletes.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
 
 <script>
+	
 </script>
 <div class="feedContents">
 	<c:forEach items="${feedList }" var="vo">
@@ -51,9 +58,10 @@
 								alt="">
 						</div>
 						<div class="user-info" id="${vo.feed_id }">
-							<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } :${vo.reg_date }  </a>
-							<span class="time postTime"><fmt:formatDate value="${vo.reg_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span>
-							
+							<a href="#">${vo.name } <svg viewBox="0 0 24 24" width="21" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+							  ${vo.write_lan } </a> <span class="time postTime"><fmt:formatDate
+									value="${vo.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+
 						</div>
 					</div>
 					<!-- Right side dropdown -->
@@ -97,17 +105,62 @@
 									<hr class="dropdown-divider">
 									<a class="dropdown-item">
 										<div class="media">
-											<i data-feather="bell"></i>
-											<div class="media-content">
+											<div class="media-content" id="frbtn"
+												data-repo="${vo.feed_id }" data-report="${vo.user_id }">
 												<h3>신고</h3>
 											</div>
+										
+										<div class="dropdown-menu">
+											<div class="dropdown-content reportMenu">
+												<div class="media freport" style="border: 0px;">
+													<table>
+														<tr>
+															<td><input type="radio" id="fmsg"
+																name="${vo.feed_id }" value="스팸 게시물">스팸 게시물</td>
+														</tr>
+														<tr>
+															<td><input type="radio" id="fmsg"
+																name="${vo.feed_id }" value="가짜정보 제공">가짜정보 제공</td>
+														</tr>
+														<tr>
+															<td><input type="radio" id="fmsg"
+																name="${vo.feed_id }" value="성적인 내용">성적인 내용</td>
+														</tr>
+														<tr>
+															<td><input type="radio" id="fmsg"
+																name="${vo.feed_id }" value="데이트가 목적인 내용">데이트가
+																목적인 내용</td>
+														</tr>
+														<tr>
+															<td><input type="radio" id="fmsg"
+																name="${vo.feed_id }" value="욕설/비방">욕설/비방</td>
+														</tr>
+														<tr>
+															<td><input type="radio" id="fmsg"
+																name="${vo.feed_id }" value="기타">기타</td>
+														</tr>
+														<tr>
+															<td><input placeholder="신고이유" hidden="true"
+																data-rftxt="${vo.feed_id }" maxlength="30"></input></td>
+														</tr>
+													</table>
+												</div>
+												<div class="dropdown-divider"></div>
+												<input type="checkbox" id="feed-blocked"
+													data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
+												차단
+												<button id="report-btn" data-repo="${vo.feed_id  }"
+													data-report="${vo.user_id }">신고</button>
+											</div>
 										</div>
+									</div>
 									</a>
-							</c:if>
+								</c:if>
 								<c:if test="${vo.user_id eq user.user_id}">
 									<hr class="dropdown-divider">
 									<a class="dropdown-item">
-										<div class="media feedUpdate" id="update${vo.feed_id }" onclick="feedUpdate('${vo.feed_id }')">
+										<div class="media feedUpdate" id="update${vo.feed_id }"
+											onclick="feedUpdate('${vo.feed_id }')">
 											<i data-feather="bell"></i>
 											<div class="media-content">
 												<input type="hidden" id="update-tag" name="update-tag"
@@ -245,9 +298,7 @@
 								class="css-i6dzq1">
 								<path
 									d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-								<span id="recCnt${vo.feed_id }" >
-													 ${vo.like_cnt }
-								</span>
+							<span id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
 						</div>
 					</div>
 				</div>
@@ -774,16 +825,17 @@
 		</div>
 	</c:forEach>
 	<!------------------------ 포스트 끝 ------------------------->
+	<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
+		<a href="javascript:;" class="load-more-button">Load More</a>
+	</div>
 </div>
- <script type="text/javascript">
-  function datePosdst(){
- 	$('.postTime').each(function(i,el){
- 		var dete = $(this).text();
-  		console.log("나야? : "+i+$(this));
-  		$(this).text(timeForToday(dete));
+<script type="text/javascript">
 
- 	});
-  }
-  
-  datePosdst();
+	function datePosdst() {
+		$('.postTime').each(function(i, el) {
+			var dete = $(this).text();
+			$(this).text(timeForToday(dete));
+		});
+	}
+	datePosdst();
 </script>

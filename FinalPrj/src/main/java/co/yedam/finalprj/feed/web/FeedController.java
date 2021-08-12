@@ -88,8 +88,7 @@ public class FeedController {
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
 		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
-		System.out.println(feedDao.feedSelectList(vo));
-		
+	
 		//댓글
 		model.addAttribute("commentList",CommentDao.commentSelectList());
 		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
