@@ -3,6 +3,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<script>
+$(function() {
+$("div[id^='load_'").each(function(i, el){
+	var cid = $(this).data('cid');//cc_id.line
+	var cdc = $(this).data('cdc');//content
+	var cdo = $(this).data('cdo');//origin
+	test_diff(cid,cdc,cdo);
+});
+
+// 문자열 비교; diffButty.js; String
+function test_diff(cid,dif,ori) {
+	var original = ori;
+	var revised = dif;
+	var output = $('<pre>');
+	var html = diffButty(original, revised);
+	output.html(html);
+	var div = $('div[data-cid="'+cid+'"]');
+	div.html(output);
+} 
+});
+</script>
 <c:if test="${!empty cc }">
 <div class="media is-comment">
 	<!-- User image -->
@@ -19,7 +40,7 @@
 		<span class="time">방금전</span>
 		<c:forEach items="${cd }" var="cd">
 		<!-- 교정댓글이면, line을 반복 -->
-		<div id="load" data-cid="${cd.cc_id }${cd.line}"
+		<div id="load_${cd.cc_id }${cd.line}" data-cid="${cd.cc_id }${cd.line}"
 		data-cdc="${cd.content }"
 		data-cdo="${cd.origin }">${cd.content }</div>
 		</c:forEach>
