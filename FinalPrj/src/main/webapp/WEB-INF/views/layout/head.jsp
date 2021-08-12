@@ -476,7 +476,6 @@ h5:hover {
 								</label>
 							</div>
 							<div class="nav-drop-body account-items">
-								<c:if test="${user.user_id ne 'admin'}">								
 								<a id="profile-link" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}"
 									class="account-item">
 									<div class="media">
@@ -488,35 +487,13 @@ h5:hover {
 										</div>
 										<div class="media-content">
 											<h3>${user.name }</h3>
-											<small>Main account</small>
+											<small>유저 프로필</small>
 										</div>
 										<div class="media-right">
 											<i data-feather="check"></i>
 										</div>
 									</div>
 								</a>
-									<a href="/options-settings.html" class="account-item">
-									<div class="media">
-										<div class="icon-wrap">
-											<i data-feather="settings"></i>
-										</div>
-										<div class="media-content">
-											<small>Access widget settings.</small>
-										</div>
-									</div>
-								</a> 
-								<a class="account-item">
-									<div class="media">
-										<div class="icon-wrap">
-											<i data-feather="life-buoy"></i>
-										</div>
-										<div class="media-content">
-											<h3>Help</h3>
-											<small>Contact our support.</small>
-										</div>
-									</div>
-								</a> 	
-								</c:if>
 								<c:if test="${user.user_id eq 'admin'}">
 								<a id="profile-link" href="${pageContext.request.contextPath}/admin/admin.do"
 									class="account-item">
@@ -528,7 +505,7 @@ h5:hover {
 										</div>
 										<div class="media-content">
 											<h3>${user.name }</h3>
-											<small>Admin Page</small>
+											<small>관리자 메뉴</small>
 										</div>
 										<div class="media-right">
 											<i data-feather="check"></i>
