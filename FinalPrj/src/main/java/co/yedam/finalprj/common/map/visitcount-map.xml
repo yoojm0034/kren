@@ -65,4 +65,35 @@
 		order by b.time
 	</select>
 	
+	<select id="monthCount" parameterType="String" resultType="map">
+		WITH t AS
+              (
+              SELECT TO_DATE(yyyy||'01', 'yyyymm') + LEVEL - 1 time
+                FROM (SELECT TO_CHAR(sysdate, 'yyyy') yyyy FROM dual)
+               CONNECT BY LEVEL <![CDATA[<=]]> TO_CHAR(TO_DATE(yyyy||'1231', 'yyyymmdd'), 'ddd')
+              )
+		SELECT w, sum(cnt) as cnt
+		FROM
+		    (select d.time, nvl(c.cnt, 0) as cnt, nvl(d.w, 0) as w
+		    FROM ( select a.*, b.w
+		            from (SELECT TO_CHAR(v_date, 'YY/MM/DD') time , count(*) cnt
+		                  FROM tb_visitor
+		                  where TO_CHAR(V_DATE,'YYYYMM') = #{value}
+		                  GROUP BY TO_CHAR(v_date, 'YY/MM/DD')
+		                  ORDER BY 1) a
+		                 ,(
+		                  SELECT time
+		                       , CEIL((time - TRUNC(TRUNC(time, 'mm'), 'iw') + 1) / 7) w
+		                  FROM t
+		                  WHERE TO_CHAR(time, 'yyyymm') = #{value}) b
+		            WHERE a.time=b.time) c
+		            ,( SELECT time
+		                   , 0 as cnt , CEIL((time - TRUNC(TRUNC(time, 'mm'), 'iw') + 1) / 7) w
+		              FROM t
+		              WHERE TO_CHAR(time, 'yyyymm') = #{value}) d
+		    WHERE c.time(+)=d.time
+		    ORDER BY d.time)
+		GROUP BY w    
+		ORDER BY w
+	</select>
 </mapper>

@@ -9,7 +9,7 @@ public interface VisitCountService {
 	public int getVisitToday();
 	public List<Map<String, Object>> dayCount();
 	public List<Map<String, Object>> weekCount();
-	public List<Map<String, Object>> monthCount();
+	public List<Map<String, Object>> monthCount(String date);
 	public List<Map<String, Object>> yearCount();
 	
 }

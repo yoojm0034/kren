@@ -43,16 +43,18 @@ public class VisitCountServiceImpl implements VisitCountService {
 		return map.weekCount();
 	}
 
-	@Override
-	public List<Map<String, Object>> monthCount() {
-		// TODO Auto-generated method stub
-		return map.monthCount();
-	}
+	
 
 	@Override
 	public List<Map<String, Object>> yearCount() {
 		// TODO Auto-generated method stub
 		return map.yearCount();
+	}
+
+	@Override
+	public List<Map<String, Object>> monthCount(String date) {
+		// TODO Auto-generated method stub
+		return map.monthCount(date);
 	}
 
 }

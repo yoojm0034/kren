@@ -16,7 +16,7 @@ $(function(){
 		var colors = ['red','blue'];
 		var options = {
 			title : '시간대별 접속자수',
-			width : 1000,
+			width : 1200,
 			height : 500
 		};
 		google.load('visualization', '1.0', {
@@ -47,7 +47,7 @@ $(function(){
 		console.log(1)
 		var options = {
 			title : '일별 접속자수',
-			width : 1000,
+			width : 1200,
 			height : 500
 		};
 		google.load('visualization', '1.0', {
@@ -79,7 +79,7 @@ $(function(){
 		console.log(1)
 		var options = {
 			title : '월별 접속자수',
-			width : 1000,
+			width : 1200,
 			height : 500
 		};
 		google.load('visualization', '1.0', {
@@ -97,6 +97,43 @@ $(function(){
 					chartData.push([ '월별', '접속자수'])
 					for (i = 0; i < data.length; i++) {
 						var subarr = [ data[i].TIME+"월", parseInt(data[i].CNT)];
+						chartData.push(subarr);
+					}
+					//챠트 그리기
+					var chart = new google.visualization.ColumnChart(document.querySelector('#chart_div'));
+					chart.draw(google.visualization.arrayToDataTable(chartData),options);
+				}
+			});
+		});
+
+	});
+	$('#btnMonth').click(function(){
+		if($('#month').val() == '') {
+			alert('조회를 원하는 월을 선택하세요.')
+			return false;
+		}
+		var value = $('#month').val();
+		console.log(value)
+		var options = {
+			title : '주별 접속자수',
+			width : 1200,
+			height : 500
+		};
+		google.load('visualization', '1.0', {
+			'packages' : [ 'corechart' ]
+		});
+		google.setOnLoadCallback(function() {
+			//차트에 넣을 data를 ajax 요청해서 가져옴
+			$.ajax({
+				url : "${pageContext.request.contextPath}/getChartData.do?data="+value,
+				method : "post",
+				type : "json",
+				success : function(data) {
+					//ajax결과를 chart에 맞는 data 형태로 가공
+					var chartData = [];
+					chartData.push([ '주별', '접속자수'])
+					for (i = 0; i < data.length; i++) {
+						var subarr = [ data[i].W+"주", parseInt(data[i].CNT)];
 						chartData.push(subarr);
 					}
 					//챠트 그리기
@@ -248,6 +285,21 @@ $(function(){
 						<div class="title-wrap">
 							<button id="btnDay" class="button">시간대별</button>
 							<button id="btnWeek" class="button">일별</button>
+							<select id="month" name="month" size="1" class="select">
+								<option value="" selected>선택하세요.</option>
+								<option value="202101">1월</option>
+								<option value="202102">2월</option>
+								<option value="202103">3월</option>
+								<option value="202104">4월</option>
+								<option value="202105">5월</option>
+								<option value="202106">6월</option>
+								<option value="202107">7월</option>
+								<option value="202108">8월</option>
+								<option value="202109">9월</option>
+								<option value="202110">10월</option>
+								<option value="202111">11월</option>
+								<option value="202112">12월</option>
+							</select>
 							<button id="btnMonth" class="button">월별</button>
 							<button id="btnYear" class="button">연별</button>
 						</div>
@@ -259,28 +311,6 @@ $(function(){
 					</div>
 				
 				</div>
-				<br>
-				<div id="general-settings" class="settings-section is-active">
-					<div class="settings-panel">
-
-						<div class="title-wrap">
-							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
-							</a>
-							<h2>General Settings</h2>
-						</div>
-
-						<div class="settings-form-wrapper">
-							<div class="illustration">
-								<p>
-									If you'd like to learn more about general settings, you can
-									read about it in the <a>user guide</a>.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			
-
 			</div>
 		</div>
 	</div>
