@@ -140,10 +140,11 @@ table {
     resize: none;
     padding: revert;
 }
+
 </style>
 <script>
 $(document).ready(function(){
-	//-------생일롤링---------
+/* 	//-------생일롤링---------
 	var height =  $(".notice").height();
 	var num = $(".rolling li").length;
 	var max = height * num;
@@ -168,8 +169,9 @@ $(document).ready(function(){
 	$(".notice").mouseout(function(){
 		noticeRollingOff = setInterval(noticeRolling,5000);
 		$(this).css("cursor", "default");
-	});
+	}); */
 
+	$('.reportMenu').hide();
 	//-------공지사항이동---------
 	$('.page-block').on('click',function(){
 		var noticeId= this.id;
@@ -184,6 +186,7 @@ $(document).ready(function(){
 </head>
 <body>
 <script>
+
 	//-------좋아요--------
 	function likeIt(feedId){
 		var span = $('#recCnt'+feedId);
@@ -248,6 +251,7 @@ $(document).ready(function(){
 			data:{tags : tagName},
 			success:function(result){
 				$('.feedContents').html(result);
+				datePosdst();
 			},
 			error:function(err){
 				console.log(err);
@@ -301,6 +305,7 @@ $(document).ready(function(){
 			success:function(result){
 				console.log(result);
 				$('.feedContents').html(result);
+				datePosdst();
 			},
 			error:function(err){
 				console.log(err);
@@ -316,6 +321,7 @@ $(document).ready(function(){
 			data:{location : 'true' },
 			success:function(result){
 				$('.feedContents').html(result);
+				datePosdst();
 			},
 			error:function(err){
 				console.log(err);
@@ -332,6 +338,7 @@ $(document).ready(function(){
 			success:function(result){
 				console.log('한국어만 나옴');
 				$('.feedContents').html(result);
+				datePosdst();
 			},
 			error:function(err){
 				console.log(err);
@@ -348,6 +355,7 @@ $(document).ready(function(){
 			success:function(result){
 				console.log('영어만 나옴');
 				$('.feedContents').html(result);
+				datePosdst();
 			},
 			error:function(err){
 				console.log(err);
@@ -515,6 +523,70 @@ $(document).ready(function(){
 				$("#SearchDiv").css('display', 'none'); 
 			}
 		});
+		
+		//신고
+		$('body').on('click','#frbtn',function(){
+			$('.reportMenu').toggle();
+			
+			var report = $(this).data('report');	//name 
+			var repo = $(this).data('repo')			//feed_id
+			var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
+			
+			var msg = $("input:radio[name='"+repo+"']:checked").val();
+			var txt = "";
+			console.log(radio);
+	
+			var chk = $("input:checkbox[data-rfchk='"+repo+"']:checked").val(); //체크된값
+			console.log(report, repo, radio, chk, txt);
+			
+			$('#report-btn').on('click',function(){
+				if(radio == '기타') {
+					txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
+				} else {
+					txt = radio;
+				}
+				if(txt == null) {//값이 선택되지 않았으면
+					alert('신고사유를 선택하세요');
+					return;
+				} 
+				console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부" +chk +"체크사유 & 기타사유"+ txt);	
+				
+/* 			if(confirm('신고하시겠습니까?')) {
+				$.ajax({
+					url:'${pageContext.request.contextPath}/reportInsert.do',
+					type:'post',
+					data:JSON.stringify({
+						user_id:'${user.user_id}',	//신고자
+						content:repo,				//피드아이디
+						msg:txt,					//신고냐용
+						reported:report,			//신고당한자
+						blocked:chk					//블락체크여부
+					}),
+					contentType : "application/json; charset=UTF-8",
+					success: function(data) {
+						alert('신고되었습니다.');
+						location.reload(true);
+					},
+					error: function(err) {
+						alert('관리자에게 문의해주세요.');
+					}
+				});
+			} */
+				});
+		})
+		
+/* 		$('body').on('click','#fmsg', function() { //기타를 누르면 값을 입력할 수 있도록
+			var select = $(this);
+			var repo = select.attr('name');
+			var msg = $("input:radio[name='"+repo+"']:checked").val();
+			if(msg == '기타') {
+				$('input[data-rftxt="'+repo+'"]').attr('hidden',false);				
+			} else {
+				$('input[data-rftxt="'+repo+'"]').attr('hidden',true);				
+			}
+			
+		});	 */
+		
 	});
 
 
@@ -645,6 +717,7 @@ $(document).ready(function(){
 	$('body').on('click','#rbtn', function() { // 신고버튼을 누르면
 		var report = $(this).data('report');//name
 		var repo = $(this).data('repo'); 	//comment_id
+		
 		var sub = $('button[data-report="'+repo+'"]'); //해당버튼 
 		var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
 		var txt = "";
@@ -1497,7 +1570,7 @@ $(document).ready(function(){
 														data-demo-src="assets/img/avatars/dan.jpg"
 														data-user-popover="1" alt="">
 												</div>
-												<div class="user-info" id="${vo.feed_id }">
+												<div class="user-info" id="${vo.user_id }">
 													<a href="#">${vo.feed_id } : ${vo.name } :
 														${vo.write_lan } </a> <span class="time"> <script
 															type="text/javascript">														
@@ -1545,12 +1618,59 @@ $(document).ready(function(){
 														</a>
 															<hr class="dropdown-divider">
 															<a class="dropdown-item">
-																<div class="media">
-																	<div class="media-content">
+																<div class="media" >
+																	<div class="media-content" id="frbtn" data-repo="${vo.feed_id }" data-report="${vo.user_id }">
 																		<h3>신고</h3>
 																	</div>
-																</div>
-															</a>
+														<div class="dropdown-menu">
+	                                                    <div class="dropdown-content reportMenu">
+	                                                        <div class="media freport" style="border: 0px;">
+	                                                        <table>
+								                        	<tr>
+							                        		<td>
+							                        		<input type="radio" id="fmsg" name="${vo.feed_id }" value="스팸 게시물">스팸 게시물
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">가짜정보 제공
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="fmsg" name="${vo.feed_id }" value="성적인 내용">성적인 내용
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="fmsg" name="${vo.feed_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="fmsg" name="${vo.feed_id }" value="욕설/비방">욕설/비방
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input type="radio" id="fmsg" name="${vo.feed_id }" value="기타">기타
+							                        		</td>
+								                        	</tr>
+								                        	<tr>
+							                        		<td>
+															<input  placeholder="신고이유" hidden="true"  data-rftxt="${vo.feed_id }"
+									                        	   maxlength="30"></input>
+							                        		</td>
+								                        	</tr>
+								                        	</table>
+	                                                        </div>
+	                                                        <div class="dropdown-divider"></div>
+									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.user_name } 차단
+															<button id="report-btn"  data-repo="${vo.feed_id  }" data-report="${vo.user_id }">신고</button>
+	                                                    </div>
+		                                               </div>
+													</div>
+												</a>
 														</c:if>
 														<c:if test="${vo.user_id eq user.user_id}">
 															<hr class="dropdown-divider">
@@ -1829,7 +1949,7 @@ $(document).ready(function(){
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
 									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } 차단
-															<button id="rbtn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
+															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
 	                                                    </div>
 		                                               </div>
 													</div>
@@ -1994,23 +2114,16 @@ $(document).ready(function(){
 
 					</div>
 					<!-- /Middle column -->
-
 					<!-- Right side column -->
-
 					<div class="column is-3">
-						<!------------------------ 친구추천 시작 ------------------------->
+					<!------------------------ 친구추천 시작!------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>
-									친구 추천
-									<button onclick="location.href='friendSearch1.do'">친구
-										찾으러 가쟝</button>
-								</h4>
-								
+								<h4>친구 추천</h4>
 							</div>
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
-								<c:forEach items="${sameTopic }" var="vo" end="10">
+								<c:forEach items="${sameTopic }" var="vo" end="3">
 									<c:if test="${vo.topicCnt ne  0 }">
 										<div class="add-friend-block transition-block">
 											<img src="https://via.placeholder.com/300x300"

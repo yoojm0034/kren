@@ -111,5 +111,40 @@
 		select *
 		from feed
 		where feed_id = #{feed_id}
-	</select>             
+	</select>
+	
+	<select id="pushSelect" parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
+		      SELECT
+						u.USER_ID 	"user_id",
+						u.EMAIL 	"email",
+						u.NAME 		"name",
+						u.PHOTO 	"photo",
+						u.STATUS 	"status",
+						u.LAT 		"lat",
+						u.LON 		"lon",
+						u.TIMEZONE 	"time_zone",
+						f.FEED_ID 	"feed_id",
+						f.CONTENT 	"content",
+						f.PHOTO 	"fphoto",
+						f.REG_DATE 	"reg_date",
+						f.TAGS 		"tags",
+						f.WRITE_LAN "write_lan",
+						d.ORIGINAL_NAME, 
+           				d.UUID 		"uuid",
+			            d.DIRECTORY,
+			            p.DELETE_YN "delete_yn",
+			            nvl(likeCnt.LIKECNT,0) "like_cnt",
+			            F_COMMENT_CNT(f.feed_id) "cmt"
+			  FROM 		feed f JOIN users u
+						ON f.USER_ID = u.USER_ID
+	        			left outer join photo p
+	        			on  f.PHOTO = p.PHOTO_ID
+	        			left outer join photo_detail d
+	       				on p.PHOTO_ID=  d.PHOTO_ID
+	       				left outer join feedLikeCnt_v likeCnt
+               			on f.FEED_ID = likeCnt.FEED_ID
+			  WHERE  	f.feed_id= #{feed_id}
+	</select>
+	
+	             
 </mapper>

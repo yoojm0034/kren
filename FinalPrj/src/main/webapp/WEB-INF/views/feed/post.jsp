@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:useBean id="now" class="java.util.Date" />
 <style>
 .search-label {
@@ -34,10 +35,6 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
 
 <script>
-
-
-
-
 </script>
 <div class="feedContents">
 	<c:forEach items="${feedList }" var="vo">
@@ -54,39 +51,9 @@
 								alt="">
 						</div>
 						<div class="user-info" id="${vo.feed_id }">
-							<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } :  </a>
-							<span class="time${vo.feed_id }"> <script
-									type="text/javascript">
-							function timeForToday(value,id) {
-						        const today = new Date();
-						        const timeValue = new Date(value);
-						        
-								var span = $('.time'+id);
-								
-						        const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-						        
-						        if (betweenTime < 1) return span.append('방금전');
-						      
-						        if (betweenTime < 60) {
-						        	
-						            return span.append(betweenTime+'분전');
-						        }
-
-						        const betweenTimeHour = Math.floor(betweenTime / 60);
-						        if (betweenTimeHour < 24) {
-						            return span.append(betweenTimeHour+'시간전');
-						        }
-
-						        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-						        if (betweenTimeDay < 365) {
-						            return span.append(betweenTimeDay+'일전');
-						        }
-
-						        return span.append('방금전');
-						 	}
-								timeForToday('${vo.reg_date}','${vo.feed_id }');
-												</script>
-							</span>
+							<a href="#">${vo.feed_id } : ${vo.name } : ${vo.write_lan } :${vo.reg_date }  </a>
+							<span class="time postTime"><fmt:formatDate value="${vo.reg_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+							
 						</div>
 					</div>
 					<!-- Right side dropdown -->
@@ -136,7 +103,7 @@
 											</div>
 										</div>
 									</a>
-								</c:if>
+							</c:if>
 								<c:if test="${vo.user_id eq user.user_id}">
 									<hr class="dropdown-divider">
 									<a class="dropdown-item">
@@ -808,3 +775,15 @@
 	</c:forEach>
 	<!------------------------ 포스트 끝 ------------------------->
 </div>
+ <script type="text/javascript">
+  function datePosdst(){
+ 	$('.postTime').each(function(i,el){
+ 		var dete = $(this).text();
+  		console.log("나야? : "+i+$(this));
+  		$(this).text(timeForToday(dete));
+
+ 	});
+  }
+  
+  datePosdst();
+</script>
