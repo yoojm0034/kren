@@ -728,9 +728,7 @@ $('#step5').click(function() {
 
 	<!-- Core instance js -->
 	<script src="${pageContext.request.contextPath}/resources/template/assets/js/main.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/template/assets/js/chat.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/template/assets/js/touch.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
 
 	<!-- Components js -->
 	<script src="${pageContext.request.contextPath}/resources/template/assets/js/explorer.js"></script>

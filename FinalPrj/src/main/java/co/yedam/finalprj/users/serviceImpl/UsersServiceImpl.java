@@ -143,4 +143,14 @@ public class UsersServiceImpl implements UsersService {
 		return map.usersPhotoInsert(vo);
 	}
 
+	@Override
+	public UsersVO userProfilePhoto(UsersVO vo) {
+		return map.userProfilePhoto(vo);
+	}
+
+	@Override
+	public UsersVO sessionProfilePhoto(UsersVO vo) {
+		return loginmap.sessionProfilePhoto(vo);
+	}
+
 }

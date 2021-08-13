@@ -13,6 +13,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 
 import co.yedam.finalprj.users.map.LoginMap;
 import co.yedam.finalprj.users.map.UsersMap;
+import co.yedam.finalprj.users.service.UsersService;
+import co.yedam.finalprj.users.serviceImpl.UsersServiceImpl;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 
@@ -37,6 +39,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		vo.setUser_id(user.getUsername());
 		UsersVO vo2 = usersDao.usersSelect(vo);
 		request.getSession().setAttribute("user", vo2);
+		request.getSession().setAttribute("photo", usersDao.sessionProfilePhoto(vo2));
 		System.out.println(vo2);
 	}
 

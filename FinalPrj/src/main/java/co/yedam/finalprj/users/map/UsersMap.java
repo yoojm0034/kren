@@ -23,6 +23,7 @@ public interface UsersMap {
 	int postCnt(UsersVO vo);
 	List<UsersVO> followingList(UsersVO vo);
 	List<UsersVO> followerList(UsersVO vo);
+	UsersVO userProfilePhoto(UsersVO vo);
 
 	//admin
 	int adminUsersUpdate(UsersVO vo);

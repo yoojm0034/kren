@@ -104,17 +104,16 @@ h5:hover {
 }
 
 .menu-badge {
-	margin-left: auto;
-	height: 25px;
-	font-size: 1rem;
-	font-weight: 500;
-	padding: 7px;
-	line-height: 1.3;
-	min-width: 22px;
-	text-align: center;
-	border-radius: 100px;
-	background: #e5e5e5;
-	color: #393a4f;
+    height: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background: #e5e5e5;
+    color: #393a4f;
+    width: 30px;
+    display: inline-block;
 }
 
 a[href^="http://maps.google.com/maps"] {
@@ -260,6 +259,33 @@ a[href^="https://maps.google.com/maps"] {
 .button {
 	font-family: 'ONE-Mobile-Regular';
 }
+
+
+.upload-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    background: #cecece;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    z-index: 2;
+    color: #FFF;
+}
+
+.upload-button:hover { background-color: #3d70b2; color: #FFF;}
 
 #deleteBtn { display: inline; cursor: pointer;}
 

@@ -94,6 +94,7 @@ public class UsersController {
 		model.addAttribute("postCnt", usersDao.postCnt(vo));
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
 		model.addAttribute("mytrip", usersDao.myTripList(vo));
+		model.addAttribute("photo", usersDao.userProfilePhoto(vo));
 		
 		return "users/profile";
 	} 

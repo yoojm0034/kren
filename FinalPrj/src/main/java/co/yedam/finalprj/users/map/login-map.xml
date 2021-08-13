@@ -51,5 +51,16 @@
 		SET report_cnt = report_cnt - #{cnt}
 		WHERE user_id = #{user_id}
 	</update>
+	
+	<!-- 프로필 사진 가져오기 -->
+	<select id="sessionProfilePhoto" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select d.uuid
+		from photo_detail d, users u, photo p
+		where d.photo_id = u.photo
+		and d.photo_id = p.photo_id
+		and u.user_id=#{user_id}
+		and p.delete_yn = 'N'
+	</select>
+	
 
 </mapper>

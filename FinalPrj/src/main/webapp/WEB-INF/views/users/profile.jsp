@@ -144,6 +144,7 @@ a[href^="https://maps.google.com/maps"] {
 .editProfile-area .button{
 	font-size: 1rem !important;
 }
+
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -240,6 +241,7 @@ $(function(){
 			success: function(result) {
 				$('.editProfile-area').empty();
 				$('.editProfile-area').html('<button class="button is-solid primary-button" id="saveBtn">Save</button>');
+				$('.photoUpload').html('<a class="upload-button dz-clickable"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>');
 				$('.profile-contents').html(result);
 			}
 		});
@@ -356,9 +358,9 @@ function writePopup() {
 						<script async
 							src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
 						<div class="avatar">
+							<div class="photoUpload"></div>
 							<img id="user-avatar" class="avatar-image"
-								src="https://via.placeholder.com/300x300"
-								data-demo-src="assets/img/avatars/jenna.png" alt="">
+								src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }">
 							<div class="avatar-flag">
 								<img src="${profile.flag}">
 							</div>
@@ -569,9 +571,7 @@ function writePopup() {
 									<div class="card-heading">
 										<div class="user-block">
 											<div class="image">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/jenna.png"
-													data-user-popover="0" alt="">
+												<img src="https://via.placeholder.com/300x300">
 											</div>
 											<div class="user-info">
 												<a href="#">Jenna Davis</a> <span class="time">October

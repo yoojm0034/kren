@@ -101,6 +101,28 @@ h5:hover {
 	var sock = null;
 
 	$(document).ready(function() {
+		//선택된 메뉴 activie 하기 
+		var uri = window.location.pathname;
+		console.log(uri);
+		$("ul").removeClass("*");
+		if(uri.includes("feed")){
+			$("ul").children().eq(0).addClass("is-active");
+		}
+		if(uri.includes("friend")){
+			$("ul").children().eq(1).addClass("is-active");
+		}
+		if(uri.includes("letter")){
+			$("ul").children().eq(2).addClass("is-active");
+		}
+		if(uri.includes("about")){
+			$("ul").children().eq(3).addClass("is-active");
+		}
+		if(uri.includes("about")){
+			$("ul").children().eq(3).addClass("is-active");
+		}
+		if(uri.includes("admin")){
+			$("ul").children().eq(4).addClass("is-active");
+		}
 		connectWs();
 		$.ajax({
 		    url: '${pageContext.request.contextPath}/pushSelectList.do',
@@ -359,7 +381,16 @@ h5:hover {
         return '방금전';
  	}
 	
+/* $(function(){
 
+	
+ var sBtn = $("ul > li");    //  ul > li 이를 sBtn으로 칭한다. (클릭이벤트는 li에 적용 된다.)
+ sBtn.find("a").click(function(){   // sBtn에 속해 있는  a 찾아 클릭 하면.
+//  sBtn.removeClass("is-active");     // sBtn 속에 (active) 클래스를 삭제 한다.
+  $(this).parent().toggleClass("is-active"); // 클릭한 a에 (active)클래스를 넣는다.
+ })
+}) */
+	
 	
 </script>
 <!-- Pageloader -->
@@ -388,10 +419,13 @@ h5:hover {
 			<!-- 네비바 왼쪽 -->
 			<div class="navbar-start">
 				<ul>
-					<li class="is-active"><a href="${pageContext.request.contextPath}/feed.do">피드</a></li>
+					<li><a href="${pageContext.request.contextPath}/feed.do">피드</a></li>
 					<li><a href="${pageContext.request.contextPath}/friendSearch.do">친구찾기</a></li>
 					<li><a href="${pageContext.request.contextPath}/letterBox.do">편지</a></li>
 					<li><a href="${pageContext.request.contextPath}/aboutus.do">ABOUT US</a></li>
+					<c:if test="${user.user_id eq 'admin' }">
+						<li><a href="${pageContext.request.contextPath}/admin/admin.do">관리자</a></li>
+					</c:if>
 				</ul>
 			</div>
 			<div class="navbar-end">
@@ -458,8 +492,7 @@ h5:hover {
 				<div id="account-dropdown"
 					class="navbar-item is-account drop-trigger has-caret">
 					<div class="user-image">
-						<img src="https://via.placeholder.com/400x400"
-							data-demo-src="assets/img/avatars/jenna.png" alt="">
+						<img src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }"  alt="">
 					</div>
 					<span style="padding-left: 10px; padding-right: 20px;">${user.name }</span>
 
@@ -481,51 +514,28 @@ h5:hover {
 									<div class="media">
 										<div class="media-left">
 											<div class="image">
-												<img src="https://via.placeholder.com/400x400"
-													data-demo-src="assets/img/avatars/jenna.png" alt="">
+												<img src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }">
 											</div>
 										</div>
 										<div class="media-content">
 											<h3>${user.name }</h3>
-											<small>유저 프로필</small>
 										</div>
 										<div class="media-right">
 											<i data-feather="check"></i>
 										</div>
 									</div>
 								</a>
-								<c:if test="${user.user_id eq 'admin'}">
-								<a id="profile-link" href="${pageContext.request.contextPath}/admin/admin.do"
-									class="account-item">
-									<div class="media">
-										<div class="media-left">
-											<div class="image">
-												<img src="https://via.placeholder.com/400x400" alt="">
-											</div>
-										</div>
-										<div class="media-content">
-											<h3>${user.name }</h3>
-											<small>관리자 메뉴</small>
-										</div>
-										<div class="media-right">
-											<i data-feather="check"></i>
-										</div>
-									</div>
-								</a>
-								</c:if>
 								<hr class="account-divider">
-							
-								<a class="account-item">
 									<div class="media">
+								<a class="account-item" href="${pageContext.request.contextPath}/logout" style="display: flex;">
 										<div class="icon-wrap">
 											<i data-feather="power"></i>
 										</div>
-										<div class="media-content">
-											<a href="${pageContext.request.contextPath}/logout"><h3>Log out</h3></a>
-											<small>Log out from your account.</small>
+										<div class="media-content" style="margin-left: 15px;">
+											<h3>Logout</h3>
 										</div>
-									</div>
 								</a>
+									</div>
 							</div>
 						</div>
 					</div>

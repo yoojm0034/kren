@@ -121,4 +121,15 @@
 	<insert id="usersPhotoInsert" statementType="CALLABLE" parameterType="co.yedam.finalprj.users.vo.UsersVO">
 		{ CALL uphoto_insert(#{email},#{name},#{password},#{birth},#{gender},#{topic},#{language1},#{language2},#{country},#{city},#{lat},#{lon},#{flag},#{language2_level},#{timezone}, #{user_id}, #{original_name}, #{uuid}, #{file_size}, #{directory} )} 
 	</insert>
+	
+	<!-- 프로필 사진 가져오기 -->
+	<select id="userProfilePhoto" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select d.uuid
+		from photo_detail d, users u, photo p
+		where d.photo_id = u.photo
+		and d.photo_id = p.photo_id
+		and u.user_id=#{user_id}
+		and p.delete_yn = 'N'
+	</select>
+	
 </mapper>

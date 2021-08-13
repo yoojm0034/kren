@@ -37,6 +37,9 @@ public interface UsersService {
 	List<UsersVO> followingList(UsersVO vo);
 	List<UsersVO> followerList(UsersVO vo);
 	
+	//프로필 사진
+	UsersVO userProfilePhoto(UsersVO vo);
+	UsersVO sessionProfilePhoto(UsersVO vo);
 	
 	//-----------------로그인 로그아웃---------------
 	public int loginCheck(UsersVO vo);
