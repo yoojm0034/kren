@@ -94,6 +94,23 @@ h5:hover {
     stroke-width: 2px;
 }
 
+.dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 12px;
+    min-width: 12px;
+    background: #3d70b2;
+    border: 2px solid #fff;
+    border-radius: 100px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+
 </style>
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -150,6 +167,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyA').append(div);
+					        
 				     }
 		    		 else if(data[i].type == 'follow') {
 					     	var fol = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님을 팔로우합니다.</h5>"
@@ -209,7 +227,12 @@ h5:hover {
 					        $('#replyB').append(div);
 					 }
 		    	}
-		        
+		    	if ($('#replyA').children().html() != null){
+		    		$('#clearA').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+		    	 }
+		    	if ($('#replyB').children().html() != null){
+		    		$('#clearB').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+		    	 }
 		    }
 		});
 		$('body').on('click', '#clickUpdatePush',  function() {
@@ -231,9 +254,7 @@ h5:hover {
 			    			}else if(type == 'letter') {
 			    				location.href = "${pageContext.request.contextPath}/letterBox.do"
 			    			}
-				            
 			    		}
-			            
 			        }
 			});
 		});
@@ -243,7 +264,9 @@ h5:hover {
 			$.ajax({
 				url:'${pageContext.request.contextPath}/deletePushAll.do',
 				success: function(data) {
+					//인디케이터 지우기
 					$('#replyA').children().remove();
+					$('#clearA').parent().parent().parent().parent().children().eq(0).children().eq(1).removeClass("dot");
 				}
 			});
 		});
@@ -252,7 +275,9 @@ h5:hover {
 			$.ajax({
 				url:'${pageContext.request.contextPath}/deleteLetterPushAll.do',
 				success: function(data) {
+					//인디케이터 지우기
 					$('#replyB').children().remove();
+					$('#clearB').parent().parent().parent().parent().children().eq(0).children().eq(1).removeClass("dot");
 				}
 			});
 		});
@@ -310,6 +335,7 @@ h5:hover {
 				toastr.info('편지가 오고있습니다.','알림', {timeOut: 6000});
 	        }else{
 	        	$('#replyA').prepend(div);
+	        	$('#clearA').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 	        	toastr.options.escapeHtml = true;
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;

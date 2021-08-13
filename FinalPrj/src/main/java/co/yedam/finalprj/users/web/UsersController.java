@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -74,7 +75,8 @@ public class UsersController {
 	
 	// 프로필화면
 	@RequestMapping("profile.do")
-	public String profile(@RequestParam("user_id") String user_id, UsersVO vo, FriendsVO fvo, Model model, Authentication auth, HttpServletRequest request) {
+	public String profile(Locale locale,
+			@RequestParam("user_id") String user_id, UsersVO vo, FriendsVO fvo, Model model, Authentication auth, HttpServletRequest request) {
 		
 		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
@@ -95,6 +97,7 @@ public class UsersController {
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
 		model.addAttribute("mytrip", usersDao.myTripList(vo));
 		model.addAttribute("photo", usersDao.userProfilePhoto(vo));
+		model.addAttribute("locale", locale.getLanguage());
 		
 		return "users/profile";
 	} 

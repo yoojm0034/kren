@@ -241,7 +241,7 @@ $(function(){
 			success: function(result) {
 				$('.editProfile-area').empty();
 				$('.editProfile-area').html('<button class="button is-solid primary-button" id="saveBtn">Save</button>');
-				$('.photoUpload').html('<a class="upload-button dz-clickable"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>');
+				$('.photo-upload').html('<a class="upload-button dz-clickable"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>');
 				$('.profile-contents').html(result);
 			}
 		});
@@ -358,45 +358,20 @@ function writePopup() {
 						<script async
 							src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
 						<div class="avatar">
-							<div class="photoUpload"></div>
-							<img id="user-avatar" class="avatar-image"
-								src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }">
+							<div class="photo-upload">
+								<div class="preview">
+									<a class="upload-button dz-clickable">
+                               	     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                	</a>
+									<img id="upload-preview" class="avatar-image"
+										src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }">
+									<form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
+								</div>
+							</div>
 							<div class="avatar-flag">
 								<img src="${profile.flag}">
 							</div>
-							<div class="pop-button is-far-left has-tooltip modal-trigger"
-								data-modal="change-profile-pic-modal" data-placement="right"
-								data-title="Change profile picture">
-								<a class="inner"> <i data-feather="camera"></i>
-								</a>
-							</div>
-							<div id="follow-pop"
-								class="pop-button pop-shift is-left has-tooltip"
-								data-placement="top" data-title="Subscription">
-								<a class="inner"> <i class="inactive-icon"
-									data-feather="bell"></i> <i class="active-icon"
-									data-feather="bell-off"></i>
-								</a>
-							</div>
-							<div id="invite-pop"
-								class="pop-button pop-shift is-center has-tooltip"
-								data-placement="top" data-title="Relationship">
-								<a href="#" class="inner"> <i class="inactive-icon"
-									data-feather="plus"></i> <i class="active-icon"
-									data-feather="minus"></i>
-								</a>
-							</div>
-							<div id="chat-pop" class="pop-button is-right has-tooltip"
-								data-placement="top" data-title="Chat">
-								<a class="inner"> <i data-feather="message-circle"></i>
-								</a>
-							</div>
-							<div class="pop-button is-far-right has-tooltip"
-								data-placement="right" data-title="Send message">
-								<a href="messages-inbox.html" class="inner"> <i
-									data-feather="mail"></i>
-								</a>
-							</div>
+							
 						</div>
 					</div>
 					<div class="box-heading"
@@ -514,9 +489,11 @@ function writePopup() {
 						<div class="card is-friend-card">
 							<div class="friend-item">
 								<div class="text-content">
+									${locale }=====================
 									<c:choose>
 										<c:when test="${user.user_id eq profile.user_id }">
 											<c:forEach items="${mytopic }" var="vo">
+												
 												<span class="label-round">${vo.kr }</span>
 											</c:forEach>
 										</c:when>
@@ -1484,5 +1461,27 @@ function writePopup() {
 
 		</div>
 	</div>
+	<div id="crop-modal" class="modal is-small crop-modal is-animated">
+			<div class="modal-background"></div>
+			<div class="modal-content">
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<h3>Crop your picture</h3>
+						<div class="close-wrap">
+							<button class="close-modal" aria-label="close">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+							</button>
+						</div>
+					</header>
+					<div class="modal-card-body">
+						<div id="cropper-wrapper" class="cropper-wrapper"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 </body>
 </html>
+
+
+	<!-- Signup page js -->
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>
