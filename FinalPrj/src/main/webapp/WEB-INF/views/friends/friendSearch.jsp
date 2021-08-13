@@ -340,7 +340,7 @@ $(document).ready(function() {
 	  $('.listLength').text(elementLength);
 	   
 	  // show/hide the Load More button
-	  if (elementLength > 2) { $('.buttonToogle').show();}
+	  if (elementLength > 4) { $('.buttonToogle').show();}
 	  $('#searchRow #searchItem').slice(startFilter, endFilter).addClass('shown');
 	  $('.shownLength').text(endFilter);
 	  $('#searchRow #searchItem').not('.shown').hide();
