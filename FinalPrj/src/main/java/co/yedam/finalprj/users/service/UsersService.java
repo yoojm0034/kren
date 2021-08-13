@@ -11,6 +11,7 @@ public interface UsersService {
 	List<UsersVO> usersSelectList();
 	UsersVO usersSelect(UsersVO vo);
 	int usersInsert(UsersVO vo);
+	int usersPhotoInsert(UsersVO vo);
 	int usersUpdate(UsersVO vo);
 	int usersDelete(UsersVO vo);
 	
@@ -42,8 +43,8 @@ public interface UsersService {
 	public void logout(HttpSession session);
 	
 	//아이디 비밀번호 찾기...
-	UsersVO findId(String user_id);
-	UsersVO findPw(UsersVO vo);
+	UsersVO findId(String email);
+	int findPwUpdate(UsersVO vo);
 	
 	
 	//-----------------관리자-----------------------

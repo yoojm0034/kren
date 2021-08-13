@@ -59,6 +59,10 @@ public class FeedServiceImpl implements FeedService {
 	public FeedVO oneSelectFeed(FeedVO vo) {
 		return map.oneSelectFeed(vo);
 	}
+	@Override
+	public List<Map<String, Object>> pushSelect(FeedVO vo) {
+		return map.pushSelect(vo);
+	}
 
 
 

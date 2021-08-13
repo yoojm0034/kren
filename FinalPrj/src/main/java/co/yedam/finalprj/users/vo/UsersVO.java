@@ -3,6 +3,7 @@ package co.yedam.finalprj.users.vo;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,5 +57,16 @@ public class UsersVO {
 	private int topicCnt; 				
 	private int dtopicCnt; 	
 	
-	private String base64Photo;
+	//사진업로드
+	private MultipartFile base64Photo;
+	//photo.vo
+	private String photo_id;
+	private String delete_yn;
+	private String type;
+	
+	//photo_detail.vo
+	private String original_name;
+	private String uuid;
+	private int file_size;
+	private String directory;
 }

@@ -36,6 +36,10 @@
 		{ CALL report_read( #{content})} 
 	</update>
 	
+	<update id="stopUserUpdate" statementType="CALLABLE" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		{ CALL STOP_USER_DELETE( #{user_id})} 
+	</update>
+	
 	<update id="reportUpdateUser" parameterType="co.yedam.finalprj.report.vo.ReportVO">
 		UPDATE report 
 		SET read_date = sysdate

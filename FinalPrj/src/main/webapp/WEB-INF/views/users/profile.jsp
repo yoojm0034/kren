@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -22,17 +23,16 @@
 }
 
 .menu-badge {
-	margin-left: auto;
-	height: 25px;
-	font-size: 1rem;
-	font-weight: 500;
-	padding: 7px;
-	line-height: 1.3;
-	min-width: 22px;
-	text-align: center;
-	border-radius: 100px;
-	background: #e5e5e5;
-	color: #393a4f;
+    height: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background: #e5e5e5;
+    color: #393a4f;
+    width: 30px;
+    display: inline-block;
 }
 
 a[href^="http://maps.google.com/maps"] {
@@ -132,17 +132,6 @@ a[href^="https://maps.google.com/maps"] {
 	font-weight: 400;
 	color: #999 !important;
 }
-
-.label-round {
-	display: inline-block !important;
-	font-size: 14px !important;
-	padding: 6px 15px 10px 15px;
-	background-color: #EFEFEF;
-	color: #979797 !important;
-	border-radius: 2rem;
-	margin: 0px 0px 6px 0px;
-}
-
 .matched {
 	background-color: #5596e6 !important;
 	color: #FFF !important;
@@ -320,8 +309,30 @@ function follow(check) {
 	}; // end of if
 };
 
+// 새 편지 쓰기
+function writePopup() {
+	var winWidth = 860;
+    var winHeight = 580;
+    var popupOption= "width="+winWidth+", height="+winHeight;
+	
+	var target ='pop';
+	var url = '${pageContext.request.contextPath}/writeLetter.do';
+	window.open('',target,popupOption);
+
+	var letterform = document.letterform;
+	letterform.action=url;
+	letterform.target=target;
+	letterform.submit();	
+}
+
 </script>
 <body>
+<form id="letterform" name="letterform" method="post">
+<input type="hidden" id="to_id" name="to_id" value="${profile.user_id }">
+<input type="hidden" id="user_id" value="${user.user_id }">
+<input type="hidden" id="to_name" name="to_name" value="${profile.name }">
+<input type="hidden" id="name" name="name" value="${user.name }">
+</form>
 	<!-- Container -->
 	<div class="container is-custom">
 		<!-- Profile page main wrapper -->
@@ -426,7 +437,7 @@ function follow(check) {
 										</div>
 									</c:when>
 									<c:otherwise>
-										<a class="button is-solid primary-button">✍🏻 Write a
+										<a class="button is-solid primary-button" id="btnLetter" onclick="writePopup()">✍🏻 Write a
 											letter</a>
 										<div class="follow-area">
 											<c:choose>
@@ -459,7 +470,8 @@ function follow(check) {
 						<div class="card is-profile-info">
 							<div class="info-row">
 								<div>
-									<span>가입일</span> <span class="info"><fmt:formatDate
+									<span><spring:message code="profile.regdt"/></span>
+									<span class="info"><fmt:formatDate
 											value="${profile.reg_date }" pattern="YYYY/MM/dd" /></span>
 								</div>
 							</div>

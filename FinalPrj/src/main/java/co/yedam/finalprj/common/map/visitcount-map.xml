@@ -14,4 +14,100 @@
 		from TB_VISITOR
 		where substr(to_char(v_date), 1, 9) = to_date(sysdate, 'yy/MM/dd')
 	</select>
+	
+	<select id="dayCount" resultType="map">
+		select b.time, nvl(a.cnt, 0) as cnt
+		from (select TO_CHAR(V_DATE,'HH24') as time, count(*) as cnt
+		      from tb_visitor                           
+		      where to_char(sysdate, 'yyyy/mm/dd') = to_char(v_date, 'yyyy/mm/dd')
+		      group by TO_CHAR(V_DATE,'HH24')
+		      order by 1) a
+		      ,(SELECT level as time, 0 as cnt 
+		        FROM DUAL 
+		        CONNECT BY LEVEL <![CDATA[<=]]>23
+		        union all
+		        select 0 , 0 from dual) b
+		where  a.time(+) = b.time
+		order by b.time
+	</select>
+
+	<select id="weekCount" resultType="map">
+		select b.time, nvl(a.cnt, 0) as cnt
+		from (  select TO_CHAR(V_DATE,'DD') as time,count(*) as cnt
+		        from tb_visitor
+		        where TO_CHAR(TRUNC(sysdate,'IW'), 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+1, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+2, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+3, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+4, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+5, 'DD') = TO_CHAR(V_DATE,'DD')
+		        or TO_CHAR(TRUNC(sysdate,'IW')+6, 'DD') = TO_CHAR(V_DATE,'DD')
+		        group by TO_CHAR(V_DATE,'DD')
+		        order by 1) a
+		      ,(SELECT (TO_CHAR(TRUNC(sysdate,'IW'), 'DD')+ level-1) as time , 0 as cnt 
+	            FROM DUAL 
+	            CONNECT BY level <![CDATA[<=]]>7) b
+		where  a.time(+) = b.time
+		order by b.time
+	</select>
+	
+	<select id="yearCount" resultType="map">
+		select b.time, nvl(a.cnt, 0) as cnt
+		from (select TO_CHAR(V_DATE,'MM') as time,count(*) as cnt
+	          from tb_visitor 
+	          where TO_CHAR(V_DATE,'YYYY') = TO_CHAR(sysdate,'YYYY')
+	          group by TO_CHAR(V_DATE,'MM')
+	          order by 1) a
+		      ,(SELECT level as time , 0 as cnt 
+	            FROM DUAL 
+	            CONNECT BY level <![CDATA[<=]]>12) b
+		where  a.time(+) = b.time
+		order by b.time
+	</select>
+	
+	<select id="monthCount" parameterType="String" resultType="map">
+		WITH t AS
+              (
+              SELECT TO_DATE(yyyy||'01', 'yyyymm') + LEVEL - 1 time
+                FROM (SELECT TO_CHAR(sysdate, 'yyyy') yyyy FROM dual)
+               CONNECT BY LEVEL <![CDATA[<=]]> TO_CHAR(TO_DATE(yyyy||'1231', 'yyyymmdd'), 'ddd')
+              )
+		SELECT w, sum(cnt) as cnt
+		FROM
+		    (select d.time, nvl(c.cnt, 0) as cnt, nvl(d.w, 0) as w
+		    FROM ( select a.*, b.w
+		            from (SELECT TO_CHAR(v_date, 'YY/MM/DD') time , count(*) cnt
+		                  FROM tb_visitor
+		                  where TO_CHAR(V_DATE,'YYYYMM') = #{value}
+		                  GROUP BY TO_CHAR(v_date, 'YY/MM/DD')
+		                  ORDER BY 1) a
+		                 ,(
+		                  SELECT time
+		                       , CEIL((time - TRUNC(TRUNC(time, 'mm'), 'iw') + 1) / 7) w
+		                  FROM t
+		                  WHERE TO_CHAR(time, 'yyyymm') = #{value}) b
+		            WHERE a.time=b.time) c
+		            ,( SELECT time
+		                   , 0 as cnt , CEIL((time - TRUNC(TRUNC(time, 'mm'), 'iw') + 1) / 7) w
+		              FROM t
+		              WHERE TO_CHAR(time, 'yyyymm') = #{value}) d
+		    WHERE c.time(+)=d.time
+		    ORDER BY d.time)
+		GROUP BY w    
+		ORDER BY w
+	</select>
+	
+	<select id="getPayment" resultType="map">
+		SELECT b.time, nvl(a.p, 0) as p
+		FROM (select to_char(pay_dt, 'mm') as time, sum(price) p   
+		        from payment
+		        where to_char(pay_dt, 'yyyy') = to_char(sysdate, 'yyyy')
+		        group by to_char(pay_dt, 'mm')
+		        order by 1) a
+		        ,(SELECT level as time , 0 as p 
+		          FROM DUAL 
+		          CONNECT BY level <![CDATA[<=]]>12) b
+		WHERE  a.time(+) = b.time
+		ORDER BY b.time
+	</select>
 </mapper>

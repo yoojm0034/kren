@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -126,6 +127,12 @@ public class UserLoginController {
 		System.out.println("세션에 담긴 인증번호: " + dice);
 
 		if (dice.equals(num)) {
+			
+			//여기다가 아이디 호출...해야함
+//			String userEmail = request.getParameter("email");
+//			
+//			System.out.println("이메일: " + userEmail);
+			
 			return true;
 		} 
 		return false;
@@ -133,10 +140,18 @@ public class UserLoginController {
 
 	// 아이디찾기 2페이지-아이디 노출, 로그인 페이지로 이동...
 	@RequestMapping("find/findID2.do")
-	public String findID2(Model model, HttpServletRequest request, UsersVO vo) {
-		String id = vo.getUser_id();
-		System.out.println("넘어와야하는 아이디값: " + id);
-
+	public String findID2(Model model, HttpServletRequest request, UsersVO vo, String email) {
+		String userEmail = request.getParameter(email);
+		java.lang.String uvo = request.getParameter("user_id");
+		
+		System.out.println("vo: " + uvo);
+		
+		
+		model.addAttribute("id", vo);
+//		String id = vo.getUser_id();
+//		System.out.println("조회된 아이디: " + id);
+		
+		//String id = usersDao.findId(id);
 		return "no/find/findId2";
 	}
 
@@ -168,7 +183,7 @@ public class UserLoginController {
 	// 임시비밀번호 이메일 발송
 	@RequestMapping("find/pwSendMail.do")
 	@ResponseBody
-	public int pwSendMail(HttpServletRequest request, UsersVO vo) throws IOException {
+	public int pwSendMail(HttpServletRequest request, HttpSession session, UsersVO vo) throws IOException {
 		String email = vo.getEmail();
 		int uvo = usersDao.emailCheck(email); // 쿼리 값을 받아옴
 			
@@ -199,9 +214,18 @@ public class UserLoginController {
 
 							"일회성 비밀번호이기 때문에 로그인 후 비밀번호를 꼭 변경해주세요."; // 내용
 			
-			System.out.println("발송된 인증번호: " + imsiPw);
+			System.out.println("발송된 임시비밀번호: " + imsiPw);
+			
+			//임시비밀번호 업데이트...
 			request.getSession().setAttribute("imsiPw", imsiPw); 
-			//임시비밀번호 update 필요함...
+			String imsiPws = java.lang.String.valueOf(session.getAttribute("imsiPw"));
+			
+			//임시비밀번호 암호화
+			BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+			vo.setPassword(scpwd.encode(imsiPws));
+			System.out.println("DB에 들어갈 임시비밀번호: " + vo.getPassword());
+			
+			usersDao.findPwUpdate(vo);//DB에 update
 
 			try {
 				MimeMessage message = mailSender.createMimeMessage();

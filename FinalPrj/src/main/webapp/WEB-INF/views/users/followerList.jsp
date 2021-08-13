@@ -98,17 +98,16 @@ h5:hover {
 }
 
 .menu-badge {
-	margin-left: auto;
-	height: 25px;
-	font-size: 1rem;
-	font-weight: 500;
-	padding: 7px;
-	line-height: 1.3;
-	min-width: 22px;
-	text-align: center;
-	border-radius: 100px;
-	background: #e5e5e5;
-	color: #393a4f;
+    height: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background: #e5e5e5;
+    color: #393a4f;
+    width: 30px;
+    display: inline-block;
 }
 
 a[href^="http://maps.google.com/maps"] {
@@ -294,7 +293,7 @@ a[href^="https://maps.google.com/maps"] {
 					console.log("result : " + result);
 					if (result === "UnFollowOK") {
 						console.log(friend);
-						// 언팔로우 버튼 지우고 팔로우버튼 갈기
+						// 언팔로우 버튼 지우고 팔로우버튼 달기
 						$('.' + friend + '-follow-area').empty();
 						$('.' + friend + '-follow-area').html('<button class="button" id="friend-follow-btn" value="' + friend + '">follow</button>');
 					}

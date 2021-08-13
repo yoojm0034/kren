@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import co.yedam.finalprj.commentDetail.map.CommentDetailMap;
 import co.yedam.finalprj.commentDetail.service.CommentDetailService;
 import co.yedam.finalprj.commentDetail.vo.CommentDetailVO;
+import co.yedam.finalprj.comments.vo.CommentsVO;
 
 @Service
 public class CommentDetailServiceImpl implements CommentDetailService {
@@ -32,6 +33,16 @@ public class CommentDetailServiceImpl implements CommentDetailService {
 	@Override
 	public int deleteCommentDetail(CommentDetailVO vo) {
 		return map.deleteCommentDetail(vo);
+	}
+
+	@Override
+	public List<CommentsVO> commentDetailData(CommentsVO vo) {
+		return map.commentDetailData(vo);
+	}
+
+	@Override
+	public CommentsVO commentDetailDataOne(CommentsVO vo) {
+		return map.commentDetailDataOne(vo);
 	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.yedam.finalprj.commentDetail.service.CommentDetailService;
 import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.service.LanguageService;
@@ -26,6 +27,8 @@ import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.TransService;
 import co.yedam.finalprj.letter.vo.TransVO;
 import co.yedam.finalprj.notice.service.NoticeService;
+import co.yedam.finalprj.stamph.service.StamphService;
+import co.yedam.finalprj.stamph.vo.StamphVO;
 import co.yedam.finalprj.tag.service.TagService;
 import co.yedam.finalprj.topic.service.TopicService;
 import co.yedam.finalprj.users.service.UsersService;
@@ -34,29 +37,18 @@ import co.yedam.finalprj.users.vo.UsersVO;
 @Controller
 public class FeedController {
 	
-	@Autowired
-	FeedService feedDao;
+	@Autowired FeedService feedDao;
+	@Autowired NoticeService noticeDao;
+	@Autowired TagService tagDao;
+	@Autowired TransService transDao;
+	@Autowired LanguageService lanDao;
+	@Autowired UsersService userDao;
+	@Autowired TopicService topicDao;
 	
-	@Autowired
-	NoticeService noticeDao;
+	@Autowired CommentsService CommentDao;
+	@Autowired CommentDetailService commentDetailDao;
 	
-	@Autowired
-	TagService tagDao;
-	
-	@Autowired
-	TransService transDao;
-	
-	@Autowired
-	LanguageService lanDao;
-	
-	@Autowired
-	UsersService userDao;
-	
-	@Autowired
-	TopicService topicDao;
-	
-	@Autowired
-	CommentsService CommentDao;
+	@Autowired StamphService stamphDao;
 	
 	//메인피드
 	@RequestMapping("feed.do")
@@ -84,10 +76,15 @@ public class FeedController {
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
 		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
-		System.out.println(feedDao.feedSelectList(vo));
-		
+	
 		//댓글
 		model.addAttribute("commentList",CommentDao.commentSelectList());
+		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
+		
+		//출석여부
+		StamphVO sh = new StamphVO();
+		sh.setUser_id(id);
+		model.addAttribute("loginStamp",stamphDao.stamphLoginCheck(sh));
 		return "feed/mainFeed";
 	}
 	
@@ -99,6 +96,15 @@ public class FeedController {
 	
 		vo.setUser_id(id);
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
+	
+		//댓글
+		model.addAttribute("commentList",CommentDao.commentSelectList());
+		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
+		
+		//출석여부
+		StamphVO sh = new StamphVO();
+		sh.setUser_id(id);
+		model.addAttribute("loginStamp",stamphDao.stamphLoginCheck(sh));
 		return "no/feed/post";
 	}
 	

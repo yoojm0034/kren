@@ -249,30 +249,19 @@ tr:hover {
 					<!-- End of Main Content -->
 				</form>
 			</div>
-			<div class="stories-container">
+		<%-- 	<div class="stories-container">
 				<div class="container-inner">
 					<div align="center">
 						<div class="stats-wrapper">
 							<div class="stats-header">
 								<div class="main-stats">
-									<div class="stat-block">
-										<h4>월간매출</h4>
-										<p>${month }원</p>
-									</div>
-									<div class="stat-block is-centered">
-										<h4>연간매출</h4>
-										<p>${year }원</p>
-									</div>
-									<div class="stat-block">
-										<h4>전체매출</h4>
-										<p>${all }원</p>
-									</div>
+									
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> --%>
 		</div>
 		<!-- 컨텐츠 종료 -->
 

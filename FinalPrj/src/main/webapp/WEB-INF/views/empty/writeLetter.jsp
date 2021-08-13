@@ -103,13 +103,53 @@ $(function () {
 		    });		    	
 	    }
 	});
+//---------글자수--------------------------------
+	function getTextLength(str) {
+	    var len = 0;
+	    for (var i = 0; i < str.length; i++) {
+	        if (escape(str.charAt(i)).length == 6) {
+	            len++;
+	        }
+	        len++;
+	    }
+	    return len;
+	}
 
-	// 편지 입력
+	String.prototype.cut = function(len) {//원하는 크기대로 문자열자르기
+	    var str = this;
+	    var l = 0;
+	    for (var i=0; i<str.length; i++) {
+	            l += (str.charCodeAt(i) > 128) ? 2 : 1;
+	            if (l > len) return str.substring(0,i);
+	    }
+	    return str;
+	}
+
+	$('#text').keyup(function(e) {
+		var content = $(this).val();
+		var span = $('#textCnt');
+		span.text(getTextLength(content));
+		
+		if (getTextLength(content) > 10000) {
+			$(this).get(0).blur();
+			$(this).val(content.cut(10000));
+			$(this).get(0).focus();					
+			span.text('10000');
+			alert("최대 10000자까지 입력 가능합니다.");
+			return ;
+		}
+	});
+
+//--------편지입력--------------------------------
 	$('#send').on('click',function() {
 		content = $('#text').val();
 		if(content == "") {
 			alert('내용을 입력하세요.');
 			$('#text').focus();
+			return ;
+		}
+		if (getTextLength(content) < 100) {
+			alert("최소 100자 이상 입력해주세요.");
 			return ;
 		}
 		//우표수량 체크
@@ -218,6 +258,7 @@ $(function () {
 			<div class="bold">
 				<div class="left"><span id="from">From.</span></div>	
 				<div class="right">
+					(<span id="textCnt">0</span> / 10000)
 					<button id="save" class="button">임시저장</button>
 					<button id="send" class="button is-solid primary-button raised">편지 보내기</button>
 				</div>	

@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.finalprj.stamph.service.StamphService;
@@ -27,4 +28,35 @@ public class StamphController {
 		
 		return mav;
 	}
+	
+	@RequestMapping("stamphLoginCheck.do")
+	@ResponseBody
+	public int stamphLoginCheck(StamphVO vo) {
+		return stamphDao.stamphLoginCheck(vo);
+	}
+	
+	@RequestMapping("stamphLoginInsert.do")
+	@ResponseBody
+	public int stamphLoginInsert(StamphVO vo) {
+		int n = stamphDao.stamphLoginInsert(vo);
+		if(n == 0) {
+			n = 0;
+		}
+		return n;
+	}
+
+	@RequestMapping("stamphLoginUserPlus.do")
+	@ResponseBody
+	public int stamphLoginUserPlus(StamphVO vo) {
+		int n = stamphDao.stamphLoginUserPlus(vo);
+		if(n == 0) {
+			n = 0;
+		}
+		return n;
+	}
+	
+	
+	
+	
+	
 }

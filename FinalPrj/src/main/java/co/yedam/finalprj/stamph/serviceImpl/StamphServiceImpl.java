@@ -16,7 +16,21 @@ public class StamphServiceImpl implements StamphService {
 
 	@Override
 	public List<StamphVO> stamphSelectList(StamphVO vo) {
-		// TODO Auto-generated method stub
 		return map.stamphSelectList(vo);
+	}
+
+	@Override
+	public int stamphLoginCheck(StamphVO vo) {
+		return map.stamphLoginCheck(vo);
+	}
+
+	@Override
+	public int stamphLoginInsert(StamphVO vo) {
+		return map.stamphLoginInsert(vo);
+	}
+
+	@Override
+	public int stamphLoginUserPlus(StamphVO vo) {
+		return map.stamphLoginUserPlus(vo);
 	}
 }

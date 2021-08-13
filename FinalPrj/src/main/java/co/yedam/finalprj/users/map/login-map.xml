@@ -23,16 +23,15 @@
 	
 	<!-- 아이디/비밀번호 찾기 -->
 	<select id="findId" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		SELECT * 
+		SELECT user_id 
 		FROM users 
 		WHERE EMAIL = #{value}
 	</select>
-	<select id="findPw" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		SELECT * 
-		FROM users 
+	<update id="findPwUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		UPDATE users
+		SET PASSWORD = #{password}
 		WHERE EMAIL = #{email}
-		AND USER_ID = #{user_id}
-	</select>
+	</update>
 	
 	<!-- 우표 구매시 우표갯수 업데이트... -->
 	<update id="stampUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
