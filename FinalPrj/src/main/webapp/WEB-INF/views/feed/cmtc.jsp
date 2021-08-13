@@ -37,20 +37,28 @@ function test_diff(cid,dif,ori) {
 	<!-- Content -->
 	<div class="media-content">
 		<a href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}">${user.name }</a>
-		<span class="time">방금전</span>
+		<span class="time">방금전
+		<!-- Actions -->
+		<div class="controls">
+			<div class="edit">
+				<a id="cdel" data-delcmt="${cc.cc_id }" data-delcmtfeed="${cc.feed_id }"
+				data-idx="${cc.idx }">
+				<svg
+						viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+						stroke-width="2" fill="none" stroke-linecap="round"
+						stroke-linejoin="round" class="css-i6dzq1">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+				</a>
+			</div>
+		</div>
+		</span>
 		<c:forEach items="${cd }" var="cd">
 		<!-- 교정댓글이면, line을 반복 -->
 		<div id="load_${cd.cc_id }${cd.line}" data-cid="${cd.cc_id }${cd.line}"
 		data-cdc="${cd.content }"
 		data-cdo="${cd.origin }">${cd.content }</div>
 		</c:forEach>
-		<!-- Actions -->
-		<div class="controls">
-			<div class="edit">
-				<a id="cdel" data-delcmt="${cc.cc_id }" data-delcmtfeed="${cc.feed_id }"
-				data-idx="${cc.idx }">삭제</a>
-			</div>
-		</div>
 	</div>
 </div>
 </c:if>

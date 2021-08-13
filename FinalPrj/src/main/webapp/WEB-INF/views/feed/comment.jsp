@@ -16,14 +16,22 @@
 	<!-- Content -->
 	<div class="media-content">
 		<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
-		<span class="time">방금전</span>
-		<p>${cmt.content }</p>
+		<span class="time">방금전
 		<!-- Actions -->
-		<div class="controls">
-		<div class="edit">
+		<div class="controls" style="display: inline-block">
+			<div class="edit">
 				<a id="del" data-delcmt="${cmt.comment_id }"
-					data-delcmtfeed="${cmt.feed_id }" data-idx="${cmt.idx }">삭제</a>
+					data-delcmtfeed="${cmt.feed_id }" data-idx="${cmt.idx }">
+					<svg
+						viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+						stroke-width="2" fill="none" stroke-linecap="round"
+						stroke-linejoin="round" class="css-i6dzq1">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+				</a>
 			</div>
 		</div>
+		</span>
+		<p>${cmt.content }</p>
 	</div>
 </div>

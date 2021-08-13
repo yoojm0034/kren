@@ -630,14 +630,18 @@ $(document).ready(function(){
 	});
 		
 	$('body').on('click','#report-btn',function(){
-		var report = $(this).data('report');	//name 
-		var repo = $(this).data('repo')			//feed_id
+		var report = $(this).data('report2');	//name 
+		var repo = $(this).data('repo2')			//feed_id
 		var radio = $("input:radio[name='"+repo+"']:checked").val(); //선택된값
 		var txt = "";
 		var chk = $("input:checkbox[data-rfchk='"+repo+"']:checked").val(); //체크된값
 		
 		if(radio == '기타') {
 			txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
+			if(txt=='') {
+				alert('신고이유를 입력하세요.');
+				return;
+			}
 		} else {
 			txt = radio;
 		}
@@ -735,7 +739,7 @@ $(document).ready(function(){
 			var delcmt = $(this).data('delcmt');
 			var delcmtfeed = $(this).data('delcmtfeed');
 			var delidx = $(this).data('idx');
-			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
+			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent().parent();
 			var span = $('span[data-minicmt="'+delidx+'"]');
 			//-------댓글삭제-------
 			if(confirm('삭제하시겠습니까?')) {
@@ -771,7 +775,7 @@ $(document).ready(function(){
 //--------신고START--------------------------------
 	$(function() {
 		
-	$('body').on('click','#rbtn', function() { // 신고버튼을 누르면
+	$('body').on('click','#fr-btn', function() { // 신고버튼을 누르면
 		var report = $(this).data('report');//name
 		var repo = $(this).data('repo'); 	//comment_id
 		
@@ -780,6 +784,10 @@ $(document).ready(function(){
 		var txt = "";
 		if(radio == '기타') {
 			txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
+			if(txt=='') {
+				alert('신고이유를 입력하세요.');
+				return;
+			}
 		} else {
 			txt = radio;
 		}
@@ -1694,7 +1702,7 @@ $(document).ready(function(){
 															<hr class="dropdown-divider">
 															<a class="dropdown-item">
 																<div class="media" >
-																	<div class="media-content" id="frbtn" data-repo="${vo.feed_id }" data-report="${vo.user_id }">
+																	<div class="media-content" id="frbtn" data-repo2="${vo.feed_id }" data-report2="${vo.user_id }">
 																		<h3>신고</h3>
 																	</div>
 														<div class="dropdown-menu">
@@ -1741,7 +1749,7 @@ $(document).ready(function(){
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
 									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name } 차단
-															<button id="report-btn"  data-repo="${vo.feed_id  }" data-report="${vo.user_id }">신고</button>
+															<button id="report-btn"  data-repo2="${vo.feed_id  }" data-report2="${vo.user_id }">신고</button>
 	                                                    </div>
 		                                               </div>
 													</div>
@@ -1938,9 +1946,15 @@ $(document).ready(function(){
 													<c:if test="${cmt.user_id eq user.user_id }">
 													<div class="controls" style="display: inline-block">
 														<div class="edit">
-															<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
-															data-idx="${status.index }">
-															<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+															<a id="del" data-delcmt="${cmt.comment_id }"
+																data-delcmtfeed="${cmt.feed_id }"
+																data-idx="${status.index }"> <svg
+																	viewBox="0 0 24 24" width="15" height="15"
+																	stroke="currentColor" stroke-width="2"
+																	fill="none" stroke-linecap="round"
+																	stroke-linejoin="round" class="css-i6dzq1">
+																	<line x1="18" y1="6" x2="6" y2="18"></line>
+																	<line x1="6" y1="6" x2="18" y2="18"></line></svg>
 															</a>
 														</div>
 													</div>
@@ -2048,7 +2062,9 @@ $(document).ready(function(){
 													<div class="controls">
 														<div class="edit">
 															<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
-															data-idx="${status.index }">삭제</a>
+															data-idx="${status.index }">
+															<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+															</a>
 														</div>
 													</div>
 													</c:if>
@@ -2110,7 +2126,7 @@ $(document).ready(function(){
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
 									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } 차단
-															<button id="rbtn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
+															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
 	                                                    </div>
 		                                               </div>
 													</div>
@@ -2143,12 +2159,6 @@ $(document).ready(function(){
 													</div>
 													<!-- Additional actions -->
 													<div class="actions">
-														<div class="image is-32x32">
-															<img class="is-rounded"
-																src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/jenna.png"
-																data-user-popover="0" alt="">
-														</div>
 														<div class="toolbar">
 															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-feeduser="${vo.user_id }" data-scr="${status.index }">Post Comment</a>
 														</div>

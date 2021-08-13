@@ -212,6 +212,10 @@
 			var txt = "";
 			if(radio == '기타') {
 				txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
+				if(txt=='') {
+					alert('신고이유를 입력하세요.');
+					return;
+				}
 			} else {
 				txt = radio;
 			}

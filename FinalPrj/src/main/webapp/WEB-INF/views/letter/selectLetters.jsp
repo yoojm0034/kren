@@ -360,6 +360,10 @@
 			var txt = "";
 			if(radio == '기타') {
 				txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
+				if(txt=='') {
+					alert('신고이유를 입력하세요.');
+					return;
+				}
 			} else {
 				txt = radio;
 			}
@@ -838,7 +842,9 @@
 										<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">교정</button>
 										</c:if>
 									</c:if>
+									<c:if test="${arrive_dt <= today}">
 									<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">삭제</button>
+									</c:if>
 								</div>
 							</div>
 						</div>
