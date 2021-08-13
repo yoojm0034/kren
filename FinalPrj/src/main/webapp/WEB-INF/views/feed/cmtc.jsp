@@ -39,7 +39,7 @@ function test_diff(cid,dif,ori) {
 		<a href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}">${user.name }</a>
 		<span class="time">방금전
 		<!-- Actions -->
-		<div class="controls">
+		<div class="controls" style="display: inline-block">
 			<div class="edit">
 				<a id="cdel" data-delcmt="${cc.cc_id }" data-delcmtfeed="${cc.feed_id }"
 				data-idx="${cc.idx }">

@@ -165,6 +165,16 @@ table {
     margin-left: 0.5rem;
 }
 
+.media-content > div > pre {
+    background-color: transparent !important;
+    color: unset;
+    font-size: .875em;
+    overflow-x: auto;
+    padding: 0 !important;
+    white-space: pre-wrap;
+    word-wrap: normal;
+}
+
 </style>
 <script>
 $(document).ready(function(){
@@ -878,7 +888,7 @@ $(document).ready(function(){
 			var delcmt = $(this).data('delcmt');
 			var delcmtfeed = $(this).data('delcmtfeed');
 			var delidx = $(this).data('idx');
-			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent();
+			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent().parent();
 			var span = $('span[data-minicmt="'+delidx+'"]');
 			//-------댓글삭제-------
 			if(confirm('삭제하시겠습니까?')) {
@@ -2048,6 +2058,17 @@ $(document).ready(function(){
 													 <script type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script>
+													<!-- Actions -->
+													<c:if test="${cmt.user_id eq user.user_id }">
+													<div class="controls" style="display: inline-block">
+														<div class="edit">
+															<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
+															data-idx="${status.index }">
+															<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+															</a>
+														</div>
+													</div>
+													</c:if>
 													</span>
 													<!-- 교정댓글이면, line을 반복 -->
 													<c:forEach items="${cdList }" var="cd">
@@ -2057,17 +2078,6 @@ $(document).ready(function(){
 														data-cdo="${cd.origin }">${cd.content }</div>
 														</c:if>
 													</c:forEach>
-													<!-- Actions -->
-													<c:if test="${cmt.user_id eq user.user_id }">
-													<div class="controls">
-														<div class="edit">
-															<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
-															data-idx="${status.index }">
-															<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-															</a>
-														</div>
-													</div>
-													</c:if>
 												</div>
 												<c:if test="${user.user_id ne cmt.user_id}">
 												<!-- Right side dropdown -->
