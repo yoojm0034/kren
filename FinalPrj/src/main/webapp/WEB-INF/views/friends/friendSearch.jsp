@@ -298,7 +298,6 @@ $(document).ready(function() {
 		 $('#language1').val(lan);
 		 $('#topic').val(topic);
 		 $('#dtopic').val(distopic);
-		 
 		 $('#frm').submit();
 	 });
 
@@ -326,7 +325,6 @@ $(document).ready(function() {
 		 $('#append-dop').append("<span class='append-label' id='dis"+value+"' onclick="+"'deleteCountry(\"dis"+ value + "\")'>"+value+"</span>");
 		 dcountryCnt++;
 	 });	
-	 
 	  // load more
 	  var increment;
 	  var startFilter;
@@ -342,7 +340,7 @@ $(document).ready(function() {
 	  $('.listLength').text(elementLength);
 	   
 	  // show/hide the Load More button
-	  if (elementLength > 2) { $('.buttonToogle').show();}
+	  if (elementLength > 4) { $('.buttonToogle').show();}
 	  $('#searchRow #searchItem').slice(startFilter, endFilter).addClass('shown');
 	  $('.shownLength').text(endFilter);
 	  $('#searchRow #searchItem').not('.shown').hide();
@@ -648,11 +646,11 @@ $(document).ready(function() {
 										</div>
 									</div>
 							</c:forEach>
+							<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
+								<a href="javascript:;" class="load-more-button">Load More</a>
+							</div>
 					     </c:otherwise>
 					 </c:choose>
-					<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
-						<a href="javascript:;" class="load-more-button">Load More</a>
-					</div>
 				</div>
 			</div>
 			<!--Second tab-->
