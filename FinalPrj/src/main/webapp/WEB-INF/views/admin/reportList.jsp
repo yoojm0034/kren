@@ -137,9 +137,11 @@ tr:hover {
 						$('#sync').click(function() {
 							recruitGrid.request('updateData', {
 								checkedOnly : true
+								
 							});
 							alert("회원상태를 수정하였습니다.");
 							location.reload();
+							
 						});
 						$("#table").DataTable({
 			        		// 표시 건수기능 숨기기

@@ -11,17 +11,7 @@
 <script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 <script type="text/javascript">
 	$(function() {
-		{
-			CKEDITOR
-					.replace(
-							'content',
-							{
-								filebrowserUploadUrl : '${pageContext.request.contextPath}/ckupload',
-								height : '400px',
-								width : '100%'
-							});
-		}
-		;
+		
 		$('#btnNoticeList').on('click', function() {
 			location.href = '${pageContext.request.contextPath}/userNoticeList.do'
 		});
@@ -40,7 +30,7 @@
 			</a>
 			<div class="stories-content">
 				<div class="section-title main-section-title">
-					<h2>공지사항수정</h2>
+					<h2>공지사항</h2>
 				</div>
 			</div>
 
@@ -49,9 +39,7 @@
 						<input type="hidden" name="notice_id" value="${notice.notice_id}">	
 						<table class="table">
 							<tr>
-								<td colspan="4" align="left"><input class="input" type="text" style="width:100%"
-									class="form-control" id="title" name="title"
-									value="${notice.title}" readonly="readonly">
+								<th colspan="4" align="left">${notice.title}</th>
 							</tr>
 							<tr>
 								<th>작성일</th>
@@ -60,8 +48,7 @@
 								<td>${notice.hit}</td>
 							</tr>
 							<tr>
-								<td colspan="4" align="left"><textarea id="content"
-										name="content" readonly="readonly">${notice.content}</textarea></td>
+								<td colspan="4" align="left">${notice.content}</td>
 							</tr>
 							<tr>
 								<th>등록된 파일</th>
