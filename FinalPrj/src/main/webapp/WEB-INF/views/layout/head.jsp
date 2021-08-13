@@ -430,7 +430,7 @@ h5:hover {
 			</div>
 			<div class="navbar-end">
 				<form id="searchForm" action="${pageContext.request.contextPath}/allSearch.do" method="POST">
-					<div class="navbar-item">
+					<div class="navbar-item" style="padding-top:5%">
 						<div id="global-search" class="control">
 							<input id="search" name="search" class="input is-rounded" type="text"
 								placeholder="Search" required> <span id="clear-search"
@@ -499,33 +499,16 @@ h5:hover {
 					<div class="nav-drop is-account-dropdown">
 						<div class="inner">
 							<div class="nav-drop-header">
-								<span class="username">${user.name }</span> <label
-									class="theme-toggle"> <input type="checkbox"> <span
-									class="toggler"> <span class="dark"> <i
-											data-feather="moon"></i>
-									</span> <span class="light"> <i data-feather="sun"></i>
-									</span>
+								<a id="profile-link" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}">
+								<span class="username" style="font-size:1rem; color:#393a4f;">마이페이지</span></a>
+								<label class="theme-toggle"> <input type="checkbox"> 
+								<span class="toggler"> 
+									<span class="dark"><i data-feather="moon"></i></span> 
+									<span class="light"> <i data-feather="sun"></i></span>
 								</span>
 								</label>
 							</div>
 							<div class="nav-drop-body account-items">
-								<a id="profile-link" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}"
-									class="account-item">
-									<div class="media">
-										<div class="media-left">
-											<div class="image">
-												<img src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }">
-											</div>
-										</div>
-										<div class="media-content">
-											<h3>${user.name }</h3>
-										</div>
-										<div class="media-right">
-											<i data-feather="check"></i>
-										</div>
-									</div>
-								</a>
-								<hr class="account-divider">
 									<div class="media">
 								<a class="account-item" href="${pageContext.request.contextPath}/logout" style="display: flex;">
 										<div class="icon-wrap">
