@@ -737,7 +737,7 @@
 					<c:forEach items="${friendLetter }" var="vo" varStatus="status">
 					<fmt:formatDate value="${vo.arrive_date }" pattern="yyyy/MM/dd HH:mm" var="arrive_dt"/>
 					<div id="message-preview-${status.index }" class="message-body-inner">
-						<c:if test="${arrive_dt <= today }">
+						<c:if test="${arrive_dt <= today or arrive_dt > today and vo.user_id eq user.user_id }">
 						<div class="box message-preview">
 							<div class="box-inner">
 								<div class="header">
