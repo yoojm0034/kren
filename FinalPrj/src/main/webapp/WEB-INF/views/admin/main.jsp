@@ -196,8 +196,6 @@ tr:hover {
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
 		<div class="inner-wrapper" style="width: 80%">
-
-			<h1>전체 방문자 수: ${totalCount} / 오늘의 방문자 수: ${todayCount}</h1>
 			<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
 			<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
 			<button onclick="sendLetterPush('admin')" type="button">편지</button>
