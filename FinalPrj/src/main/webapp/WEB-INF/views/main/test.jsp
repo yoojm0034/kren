@@ -10,6 +10,7 @@
 		text="스프링 테스트 사이트 - default" /></title>
 </head>
 <body>
+	테스트
 	<p>
 		<a href="<c:url value="/test.do?lang=ko" />">한국어</a> 
 		<a href="<c:url value="/test.do?lang=en" />">English</a>
