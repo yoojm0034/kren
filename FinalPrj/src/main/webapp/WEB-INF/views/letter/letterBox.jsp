@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate value="${now}" pattern="yyyy/MM/dd HH:mm" var="today" />
 <!DOCTYPE html>
@@ -84,8 +85,8 @@
 		var Data = {english:en};
 		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
-		console.log(en);
-		console.log(div);			
+		//console.log(en);
+		//console.log(div);			
 			$.ajax({
 				url:"korean",
 				type:"GET",
@@ -94,12 +95,12 @@
 				success:function(v){
 					var json = JSON.parse(v);
 					var korean=json.message.result.translatedText;
-					console.log(korean);
+					//console.log(korean);
 					div.append($('<p/>').html(korean));
 					opt.prop('disabled',true);
 				},
 				error:function(e){
-					console.log(e);
+					alert('<spring:message code="letter.alert.errormsg"/>');
 				}
 			});
 	}
@@ -110,7 +111,7 @@
 		var Data = {korean:ko};
 		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
-		console.log(ko);
+		//console.log(ko);
 		$.ajax({
 			url:"english",
 			type:"GET",
@@ -119,11 +120,11 @@
 			success:function(v){
 				var json = JSON.parse(v);
 				var english=json.message.result.translatedText;
-				console.log(english);
+				//console.log(english);
 				div.append($('<p/>').html(english));
 				opt.prop('disabled',true);
 			},error:function(e){
-				console.log(e);
+				alert('<spring:message code="letter.alert.errormsg"/>');
 			}
 		});
 	}
@@ -184,22 +185,22 @@
 		    var delid = $(this).data('delid');	//letter_id
 		    console.log(delid);
 		    
-		    if(confirm("편지를 삭제하시겠습니까?") ) {
+		    if(confirm('<spring:message code="letter.confirm.delete"/>') ) {
 			    $.ajax({
 			    	url:'deleteLetter.do',
 			    	type:'post',
 			    	data:JSON.stringify({letter_id:delid}),
 				    contentType : "application/json; charset=UTF-8",
 			    	success: function(data) {
-			    		alert('삭제되었습니다.');
+			    		alert('<spring:message code="letter.delete.success"/>');
 			    		location.reload(true);
 			    	},
 			    	error: function(e) {
-			    		alert('삭제실패');
+			    		alert('<spring:message code="letter.delete.fail"/>');
 			    	}
 			    });		    	
 		    } else {
-		    	alert("취소되었습니다.");
+		    	alert('<spring:message code="letter.confirm.no"/>');
 		    }
 		});
 		
@@ -213,20 +214,20 @@
 			if(radio == '기타') {
 				txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
 				if(txt=='') {
-					alert('신고이유를 입력하세요.');
+					alert('<spring:message code="letter.report.text.empty"/>');
 					return;
 				}
 			} else {
 				txt = radio;
 			}
 			if(txt == null) {//값이 선택되지 않았으면
-				alert('신고사유를 선택하세요');
+				alert('<spring:message code="letter.report.blank"/>');
 				return;
 			}
 			var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
 			console.log(report, repo, radio, chk, txt);
 			
-			if(confirm('신고하시겠습니까?')) {
+			if(confirm('<spring:message code="letter.confirm.report"/>')) {
 				$.ajax({
 					url:'${pageContext.request.contextPath}/reportInsert.do',
 					type:'post',
@@ -239,11 +240,11 @@
 					}),
 					contentType : "application/json; charset=UTF-8",
 					success: function(data) {
-						alert('신고되었습니다.');
+						alert('<spring:message code="letter.report.success"/>');
 						location.reload(true);
 					},
 					error: function(err) {
-						alert('관리자에게 문의해주세요.');
+						alert('<spring:message code="letter.alert.errormsg"/>');
 					}
 				});
 			}
@@ -295,7 +296,7 @@
 					$(el).val(content.cut(10000));
 					$(el).get(0).focus();					
 					span.text('10000');
-					alert("최대 10000자까지 입력 가능합니다.");
+					alert('<spring:message code="letter.alert.max"/>');
 					return ;
 				}
 			});
@@ -310,12 +311,12 @@
 			var txtarea = $('textarea[data-letter="'+send+'"]').val();
 			console.log(txtarea);
 			if(txtarea == "") {
-				alert('내용을 입력하세요.');
+				alert('<spring:message code="letter.alert.blank"/>');
 				$('textarea[data-letter="'+send+'"]').focus();
 				return ;
 			}
 			if (getTextLength(txtarea) < 100) {
-				alert("최소 100자 이상 입력해주세요.");
+				alert('<spring:message code="letter.alert.min"/>');
 				return ;
 			}
 			//우표수량 체크
@@ -326,7 +327,7 @@
 			    contentType : "application/json; charset=UTF-8",
 				success : function(data) {
 					if (data > 0) { //우표가 있으면
-						if(confirm("편지를 전송하시겠습니까?") ) {
+						if(confirm('<spring:message code="letter.confirm.send"/>') ) {
 							$.ajax({//편지전송횟수체크
 								url:'${pageContext.request.contextPath}/cntLetterCheck.do',
 								type:'post',
@@ -344,21 +345,21 @@
 									    	}),
 										    contentType : "application/json; charset=UTF-8",
 									    	success: function(data) {
-									    		alert('전송되었습니다.');
+									    		alert('<spring:message code="letter.send.success"/>');
 									    		location.reload(true);
 									    		sendLetterPush(to);
 									    	},
 									    	error: function(e) {
-									    		alert('편지전송실패');
+									    		alert('<spring:message code="letter.send.fail"/>');
 									    	}
 									    });	//$ajax	   
 									} else {
-										alert('편지전송횟수 초과!');
+										alert('<spring:message code="letter.send.five"/>');
 									}
 								}
 							});//$편지전송횟수	    	
 					    } else {
-					    	if(confirm("편지를 저장하시겠습니까?") ) {
+					    	if(confirm('<spring:message code="letter.confirm.save"/>') ) {
 							    $.ajax({
 							    	url:'${pageContext.request.contextPath}/insertLetter.do',
 							    	type:'post',
@@ -370,20 +371,20 @@
 							    	}),
 								    contentType : "application/json; charset=UTF-8",
 							    	success: function(data) {
-							    		alert('편지가 저장되었습니다.');
+							    		alert('<spring:message code="letter.save.success"/>');
 							    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 							    	},
 							    	error: function(e) {
-							    		alert('저장실패');
+							    		alert('<spring:message code="letter.save.fail"/>');
 							    	}
 							    });		    	
 						    } else {
-						    	alert("편지작성이 취소되었습니다.");
+						    	alert('<spring:message code="letter.confirm.save.no"/>');
 						    }
 					    }
 					} else { //우표가 없으면
-						alert('우표수량을 확인해주세요.');
-						if(confirm("편지를 저장하시겠습니까?") ) {
+						alert('<spring:message code="letter.stamp.check"/>');
+						if(confirm('<spring:message code="letter.confirm.save"/>') ) {
 						    $.ajax({
 						    	url:'${pageContext.request.contextPath}/insertLetter.do',
 						    	type:'post',
@@ -395,18 +396,18 @@
 						    	}),
 							    contentType : "application/json; charset=UTF-8",
 						    	success: function(data) {
-						    		alert('편지가 저장되었습니다.');
+						    		alert('<spring:message code="letter.save.success"/>');
 						    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 						    	},
 						    	error: function(e) {
-						    		alert('저장실패');
+						    		alert('<spring:message code="letter.save.fail"/>');
 						    	}
 						    });		    	
 					    }
 					}
 				},
 				error : function(e) {
-					alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+					alert('<spring:message code="letter.alert.errormsg"/>');
 				}
 			});
 			
@@ -499,7 +500,7 @@
 		    data: JSON.stringify(Data),
 		    contentType : "application/json; charset=UTF-8",
 			success:function(v){
-				alert("작성되었습니다!");
+				alert('<spring:message code="letter.corr.success"/>');
 				$('#tbl'+letter).remove(); // 교정 테이블 삭제
 				location.reload(true);
 			},error:function(e){
@@ -507,35 +508,9 @@
 			}
 		});
 	} //function letterc
-	function writePopup() {
-		var winWidth = 860;
-	    var winHeight = 580;
-	    var popupOption= "width="+winWidth+", height="+winHeight;
-		
-		var target ='pop';
-		var url = '${pageContext.request.contextPath}/writeLetter.do';
-		window.open('',target,popupOption);
-	
-		var letterform = document.letterform;
-		letterform.action=url;
-		letterform.target=target;
-		letterform.to_id.value='user1';
-		letterform.user_id.value='user3';
-		letterform.to_name.value='강사랑';
-		letterform.name.value='유참깨';
-		letterform.submit();	
-	}
-	
 </script>
 </head>
 <body>
-<form id="letterform" name="letterform" method="post">
-<input type="hidden" id="to_id" name="to_id">
-<input type="hidden" id="user_id" value="${user.user_id }">
-<input type="hidden" id="to_name" name="to_name">
-<input type="hidden" id="name" name="name">
-</form>
-
 <input type="hidden" id="user_id" value="${user.user_id }">
 	<div class="inbox-wrapper">
 		<div class="inbox-wrapper-inner">
@@ -545,16 +520,15 @@
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
 						<a href="${pageContext.request.contextPath}/letterBox.do" class="item is-active">
-							<span class="name">New Letters</span>
+							<span class="name"><spring:message code="letter.sidebar.new"/></span>
 						</a>
 						<a href="${pageContext.request.contextPath}/savedLetter.do" class="item">
-							<span class="name">Saved Letters</span>
+							<span class="name"><spring:message code="letter.sidebar.save"/></span>
 						</a>
 						<c:if test="${!empty friends }">
 						<c:forEach items="${friends }" var="vo">					
 							<a data-id="${vo.user_id}" class="item">
 								<span class="name">${vo.name }</span>
-
 							</a>
 						</c:forEach>
 						</c:if>						
@@ -570,7 +544,8 @@
 											<line x1="18" y1="6" x2="6" y2="18"></line>
 											<line x1="6" y1="6" x2="18" y2="18"></line>
 							</svg>
-						Close </a>
+						<spring:message code="letter.sidebar.close"/> 
+						</a>
 					</div>
 				</div>
 			</div>
@@ -641,13 +616,13 @@
 											<fmt:parseNumber var="percent2" value="${ datetime + ((1-(datetime%1))%1) }" integerOnly="true" /><!-- 올림 -->								
 											
 											<c:if test="${percent ne 0}">
-											<span class="msg-timestamp">${percent }시간 후 도착
+											<span class="msg-timestamp">${percent }<spring:message code="letter.in.hour"/>
 											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>
 											</c:if>
 											
 											<c:if test="${percent eq 0}">
-											<span class="msg-timestamp">한 시간 이내 도착
+											<span class="msg-timestamp"><spring:message code="letter.within.hour"/>
 											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>											
 											</c:if>
@@ -668,7 +643,7 @@
 												<p>${vo.content }</p>
 											</c:if>
 											<c:if test="${arrive_dt > today }">
-												<p>편지가 오고있어요. 조금만 기다려주세요. 편지가 배달오고 있습니다.</p>
+													<p><spring:message code="letter.to.msg"/></p>
 											</c:if>		
 											</div>
 										</div>
@@ -678,7 +653,7 @@
 							</div>
 						</c:when>
 						<c:otherwise>
-							<p>최근 도착한 편지가 없습니다!</p>
+							<p></p>
 						</c:otherwise>
 						</c:choose>
 						<!-- /MESSAGE CARDS -->
@@ -751,50 +726,51 @@
                					<div class="nav-drop is-account-dropdown is-active">
 		                     	<div class="inner">
 		                        <div class="nav-drop-header">
-		                           <span>REPORT</span>
+		                           <span><spring:message code="letter.report.title"/></span>
 		                        </div>
 		                        <div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
 	                        	<table>
 	                        	<tr>
                         		<td>
-                        		<input type="radio" id="msg" name="${vo.letter_id }" value="스팸 게시물">스팸 게시물
+                        		<input type="radio" id="msg" name="${vo.letter_id }" value="스팸 게시물"><spring:message code="letter.report.content"/>
                         		</td>
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="가짜정보 제공">가짜정보 제공
+								<input type="radio" id="msg" name="${vo.letter_id }" value="가짜정보 제공"><spring:message code="letter.report.lie"/>
                         		</td>
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="성적인 내용">성적인 내용
+								<input type="radio" id="msg" name="${vo.letter_id }" value="성적인 내용"><spring:message code="letter.report.sexual"/>
                         		</td>
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
+								<input type="radio" id="msg" name="${vo.letter_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/>
                         		</td>
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="욕설/비방">욕설/비방
+								<input type="radio" id="msg" name="${vo.letter_id }" value="욕설/비방"><spring:message code="letter.report.word"/>
                         		</td>
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="기타">기타
+								<input type="radio" id="msg" name="${vo.letter_id }" value="기타"><spring:message code="letter.report.etc"/>
                         		</td>
 	                        	</tr>
 	                        	<tr>
                         		<td>
-								<input data-rtxt="${vo.letter_id }" placeholder="신고이유" hidden="true" maxlength="30"></input>
+								<spring:message code="letter.report.input.placeholder" var="placeholder1" />
+								<input data-rtxt="${vo.letter_id }" placeholder="${placeholder1 }" hidden="true" maxlength="30"></input>
                         		</td>
 	                        	</tr>
 	                        	</table>
 		                        </div>
 		                        <div class="nav-drop-footer">
-		                        <input type="checkbox" id="blocked" data-rchk="${vo.letter_id }" value="${vo.user_id }">${vo.name } 차단
-								<button id="rbtn" data-repo="${vo.letter_id }" data-report="${vo.user_id }">신고</button>
+		                        <input type="checkbox" id="blocked" data-rchk="${vo.letter_id }" value="${vo.user_id }">${vo.name } <spring:message code="letter.report.block"/>
+								<button id="rbtn" data-repo="${vo.letter_id }" data-report="${vo.user_id }"><spring:message code="letter.btn.report"/></button>
 		                        </div>
 		                        </div>
 			                   </div>               
@@ -815,13 +791,17 @@
 								<div class="has-text-right" id="btn">
 									<button class="button is-solid grey-button is-bold raised">
 										<select id="transOpt" data-transopt="${status.index }" class="select">
-											<option value="" hidden="">Translate</option>
-											<option value="KR">Translate(KR)</option>
-											<option value="EN">Translate(EN)</option>
+											<option value="" hidden=""><spring:message code="letter.select.option.hidden"/></option>
+											<option value="KR"><spring:message code="letter.select.option.ko"/></option>
+											<option value="EN"><spring:message code="letter.select.option.en"/></option>
 										</select>
 									</button>
-									<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">교정</button>
-									<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">삭제</button>
+									<button class="button is-solid grey-button is-bold raised" id="corbtn" data-corid="${vo.letter_id }" data-coridx="${status.index }">
+									<spring:message code="letter.btn.corr"/>
+									</button>
+									<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">
+									<spring:message code="letter.btn.del"/>
+									</button>
 								</div>
 						</div>
 						</div>
@@ -830,7 +810,7 @@
 						<c:if test="${arrive_dt <= today and vo.name ne user.name }">
 						<div class="reply-wrapper">
 							<div class="reply-title">
-							Write
+							<spring:message code="letter.title.write"/>
 							<div class="right">
 								(<span>0</span> / 10000)
 							</div>
@@ -841,7 +821,8 @@
 										<table>
 										<tr>
 										<td>
-											<textarea data-letter="${vo.letter_id }" rows="20" cols="20" placeholder="Write your letter"></textarea>
+											<spring:message code="letter.textarea.placeholder" var="placeholder2" />
+											<textarea data-letter="${vo.letter_id }" rows="20" cols="20" placeholder="${placeholder2 }"></textarea>
 										</td>
 										</tr>
 										</table>
@@ -850,7 +831,8 @@
 								<div class="has-text-right">
 									<button id="send" data-send="${vo.letter_id  }" data-to="${vo.user_id }" type="button"
 										class="button is-solid accent-button is-bold raised send-message">
-										Send Letter</button>
+										<spring:message code="letter.btn.send"/>
+									</button>
 								</div>
 							</div>
 						</div>
@@ -909,7 +891,7 @@
 					</div>
 					</c:when>
 					<c:otherwise>
-						<p>해당 편지를 조회할 수 없습니다.</p>
+						<p></p>
 					</c:otherwise>
 					</c:choose>
 					<!-- /MESSAGE PREVIEWS -->

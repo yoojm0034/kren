@@ -203,6 +203,12 @@
 		</otherwise>
 		</choose>
 	</update>
+
+	<!-- 임시저장편지 삭제 -->	
+	<delete id="deleteSaveLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO">
+		DELETE FROM LETTER
+		WHERE LETTER_ID=#{letter_id}
+	</delete>
 	
 	<select id="oneSelect" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
 		SELECT * FROM LETTER

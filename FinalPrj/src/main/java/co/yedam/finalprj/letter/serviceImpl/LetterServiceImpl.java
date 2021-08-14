@@ -94,5 +94,10 @@ public class LetterServiceImpl implements LetterService {
 		return map.cntLetterCheck(vo);
 	}
 
+	@Override
+	public int deleteSaveLetter(LetterVO vo) {
+		return map.deleteSaveLetter(vo);
+	}
+
 
 }
