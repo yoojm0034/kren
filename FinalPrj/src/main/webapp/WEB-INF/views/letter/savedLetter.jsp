@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,22 +64,22 @@ $(function() {
 	    var delid = $(this).data('delid');	//letter_id
 	    console.log(delid);
 	    
-	    if(confirm("편지를 삭제하시겠습니까?") ) {
+	    if(confirm('<spring:message code="letter.confirm.delete"/>') ) {
 		    $.ajax({
-		    	url:'deleteLetter.do',
+		    	url:'deleteSaveLetter.do',
 		    	type:'post',
 		    	data:JSON.stringify({letter_id:delid}),
 			    contentType : "application/json; charset=UTF-8",
 		    	success: function(data) {
-		    		alert('삭제되었습니다.');
+		    		alert('<spring:message code="letter.delete.success"/>');
 		    		location.reload(true);
 		    	},
 		    	error: function(e) {
-		    		alert('삭제실패');
+		    		alert('<spring:message code="letter.delete.fail"/>');
 		    	}
 		    });		    	
 	    } else {
-	    	alert("취소되었습니다.");
+	    	alert('<spring:message code="letter.confirm.no"/>');
 	    }
 	});
 	
@@ -115,7 +116,7 @@ $(function() {
 				$(el).val(content.cut(10000));
 				$(el).get(0).focus();					
 				span.text('10000');
-				alert("최대 10000자까지 입력 가능합니다.");
+				alert('<spring:message code="letter.alert.max"/>');
 				return ;
 			}
 		});
@@ -131,12 +132,12 @@ $(function() {
 		var txtarea = $('textarea[data-letter="'+send+'"]').val();
 		console.log(txtarea);
 		if(txtarea == "") {
-			alert('내용을 입력하세요.');
+			alert('<spring:message code="letter.alert.blank"/>');
 			$('textarea[data-letter="'+send+'"]').focus();
 			return ;
 		}
 		if (getTextLength(txtarea) < 100) {
-			alert("최소 100자 이상 입력해주세요.");
+			alert('<spring:message code="letter.alert.min"/>');
 			return ;
 		}
 		
@@ -150,7 +151,7 @@ $(function() {
 			contentType : "application/json; charset=UTF-8",
 			success : function(cnt) {
 				if (cnt > 0) { //우표가 있으면
-					if(confirm("편지를 전송하시겠습니까?") ) {
+					if(confirm('<spring:message code="letter.confirm.send"/>') ) {
 						$.ajax({//편지전송횟수체크
 							url:'${pageContext.request.contextPath}/cntLetterCheck.do',
 							type:'post',
@@ -170,21 +171,21 @@ $(function() {
 						    	}),
 							    contentType : "application/json; charset=UTF-8",
 						    	success: function(data) {
-						    		alert('전송되었습니다.');
+						    		alert('<spring:message code="letter.send.success"/>');
 						    		location.href = '${pageContext.request.contextPath}/selectLetters.do/'+to;
 						    		sendLetterPush(to);
 						    	},
 						    	error: function(e) {
-						    		alert('편지전송실패');
+						    		alert('<spring:message code="letter.send.fail"/>');
 						    	}
 					    	});//$ajax	   
 								} else {
-									alert('편지전송횟수 초과!');
+									alert('<spring:message code="letter.send.five"/>');
 								}
 							}
 						});//$편지전송횟수		    	
 				    } else {
-				    	if(confirm("편지를 저장하시겠습니까?") ) {
+				    	if(confirm('<spring:message code="letter.confirm.save"/>') ) {
 						    $.ajax({
 						    	url:'${pageContext.request.contextPath}/updateSavedLetter.do',
 						    	type:'post',
@@ -198,20 +199,20 @@ $(function() {
 						    	}),
 							    contentType : "application/json; charset=UTF-8",
 						    	success: function(data) {
-						    		alert('편지가 저장되었습니다.');
+						    		alert('<spring:message code="letter.save.success"/>');
 						    		location.reload(true);
 						    	},
 						    	error: function(e) {
-						    		alert('저장실패');
+						    		alert('<spring:message code="letter.save.fail"/>');
 						    	}
 						    });		    	
 					    } else {
-					    	alert("편지작성이 취소되었습니다.");
+					    	alert('<spring:message code="letter.confirm.save.no"/>');
 					    }
 				    }
 				} else { //우표가 없으면
-					alert('우표수량을 확인해주세요.');
-					if(confirm("편지를 저장하시겠습니까?") ) {
+					alert('<spring:message code="letter.stamp.check"/>');
+					if(confirm('<spring:message code="letter.confirm.save"/>') ) {
 					    $.ajax({
 					    	url:'${pageContext.request.contextPath}/updateSavedLetter.do',
 					    	type:'post',
@@ -225,20 +226,20 @@ $(function() {
 					    	}),
 						    contentType : "application/json; charset=UTF-8",
 					    	success: function(data) {
-					    		alert('편지가 저장되었습니다.');
+					    		alert('<spring:message code="letter.save.success"/>');
 					    		location.reload(true);
 					    	},
 					    	error: function(e) {
-					    		alert('저장실패');
+					    		alert('<spring:message code="letter.save.fail"/>');
 					    	}
 					    });		    	
 				    } else {
-				    	alert("편지작성이 취소되었습니다.");
+				    	alert('<spring:message code="letter.confirm.save.no"/>');
 				    }
 				}
 			},
 			error : function(e) {
-				alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+				alert('<spring:message code="letter.alert.errormsg"/>');
 			}
 		});
 	});//편지입력끝
@@ -257,10 +258,10 @@ $(function() {
 					<!-- MENU -->
 					<div class="left-menu" style="overflow: auto;">
 						<a href="${pageContext.request.contextPath}/letterBox.do" class="item">
-							<span class="name">New Letters</span>
+							<span class="name"><spring:message code="letter.sidebar.new"/></span>
 						</a>
 						<a href="${pageContext.request.contextPath}/savedLetter.do" class="item is-active">
-							<span class="name">Saved Letters</span>
+							<span class="name"><spring:message code="letter.sidebar.save"/></span>
 						</a>
 						<c:if test="${!empty friends }">
 						<c:forEach items="${friends }" var="vo">						
@@ -282,7 +283,8 @@ $(function() {
 											<line x1="18" y1="6" x2="6" y2="18"></line>
 											<line x1="6" y1="6" x2="18" y2="18"></line>
 							</svg>
-						Close </a>
+						<spring:message code="letter.sidebar.close"/> 
+						</a>
 					</div>
 				</div>
 			</div>
@@ -358,7 +360,7 @@ $(function() {
 							</div>
 						</c:when>
 						<c:otherwise>
-							<p>임시저장한 편지가 없습니다!</p>
+							<p></p>
 						</c:otherwise>
 						</c:choose>
 						<!-- /MESSAGE CARDS -->
@@ -427,26 +429,30 @@ $(function() {
 									<table>
 									<tr>
 									<td>
-										<textarea data-letter="${vo.letter_id }" rows="20" cols="20" placeholder="Write your letter">${vo.content }</textarea>
+										<spring:message code="letter.textarea.placeholder" var="placeholder1" />
+										<textarea data-letter="${vo.letter_id }" rows="20" cols="20" placeholder="${placeholder1 }">${vo.content }</textarea>
 									</td>
 									</tr>
 									</table>
 								</div>
-						</div>
-
-						<div class="has-text-right">
-							<button type="button" class="button is-solid accent-button is-bold raised send-message" id="send"
-							data-send="${vo.letter_id  }" data-to="${vo.to_id }" >Send Letter</button>
-							<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">삭제</button>
-						</div>
-
+							</div>
+	
+							<div class="has-text-right">
+								<button type="button" class="button is-solid accent-button is-bold raised send-message" id="send"
+								data-send="${vo.letter_id  }" data-to="${vo.to_id }" >
+								<spring:message code="letter.btn.send"/>
+								</button>
+								<button class="button is-solid grey-button is-bold raised" id="delbtn" data-delid="${vo.letter_id }">
+								<spring:message code="letter.btn.del"/>
+								</button>
+							</div>
 						</div>	
 						</div>			
 					</c:forEach>
 					</div>
 					</c:when>
 					<c:otherwise>
-						<p>목록이 비어있습니다.</p>
+						<p></p>
 					</c:otherwise>
 					</c:choose>
 					<!-- /MESSAGE PREVIEWS -->

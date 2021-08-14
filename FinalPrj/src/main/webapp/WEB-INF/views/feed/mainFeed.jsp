@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate value="${now}" pattern="yyyy/MM/dd HH:mm" var="today" />
 <!DOCTYPE html>
@@ -13,12 +14,6 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<link rel="icon" type="image/png"
-	href="resources/template/assets/img/favicon.png" />
-<link
-	href="resources/template/assets/nicelabel/css/jquery-nicelabel.css"
-	rel="stylesheet">
-<script src="resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/template/assets/js/diffButty.js"></script>
 <meta charset="UTF-8">
 <title>Main Feed</title>
@@ -196,14 +191,14 @@ $(document).ready(function(){
 	
 	//-------출석체크-------
 	$('#todayCheck').on('click', function() {
-		console.log('출석신청');
 		$.ajax({//----------출석 여부 확인----------
 			url:'${pageContext.request.contextPath}/stamphLoginCheck.do',
 			data:{'user_id':'${user.user_id}'},
 			success:function(cnt){
 				console.log('cnt:',cnt);
 				if(cnt > 0) {
-					alert('하루에 한번만 가능합니다.');
+					//alert('하루에 한번만 가능합니다.');
+					alert('<spring:message code="feed.check.stamp.today"/>');
 				} else {
 					$.ajax({//---------유저 우표추가---------
 						url: '${pageContext.request.contextPath}/stamphLoginUserPlus.do',
@@ -214,23 +209,27 @@ $(document).ready(function(){
 									url: '${pageContext.request.contextPath}/stamphLoginInsert.do',
 									data:{'user_id':'${user.user_id}'},
 									success:function(result) {
-										alert('우표 하나 받았어요!');
+										//alert('우표 하나 받았어요!');
+										alert('<spring:message code="feed.check.stamp.plus"/>');
 										$('#todayCheck').children().html('출석완료');
 									},
 									error:function() {
-										alert('관리자에게 문의해주세요');										
+										//alert('관리자에게 문의해주세요');								
+										alert('<spring:message code="feed.check.alert.errormsg"/>');		
 									}
 								});
 							}
 						},
 						error:function() {
-							alert('관리자에게 문의해주세요');
+							//alert('관리자에게 문의해주세요');
+							alert('<spring:message code="feed.check.alert.errormsg"/>');		
 						}
 					});
 				}
 			},
 			error:function(e) {
-				alert('관리자에게 문의해주세요.');
+				//alert('관리자에게 문의해주세요');
+				alert('<spring:message code="feed.check.alert.errormsg"/>');		
 			}
 		});
 	});//출석체크
@@ -697,7 +696,7 @@ $(document).ready(function(){
 			var scroll = $('div[data-scroll="'+scr+'"]');
 			var span2 = $('span[data-minicmt="'+scr+'"]');
 			if(content == "") {
-				alert('댓글을 입력해주세요');
+				alert('<spring:message code="comment.alert.blank"/>');
 				return ;
 			}
 			//-------댓글입력-------
@@ -711,7 +710,7 @@ $(document).ready(function(){
 				}),
 				contentType:'application/json; charset=UTF-8',
 				success: function() {
-					alert('댓글입력성공!');
+					alert('<spring:message code="comment.send.success"/>');
 					//입력된 값 조회 후 jsp
 					$.ajax({
 						url: '${pageContext.request.contextPath}/commentInsertData.do',
@@ -738,7 +737,7 @@ $(document).ready(function(){
 					});
 				},
 				error: function() {
-					alert('댓글입력실패!');
+					alert('<spring:message code="comment.send.fail"/>');
 				}
 			});//댓글입력
 
@@ -752,14 +751,14 @@ $(document).ready(function(){
 			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent().parent();
 			var span = $('span[data-minicmt="'+delidx+'"]');
 			//-------댓글삭제-------
-			if(confirm('삭제하시겠습니까?')) {
+			if(confirm('<spring:message code="comment.confirm.delete"/>')) {
 				$.ajax({
 					url: '${pageContext.request.contextPath}/commentDelete.do',
 					method: 'post',
 					data: JSON.stringify({comment_id:delcmt}),
 					contentType:'application/json; charset=UTF-8',
 					success: function(data) {
-						alert('댓글삭제성공!');
+						alert('<spring:message code="comment.delete.success"/>');
 						del.remove();
 						//-------댓글수-1-------
 						$.ajax({
@@ -774,7 +773,7 @@ $(document).ready(function(){
 						});
 					},
 					error: function(e) {
-						alert('댓글삭제실패!');
+						alert('<spring:message code="comment.delete.fail"/>');
 					}
 				});
 			}		
@@ -795,19 +794,19 @@ $(document).ready(function(){
 		if(radio == '기타') {
 			txt = $('input[data-rtxt="'+repo+'"]').val();//기타사유
 			if(txt=='') {
-				alert('신고이유를 입력하세요.');
+				alert('<spring:message code="comment.report.text.empty"/>');
 				return;
 			}
 		} else {
 			txt = radio;
 		}
 		if(txt == null) {//값이 선택되지 않았으면
-			alert('신고사유를 선택하세요');
+			alert('<spring:message code="comment.report.blank"/>');
 			return;
 		}
 		var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
 		console.log(report, repo, radio, chk, txt);
-		if(confirm('신고하시겠습니까?')) {
+		if(confirm('<spring:message code="comment.confirm.report"/>')) {
 			$.ajax({
 				url:'${pageContext.request.contextPath}/reportInsert.do',
 				type:'post',
@@ -820,14 +819,15 @@ $(document).ready(function(){
 				}),
 				contentType : "application/json; charset=UTF-8",
 				success: function(data) {
-					alert('신고되었습니다.');
+					alert('<spring:message code="comment.report.success"/>');
 					location.reload(true);
 				},
 				error: function(err) {
-					alert('관리자에게 문의해주세요.');
+					alert('<spring:message code="comment.alert.errormsg"/>');
 				}
 			});
 		}
+		
 		
 	});
 	
@@ -891,13 +891,13 @@ $(document).ready(function(){
 			var del = $('a[data-delcmt="'+delcmt+'"]').parent().parent().parent().parent().parent();
 			var span = $('span[data-minicmt="'+delidx+'"]');
 			//-------댓글삭제-------
-			if(confirm('삭제하시겠습니까?')) {
+			if(confirm('<spring:message code="comment.confirm.delete"/>')) {
 				$.ajax({
 					url: '${pageContext.request.contextPath}/commentcDelete.do',
 					method: 'post',
 					data: {cc_id:delcmt},
 					success: function(data) {
-						alert('댓글삭제성공!');
+						alert('<spring:message code="comment.delete.success"/>');
 						del.remove();
 						//-------댓글수-1-------
 						$.ajax({
@@ -912,7 +912,7 @@ $(document).ready(function(){
 						});
 					},
 					error: function(e) {
-						alert('댓글삭제실패!');
+						alert('<spring:message code="comment.delete.fail"/>');
 					}
 				});
 			}		
@@ -943,7 +943,7 @@ $(document).ready(function(){
 		}
 		var tr2 = $('<tr>');
 		var col = $('<td colspan="2" align="right">');
-		var submit = $('<button type="button" class="button" id="frmBtn" data-fd="'+fid+'" data-fu="'+fuser+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('댓글달기');
+		var submit = $('<button type="button" class="button" id="frmBtn" data-fd="'+fid+'" data-fu="'+fuser+'" data-num="'+num+'" data-frmbtn="'+fidx+'">').text('<spring:message code="comment.btn.send"/>');
 		col.append(submit);
 		tr2.append(col);
 		tbl.append(tr2)
@@ -981,9 +981,6 @@ $(document).ready(function(){
 			"origin":cont,
 			"content":corr
 		};
-			
-		console.log(Data);
-		console.log(fid, '${user.user_id}');
 		
 		$.ajax({//commentC
 			url:"${pageContext.request.contextPath}/commentcInsert.do",
@@ -997,7 +994,7 @@ $(document).ready(function(){
 		 		    data: JSON.stringify(Data),
 		 		    contentType : "application/json; charset=UTF-8",
 		 			success:function(r){
-		 				alert("작성되었습니다!");
+		 				alert('<spring:message code="comment.send.success"/>');
 		 				$('div[data-table="'+idx+'"]').remove();//교정테이블 삭제
 						//입력된 값 조회 후 jsp
 						$.ajax({
@@ -1029,11 +1026,11 @@ $(document).ready(function(){
 							}
 						});
 		 			},error:function(e){
-		 				console.log(e);
+		 				alert('<spring:message code="comment.send.fail"/>');
 		 			}
 				});
 			},error:function(e){
-				console.log(e);
+ 				alert('<spring:message code="comment.alert.errormsg"/>');
 			}
 			
 		});
@@ -1331,16 +1328,16 @@ $(document).ready(function(){
 						<!------------------------ 출석 시작 ------------------------->
 						<div id="latest-activity-2" class="card">
 							<div class="card-heading is-bordered">
-								<h4>출석체크</h4>
+								<h4><spring:message code="feed.check.title"/></h4>
 							</div>
 							<div class="card-body no-padding">
 								<div class="add-friend-block" id="todayCheck">
 									<c:choose>
 									<c:when test="${loginStamp eq 0}">
-										<span>여기를 눌러주세요!</span>
+										<span><spring:message code="feed.check.click"/></span>
 									</c:when>
 									<c:otherwise>
-										<span>출석완료</span>
+										<span><spring:message code="feed.check.done"/></span>
 									</c:otherwise>
 									</c:choose>
 								</div>
@@ -1907,7 +1904,7 @@ $(document).ready(function(){
 										<!-- Header -->
 										<div class="comments-heading" data-card="${status.index }">
 											<h4>
-												Comments
+												<spring:message code="comment.h4.title"/>
 												<small>
 												<c:if test="${!empty vo.cmt and vo.cmt eq 0 }">(0)</c:if>
 												<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt})</c:if>
@@ -1991,45 +1988,48 @@ $(document).ready(function(){
 	                                                        <table id="report-table">
 								                        	<tr>
 								                        		<td>
-								                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물</label>
+								                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물"><spring:message code="comment.report.content"/></label>
 								                        		</td>
 								                        	</tr>
 								                        	<tr>
 								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공</label>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공"><spring:message code="comment.report.lie"/></label>
 								                        		</td>
 								                        	</tr>
 								                        	<tr>
 								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용</label>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용"><spring:message code="comment.report.sexual"/></label>
 								                        		</td>
 								                        	</tr>
 								                        	<tr>
 								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용</label>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/></label>
 								                        		</td>
 								                        	</tr>
 								                        	<tr>
 								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방</label>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방"><spring:message code="letter.report.word"/></label>
 								                        		</td>
 								                        	</tr>
 								                        	<tr>
 								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타</label>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타"><spring:message code="letter.report.etc"/></label>
 								                        		</td>
 								                        	</tr>
 								                        	<tr>
 								                        		<td>
-																	<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
+																	<spring:message code="comment.report.input.placeholder" var="cmt_placeholder" />
+																	<input data-rtxt="${cmt.comment_id }" placeholder="${cmt_placeholder}" hidden="true"
 										                        	   maxlength="30"></input>
 								                        		</td>
 								                        	</tr>
 								                        	</table>
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
-									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } 차단
-															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
+									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } <spring:message code="comment.report.block"/>
+															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
+															<spring:message code="comment.report.btn"/>
+															</button>
 	                                                    </div>
 		                                               </div>
 													</div>
@@ -2096,47 +2096,50 @@ $(document).ready(function(){
 	                                                    <div class="dropdown-content">
 	                                                        <div class="media">
 	                                                        <table id="report-table">
-									                        	<tr>
-									                        		<td>
-									                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물</label>
-									                        		</td>
-									                        	</tr>
-									                        	<tr>
-									                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공</label>
-									                        		</td>
-									                        	</tr>
-									                        	<tr>
-									                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용</label>
-									                        		</td>
-									                        	</tr>
-									                        	<tr>
-									                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용</label>
-									                        		</td>
-									                        	</tr>
-									                        	<tr>
-									                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방</label>
-									                        		</td>
-									                        	</tr>
-									                        	<tr>
-									                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타</label>
-									                        		</td>
-									                        	</tr>
-									                        	<tr>
-									                        		<td>
-																	<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
-											                        	   maxlength="30"></input>
-									                        		</td>
-									                        	</tr>
+									                        <tr>
+								                        		<td>
+								                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물"><spring:message code="comment.report.content"/></label>
+								                        		</td>
+								                        	</tr>
+								                        	<tr>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공"><spring:message code="comment.report.lie"/></label>
+								                        		</td>
+								                        	</tr>
+								                        	<tr>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용"><spring:message code="comment.report.sexual"/></label>
+								                        		</td>
+								                        	</tr>
+								                        	<tr>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/></label>
+								                        		</td>
+								                        	</tr>
+								                        	<tr>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방"><spring:message code="letter.report.word"/></label>
+								                        		</td>
+								                        	</tr>
+								                        	<tr>
+								                        		<td>
+																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타"><spring:message code="letter.report.etc"/></label>
+								                        		</td>
+								                        	</tr>
+								                        	<tr>
+								                        		<td>
+																	<spring:message code="comment.report.input.placeholder" var="cmt_placeholder" />
+																	<input data-rtxt="${cmt.comment_id }" placeholder="cmt_placeholder" hidden="true"
+										                        	   maxlength="30"></input>
+								                        		</td>
+								                        	</tr>
 								                        	</table>
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
-									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } 차단
-															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
+									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } <spring:message code="comment.report.block"/>
+															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
+															<spring:message code="comment.report.block"/>
+															</button>
 	                                                    </div>
 		                                               </div>
 													</div>
@@ -2163,14 +2166,17 @@ $(document).ready(function(){
 												<div class="media-content">
 													<div class="field">
 														<p class="control">
+															<spring:message code="comment.textarea.placeholder" var="cmt_text_placeholder" />
 															<textarea data-content="${vo.feed_id }" class="textarea comment-textarea" rows="5"
-																placeholder="Write a comment..."></textarea>
+																placeholder="${cmt_text_placeholder }"></textarea>
 														</p>
 													</div>
 													<!-- Additional actions -->
 													<div class="actions">
 														<div class="toolbar">
-															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-feeduser="${vo.user_id }" data-scr="${status.index }">Post Comment</a>
+															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-feeduser="${vo.user_id }" data-scr="${status.index }">
+															<spring:message code="comment.btn.send"/>
+															</a>
 														</div>
 													</div>
 												</div>
