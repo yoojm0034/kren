@@ -51,9 +51,6 @@
 <script
 	src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
 
-<script>
-	
-</script>
 <div class="feedContents">
 	<c:forEach items="${feedList }" var="vo" varStatus="status">
 		<div id="feed-post-1" class="card is-post">
