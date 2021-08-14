@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 <link
@@ -308,7 +310,7 @@ $(document).ready(function(){
 $(function() {
 	$('#emailCheck').click(function() {
 		if ($('#email').val() == "") {
-			alert('이메일을 입력하세요.');
+			alert('<spring:message code="userJoin.email.blank"/>');
 			$('#email').focus();
 			return false;
 		}
@@ -321,7 +323,7 @@ $(function() {
 			type : 'post',
 			success : function(data) {
 				if (data > 0) {
-					alert('이미 사용중입니다. 새로 입력해주세요.');
+					alert('<spring:message code="userJoin.email.inuse"/>');
 					$('#email').val('');
 					$('#email').focus();
 				} else {
@@ -332,18 +334,18 @@ $(function() {
 						data : { email : $('#email').val() },
 						type : 'post',
 						success : function(code) {
-							alert('메일이 전송되었습니다.');
+							alert('<spring:message code="userJoin.email.sendmail"/>');
 							$('#codeCheck').click(function() { // 성공해서 이메일에서 값을 건네받은 경우에, 인증번호 버튼을 클릭 시 값을 검사
 								if ($('#inputCode').val() == code) { // 사용자의 입력값과 sendSMS에서 받은 값이 일치하는 경우
-									alert('이메일 인증이 완료되었습니다.');
+									alert('<spring:message code="userJoin.email.checked"/>');
 									$('#codeCheck').val("checked");
 								} else {
-									alert('인증번호가 틀립니다');
+									alert('<spring:message code="userJoin.email.wrong"/>');
 								}
 							})
 						},
 						error : function(err) {
-							alert('에러가 발생했습니다. 관리자에게 문의해주세요.');
+							alert('<spring:message code="errormsg"/>');
 						}
 					}); // end of code check ajax
 				} // end of if
@@ -392,7 +394,7 @@ $('#profile').keyup(function (e){
     var content = $(this).val();
     $('#contentCnt').text(content.length);
     if (content.length > 1000){
-        alert("최대 1000자까지 입력 가능합니다.");
+        alert('<spring:message code="usersUpdate.max"/>');
         $(this).val(content.substring(0, 1000));
         $('#contentCnt').text(1000);
     }
@@ -411,7 +413,7 @@ function getCheckedCnt(obj)  {
 		  document.getElementById('checkedTopicCnt').innerText
 		    = selectedElementsCnt;
 	  } else {
-		  alert("30개를 초과 선택 불가합니다.");
+		  alert('<spring:message code="userJoin.topic.max"/>');
 		  obj.checked = false;
 		  selectedElementsCnt -= 1;
 	  };
@@ -444,21 +446,21 @@ function beforeSubmit() {
 		$('#codeCheck').val('checked');
 	}
 	if ($('#codeCheck').val() == 'unchecked') {
-		alert("이메일 인증을 확인해주세요.");
+		alert('<spring:message code="userJoin.email.entercode"/>');
 		return false;
 	}
 	if ($("#password").val() == "") {
-		alert("패스워드를 확인하세요.");
+		alert('<spring:message code="userJoin.password.enter"/>');
 		$('#password').focus();
 		return false;
 	}
 	if ($("#password").val() != $("#password2").val()) {
-		alert("패스워드가 일치하지 않습니다.");
+		alert('<spring:message code="userJoin.password.notmatch"/>');
 		$('#password').focus();
 		return false;
 	}
 	if (Number($("#checkedTopicCnt").text()) < 3) {
-		alert("관심사를 3개 이상 선택해주세요.");
+		alert('<spring:message code="userJoin.topic.min"/>');
 		return false;
 	}
 	return true;
@@ -529,35 +531,35 @@ $(function() {
 					
 					<!-- Basic Infos widget -->
 					<div class="box-heading">
-						<h4>Edit Basic Infos</h4>
+						<h4><spring:message code="usersUpdate.edit"/></h4>
 					</div>
 					<div class="basic-infos-wrapper">
 						<div class="card is-profile-info">
 							<div class="info-row">
 								<div class="field">
-									<label>Email</label>
+									<label><spring:message code="usersUpdate.email"/></label>
 									<div class="control">
 										<input type="text" class="input" id="email" name="email"
 											value="${profile.email }" style="width: 220px">
 										<button class="button is-solid dark-grey-button" type="button"
-											id="emailCheck">코드발송</button>
+											id="emailCheck"><spring:message code="userJoin.email.btn"/></button>
 									</div>
 								</div>
 							</div>
 							<div class="info-row">
 								<div class="field">
-									<label>Email Code</label>
+									<label><spring:message code="usersUpdate.code"/></label>
 									<div class="control">
 										<input type="text" class="input" style="width: 220px"
 											id="inputCode" name="inputCode">
 										<button class="button is-solid dark-grey-button" type="button"
-											id="codeCheck" value="unchecked">코드확인</button>
+											id="codeCheck" value="unchecked"><spring:message code="userJoin.email.checkbtn"/></button>
 									</div>
 								</div>
 							</div>
 							<div class="info-row">
 								<div class="field">
-									<label>Password</label>
+									<label><spring:message code="usersUpdate.password"/></label>
 									<div class="control">
 										<input type="password" class="input" id="password"
 											name="password">
@@ -566,7 +568,7 @@ $(function() {
 							</div>
 							<div class="info-row">
 								<div class="field">
-									<label>Password Check</label>
+									<label><spring:message code="usersUpdate.password2"/></label>
 									<div class="control">
 										<input type="password" class="input" id="password2"
 											name="password2">
@@ -575,7 +577,7 @@ $(function() {
 							</div>
 							<div class="info-row">
 								<div class="field">
-									<label>Language</label>
+									<label><spring:message code="usersUpdate.language"/></label>
 									<div class="control">
 										<select name="level" id="level" onchange="levelChange(this.options[this.selectedIndex].value)"
 											style="width: 75%; font-size: 12pt;">
@@ -595,10 +597,10 @@ $(function() {
 							</div>
 							<div class="info-row" style="justify-content: unset;">
 								<div class="field">
-									<label>Location</label>
+									<label><spring:message code="usersUpdate.location"/></label>
 									<div class="control">
 										<button class="button is-solid dark-grey-button" type="button"
-											onclick="getLocation()">내 위치조회</button>
+											onclick="getLocation()"><spring:message code="userJoin.getlocation"/></button>
 										<span id="city2" style="padding-left: 1rem"></span><span
 											id="country2"></span>
 									</div>
@@ -606,7 +608,7 @@ $(function() {
 							</div>
 						</div>
 							<div>
-							<button class="button" type="button" onclick="location.href='usersDeleteForm.do'">계정삭제</button>
+							<button class="button" type="button" onclick="location.href='usersDeleteForm.do'"><spring:message code="btn.deleteAccount"/></button>
 							</div>
 					</div>
 				</div>
@@ -615,7 +617,7 @@ $(function() {
 					<!---------------------- 자기소개 -------------------------->
 					<div class="box-heading">
 						<div class="left">
-							<h4>About Me</h4>
+							<h4><spring:message code="profile.aboutme"/></h4>
 						</div>
 						<div class="right">
 							(<span id="contentCnt">0</span> / 1000)
@@ -633,7 +635,7 @@ $(function() {
 					<!---------------------- 관심사 -------------------------->
 					<div class="box-heading">
 						<div class="left">
-							<h4>Topics of Interest</h4>
+							<h4><spring:message code="topic"/></h4>
 						</div>
 						<div class="right">
 							(<span id="checkedTopicCnt">0</span> / 30)
@@ -646,10 +648,18 @@ $(function() {
 									<c:set var="userTopic" value="${user.topic}," />
 									<c:forEach items="${topiclist }" var="vo">
 										<c:set var="topic" value="${vo.topic_id }," />
-										<input class="text-nicelabel" name="topics" <c:if test='${fn:contains(userTopic,topic)}'>checked="checked"</c:if>
-											data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
-											type="checkbox" value="${vo.topic_id }"
-											onclick="getCheckedCnt(this)">
+										<c:if test="${locale eq 'kr'}">
+											<input class="text-nicelabel" name="topics" <c:if test='${fn:contains(userTopic,topic)}'>checked="checked"</c:if>
+												data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
+												type="checkbox" value="${vo.topic_id }"
+												onclick="getCheckedCnt(this)">
+										</c:if>
+										<c:if test="${locale eq 'en'}">
+											<input class="text-nicelabel" name="topics" <c:if test='${fn:contains(userTopic,topic)}'>checked="checked"</c:if>
+												data-nicelabel='{"checked_text": "${vo.en }", "unchecked_text": "${vo.en }"}'
+												type="checkbox" value="${vo.topic_id }"
+												onclick="getCheckedCnt(this)">
+										</c:if>
 									</c:forEach>
 									<script>
 										$('input').nicelabel({});
@@ -660,7 +670,7 @@ $(function() {
 					</div>
 					<!---------------------- 방문한 나라 -------------------------->
 					<div class="box-heading">
-						<h4>Trips</h4> <a id="addBtn"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
+						<h4><spring:message code="profile.trips"/></h4> <a id="addBtn"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
 					</div>
 					<div class="trip-cards-list">
 						<div class="card is-trip-card">

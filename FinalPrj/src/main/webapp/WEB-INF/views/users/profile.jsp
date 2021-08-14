@@ -145,6 +145,50 @@ a[href^="https://maps.google.com/maps"] {
 	font-size: 1rem !important;
 }
 
+.tt { 
+	position: relative; 
+	display: inline-block; 
+	border-bottom: 2px dotted Sienna; 
+	background-color: yellow; 
+} 
+
+
+.arrow_box {
+  display: none;
+  position: absolute;
+  top: 28%;
+  right: 6%;
+  padding: 12px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;  
+  border-radius: 8px;
+  background: #0000001a;
+  color: #2a2a2a;
+  font-size: 14px;
+}
+
+.arrow_box:after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -10px;
+  border: solid transparent;
+  border-color: rgba(51, 51, 51, 0);
+  border-bottom-color: #0000001a;
+  border-width: 10px;
+  pointer-events: none;
+  content: " ";
+
+}
+
+#btnLetter:hover + p.arrow_box {
+  display: block;
+}
+
+
+
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -234,10 +278,11 @@ $(function(){
 $(function(){
 	$('#editProfile').on('click', function (){
 		var user_id = $('#user_id').val();
+		var locale = '${locale}';
 		$.ajax({
 			url: '${pageContext.request.contextPath}/usersUpdateForm.do',
 	    	type:'post',
-	    	data:{user_id : user_id},
+	    	data:{user_id : user_id, locale: locale},
 			success: function(result) {
 				$('.editProfile-area').empty();
 				$('.editProfile-area').html('<button class="button is-solid primary-button" id="saveBtn">Save</button>');
@@ -416,6 +461,7 @@ function writePopup() {
 									</c:when>
 									<c:otherwise>
 										<a class="button is-solid primary-button" id="btnLetter" onclick="writePopup()"><spring:message code="profile.letter"/></a>
+										<p class="arrow_box">편지가 20시간 후에 전달됩니다.</p>
 										<div class="follow-area">
 											<c:choose>
 												<c:when test="${followCheck > 0}">
@@ -507,8 +553,14 @@ function writePopup() {
 											<c:set var="userTopic" value="${user.topic}," />
 											<c:forEach items="${mytopic }" var="vo">
 												<c:set var="topic" value="${vo.topic_id }," />
+												<c:if test="${locale eq 'kr'}">
 												<span
 													class="label-round <c:if test='${fn:contains(userTopic,topic)}'>matched</c:if>">${vo.kr }</span>
+												</c:if>
+												<c:if test="${locale eq 'en'}">
+												<span
+													class="label-round <c:if test='${fn:contains(userTopic,topic)}'>matched</c:if>">${vo.en }</span>
+												</c:if>
 											</c:forEach>
 										</c:otherwise>
 									</c:choose>
@@ -1485,9 +1537,8 @@ function writePopup() {
 				</div>
 			</div>
 		</div>
+	<!-- Signup page js -->
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>
 </body>
 </html>
 
-
-	<!-- Signup page js -->
-	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>
