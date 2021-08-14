@@ -92,7 +92,7 @@ tr:hover {
 					<div class="user-stats">
                          <div class="stat-block">
                              <span>Followers</span>
-                             <span>2.3K</span>
+                             <span>2.3K</span>  
                          </div>
                          <div class="stat-block">
                              <span>Following</span>
