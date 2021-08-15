@@ -654,6 +654,7 @@ function initTextFilter() {
         } else {
           $('.card-row-wrap.is-active').find('.card-row-placeholder').addClass('is-hidden');
           $('.card-row-wrap.is-active').find('.card-row').removeClass('is-hidden');
+          $('.load-more-wrap.narrow-top.has-text-centered').find('.load-more-button').addClass('is-hidden');
         }
       }
     });

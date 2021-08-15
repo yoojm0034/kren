@@ -175,6 +175,14 @@ table {
     word-wrap: normal;
 }
 
+.dropdown-content .reportMenu {
+    margin-top: 18px;
+    padding-left: 7px;
+    
+}
+reported-div {
+padding-left: 49px;
+}
 </style>
 <script>
 $(document).ready(function(){
@@ -244,6 +252,7 @@ $(document).ready(function(){
 </head>
 <body>
 <script>
+
 	function loadMore(){
 	 // load more
 	  var increment=5;	
@@ -252,8 +261,7 @@ $(document).ready(function(){
 	  
 	  var $this = $('.feedContents');						
 	  var elementLength = $this.children('#feed-post-1').length;
-	  // $('.listLength').text(elementLength);
-	  // show/hide the Load More button
+
 	  if (elementLength > 5) { 
 		  $('#buttonToogle').show();
 	  }else{
@@ -261,7 +269,6 @@ $(document).ready(function(){
 	  }
 	  
 	  $('.feedContents #feed-post-1').slice(startFilter, endFilter).addClass('shown');
-	  //$('.shownLength').text(endFilter);
 	  $('.feedContents #feed-post-1').not('.shown').hide();
 	  $('body').off('click','.load-more-button');
 	  
@@ -330,8 +337,9 @@ $(document).ready(function(){
 
 	//-------번역---------
 	function trans(id, text){
-		var div = $("#tdiv"+id);
-		var lan = div.next().attr('id');
+		var div = $("#tdiv"+id);			//div ID
+		var lan = div.next().attr('id');	//content
+
 	 	$.ajax({
 			url:"${pageContext.request.contextPath}/transContent.do",
 			type:"GET",
@@ -340,7 +348,12 @@ $(document).ready(function(){
 			success:function(v){
 				var json = JSON.parse(v);
 				var transval = json.message.result.translatedText;
-				div.append($('<p/>').html(transval));
+
+				if(div.children().length){
+					return;
+				}else{
+					div.append($('<p/>').html(transval));
+				}
 			},
 			error:function(err){
 				console.log(err);
@@ -387,6 +400,28 @@ $(document).ready(function(){
 	
 	$(function(){
 	loadMore();
+	//-------피드 등록---------
+	$('#publish-button').on('click', function(){
+		var feedId = $('#feedid').val();
+		var tagval = $('#append_tag').text();
+		if(tagval == ""){
+		}else{
+			tagval= tagval.replace("#","");
+			tagval= tagval.replace(/#/g,",");
+		}
+		document.getElementById('tags').value = tagval;					
+		$('#feedInsert').submit();
+	});
+
+	//-------피드 Reset---------
+	$('.close-publish').on('click',function(){
+		$('#publish').val('');
+		$('#append_tag').text('');
+		$('#photoChk').val('');
+		$('#feed-upload').empty();
+		$('#feedid').val('');
+	}); 
+	
 	//-------태그라벨---------
 	$('.tag-label').on('click',function(){
 		var tagName = this.id;
@@ -510,33 +545,19 @@ $(document).ready(function(){
 		});
 	});
 
-	//-------피드 등록---------
-	$('#publish-button').on('click', function(){
-		var feedId = $('#feedid').val();
-		var tagval = $('#append_tag').text();
-		if(tagval == ""){
-		}else{
-			tagval= tagval.replace("#","");
-			tagval= tagval.replace(/#/g,",");
-		}
-		document.getElementById('tags').value = tagval;					
-		$('#feedInsert').submit();
-	});
 
-	//-------피드 Reset---------
-	$('.close-publish').on('click',function(){
-		$('#publish').val('');
-		$('#append_tag').text('');
-		$('#photoChk').val('');
-		$('#feed-upload').empty();
-		$('#feedid').val('');
-	}); 
 
 	//-------프로필클릭시---------
 	$('.user-info').on('click',function(){
 		var userId= this.id;
 		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
 	});
+	$('.delFeed').on('click',function(){
+		var feedId= this.id;
+		if(confirm('삭제하시겠습니까?')){
+		location.href='${pageContext.request.contextPath}/feedDelete.do?feed_id='+feedId			
+		}
+	})
 	});
 	
 	$(function(){
@@ -1766,8 +1787,10 @@ $(document).ready(function(){
 								                        	</table>
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
+	                                                        <div class="reported-div">
 									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name } 차단
 															<button id="report-btn"  data-repo2="${vo.feed_id  }" data-report2="${vo.user_id }">신고</button>
+	                                                        </div>
 	                                                    </div>
 		                                               </div>
 													</div>
@@ -1792,8 +1815,7 @@ $(document).ready(function(){
 																</div> <a href="#" class="dropdown-item">
 																	<div class="media">
 																		<i data-feather="flag"></i>
-																		<div class="media-content"
-																			onclick="location.href='feedDelete.do?feed_id=${vo.feed_id }'">
+																		<div class="media-content delFeed">
 																			<h3>삭제</h3>
 																		</div>
 																	</div>
@@ -2220,7 +2242,7 @@ $(document).ready(function(){
 										<div class="add-friend-block transition-block">
 											<img src="https://via.placeholder.com/300x300"
 												data-demo-src="assets/img/avatars/nelly.png"
-												data-user-popover="9" alt="">
+												data-user-popover="9" alt="" style="cursor: pointer;"  onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'"> 
 											<div class="page-meta">
 												<span style="font-size:0.9rem">${vo.name }</span>
 												<span style="font-size:0.75rem">일치하는 관심사 ${vo.topicCnt }개</span>
