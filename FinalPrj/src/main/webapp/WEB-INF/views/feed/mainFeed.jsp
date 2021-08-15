@@ -122,6 +122,9 @@ table {
 
 #todayCheck {
 	cursor: pointer;
+	display: block;
+	text-align: center;
+	line-height: 2;
 }
 
 .menu{ /*기본 menu 버튼 style 속성*/   
@@ -143,6 +146,8 @@ table {
 		color: #4285f4;
 		background: #e9f1fe;
 }
+
+.label-round { cursor: pointer }
 
 #correcting-table td { font-size: 0.9rem; padding: 2.5%; border-top: solid 1px #f1f1f1; }
 
@@ -211,7 +216,8 @@ $(document).ready(function(){
 									success:function(result) {
 										//alert('우표 하나 받았어요!');
 										alert('<spring:message code="feed.check.stamp.plus"/>');
-										$('#todayCheck').children().html('출석완료');
+										$('.checkMsg').children().remove();
+										$('.checkMsg').html('<spring:message code="feed.check.done"/>');
 									},
 									error:function() {
 										//alert('관리자에게 문의해주세요');								
@@ -1332,14 +1338,19 @@ $(document).ready(function(){
 							</div>
 							<div class="card-body no-padding">
 								<div class="add-friend-block" id="todayCheck">
-									<c:choose>
-									<c:when test="${loginStamp eq 0}">
-										<span><spring:message code="feed.check.click"/></span>
-									</c:when>
-									<c:otherwise>
-										<span><spring:message code="feed.check.done"/></span>
-									</c:otherwise>
-									</c:choose>
+									<div>
+										<img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" style="width: 60px; height: 60px; max-height: none;">
+									</div>
+									<div class="checkMsg">
+										<c:choose>
+											<c:when test="${loginStamp eq 0}">
+												<span><spring:message code="feed.check.click"/></span>
+											</c:when>
+											<c:otherwise>
+												<span><spring:message code="feed.check.done"/></span>
+											</c:otherwise>
+										</c:choose>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -2237,7 +2248,7 @@ $(document).ready(function(){
 								<ul class="rolling">
 									<li>
 										<div class="card is-birthday-card has-background-image"
-											data-background="resource/template/assets/img/illustrations/cards/birthday-bg.svg">
+											data-background="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/cards/birthday-bg.svg">
 											<div class="card-heading" style="border-collapse: collapse;">
 												<div
 													class="dropdown is-spaced is-right dropdown-trigger is-light">
@@ -2254,9 +2265,9 @@ $(document).ready(function(){
 														<div class="birthday-indicator">${vo.age }</div>
 													</div>
 													<div class="birthday-content">
-														<h4>${vo.following }님의${vo.age }번째생일!</h4>
-														<p>편지를 보내 생일을 축하해 주세요!</p>
-														<button type="button" class="button light-button">편지쓰러가기</button>
+														<h4>${vo.following }<spring:message code="feed.birth.msg1" arguments="${vo.age }"/></h4>
+														<p style="line-height: 2"><spring:message code="feed.birth.msg2"/></p>
+														<button type="button" class="button light-button"><spring:message code="profile.letter"/></button>
 														<p></p>
 													</div>
 												</div>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <style>
 #sh_type {
 	font-family: 'ONE-Mobile-Regular';
@@ -14,7 +15,7 @@
 			<div class="columns profile-contents">
 				<div id="profile-timeline-widgets" class="column is-8">
 					<div class="box-heading">
-						<h4>Stamp History</h4>
+						<h4><spring:message code="stamph.history"/></h4>
 					</div>
 					<br>
 					<div class="cart-content">
@@ -28,14 +29,18 @@
 										</div>
 										<div class="discount"
 											style="width: 60%; justify-content: left; padding-left: 12px">
-											<c:choose>
-												<c:when test="${vo.sh_type eq '편지작성' }">
-													<span class="has-price" id="sh_type">${vo.to_id}에게 ${vo.sh_type}</span>
-												</c:when>
-												<c:otherwise>
-													<span class="has-price" id="sh_type">${vo.sh_type}</span>
-												</c:otherwise>
-											</c:choose>
+												<c:if test="${vo.sh_type eq '편지작성' }">
+													<span class="has-price" id="sh_type"><spring:message code="stamph.letter" arguments="${vo.to_id}"/></span>
+												</c:if>
+												<c:if test="${vo.sh_type eq '출석체크' }">
+													<span class="has-price" id="sh_type"><spring:message code="stamph.login"/></span>
+												</c:if>
+												<c:if test="${vo.sh_type eq '게시글작성' }">
+													<span class="has-price" id="sh_type"><spring:message code="stamph.post"/></span>
+												</c:if>
+												<c:if test="${vo.sh_type eq '구매' }">
+													<span class="has-price" id="sh_type"><spring:message code="stamph.pay"/></span>
+												</c:if>
 										</div>
 										<div class="discount">
 											<span class="has-price" id="cnt"> <c:choose>
@@ -60,8 +65,8 @@
 						<img
 							src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg"
 							alt="">
-						<h4><b>더 많은 친구들에게 편지를 쓰고싶으신가요?</b></h4><br>
-						<a href="stampShopList.do" class="button is-solid dark-grey-button raised" style="font-size: 1rem; width:200px;">우표 구매하러 가기</a>
+						<h4><b><spring:message code="stamph.buy1"/></b></h4><br>
+						<a href="stampShopList.do" class="button is-solid dark-grey-button raised" style="font-size: 1rem; width:200px;"><spring:message code="stamph.buy2"/></a>
 					</div>
 				</div>
 			</div>

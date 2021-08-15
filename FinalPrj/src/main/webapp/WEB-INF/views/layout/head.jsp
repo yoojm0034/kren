@@ -115,7 +115,21 @@ h5:hover {
 
 .media-content > small { font-size: 0.7rem; color:#cccccc;}
 
-.navbar-item .nav-drop .inner .nav-drop-header span, .navbar-item .nav-drop .inner .nav-drop-header a {
+.floating {
+	position: fixed;
+    z-index: 99;
+    bottom: 5%;
+    right: 2%;
+    border: 1px solid #000000;
+    color: #333;
+    background: #f4f4f4;
+    border-radius: 5px;
+    padding: 9px;
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
 
 </style>
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -433,7 +447,10 @@ h5:hover {
 <div class="pageloader"></div>
 <div class="infraloader is-active"></div>
 <div class="app-overlay"></div>
-
+	<div class="floating" onclick="location.href='userQnaWrite.do'">
+		<span style="vertical-align: sub;"><img src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png" width="20px"></span>
+		<span><spring:message code="head.contact"/></span>
+	</div>
 <div id="main-navbar"
 	class="navbar navbar-v1 is-inline-flex is-transparent no-shadow is-hidden-mobile">
 	<div class="container is-fluid">
