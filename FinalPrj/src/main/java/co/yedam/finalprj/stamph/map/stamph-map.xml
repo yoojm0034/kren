@@ -13,7 +13,7 @@
 		SELECT COUNT(*) AS CNT
 		  FROM STAMPH
 		 WHERE TO_CHAR(SH_DT,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
-		   AND SH_TYPE='로그인'
+		   AND SH_TYPE='출석체크'
 		   AND USER_ID=#{user_id}
 	</select>
 	
