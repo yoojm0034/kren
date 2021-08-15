@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항작성</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 <script>
   $(function() {
@@ -40,6 +39,13 @@
 	})
   })	
 </script>
+<style>
+
+.settings-wrapper .settings-section .settings-panel .settings-form-wrapper .illustration img {
+	max-width: none;
+}
+
+</style>
 </head>
 <body>
 	<div class="view-wrapper is-full" >
@@ -55,7 +61,7 @@
 							<div class="title-wrap">
 								<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 								</a>
-								<h2>Q&A 작성</h2>
+								<h2 style="	font-family: 'ONE-Mobile-Regular'; color: #696969; font-weight: 600">문의하기</h2>
 							</div>
 
 							<div class="settings-form-wrapper">
@@ -65,12 +71,9 @@
 										<div class="column is-6">
 											<!--Field-->
 											<div class="field field-group">
-												<label>Name</label>
-												<div class="control has-icon">
+												<div class="control">
+													<label>Name</label>
 													<input type="text" class="input is-fade" id="name" name="name" placeholder="이름을 입력해주세요." required="required">
-													<div class="form-icon">
-														<i data-feather="user"></i>
-													</div>
 												</div>
 											</div>
 											
@@ -79,12 +82,9 @@
 										<div class="column is-6">
 											<!--Field-->
 											<div class="field field-group">
-												<label>Email</label>
-												<div class="control has-icon">
+												<div class="control">
+													<label>Email</label>
 													<input type="text" class="input is-fade" id="email" name="email" placeholder="회신 받을 이메일을 입력하세요." required="required">
-													<div class="form-icon">
-														<i data-feather="user"></i>
-													</div>
 												</div>
 											</div>
 										</div>
@@ -92,31 +92,29 @@
 										<div class="column is-12">
 											<!--Field-->
 											<div class="field field-group">
-												<label>Content</label>
 												<div class="control">
-													<textarea type="text" class="textarea is-fade" rows="5"
+												<label>Content</label>
+													<textarea type="text" class="textarea is-fade" rows="8"
 														placeholder="여기에 내용을 작성해 주세요" required="required" id="content" name="content"></textarea>
 												</div>
 											</div>
 										</div>
 
 										<div class="column is-12">
-											<div class="buttons">
-												<button type="button" id="btnQnaSubmit" class="button is-solid accent-button form-button">작성하기</button>
+											<div class="buttons" style="justify-content: center;">
 												<c:if test="${not empty user.user_id}">
 													<button class="button is-light form-button" onclick="history.back()">뒤로가기</button>
 												</c:if>
+												<button type="button" id="btnQnaSubmit" class="button is-solid accent-button form-button">작성하기</button>
 											</div>
 										</div>
 
 									</div>
 								</div>
 
-								<div class="illustration">
-									<img class="light-image"
-										src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/placeholders/2.svg" alt=""> <img
-										class="dark-image"
-										src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/placeholders/2.svg" alt="">
+								<div class="illustration" style="padding: 20px">
+									<img class="light-image" src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/placeholders/1.svg" width="300px"> 
+									<img class="dark-image" src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/placeholders/1.svg" width="300px">
 									<br>
 									<p>
 										※궁금한 사항이 있으시면 문의해주세요.<br>

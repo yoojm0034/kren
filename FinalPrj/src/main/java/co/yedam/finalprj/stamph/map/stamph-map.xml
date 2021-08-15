@@ -13,7 +13,7 @@
 		SELECT COUNT(*) AS CNT
 		  FROM STAMPH
 		 WHERE TO_CHAR(SH_DT,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
-		   AND SH_TYPE='로그인'
+		   AND SH_TYPE='출석체크'
 		   AND USER_ID=#{user_id}
 	</select>
 	
@@ -21,7 +21,7 @@
 		INSERT INTO STAMPH
 			(STAMPH_ID, USER_ID, SH_TYPE, SH_DT, CNT)
 		VALUES
-			('stamph_'||STAMPH_SEQ.NEXTVAL,#{user_id},'로그인',SYSDATE,1)
+			('stamph_'||STAMPH_SEQ.NEXTVAL,#{user_id},'출석체크',SYSDATE,1)
 	</insert>
 	
 	<update id="stamphLoginUserPlus" parameterType="co.yedam.finalprj.stamph.vo.StamphVO">

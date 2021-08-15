@@ -152,6 +152,15 @@ public class LetterController {
 		letterDao.deleteLetter(vo);
 	}
 	
+	@RequestMapping(value="deleteSaveLetter.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteSaveLetter(@RequestBody LetterVO vo, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setUser_id(id);
+		letterDao.deleteSaveLetter(vo);
+	}
+	
 	@RequestMapping(value="insertLetter.do", method = RequestMethod.POST)
 	@ResponseBody
 	public void insertLetter(@RequestBody LetterVO vo, Authentication auth) {

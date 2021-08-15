@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <html>
 <head>
@@ -26,6 +27,21 @@
 .landing-hero-wrapper .landing-caption .button {
 	margin: 10px 10px 10px 0px;
 }
+
+.floating {
+	position: fixed;
+    z-index: 99;
+    bottom: 5%;
+    right: 2%;
+    border: 1px solid #000000;
+    color: #333;
+    background: #f4f4f4;
+    border-radius: 5px;
+    padding: 9px;
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -42,8 +58,7 @@
 								alt="">
 						</div>
 						<div class="column is-5">
-							<h2>KREN</h2>
-							<br>
+							<h2>KREN</h2><br>
 							<div class="login-wrapper" style="max-width: 400px;">
 								<div class="form-wrapper" style="margin: 0px;">
 									<!--Form-->
@@ -103,6 +118,10 @@
 					onclick="location.href='feed.do'">피드</button>
 				<button id="tour-start" class="button is-hidden-mobile"
 					onclick="location.href='admin/admin.do'">관리자</button>
+			</div>
+			<div class="floating" onclick="location.href='userQnaWrite.do'">
+				<span style="vertical-align: sub;"><img src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png" width="20px"></span>
+				<span><spring:message code="head.contact"/></span>
 			</div>
 		</div>
 	</div>

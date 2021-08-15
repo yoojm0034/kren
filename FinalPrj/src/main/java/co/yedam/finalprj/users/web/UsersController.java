@@ -126,16 +126,18 @@ public class UsersController {
 	
 	// 프로필 업데이트 폼 호출
 	@RequestMapping("usersUpdateForm.do")
-	public String usersUpdateForm(UsersVO vo, Model model, Authentication auth) {
+	public String usersUpdateForm(UsersVO vo, Model model, Authentication auth, HttpServletRequest request) {
 		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
 		vo.setSession_id(Sessionid);
+		String locale = request.getParameter("locale");
 		
 		model.addAttribute("profile", usersDao.usersSelect(vo));
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
 		model.addAttribute("mytrip", usersDao.myTripList(vo));
 		model.addAttribute("topiclist", topicDao.topicSelectList());
+		model.addAttribute("locale", locale);
 		return "no/users/usersUpdateForm";
 	}	
 	
@@ -159,8 +161,9 @@ public class UsersController {
 	
 	// 회원가입 폼
 	@RequestMapping("userJoin/userJoinForm.do")
-	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model) {
+	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model, Locale locale) {
 	model.addAttribute("topiclist", topicDao.topicSelectList());
+	model.addAttribute("locale", locale);
 		return "empty/userJoinForm";
 	} 	
 	

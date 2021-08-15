@@ -145,6 +145,50 @@ a[href^="https://maps.google.com/maps"] {
 	font-size: 1rem !important;
 }
 
+.tt { 
+	position: relative; 
+	display: inline-block; 
+	border-bottom: 2px dotted Sienna; 
+	background-color: yellow; 
+} 
+
+
+.arrow_box {
+  display: none;
+  position: absolute;
+  top: 28%;
+  right: 6%;
+  padding: 12px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;  
+  border-radius: 8px;
+  background: #0000001a;
+  color: #2a2a2a;
+  font-size: 14px;
+}
+
+.arrow_box:after {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -10px;
+  border: solid transparent;
+  border-color: rgba(51, 51, 51, 0);
+  border-bottom-color: #0000001a;
+  border-width: 10px;
+  pointer-events: none;
+  content: " ";
+
+}
+
+#btnLetter:hover + p.arrow_box {
+  display: block;
+}
+
+
+
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -234,10 +278,11 @@ $(function(){
 $(function(){
 	$('#editProfile').on('click', function (){
 		var user_id = $('#user_id').val();
+		var locale = '${locale}';
 		$.ajax({
 			url: '${pageContext.request.contextPath}/usersUpdateForm.do',
 	    	type:'post',
-	    	data:{user_id : user_id},
+	    	data:{user_id : user_id, locale: locale},
 			success: function(result) {
 				$('.editProfile-area').empty();
 				$('.editProfile-area').html('<button class="button is-solid primary-button" id="saveBtn">Save</button>');
@@ -286,7 +331,7 @@ function follow(check) {
 	    		console.log("result : " + result);
 	    		if(result === "FollowOK") {
 	    			$(".follow-area").remove("#follow-btn");
-	    			$(".follow-area").html('<a class="button" id="unfollow-btn">Unfollow</a>');
+	    			$(".follow-area").html('<a class="button" id="unfollow-btn"><spring:message code="unfollow"/></a>');
 	    			followerCnt = followerCnt + 1
 	    			$("#followerCnt").html(followerCnt);
 	    		}
@@ -302,7 +347,7 @@ function follow(check) {
 	    		console.log("result : " + result);
 	    		if(result === "UnFollowOK") {
 	    			$(".follow-area").remove("#unfollow-btn");
-	    			$(".follow-area").html('<a class="button" id="follow-btn">Follow</a>');
+	    			$(".follow-area").html('<a class="button" id="follow-btn"><spring:message code="follow"/></a>');
 	    			followerCnt = followerCnt - 1
 	    			$("#followerCnt").html(followerCnt);
 	    		}
@@ -383,8 +428,9 @@ function writePopup() {
 									<a id="myStamp"
 										style="color: #999 !important; font-size: 0.85rem;"> <img
 										src="resources/template/assets/img/logo/stamp.png"
-										style="width: 35px; vertical-align: middle"> MY STAMP <span
-										class="menu-badge">${profile.stamp }</span>
+										style="width: 35px; vertical-align: middle">
+										<span style="margin:0 5px 0 5px"><spring:message code="profile.mystamp"/></span>
+										<span class="menu-badge">${profile.stamp }</span>
 									</a>
 								</c:if>
 							</div>
@@ -410,19 +456,19 @@ function writePopup() {
 								<c:choose>
 									<c:when test="${user.user_id eq profile.user_id }">
 										<div class="editProfile-area">
-										<a class="button is-solid primary-button" id="editProfile">✍🏻Edit Profile</a>
+										<a class="button is-solid primary-button" id="editProfile"><spring:message code="profile.edit"/></a>
 										</div>
 									</c:when>
 									<c:otherwise>
-										<a class="button is-solid primary-button" id="btnLetter" onclick="writePopup()">✍🏻 Write a
-											letter</a>
+										<a class="button is-solid primary-button" id="btnLetter" onclick="writePopup()"><spring:message code="profile.letter"/></a>
+										<p class="arrow_box">편지가 20시간 후에 전달됩니다.</p>
 										<div class="follow-area">
 											<c:choose>
 												<c:when test="${followCheck > 0}">
-													<a class="button" id="unfollow-btn">Unfollow</a>
+													<a class="button" id="unfollow-btn"><spring:message code="unfollow"/></a>
 												</c:when>
 												<c:otherwise>
-													<a class="button" id="follow-btn">Follow</a>
+													<a class="button" id="follow-btn"><spring:message code="follow"/></a>
 												</c:otherwise>
 											</c:choose>
 										</div>
@@ -440,7 +486,7 @@ function writePopup() {
 					<!-- Basic Infos widget -->
 					<!-- html/partials/pages/profile/timeline/widgets/basic-infos-widget.html -->
 					<div class="box-heading">
-						<h4>Basic Infos</h4>
+						<h4><spring:message code="profile.basicinfos"/></h4>
 					</div>
 
 					<div class="basic-infos-wrapper">
@@ -454,28 +500,31 @@ function writePopup() {
 							</div>
 							<div class="info-row">
 								<div>
-									<span>프로필 수정일</span> <span class="info"><fmt:formatDate
+									<span><spring:message code="profile.editdt"/></span>
+									<span class="info"><fmt:formatDate
 											value="${profile.edit_dt }" pattern="YYYY/MM/dd" /></span>
 								</div>
 							</div>
 							<div class="info-row">
 								<div>
-									<span>생일</span> <span class="info"><fmt:formatDate
+									<span><spring:message code="profile.birth"/></span> 
+									<span class="info"><fmt:formatDate
 											value="${profile.birth }" pattern="YYYY/MM/dd" /></span>
 								</div>
 							</div>
 							<div class="info-row">
 								<div>
-									<span>성별</span> <span class="info"> <c:if
-											test="${profile.gender eq 'M'}">남성</c:if> <c:if
-											test="${profile.gender eq 'W'}">여성</c:if> <c:if
-											test="${profile.gender eq 'O'}">기타</c:if>
+									<span><spring:message code="profile.gender"/></span> 
+									<span class="info"> 
+									<c:if test="${profile.gender eq 'M'}"><spring:message code="gender.male"/></c:if> 
+									<c:if test="${profile.gender eq 'W'}"><spring:message code="gender.female"/></c:if> 
+									<c:if test="${profile.gender eq 'O'}"><spring:message code="gender.other"/></c:if>
 									</span>
 								</div>
 							</div>
 							<div class="info-row" style="display: block">
 								<div>
-									<h4>About me</h4>
+									<h4><spring:message code="profile.aboutme"/></h4>
 									<span class="info" style="color: #6d6d6d !important">${profile.profile }</span>
 								</div>
 							</div>
@@ -483,26 +532,35 @@ function writePopup() {
 					</div>
 					<!-- 관심사 -->
 					<div class="box-heading">
-						<h4>Topics of Interest</h4>
+						<h4><spring:message code="topic"/></h4>
 					</div>
 					<div class="friend-cards-list">
 						<div class="card is-friend-card">
 							<div class="friend-item">
 								<div class="text-content">
-									${locale }=====================
 									<c:choose>
 										<c:when test="${user.user_id eq profile.user_id }">
 											<c:forEach items="${mytopic }" var="vo">
-												
-												<span class="label-round">${vo.kr }</span>
+												<c:if test="${locale eq 'kr'}">
+													<span class="label-round">${vo.kr }</span>
+												</c:if>
+												<c:if test="${locale eq 'en'}">
+													<span class="label-round">${vo.en }</span>
+												</c:if>
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
 											<c:set var="userTopic" value="${user.topic}," />
 											<c:forEach items="${mytopic }" var="vo">
 												<c:set var="topic" value="${vo.topic_id }," />
+												<c:if test="${locale eq 'kr'}">
 												<span
 													class="label-round <c:if test='${fn:contains(userTopic,topic)}'>matched</c:if>">${vo.kr }</span>
+												</c:if>
+												<c:if test="${locale eq 'en'}">
+												<span
+													class="label-round <c:if test='${fn:contains(userTopic,topic)}'>matched</c:if>">${vo.en }</span>
+												</c:if>
 											</c:forEach>
 										</c:otherwise>
 									</c:choose>
@@ -513,7 +571,7 @@ function writePopup() {
 					<!-- Trips widget -->
 					<!-- html/partials/pages/profile/timeline/widgets/trips-widget.html -->
 					<div class="box-heading">
-						<h4>Trips</h4>
+						<h4><spring:message code="profile.trips"/></h4>
 					</div>
 
 					<div class="trip-cards-list">
@@ -531,7 +589,7 @@ function writePopup() {
 				<!---------------------피드영역--------------------------->
 				<div class="column is-7">
 					<div id="profile-timeline-posts" class="box-heading">
-						<h4>Posts</h4>
+						<h4><spring:message code="profile.posts"/></h4>
 					</div>
 
 					<div class="profile-timeline">
@@ -1479,9 +1537,8 @@ function writePopup() {
 				</div>
 			</div>
 		</div>
+	<!-- Signup page js -->
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>
 </body>
 </html>
 
-
-	<!-- Signup page js -->
-	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>

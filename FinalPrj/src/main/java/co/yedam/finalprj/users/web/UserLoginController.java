@@ -140,18 +140,12 @@ public class UserLoginController {
 
 	// 아이디찾기 2페이지-아이디 노출, 로그인 페이지로 이동...
 	@RequestMapping("find/findID2.do")
-	public String findID2(Model model, HttpServletRequest request, UsersVO vo, String email) {
-		String userEmail = request.getParameter(email);
-		java.lang.String uvo = request.getParameter("user_id");
+	public String findID2(HttpSession session, Model model, HttpServletRequest request, UsersVO vo) {
+		String userEmail = java.lang.String.valueOf(session.getAttribute("email"));
+		System.out.println(userEmail);
+		vo = usersDao.findId(userEmail);
 		
-		System.out.println("vo: " + uvo);
-		
-		
-		model.addAttribute("id", vo);
-//		String id = vo.getUser_id();
-//		System.out.println("조회된 아이디: " + id);
-		
-		//String id = usersDao.findId(id);
+		model.addAttribute("id", vo);	
 		return "no/find/findId2";
 	}
 

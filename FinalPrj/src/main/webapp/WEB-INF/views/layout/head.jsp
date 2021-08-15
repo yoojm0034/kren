@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="now" class="java.util.Date" />
@@ -110,6 +111,25 @@ h5:hover {
     align-items: center;
 }
 
+#clickUpdatePush { font-size: 0.9rem; }
+
+.media-content > small { font-size: 0.7rem; color:#cccccc;}
+
+.floating {
+	position: fixed;
+    z-index: 99;
+    bottom: 5%;
+    right: 2%;
+    border: 1px solid #000000;
+    color: #333;
+    background: #f4f4f4;
+    border-radius: 5px;
+    padding: 9px;
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
 
 </style>
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -118,6 +138,7 @@ h5:hover {
 	var sock = null;
 
 	$(document).ready(function() {
+		
 		//선택된 메뉴 activie 하기 
 		var uri = window.location.pathname;
 		console.log(uri);
@@ -140,6 +161,7 @@ h5:hover {
 		if(uri.includes("admin")){
 			$("ul").children().eq(4).addClass("is-active");
 		}
+		
 		connectWs();
 		$.ajax({
 		    url: '${pageContext.request.contextPath}/pushSelectList.do',
@@ -150,7 +172,7 @@ h5:hover {
 		    	for(i=0 ; i < data.length ; i++) {
 							    		
 		    		 if(data[i].type == 'reply') {
-					        var rep = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글에 댓글을 남겼습니다.</h5>"
+					        var rep = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + " <spring:message code="push.comment"/></h5>"
 					        var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
 					        var h3 = $('<h5></h5>');
@@ -170,7 +192,7 @@ h5:hover {
 					        
 				     }
 		    		 else if(data[i].type == 'follow') {
-					     	var fol = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].to_id + "님을 팔로우합니다.</h5>"
+					     	var fol = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + " <spring:message code="push.follow"/></h5>"
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
 					        var h3 = $('<h5></h5>');
@@ -189,7 +211,7 @@ h5:hover {
 					        $('#replyA').append(div);
 					 }
 		    		 else if(data[i].type == 'like') {
-					     	var lik = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님이 " + data[i].content_id + " 번 게시글을 좋아합니다.</h5>"
+					     	var lik = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + " <spring:message code="push.like"/></h5>"
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
 					        var h3 = $('<h5></h5>');
@@ -208,7 +230,9 @@ h5:hover {
 					        $('#replyA').append(div);
 					 }
 		    		 else if(data[i].type == 'letter') {
-					     	var letter = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + "님으로부터 " + data[i].to_id + "님에게 편지가 오고 있습니다.</h5>"
+		    			 	var userid = data[i].user_id;
+					     	var letter = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'><spring:message code="push.letter" arguments="###"/></h5>"
+					     	letter = letter.replace('###',userid);
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
 					        var h3 = $('<h5></h5>');
@@ -332,7 +356,7 @@ h5:hover {
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;
 				toastr.options.progressBar = true;
-				toastr.info('편지가 오고있습니다.','알림', {timeOut: 6000});
+				toastr.info('<spring:message code="push.comming"/>','<spring:message code="push.noti"/>', {timeOut: 6000});
 	        }else{
 	        	$('#replyA').prepend(div);
 	        	$('#clearA').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
@@ -340,7 +364,7 @@ h5:hover {
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;
 				toastr.options.progressBar = true;
-				toastr.info('알림을 확인하세요.','알림', {timeOut: 6000});
+				toastr.info('<spring:message code="push.alert"/>','<spring:message code="push.noti"/>', {timeOut: 6000});
 	        }
 			
 			
@@ -389,41 +413,33 @@ h5:hover {
         const timeValue = new Date(value);
 
         const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-        if (betweenTime < 1) return '방금전';
+        if (betweenTime < 1) return '<spring:message code="time.1"/>';
         if (betweenTime < 60) {
-            return betweenTime+'분전';
+            return betweenTime+'<spring:message code="time.2"/>';
         }
 
         const betweenTimeHour = Math.floor(betweenTime / 60);
         if (betweenTimeHour < 24) {
-            return betweenTimeHour+'시간전';
+            return betweenTimeHour+'<spring:message code="time.3"/>';
         }
 
         const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
         if (betweenTimeDay < 365) {
-            return betweenTimeDay+'일전';
+            return betweenTimeDay+'<spring:message code="time.4"/>';
         }
 
-        return '방금전';
+        return '<spring:message code="time.1"/>';
  	}
-	
-/* $(function(){
-
-	
- var sBtn = $("ul > li");    //  ul > li 이를 sBtn으로 칭한다. (클릭이벤트는 li에 적용 된다.)
- sBtn.find("a").click(function(){   // sBtn에 속해 있는  a 찾아 클릭 하면.
-//  sBtn.removeClass("is-active");     // sBtn 속에 (active) 클래스를 삭제 한다.
-  $(this).parent().toggleClass("is-active"); // 클릭한 a에 (active)클래스를 넣는다.
- })
-}) */
-	
-	
+		
 </script>
 <!-- Pageloader -->
 <div class="pageloader"></div>
 <div class="infraloader is-active"></div>
 <div class="app-overlay"></div>
-
+	<div class="floating" onclick="location.href='userQnaWrite.do'">
+		<span style="vertical-align: sub;"><img src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png" width="20px"></span>
+		<span><spring:message code="head.contact"/></span>
+	</div>
 <div id="main-navbar"
 	class="navbar navbar-v1 is-inline-flex is-transparent no-shadow is-hidden-mobile">
 	<div class="container is-fluid">
@@ -445,10 +461,10 @@ h5:hover {
 			<!-- 네비바 왼쪽 -->
 			<div class="navbar-start">
 				<ul>
-					<li><a href="${pageContext.request.contextPath}/feed.do">피드</a></li>
-					<li><a href="${pageContext.request.contextPath}/friendSearch.do">친구찾기</a></li>
-					<li><a href="${pageContext.request.contextPath}/letterBox.do">편지</a></li>
-					<li><a href="${pageContext.request.contextPath}/aboutus.do">ABOUT US</a></li>
+					<li><a href="${pageContext.request.contextPath}/feed.do"><spring:message code="head.feed"/></a></li>
+					<li><a href="${pageContext.request.contextPath}/friendSearch.do"><spring:message code="head.friends"/></a></li>
+					<li><a href="${pageContext.request.contextPath}/letterBox.do"><spring:message code="head.letter"/></a></li>
+					<li><a href="${pageContext.request.contextPath}/aboutus.do"><spring:message code="head.notice"/></a></li>
 					<c:if test="${user.user_id eq 'admin' }">
 						<li><a href="${pageContext.request.contextPath}/admin/admin.do">관리자</a></li>
 					</c:if>
@@ -471,6 +487,25 @@ h5:hover {
 				</form>
 				<div class="navbar-start">
 					<!-- Navbar Search -->
+					<!-- 언어선택 -->
+					<div class="navbar-item is-icon drop-trigger">
+						<a class="icon-link" href="javascript:void(0);">
+						 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+						</a>
+						<div class="nav-drop is-account-dropdown" style="width:150px">
+							<div class="inner" >
+								<div class="nav-drop-header">
+									<span><spring:message code="push.lang"/></span>
+								</div>
+								<div class="nav-drop-body is-notifications" style="line-height: 2;">	
+									<a href="?lang=kr" style="color:#727272">KOREAN</a>
+									<a href="?lang=en" style="color:#727272">ENGLISH</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+					
 					<!-- 알람아이콘 -->
 					<div class="navbar-item is-icon drop-trigger">
 						<a class="icon-link" href="javascript:void(0);">
@@ -481,14 +516,14 @@ h5:hover {
 						<div class="nav-drop is-account-dropdown">
 							<div class="inner" >
 								<div class="nav-drop-header">
-									<span>Notifications</span> <a href="#"> <i
+									<span><spring:message code="push.noti"/></span> <a href="#"> <i
 										data-feather="bell"></i>
 									</a>
 								</div>
 								<div class="nav-drop-body is-notifications" id="replyA" style="overflow:scroll;height:200px;">
 								</div>
 								<div class="nav-drop-footer">
-									<small id="clearA">Clear All</small>
+									<small id="clearA"><spring:message code="push.clear"/></small>
 								</div>
 							</div>
 						</div>
@@ -502,12 +537,12 @@ h5:hover {
 						<div class="nav-drop is-account-dropdown">
 							<div class="inner">
 								<div class="nav-drop-header">
-									<span>Messages</span> <a href="${pageContext.request.contextPath}/letterBox.do">Inbox</a>
+									<span><spring:message code="push.letters"/></span> <a href="${pageContext.request.contextPath}/letterBox.do">Inbox</a>
 								</div>
 								<div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
 								</div>
 								<div class="nav-drop-footer">
-									<small id="clearB">Clear All</small>
+									<small id="clearB"><spring:message code="push.clear"/></small>
 								</div>
 							</div>
 						</div>
@@ -526,7 +561,7 @@ h5:hover {
 						<div class="inner">
 							<div class="nav-drop-header">
 								<a id="profile-link" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}">
-								<span class="username" style="font-size:1rem; color:#393a4f;">마이페이지</span></a>
+								<span class="username" style="font-size:1rem; color:#393a4f;"><spring:message code="head.mypage"/></span></a>
 								<label class="theme-toggle"> <input type="checkbox"> 
 								<span class="toggler"> 
 									<span class="dark"><i data-feather="moon"></i></span> 
@@ -541,7 +576,7 @@ h5:hover {
 											<i data-feather="power"></i>
 										</div>
 										<div class="media-content" style="margin-left: 15px;">
-											<h3>Logout</h3>
+											<h3><spring:message code="head.logout"/></h3>
 										</div>
 								</a>
 									</div>

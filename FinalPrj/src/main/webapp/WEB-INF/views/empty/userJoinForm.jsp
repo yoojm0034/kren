@@ -632,10 +632,18 @@ $('#step5').click(function() {
 								</div>
 								<div class="topic-list">
 									<c:forEach items="${topiclist }" var="vo">
-										<input class="text-nicelabel" name="topics"
-											data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
-											type="checkbox" value="${vo.topic_id }"
-											onclick="check(this,check_q1(this),30);">
+										<c:if test="${locale eq 'kr'}">
+											<input class="text-nicelabel" name="topics"
+												data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
+												type="checkbox" value="${vo.topic_id }"
+												onclick="check(this,check_q1(this),30);">
+										</c:if>
+										<c:if test="${locale eq 'en'}">
+											<input class="text-nicelabel" name="topics"
+												data-nicelabel='{"checked_text": "${vo.en }", "unchecked_text": "${vo.en }"}'
+												type="checkbox" value="${vo.topic_id }"
+												onclick="check(this,check_q1(this),30);">
+										</c:if>
 									</c:forEach>
 									<script>
 										$('input').nicelabel({});
