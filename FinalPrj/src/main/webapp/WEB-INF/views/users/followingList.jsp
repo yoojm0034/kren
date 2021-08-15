@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 <style>
 @font-face {
@@ -346,12 +347,12 @@ a[href^="https://maps.google.com/maps"] {
 												<div class="${friend.user_id }-follow-area">
 				                                	<c:choose>
 					                                	<c:when test="${friend.followCheck > 0}">
-						                               		<button class="button" id="friend-unfollow-btn" value="${friend.user_id }">Unfollow</button>
+						                               		<button class="button" id="friend-unfollow-btn" value="${friend.user_id }"><spring:message code="unfollow"/></button>
 					                               		</c:when>
 					                                	<c:when test="${friend.user_id eq user.user_id}">
 					                               		</c:when>
 				                                		<c:otherwise>
-						                               		<button class="button" id="friend-follow-btn" value="${friend.user_id }">Follow</button>
+						                               		<button class="button" id="friend-follow-btn" value="${friend.user_id }"><spring:message code="follow"/></button>
 				                                		</c:otherwise>
 				                                	</c:choose>
 			                                	</div>

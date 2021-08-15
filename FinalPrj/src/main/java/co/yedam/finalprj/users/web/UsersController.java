@@ -161,8 +161,9 @@ public class UsersController {
 	
 	// 회원가입 폼
 	@RequestMapping("userJoin/userJoinForm.do")
-	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model) {
+	public String userJoinForm(@ModelAttribute("UsersVO") UsersVO vo, Model model, Locale locale) {
 	model.addAttribute("topiclist", topicDao.topicSelectList());
+	model.addAttribute("locale", locale);
 		return "empty/userJoinForm";
 	} 	
 	

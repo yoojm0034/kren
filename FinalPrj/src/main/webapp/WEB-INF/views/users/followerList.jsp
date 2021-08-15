@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 <style>
 @font-face {
@@ -277,7 +278,7 @@ a[href^="https://maps.google.com/maps"] {
 						console.log(friend);
 						// 팔로우버튼 지우고 언팔로우 버튼 달기
 						$('.' + friend + '-follow-area').empty();
-						$('.' + friend + '-follow-area').html('<button class="button" id="friend-unfollow-btn" value="' + friend + '">Unfollow</button>');
+						$('.' + friend + '-follow-area').html('<button class="button" id="friend-unfollow-btn" value="' + friend + '"><spring:message code="unfollow"/></button>');
 					}
 				}
 			}); // end of follow ajax
@@ -295,7 +296,7 @@ a[href^="https://maps.google.com/maps"] {
 						console.log(friend);
 						// 언팔로우 버튼 지우고 팔로우버튼 달기
 						$('.' + friend + '-follow-area').empty();
-						$('.' + friend + '-follow-area').html('<button class="button" id="friend-follow-btn" value="' + friend + '">follow</button>');
+						$('.' + friend + '-follow-area').html('<button class="button" id="friend-follow-btn" value="' + friend + '"><spring:message code="follow"/></button>');
 					}
 				}
 			}); // end of unfollow ajax
@@ -344,12 +345,12 @@ a[href^="https://maps.google.com/maps"] {
 												<div class="${friend.user_id }-follow-area">
 				                                	<c:choose>
 					                                	<c:when test="${friend.followCheck > 0}">
-						                               		<button class="button" id="friend-unfollow-btn" value="${friend.user_id }">Unfollow</button>
+						                               		<button class="button" id="friend-unfollow-btn" value="${friend.user_id }"><spring:message code="unfollow"/></button>
 					                               		</c:when>
 					                                	<c:when test="${friend.user_id eq user.user_id}">
 					                               		</c:when>
 				                                		<c:otherwise>
-						                               		<button class="button" id="friend-follow-btn" value="${friend.user_id }">Follow</button>
+						                               		<button class="button" id="friend-follow-btn" value="${friend.user_id }"><spring:message code="follow"/></button>
 				                                		</c:otherwise>
 				                                	</c:choose>
 			                                	</div>
