@@ -87,19 +87,15 @@ tr:hover {
 							src="${pageContext.request.contextPath}/resources/upload/photo1.jpg"
 							data-user-popover="0" alt="">
 						<div class="badge">
-							<i data-feather="check"></i>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
 						</div>
 					</div>
 					<h4>ADMIN</h4>
 					<p>Daegu, KR</p>
 					<div class="user-stats">
                          <div class="stat-block">
-                             <span>Followers</span>
-                             <span>2.3K</span>
-                         </div>
-                         <div class="stat-block">
-                             <span>Following</span>
-                             <span>2.3K</span>
+                             <span>KREN</span>
+                             <span>관리자 페이지</span>
                          </div>
                    </div>
 				</div>
