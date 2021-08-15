@@ -351,7 +351,9 @@ $(document).ready(function() {
 	
 	 $('#country-op').on('change',function(){
 		 var value = this.value;
+		 var hg = this.innerHTML;
 		 var id = this.id
+
 		 if (countryCnt == 5) return;
 		 $('#append-op').append("<span class='append-label' id='"+value+"' onclick="+"'deleteCountry(\""+ value + "\")'>"+value+"</span>");
 		 countryCnt++;
