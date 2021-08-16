@@ -33,26 +33,40 @@
     margin-bottom: 10px;
     margin-left: 0.5rem;
 }
-</style>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
-<script
-	src="${pageContext.request.contextPath}/resources/template/assets/js/global.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/template/assets/js/app.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/template/assets/js/webcam.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/template/assets/js/compose.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/template/assets/js/autocompletes.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
+.media-content > div > pre {
+    background-color: transparent !important;
+    color: unset;
+    font-size: .875em;
+    overflow-x: auto;
+    padding: 0 !important;
+    white-space: pre-wrap;
+    word-wrap: normal;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/global.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/app.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/webcam.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/compose.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/autocompletes.js"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
+
+<script src="${pageContext.request.contextPath}/resources/template/assets/css/app.css"></script>
+<script src="${pageContext.request.contextPath}/resources/template/assets/css/core.css"></script>
 <script>
-//--------교정START--------------------------------------
+// 문자열 비교; diffButty.js; String
+function test_diff(cid,dif,ori) {
+	var original = ori;
+	var revised = dif;
+	var output = $('<pre>');
+	var html = diffButty(original, revised);
+	output.html(html);
+	var div = $('div[data-cid="'+cid+'"]');
+	div.html(output);
+} 
+
 $(function() {
 	$("div[id^='load_'").each(function(i, el){
 		var cid = $(this).data('cid');//cc_id.line
@@ -60,23 +74,7 @@ $(function() {
 		var cdo = $(this).data('cdo');//origin
 		test_diff(cid,cdc,cdo);
 	});
-	
-	// 문자열 비교; diffButty.js; String
-	function test_diff(cid,dif,ori) {
-		var original = ori;
-		var revised = dif;
-		var output = $('<pre>');
-		var html = diffButty(original, revised);
-		output.html(html);
-		var div = $('div[data-cid="'+cid+'"]');
-		div.html(output);
-	} 
-	
-	//클릭이벤트
-	initPostComments();
-}
-	
-//--------교정END----------------------------------------
+});
 </script>
 <div class="feedContents">
 <c:choose>
@@ -250,7 +248,7 @@ $(function() {
 								</a>
 							</div>
 							<div class="fab-wrapper is-comment">
-								<a href="javascript:void(0);" class="small-fab"> <svg
+								<a id="fab" class="small-fab"> <svg
 										viewBox="0 0 24 24" width="24" height="24"
 										stroke="currentColor" stroke-width="2" fill="none"
 										stroke-linecap="round" stroke-linejoin="round"
@@ -277,7 +275,7 @@ $(function() {
 								</a>
 							</div>
 							<div class="fab-wrapper is-comment">
-								<a href="javascript:void(0);" class="small-fab"> <svg
+								<a id="fab" class="small-fab"> <svg
 										viewBox="0 0 24 24" width="24" height="24"
 										stroke="currentColor" stroke-width="2" fill="none"
 										stroke-linecap="round" stroke-linejoin="round"
@@ -499,7 +497,7 @@ $(function() {
 						<!-- 교정댓글이면, line을 반복 -->
 						<c:forEach items="${cdList }" var="cd" varStatus="stat">
 							<c:if test="${cmt.comment_id eq cd.cc_id }">
-							<div id="load" data-cid="${cd.cc_id }${cd.line}"
+							<div id="load_${cd.cc_id }${cd.line}" data-cid="${cd.cc_id }${cd.line}"
 							data-cdc="${cd.content }"
 							data-cdo="${cd.origin }">${cd.content }</div>
 							</c:if>
@@ -626,7 +624,6 @@ $(function() {
 </c:choose>
 </div>
 <script type="text/javascript">
-
 	function datePosdst() {
 		$('.postTime').each(function(i, el) {
 			var dete = $(this).text();
@@ -643,4 +640,5 @@ $(function() {
 	}
 	dateCmt();
 
+	
 </script>
