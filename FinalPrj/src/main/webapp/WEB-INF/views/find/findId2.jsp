@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,19 +50,18 @@
                 <div class="columns is-vcentered">
                     <div class="column">
 
-                        <h2 class="form-title has-text-centered">Find ID</h2>
-                        <h3 class="form-subtitle has-text-centered">Find your ID!</h3>
+                        <h2 class="form-title has-text-centered"><spring:message code="id.title" /></h2>
+                        <h3 class="form-subtitle has-text-centered"><spring:message code="id.title3" /></h3>
 
                         <!--Form-->
-                        <div class="login-form">
+                        <div id="signup-panel-1"
+						class="process-panel-wrap is-narrow is-active">
                             <div class="form-panel">
-                                <div class="field">
-                                    <h2>ID : ${id.user_id}</h2>
-                                </div>
+                            	<h2 style="text-align:center"><b>ID : ${id.user_id}</b></h2>
                             </div>
 						<br>
                             <div class="buttons">
-                                <a class="button is-solid primary-button is-fullwidth raised" type="button" id="loginGo">Login</a>
+                                <a class="button is-solid primary-button is-fullwidth raised" type="button" id="loginGo"><spring:message code="go.login.button" /></a>
                             </div>
                         </div>
                     </div>

@@ -152,7 +152,7 @@
 				</div>
 			</div>
 
-			<div class="stories-container" >
+			<div class="stories-container">
 				<form action="${pageContext.request.contextPath}/admin/returnMail.do?qna_id=${qna.qna_id}" enctype="multipart/form-data" method="post" id="frm">
 					<div>
 						<label for="title">제목</label> 

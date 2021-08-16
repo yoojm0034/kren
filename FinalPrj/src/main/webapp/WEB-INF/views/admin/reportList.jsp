@@ -9,17 +9,28 @@
 <title>Insert title here</title>
 
 <style>
+.inner-wrapper {
+	width: 60%;
+	margin: auto;
+}
+
+.title {
+	font-size:1.5rem;
+	font-weight: 600;
+	padding-top: 40px;
+}
 .pagination {
 	display: flex;
 	padding-left: 0;
 	list-style: none;
 	border-radius: .35rem;
+	padding-top: 3%;
 }
 
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	margin: 2px 0;
 	white-space: nowrap;
-	justify-content: flex-end;
+	justify-content: center;
 }
 
 .page-link {
@@ -28,7 +39,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	padding: .5rem .75rem;
 	margin-left: -1px;
 	line-height: 1.25;
-	color: #4e73df;
+	color: #a2a2a5;
 	background-color: #fff;
 	border: 1px solid #dddfeb;
 }
@@ -47,6 +58,7 @@ tr:hover {
 	cursor: pointer;
 	background-color: silver;
 }
+.table th:not([align]){ text-align: center}
 </style>
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
@@ -145,7 +157,7 @@ tr:hover {
 						});
 						$("#table").DataTable({
 			        		// 표시 건수기능 숨기기
-			        		lengthChange: true,
+			        		lengthChange: false,
 			        		lengthMenu: [ 10, 20, 30, 40, 50 ],
 			        		// 검색 기능 숨기기
 			        		searching: true,
@@ -161,8 +173,8 @@ tr:hover {
 			        		        "lengthMenu": "페이지당 _MENU_ 개씩 보기",
 			        		        "loadingRecords": "로딩중...",
 			        		        "paginate": {
-			        		            "next": ">",
-			        		            "previous": "<"
+			        		            "next": "next",
+			        		            "previous": "previous"
 			        		        }
 			        		 }
 			        	});
@@ -305,7 +317,7 @@ tr:hover {
 		</div>
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 80%">
+		<div class="inner-wrapper" style="width: 85%">
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
 			</a>
@@ -326,12 +338,12 @@ tr:hover {
 								<!-- Begin Page Content -->
 								<div class="container-fluid">
 									<!-- DataTales Example -->
-									<div class="card shadow mb-4">
+									<div class="card shadow mb-4" style="box-shadow: 0 0 10px 4px #b2b2b2;">
 										<div class="card-body">
 											<div class="table-responsive">
-												<table class="table table-bordered" id="table"
+												<table class="table" id="table"
 													style="width: 100%; cellspacing: 0;">
-													<thead>
+													<thead style="background-color: #e2e1e1">
 														<tr>
 															<th>글번호</th>
 															<th width="50%">신고사유</th>
@@ -340,16 +352,16 @@ tr:hover {
 															<th>신고컨텐츠</th>
 														</tr>
 													</thead>
-													<tbody>
+													<tbody >
 														<c:forEach items="${reportList}" var="vo">
 															<tr>
-																<td>${vo.report_id}</td>
+																<td align="center">${vo.report_id}</td>
 																<td>${vo.msg }</td>
-																<td>${vo.reg_date }</td>
-																<td>${vo.reported }</td>
+																<td align="center">${vo.reg_date }</td>
+																<td align="center">${vo.reported }</td>
 																<c:set var="content" value="${vo.content}" />
 																<%-- <c:if test="${fn:contains(content,'feed')}"> data-modal="share-modal"  class="button modal-trigger" --%>
-																<td>
+																<td align="center">
 																	<a data-content="${vo.content }" id="clickContent" onclick="clickContent('${vo.content }')">${vo.content }</a>
 																</td>
 															</tr>
@@ -371,7 +383,7 @@ tr:hover {
 
 		</div>
 
-		<div class="inner-wrapper" style="width: 80%">
+		<div class="inner-wrapper" style="width: 85%">
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
 			</a>
@@ -386,7 +398,7 @@ tr:hover {
 			<div class="stories-container">
 				<div class="container-inner">
 					<div align="center">
-						<div id="recruitGrid"></div>
+						<div id="recruitGrid" ></div>
 					</div>
 				</div>
 			</div>

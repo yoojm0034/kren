@@ -221,8 +221,8 @@
 						</table>
 					</div>
 					<div>
-						<button type="submit" class="button grey-button">수정</button>
 						<button type="button" id="btnNoticeList" class="button grey-button">목록</button>
+						<button type="submit" class="button grey-button">수정</button>
 						<button type="button" id="btnNoticeDelete" data-id="${notice.notice_id}" class="button grey-button">삭제</button>
 					</div>
 				</form>

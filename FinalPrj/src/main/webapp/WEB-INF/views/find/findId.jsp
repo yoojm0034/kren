@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +34,7 @@
 		//이메일 입력을 하지 않고 버튼을 누를 경우...
 		if(mail == ""){
 			
-			alert('이메일을 입력하세요.');
+			alert('<spring:message code="mail.check.alert1" />');
 			$('#email').focus();
 			return;
 		}
@@ -45,14 +46,14 @@
 				success: function(res){ //res= 컨트롤러에서 넘어오는 값
 					if(res == 1){
 						//회원정보와 동일한 이메일이 존재할 경우...
-						alert('인증번호가 이메일로 발송되었습니다.');
+						alert('<spring:message code="mail.check.alert.v" />');
 					}else{
 						//동일 이메일이 없을 경우...
-						alert('입력한 이메일 주소로 회원이 조회되지 않습니다. 회원가입을 진행해주세요.');
+						alert('<spring:message code="mail.check.alert2" />');
 					}
 				},
 				error: function(error){
-					alert('관리자에게 문의 요망');
+					alert('<spring:message code="check.alert" />');
 				}
 			});
 		});
@@ -65,7 +66,7 @@
 			  
 			//인증번호 입력을 하지 않고 버튼을 누를 경우...
 			if(injeung == ""){
-				alert('인증번호를 입력하세요.');
+				alert('<spring:message code="v.check.alert1" />');
 				$('#email_injeung').focus();
 				return;
 			}
@@ -80,11 +81,11 @@
 						location.href = 'findID2.do';
 					}else{
 						//동일하지 않을 경우...
-						alert('인증번호가 일치하지 않습니다. 정확하게 입력해주세요.')
+						alert('<spring:message code="v.check.alert2" />')
 					} 
 				},
 				error: function(error){
-					alert('관리자에게 문의 요망');
+					alert('<spring:message code="check.alert" />');
 				}
 			});
 		});
@@ -108,37 +109,35 @@
 				<div class="columns is-vcentered">
 					<div class="column">
 
-						<h2 class="form-title has-text-centered">Find ID</h2>
-						<h3 class="form-subtitle has-text-centered">Check your Email.</h3>
+						<h2 class="form-title has-text-centered"><spring:message code="id.title" /></h2>
+						<h3 class="form-subtitle has-text-centered"><spring:message code="id.title2" /></h3>
 
 						<!--Form-->
-						<div class="login-form">
+						<div id="signup-panel-1"
+						class="process-panel-wrap is-narrow is-active">
 							<div class="form-panel">
 								<form action="findID.do" method="post">
 									<div class="field">
-										<label>Email</label>
+										<label><spring:message code="mail.title" /></label>
 										<div class="control">
 											<input type="text" class="input" id="email" name="email"
-												placeholder="Enter your email address">
-											<button type="button" id="findIdBtn" class="button is-solid accent-button raised">Check</button>
+												placeholder="<spring:message code="enter.mail" />">
 										</div>
+										<button type="button" id="findIdBtn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 									</div>
 								</form>
+								<br>
 								<form action="mailCheck2.do" method="post">
 									<div class="field">
-										<label>Verification Code</label>
+										<label><spring:message code="verification.title" /></label>
 										<div class="control">
 											<input type="text" class="input" id="email_injeung"
-												name="email_injeung" placeholder="Enter verification code">
+												name="email_injeung" placeholder="<spring:message code="enter.verification" />">
 										</div>
 									</div>
-									<br>
 									<div class="buttons">
 										<a class="button is-solid primary-button is-fullwidth raised"
-											type="button" id="injeungBtn">Verification</a>
-										<!-- 
-                                <a class="button is-solid primary-button is-fullwidth raised" onclick="location.href='findID2.do'">button</a>
-                                 -->
+											type="button" id="injeungBtn"><spring:message code="verification.button" /></a>
 									</div>
 								</form>
 							</div>

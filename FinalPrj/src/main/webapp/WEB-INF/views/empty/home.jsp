@@ -24,25 +24,124 @@
 	href="${pageContext.request.contextPath}/resources/template/assets/css/core.css">
 <meta charset="UTF-8">
 <style>
+@font-face {
+    font-family: 'ONE-Mobile-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+p {
+	font-family: 'ONE-Mobile-Regular' !important;
+    font-size: 1.5rem;
+    letter-spacing: -0.08rem;
+    font-weight: bold;
+}
+
 .landing-hero-wrapper .landing-caption .button {
 	margin: 10px 10px 10px 0px;
 }
 
 .floating {
 	position: fixed;
-    z-index: 99;
-    bottom: 5%;
-    right: 2%;
-    border: 1px solid #000000;
-    color: #333;
-    background: #f4f4f4;
-    border-radius: 5px;
-    padding: 9px;
-    font-size: 0.85rem;
-    line-height: 1;
-    cursor: pointer;
+	z-index: 99;
+	bottom: 5%;
+	right: 2%;
+	border: 1px solid #000000;
+	color: #333;
+	background: #f4f4f4;
+	border-radius: 5px;
+	padding: 9px;
+	font-size: 0.85rem;
+	line-height: 1;
+	cursor: pointer;
+	bottom: 5%;
+	right: 2%;
+	border: 1px solid #000000;
+	color: #333;
+	background: #f4f4f4;
+	border-radius: 5px;
+	padding: 9px;
+	font-size: 0.85rem;
+	line-height: 1;
+	right: 2%;
+	border: 1px solid #000000;
+	color: #333;
+	background: #f4f4f4;
+	border-radius: 5px;
+	padding: 9px;
+	font-size: 0.85rem;
+	line-height: 1;
+	border: 1px solid #000000;
+	color: #333;
+	background: #f4f4f4;
+	border-radius: 5px;
+	padding: 9px;
+	font-size: 0.85rem;
+	line-height: 1;
+}
+
+/* The Modal (background) */
+.searchModal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 10; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+/* Modal Content/Box */
+.search-modal-content {
+	background-color: #fefefe;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	padding-top: 100px;
+	width: 15%; /* Could be more or less, depending on screen size */
+	height: 35%;
+}
+
+.lang {
+	cursor: pointer;
+	line-height: 20px;
+	vertical-align: top;
 }
 </style>
+<script>
+$(document).ready(function() {
+	var uri = window.location.search; 
+	
+	//파라미터 없으면 모달창 띄우기
+	if(!uri.includes("lang")){
+		$("#modal").show();
+	}
+	
+	//모달창 닫기
+	function closeModal() {
+		$('.searchModal').hide();
+	};
+	
+	// 언어 선택
+	$(".lang").click(function (){
+		var param = $(this).attr('id');
+		if(param == 'kr') {
+			location.href="?lang=kr"
+		} else {
+			location.href="?lang=en"
+		}
+		$('.searchModal').hide(); 
+	});
+});
+</script>
 </head>
 <body>
 	<div class="landing-wrapper">
@@ -58,7 +157,8 @@
 								alt="">
 						</div>
 						<div class="column is-5">
-							<h2>KREN</h2><br>
+							<h2>KREN</h2>
+							<br>
 							<div class="login-wrapper" style="max-width: 400px;">
 								<div class="form-wrapper" style="margin: 0px;">
 									<!--Form-->
@@ -66,7 +166,8 @@
 										<div class="login-form">
 											<div class="field">
 												<div class="control">
-													<input class="input email-input" type="text" id="user_id" name="user_id" placeholder="ID">
+													<input class="input email-input" type="text" id="user_id"
+														name="user_id" placeholder="ID">
 													<div class="input-icon">
 														<i data-feather="user"></i>
 													</div>
@@ -74,14 +175,16 @@
 											</div>
 											<div class="field">
 												<div class="control">
-													<input class="input password-input" type="password"  id="password" name="password" placeholder="PASSWORD">
+													<input class="input password-input" type="password"
+														id="password" name="password" placeholder="PASSWORD">
 													<div class="input-icon">
 														<i data-feather="lock"></i>
 													</div>
 												</div>
 											</div>
 											<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
-												<p style="color: red">아이디 또는 비밀번호가 일치하지 않습니다.
+												<p style="color: red">
+													아이디 또는 비밀번호가 일치하지 않습니다.
 													<c:remove var="SPRING_SECURITY_LAST_EXCEPTION"
 														scope="session" />
 											</c:if>
@@ -96,11 +199,15 @@
 													<button
 														class="button is-solid primary-button raised is-rounded"
 														style="border-color: #fff; background: #ffffff00; color: #fff"
-														type="button" onclick="location.href='${pageContext.request.contextPath}/userJoin/userJoinForm.do'">Sign Up</button>
+														type="button"
+														onclick="location.href='${pageContext.request.contextPath}/userJoin/userJoinForm.do'">Sign
+														Up</button>
 													<button
 														class="button is-solid primary-button raised is-rounded"
 														style="border-color: #fff; background: #ffffff00; color: #fff"
-														type="button" onclick="location.href='${pageContext.request.contextPath}/find/find.do'">forgot ID/password?</button>
+														type="button"
+														onclick="location.href='${pageContext.request.contextPath}/find/find.do'">forgot
+														ID/password?</button>
 												</div>
 											</div>
 										</div>
@@ -120,13 +227,27 @@
 					onclick="location.href='admin/admin.do'">관리자</button>
 			</div>
 			<div class="floating" onclick="location.href='userQnaWrite.do'">
-				<span style="vertical-align: sub;"><img src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png" width="20px"></span>
-				<span><spring:message code="head.contact"/></span>
+				<span style="vertical-align: sub;"><img
+					src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png"
+					width="20px"></span> <span><spring:message
+						code="head.contact" /></span>
 			</div>
 		</div>
 	</div>
-	
-	
+
+	<!-- 모달창 영역 -->
+	<div id="modal" class="searchModal">
+		<div class="search-modal-content" align="center">
+			<div>
+				<p>언어를 선택하세요</p>
+				<p>Select Language</p>
+			</div><br>
+			<div style="height: 20px;">
+			<img src="https://cdn.ipregistry.co/flags/emojitwo/kr.svg" width="20px"><span class="lang" id="kr">KOREAN</span>&nbsp;&nbsp;
+			<img src="https://cdn.ipregistry.co/flags/emojitwo/gb.svg" width="20px"><span class="lang" id="en">ENGLISH</span>
+			</div>
+		</div>
+	</div>
 	<!-- Concatenated js plugins and jQuery -->
 	<script
 		src="${pageContext.request.contextPath}/resources/template/assets/js/app.js"></script>

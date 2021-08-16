@@ -176,12 +176,18 @@ $(function(){
 	});
 });	
 
-</script>
 
+</script>
+<style>
+.stories-container {
+	width:70%;
+	margin: auto;
+}
+</style>
 </head>
 <body>
 	<div class="stories-wrapper is-home">
-		
+			
 		<!-- 사이드바시작 -->
 		<div class="stories-sidebar is-active">
 			<div class="stories-sidebar-inner">
@@ -302,7 +308,14 @@ $(function(){
 		<!-- 사이드바 종료 -->
 
 		<!-- 컨텐츠 시작 -->
-		<div class="stories-container">
+		<div class="inner-wrapper" style="width:100%">
+		<div class="stories-content">
+	            <div class="section-title main-section-title">
+	                <h2>통계 관리</h2>
+	            </div>
+	    </div> 
+	    </div>
+		<div class="stories-container" style="box-shadow: 0 0 10px 4px #b2b2b2;">
 			<div class="settings-wrapper">
 				<div id="general-settings" class="settings-section is-active">
 					<div class="settings-panel">
@@ -352,7 +365,8 @@ $(function(){
 				</div>
 			</div>
 		</div>
-		<div class="stories-container">
+		<br>
+		<div class="stories-container" style="box-shadow: 0 0 10px 4px #b2b2b2;"> 
 			<div class="settings-wrapper">
 				<div id="general-settings" class="settings-section is-active">
 					<div class="settings-panel">

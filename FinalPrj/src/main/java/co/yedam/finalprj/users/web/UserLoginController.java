@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
@@ -84,7 +83,7 @@ public class UserLoginController {
 			String title = "[kren]아이디 찾기-이메일 인증번호 발송"; // 이메일 제목
 			String content =
 
-					System.getProperty("line.separator") + // 줄간격을 띄우기 위한 코드
+							System.getProperty("line.separator") + // 줄간격을 띄우기 위한 코드
 
 							System.getProperty("line.separator") +
 
@@ -193,20 +192,26 @@ public class UserLoginController {
 
 			String setfrom = "5524yina@gamil.com"; // 보내는 사람 이메일(삭제하면 기능하지않음)
 			String tomail = vo.getEmail(); // 받는 사람 이메일
-			String title = "[kren]아이디 찾기-이메일 인증번호 발송"; // 이메일 제목
+			String title = "[kren]비밀번호 찾기-임시 비밀번호 발송"; // 이메일 제목
 			String content =
 
 							System.getProperty("line.separator") + // 줄간격을 띄우기 위한 코드
 
 							System.getProperty("line.separator") +
 
-							" 임시비밀번호: " + imsiPw + ". "
+							" 임시 비밀번호: " + imsiPw + ". "
+							
+							+ System.getProperty("line.separator") +
+
+							System.getProperty("line.separator") +
+							
+							"홈페이지로 돌아가 임시 비밀번호로 로그인하세요."
 
 							+ System.getProperty("line.separator") +
 
 							System.getProperty("line.separator") +
 
-							"일회성 비밀번호이기 때문에 로그인 후 비밀번호를 꼭 변경해주세요."; // 내용
+							"일회성 비밀번호이기 때문에 개인정보 보안을 위해 로그인 후 비밀번호를 꼭 변경해주세요."; // 내용
 			
 			System.out.println("발송된 임시비밀번호: " + imsiPw);
 			
