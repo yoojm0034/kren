@@ -79,6 +79,7 @@
 		SELECT COUNT(*) FROM STAMPH
 		 WHERE USER_ID = #{user_id}
 		   AND TO_CHAR(SH_DT,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+		   AND SH_TYPE = '편지작성'
 	</select>
 	
 	<!-- 편지 작성 -->

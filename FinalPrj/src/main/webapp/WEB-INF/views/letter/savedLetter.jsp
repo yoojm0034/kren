@@ -181,6 +181,26 @@ $(function() {
 					    	});//$ajax	   
 								} else {
 									alert('<spring:message code="letter.send.five"/>');
+									if(confirm('<spring:message code="letter.confirm.save"/>') ) {
+									    $.ajax({
+									    	url:'${pageContext.request.contextPath}/insertLetter.do',
+									    	type:'post',
+									    	data:JSON.stringify({
+									    		letter_id:send,
+									    		to_id:to,
+									    		content:txtarea,
+									    		gubun:'임시저장'
+									    	}),
+										    contentType : "application/json; charset=UTF-8",
+									    	success: function(data) {
+									    		alert('<spring:message code="letter.save.success"/>');
+									    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
+									    	},
+									    	error: function(e) {
+									    		alert('<spring:message code="letter.save.fail"/>');
+									    	}
+									    });		    	
+								    }
 								}
 							}
 						});//$편지전송횟수		    	
@@ -437,7 +457,7 @@ $(function() {
 								</div>
 							</div>
 	
-							<div class="has-text-right">
+							<div class="has-text-left">
 								<button type="button" class="button is-solid accent-button is-bold raised send-message" id="send"
 								data-send="${vo.letter_id  }" data-to="${vo.to_id }" >
 								<spring:message code="letter.btn.send"/>
