@@ -44,7 +44,7 @@ public class StamphController {
 		}
 		return n;
 	}
-
+	
 	@RequestMapping("stamphLoginUserPlus.do")
 	@ResponseBody
 	public int stamphLoginUserPlus(StamphVO vo) {
