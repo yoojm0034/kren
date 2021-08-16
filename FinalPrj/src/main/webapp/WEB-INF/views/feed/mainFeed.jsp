@@ -294,6 +294,7 @@ $(document).ready(function(){
 			data: JSON.stringify(data),
 			contentType: 'application/json; charset=utf-8',
 			success:function(data){
+				sendFollowPush(id);
 				alert(data);
 			},
 			error:function(err){
@@ -303,7 +304,7 @@ $(document).ready(function(){
 	};
 
 	//-------좋아요--------
-	function likeIt(feedId){
+	function likeIt(target,feedId){
 		var span = $('#recCnt'+feedId);
 			
 		$.ajax({
@@ -323,6 +324,7 @@ $(document).ready(function(){
 	               	
 				if(chk){
 					alert('좋아요!');
+					sendLikePush(target,feedId);
 				}else{
 					alert('좋아요 취소');				
 				}
@@ -412,30 +414,6 @@ $(document).ready(function(){
 		document.getElementById('tags').value = tagval;					
 		$('#feedInsert').submit();
 	});
-	
-	var maxValue=0;
-
-/* 	$('body').on('click','#feed-upload-input-2',function(){
-		console.log(this);
-	  if (input.files && input.files[0]) {
-		    var reader = new FileReader();
-		    reader.onload = function (e) {
-			if(maxValue>=1) return;
-		      var deleteIcon = feather.icons.x.toSvg();
-		      var template = "\n                <div class=\"upload-wrap\">\n                    <img src=\"" + e.target.result + "\" alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
-		      $('#feed-upload').append(template);
-				maxValue++;	
-		      //$('#feed-upload-input-1, #feed-upload-input-2').attr('disabled', true);
-			 $('.remove-file').on('click', function () {
-		       //$('#feed-upload-input-1, #feed-upload-input-2').val('').attr('disabled', false);
-		        $(this).closest('.upload-wrap').remove();
-				maxValue--;
-		      });
-		    };
-
-		    reader.readAsDataURL(input.files[0]);
-		  }
-	}) */
 
 	//-------피드 Reset---------
 	$('.close-publish').on('click',function(){
@@ -1090,6 +1068,7 @@ $(document).ready(function(){
 //--------교정END----------------------------------------
 </script>
 	<!-- Pageloader -->
+
 	<div class="infraloader is-active"></div>
 	<div class="app-overlay"></div>
 	<div class="view-wrapper">
@@ -1839,7 +1818,7 @@ $(document).ready(function(){
 																</div> <a href="#" class="dropdown-item">
 																	<div class="media">
 																		<i data-feather="flag"></i>
-																		<div class="media-content delFeed">
+																		<div class="media-content delFeed" id="${vo.feed_id }">
 																			<h3>삭제</h3>
 																		</div>
 																	</div>
@@ -1866,7 +1845,7 @@ $(document).ready(function(){
 													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 													<div class="like-wrapper">
 														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}'); return false;"> <i
+															onclick="likeIt('${vo.user_id }','${vo.feed_id}'); return false;"> <i
 															class="mdi mdi-heart not-liked bouncy"></i> <i
 															class="mdi mdi-heart is-liked bouncy"></i> <span
 															class="like-overlay"></span>

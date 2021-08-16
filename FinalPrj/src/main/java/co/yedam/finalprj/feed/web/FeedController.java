@@ -105,6 +105,7 @@ public class FeedController {
 		StamphVO sh = new StamphVO();
 		sh.setUser_id(id);
 		model.addAttribute("loginStamp",stamphDao.stamphLoginCheck(sh));
+		model.addAttribute("feedStamp",stamphDao.stamphFeedCheck(sh));
 		return "no/feed/post";
 	}
 	
@@ -115,7 +116,7 @@ public class FeedController {
 		String id = (String) user.getUsername();
 		String feedId = request.getParameter("feedid");
 		String updateChk = request.getParameter("photoChk");
-		
+		String stampMessage="";
 		MultipartFile file = vo.getFile();	
 		
 		vo.setWrite_lan(vo.getContent());
@@ -125,6 +126,15 @@ public class FeedController {
 	    vo.setWrite_lan(findLan);
 	    vo.setUser_id(id);
 	    
+		StamphVO sh = new StamphVO();
+		sh.setUser_id(id);
+		int n = stamphDao.stamphFeedCheck(sh);
+		if(n == 0) {
+			stamphDao.stamphFeedInsert(sh);
+			stampMessage="피드작성으로 우표 지급";
+			model.addAttribute("feedStamp",stampMessage);
+			
+		}
 		if(feedId.equals("")) {
 			
 			if(!file.isEmpty()) {
@@ -149,6 +159,7 @@ public class FeedController {
 				vo.setDirectory(path);
 				vo.setUuid(fileUUID);
 				file.transferTo(new File(path, fileUUID));
+				
 				feedDao.feedInsert(vo);
 			}else {
 				  feedDao.feedInsert(vo);
