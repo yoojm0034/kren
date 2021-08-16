@@ -44,15 +44,6 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-/* 자동완성 css */
-.notice {
-	width: 100%;
-	height: 340px;
-	overflow: hidden;
-	margin-bottom: 24px;
-	border-radius: 6px;
-}
-
 .view-wrapper {
 	padding: 40px 12px;
 }
@@ -171,10 +162,32 @@ table {
 reported-div {
 padding-left: 49px;
 }
+#widget-slide-1 {position:relative;margin:20px auto;}
+#widget-slide-1 ul{position:relative;width:100%; height:100%;padding:0px;margin:0px;list-style:none;}
+#widget-slide-1 ul li{position:absolute;width:100%; height:100%; display:none; /*순번표기용*/text-align:center;/*순번표기용 끝*/}
+#widget-slide-1 ul li.on{display:block;}
+
 </style>
 <script>
 $(document).ready(function(){
-	
+	//생일 슬라이드 이미지 
+    function setSlide(){// 동작 함수 생성
+        var box   = document.getElementById("widget-slide-1");
+        var elm   = box.getElementsByTagName( 'li' );
+        var max   = elm.length-1;
+        var now   = 0;
+        var next  = 0;
+        var tmr   = null;
+        var timr  = 3000;
+        function change(){if(next > max) next = 0; else if(next < 0) next = max; for(var i=0; i <= max; i++ )elm[i].className = "";elm[next].className = "on";now = next;}
+        function befor(){next--; change();}
+        function after(){next++; change();}
+        function stop(){ clearInterval(tmr);}
+        function start(){tmr = setInterval(function(){after();}, timr); }
+        if(max>0){start();}
+    }
+    setSlide();// 실행
+    
 	$('.menu').each(function(index){
 		$(this).attr('menu-index', index);
 	}).click(function(){
@@ -2280,10 +2293,10 @@ $(document).ready(function(){
 						</div>
 						<!------------------------ 친구추천 끝 ------------------------->
 						<!------------------------ 생일 시작 ------------------------->
-						<div class="notice">
+						<div id="widget-slide-1">
+						    <ul>
 							<c:forEach items="${birthUser }" var="vo" varStatus="status">
-								<ul class="rolling">
-									<li>
+									<li class="on">
 										<div class="card is-birthday-card has-background-image"
 											data-background="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/cards/birthday-bg.svg">
 											<div class="card-heading" style="border-collapse: collapse;">
@@ -2311,8 +2324,8 @@ $(document).ready(function(){
 											</div>
 										</div>
 									</li>
-								</ul>
 							</c:forEach>
+							</ul>
 						</div>
 						<!------------------------ 생일 끝 ------------------------->
 
