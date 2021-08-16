@@ -103,26 +103,7 @@ function openTravelDrop() {
 
  
 
-function readURL(input) {
-	console.log('input'+input);
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
 
-      var deleteIcon = feather.icons.x.toSvg();
-      var template = "\n                <div class=\"upload-wrap\">\n                    <img src=\"" + e.target.result + "\" alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
-      $('#feed-upload').append(template);
-
-      
-	 $('.remove-file').on('click', function () {
-        $(this).closest('.upload-wrap').remove();
-
-      });
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  }
-}
 
 function albumsHelp() {
   $('#albums-help-modal .next-modal').one('click', function () {

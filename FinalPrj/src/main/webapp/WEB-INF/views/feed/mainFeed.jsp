@@ -304,9 +304,11 @@ $(document).ready(function(){
 	};
 
 	//-------좋아요--------
-	function likeIt(target,feedId){
+	function likeIt(feedId){
 		var span = $('#recCnt'+feedId);
-			
+		var userId= '${user.user_id}';
+			console.log('피드 아이디 : '+feedId +userId );
+		
 		$.ajax({
 			url:"${pageContext.request.contextPath}/likeCnt.do",
 			type:"POST",
@@ -324,7 +326,7 @@ $(document).ready(function(){
 	               	
 				if(chk){
 					alert('좋아요!');
-					sendLikePush(target,feedId);
+					sendLikePush(userId,feedId);
 				}else{
 					alert('좋아요 취소');				
 				}
@@ -364,7 +366,6 @@ $(document).ready(function(){
 	};
 	
 	function feedUpdate(feedId){
-		var maxCnt = 0;
 		$('.app-overlay').addClass('is-active');
 		$('.is-new-content').addClass('is-highlighted');
 		$('#publish').focus();
@@ -384,21 +385,20 @@ $(document).ready(function(){
 		}
 		
 		if(photo != ""){	
-		  if(maxCnt >= 1 ) return;
 		  var deleteIcon = feather.icons.x.toSvg();
 		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
 		  $('#feed-upload').append(template);
-		  maxCnt++;
-		  maxValue++;
+
 		}
 
 	  	$('.remove-file').on('click', function () {
 	         $(this).closest('.upload-wrap').remove();
 	         photoChk.val(1);
-	         maxCnt--;
-	         maxValue--;
 	  	});
 	}
+
+	 
+	 
 	
 	$(function(){
 	loadMore();
@@ -611,15 +611,18 @@ $(document).ready(function(){
 	    };
 	    $('#activities-autocpl').easyAutocomplete(activitiesOptions);
 	 };
+	 
 
 	//-------태그검색---------
 	$('#searchTag').on('click',function(){
+		
 		  	var input = $('#tagInput').attr("class");
 		  	if(input=="input is-hidden"){
 		  		$('#tagInput').removeClass('is-hidden').addClass('is-active');
 		  	}else{
 		  		$('#tagInput').removeClass('is-active').addClass('is-hidden');
 		  	}
+		  	
 			if ($('#tagInput').length) {
 			    var html = '';
 			    var activitiesOptions = {
@@ -646,6 +649,7 @@ $(document).ready(function(){
 			    }
 			    $("#tagInput").easyAutocomplete(activitiesOptions);
 			  };
+			  
 			document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
 			function tagsFunction() {
 				if(event.keyCode==13){
@@ -657,7 +661,7 @@ $(document).ready(function(){
 							url:"${pageContext.request.contextPath}/feedSelect.do",
 							data:{tags : tagval },
 							success:function(result){
-								datePosdst();
+								//datePosdst();
 								loadMore();
 								$('.feedContents').html(result);
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
@@ -1865,7 +1869,7 @@ $(document).ready(function(){
 													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 													<div class="like-wrapper">
 														<a class="like-button"
-															onclick="likeIt('${vo.user_id }','${vo.feed_id}'); return false;"> <i
+															onclick="likeIt('${vo.feed_id}'); return false;"> <i
 															class="mdi mdi-heart not-liked bouncy"></i> <i
 															class="mdi mdi-heart is-liked bouncy"></i> <span
 															class="like-overlay"></span>

@@ -79,10 +79,6 @@ $(function() {
 //--------교정END----------------------------------------
 </script>
 <div class="feedContents">
-<c:choose>
-<c:when test="${fn:length(feedList) == 0}">
-	No matching results
-</c:when>
 	<c:forEach items="${feedList }" var="vo" varStatus="status">
 		<div id="feed-post-1" class="card is-post">
 			<!-- Main wrap -->
@@ -147,14 +143,13 @@ $(function() {
 									<a class="dropdown-item">
 										<div class="media">
 											<div class="media-content" id="frbtn"
-												data-repo="${vo.feed_id }" data-report="${vo.user_id }">
+												data-repo2="${vo.feed_id }" data-report2="${vo.user_id }">
 												<h3>신고</h3>
 											</div>
-										
 										<div class="dropdown-menu">
 											<div class="dropdown-content reportMenu">
 												<div class="media freport" style="border: 0px;">
-													<table>
+													<table id="report-table">
 														<tr>
 															<td><input type="radio" id="fmsg"
 																name="${vo.feed_id }" value="스팸 게시물">스팸 게시물</td>
@@ -187,11 +182,10 @@ $(function() {
 													</table>
 												</div>
 												<div class="dropdown-divider"></div>
-												<input type="checkbox" id="feed-blocked"
-													data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
-												차단
-												<button id="report-btn" data-repo="${vo.feed_id  }"
-													data-report="${vo.user_id }">신고</button>
+                                                 <div class="reported-div">
+					                       		 <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name } 차단
+												 <button id="report-btn"  data-repo2="${vo.feed_id  }" data-report2="${vo.user_id }">신고</button>
+                                                 </div>
 											</div>
 										</div>
 									</div>
@@ -243,7 +237,7 @@ $(function() {
 							<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 							<div class="like-wrapper">
 								<a class="like-button"
-									onclick="likeIt('${vo.user_id }','${vo.feed_id}'); return false;"> <i
+									onclick="likeIt('${vo.feed_id}'); return false;"> <i
 									class="mdi mdi-heart not-liked bouncy"></i> <i
 									class="mdi mdi-heart is-liked bouncy"></i> <span
 									class="like-overlay"></span>
@@ -623,7 +617,6 @@ $(function() {
 	<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
 		<a href="javascript:;" class="load-more-button">Load More</a>
 	</div>
-</c:choose>
 </div>
 <script type="text/javascript">
 

@@ -26,7 +26,7 @@ public class LikesController {
 						  LikesVO vo ,HttpServletRequest request,Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
-		
+		System.out.println("피드 아이디 :"+feedId);
 		vo.setFeed_id(feedId);
 		vo.setUser_id(id);
 		

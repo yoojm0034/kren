@@ -90,6 +90,31 @@ function toggleTheme() {
 Pageloader
 ========================================================================== */
 
+	
+ function readURL(input) {
+	  if (input.files && input.files[0]) {
+	    var reader = new FileReader();
+	    reader.onload = function (e) {
+
+	      var deleteIcon = feather.icons.x.toSvg();
+	      var template = "\n                <div class=\"upload-wrap\">\n                    <img src=\"" + e.target.result + "\" alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
+	     if($('#feed-upload').children().length == 1){
+	    	 return;
+	     }else{
+	      $('#feed-upload').append(template); 
+	     }
+	      
+		 $('.remove-file').on('click', function () {
+	        $(this).closest('.upload-wrap').remove();
+
+	      });
+	    };
+
+	    reader.readAsDataURL(input.files[0]);
+	  }
+	}
+	 
+
 
 function initPageloader() {
   if ($('.pageloader').length) {
@@ -182,6 +207,7 @@ function initDropdowns() {
 
     if (!$(target).is('.dropdown-trigger img') && !$(target).parents().is('.dropdown-trigger')) {
       $('.dropdown-trigger').removeClass('is-active');
+	  $('.reportMenu').hide();
     }
   });
 }
