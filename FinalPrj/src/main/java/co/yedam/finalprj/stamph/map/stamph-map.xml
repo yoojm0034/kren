@@ -24,6 +24,21 @@
 			('stamph_'||STAMPH_SEQ.NEXTVAL,#{user_id},'출석체크',SYSDATE,1)
 	</insert>
 	
+		<select id="stamphFeedCheck" parameterType="co.yedam.finalprj.stamph.vo.StamphVO" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM STAMPH
+		WHERE TO_CHAR(SH_DT,'YYYY/MM/DD') = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+		AND SH_TYPE='피드등록'
+		AND USER_ID=#{user_id}
+	</select>
+	
+	<insert id="stamphFeedInsert">
+		INSERT INTO STAMPH
+			(STAMPH_ID, USER_ID, SH_TYPE, SH_DT, CNT)
+		VALUES
+			('stamph_'||STAMPH_SEQ.NEXTVAL,#{user_id},'피드등록',SYSDATE,1)
+	</insert>
+	
 	<update id="stamphLoginUserPlus" parameterType="co.yedam.finalprj.stamph.vo.StamphVO">
 		UPDATE USERS
 		SET STAMP = STAMP + 1

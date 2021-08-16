@@ -3,6 +3,7 @@ package co.yedam.finalprj.letter.map;
 import java.util.List;
 
 import co.yedam.finalprj.letter.vo.LetterVO;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface LetterMap {
 	//LETTERBOX
@@ -27,4 +28,7 @@ public interface LetterMap {
 	public int deleteSaveLetter(LetterVO vo);
 	public LetterVO oneSelect(LetterVO vo);
 	public int updateAdminYN(LetterVO vo);
+	
+	//PROFILE
+	public UsersVO letterDistance(UsersVO vo);
 }

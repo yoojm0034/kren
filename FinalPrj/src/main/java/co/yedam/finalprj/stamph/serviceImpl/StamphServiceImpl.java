@@ -33,4 +33,16 @@ public class StamphServiceImpl implements StamphService {
 	public int stamphLoginUserPlus(StamphVO vo) {
 		return map.stamphLoginUserPlus(vo);
 	}
+
+	@Override
+	public int stamphFeedCheck(StamphVO vo) {
+		// TODO Auto-generated method stub
+		return map.stamphFeedCheck(vo);
+	}
+
+	@Override
+	public int stamphFeedInsert(StamphVO vo) {
+		// TODO Auto-generated method stub
+		return map.stamphFeedInsert(vo);
+	}
 }

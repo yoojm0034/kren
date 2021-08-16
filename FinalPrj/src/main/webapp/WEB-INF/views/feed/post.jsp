@@ -185,8 +185,7 @@
 										</div> <a href="#" class="dropdown-item">
 											<div class="media">
 												<i data-feather="flag"></i>
-												<div class="media-content"
-													onclick="location.href='feedDelete.do?feed_id=${vo.feed_id }'">
+												<div class="media-content delFeed" id="${vo.feed_id }">
 													<h3>삭제</h3>
 												</div>
 											</div>
@@ -213,7 +212,7 @@
 							<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 							<div class="like-wrapper">
 								<a class="like-button"
-									onclick="likeIt('${vo.feed_id}'); return false;"> <i
+									onclick="likeIt('${vo.user_id }','${vo.feed_id}'); return false;"> <i
 									class="mdi mdi-heart not-liked bouncy"></i> <i
 									class="mdi mdi-heart is-liked bouncy"></i> <span
 									class="like-overlay"></span>

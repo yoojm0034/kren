@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import co.yedam.finalprj.stamp.map.StampMap;
 import co.yedam.finalprj.stamp.service.StampService;
 import co.yedam.finalprj.stamp.vo.StampVO;
+import co.yedam.finalprj.stamph.vo.StamphVO;
 @Repository("stampDao")
 public class StampServiceImpl implements StampService {
 	@Autowired
@@ -42,5 +43,6 @@ public class StampServiceImpl implements StampService {
 		// TODO Auto-generated method stub
 		return map.stampDelete(vo);
 	}
+
 
 }

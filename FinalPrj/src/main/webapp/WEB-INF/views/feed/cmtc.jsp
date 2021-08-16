@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script>
 $(function() {
 $("div[id^='load_'").each(function(i, el){
@@ -37,7 +38,7 @@ function test_diff(cid,dif,ori) {
 	<!-- Content -->
 	<div class="media-content">
 		<a href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}">${user.name }</a>
-		<span class="time">방금전
+		<span class="time"><spring:message code="time.1"/>
 		<!-- Actions -->
 		<div class="controls" style="display: inline-block">
 			<div class="edit">

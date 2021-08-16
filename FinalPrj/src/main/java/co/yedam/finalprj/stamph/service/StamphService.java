@@ -9,4 +9,8 @@ public interface StamphService {
 	int stamphLoginCheck(StamphVO vo);
 	int stamphLoginInsert(StamphVO vo);
 	int stamphLoginUserPlus(StamphVO vo);
+	
+	
+	int stamphFeedCheck(StamphVO vo);
+	int stamphFeedInsert(StamphVO vo);
 }

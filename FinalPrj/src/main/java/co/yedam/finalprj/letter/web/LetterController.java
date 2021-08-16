@@ -168,7 +168,8 @@ public class LetterController {
 		String id = (String) user.getUsername();
 		vo.setUser_id(id);
 		int n = letterDao.insertLetter(vo);
-		if(n!=0 ) { //답장여부Y,우표차감,우표사용내역기록
+		
+		if(n!=0 && vo.getGubun().equals("일반")) { //답장여부Y,우표차감,우표사용내역기록
 			System.out.println(vo);
 			if(vo.getLetter_id()!=null) {
 				letterDao.updateLetterSendYN(vo);					
@@ -176,7 +177,7 @@ public class LetterController {
 			letterDao.updateLetterStampMinus(vo);
 			letterDao.insertLetterStamph(vo);				
 		} else {
-			System.out.println("편지작성실패");
+			System.out.println("임시저장");
 		}
 	}
 

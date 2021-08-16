@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import co.yedam.finalprj.letter.map.LetterMap;
 import co.yedam.finalprj.letter.service.LetterService;
 import co.yedam.finalprj.letter.vo.LetterVO;
+import co.yedam.finalprj.users.vo.UsersVO;
 
 @Repository("letterDao")
 public class LetterServiceImpl implements LetterService {
@@ -97,6 +98,11 @@ public class LetterServiceImpl implements LetterService {
 	@Override
 	public int deleteSaveLetter(LetterVO vo) {
 		return map.deleteSaveLetter(vo);
+	}
+
+	@Override
+	public UsersVO letterDistance(UsersVO vo) {
+		return map.letterDistance(vo);
 	}
 
 
