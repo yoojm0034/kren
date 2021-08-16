@@ -16,7 +16,7 @@
 					<div class="box-heading">
 						<h4><spring:message code="stamph.history"/></h4>
 						<h5 style="color: gray">
-							<span class="has-price">*최근 이력부터 15건까지 출력됩니다.</span>
+							<span class="has-price"><spring:message code="stamph.guide"/></span>
 						</h5>
 					</div>
 					<br>
