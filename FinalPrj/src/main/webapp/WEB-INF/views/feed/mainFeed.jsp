@@ -402,6 +402,7 @@ $(document).ready(function(){
 	
 	$(function(){
 	loadMore();
+
 	//-------피드 등록---------
 	$('#publish-button').on('click', function(){
 		var feedId = $('#feedid').val();
@@ -412,7 +413,20 @@ $(document).ready(function(){
 			tagval= tagval.replace(/#/g,",");
 		}
 		document.getElementById('tags').value = tagval;					
-		$('#feedInsert').submit();
+		
+		$.ajax({
+			url:"${pageContext.request.contextPath}/stamphFeedChk.do",
+			type:"POST",
+			success:function(v){
+				if(v==0){
+					alert('스탬프 1개가 지급되었습니다');				
+				}
+				$('#feedInsert').submit();		
+			},
+			error:function(){
+				
+			}
+		});
 	});
 
 	//-------피드 Reset---------

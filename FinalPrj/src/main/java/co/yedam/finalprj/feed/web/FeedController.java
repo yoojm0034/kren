@@ -105,7 +105,6 @@ public class FeedController {
 		StamphVO sh = new StamphVO();
 		sh.setUser_id(id);
 		model.addAttribute("loginStamp",stamphDao.stamphLoginCheck(sh));
-		model.addAttribute("feedStamp",stamphDao.stamphFeedCheck(sh));
 		return "no/feed/post";
 	}
 	
@@ -126,15 +125,6 @@ public class FeedController {
 	    vo.setWrite_lan(findLan);
 	    vo.setUser_id(id);
 	    
-		StamphVO sh = new StamphVO();
-		sh.setUser_id(id);
-		int n = stamphDao.stamphFeedCheck(sh);
-		if(n == 0) {
-			stamphDao.stamphFeedInsert(sh);
-			stampMessage="피드작성으로 우표 지급";
-			model.addAttribute("feedStamp",stampMessage);
-			
-		}
 		if(feedId.equals("")) {
 			
 			if(!file.isEmpty()) {

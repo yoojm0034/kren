@@ -55,8 +55,18 @@ public class StamphController {
 		return n;
 	}
 	
-	
-	
-	
+	@RequestMapping("stamphFeedChk.do")
+	@ResponseBody
+	public int stamphFeedChk(StamphVO vo, Authentication auth) {
+		User user = (User) auth.getPrincipal();
+		String id = (String) user.getUsername();
+		vo.setUser_id(id);
+		int n = stamphDao.stamphFeedCheck(vo);
+		if(n==0){
+			stamphDao.stamphFeedInsert(vo);
+		}
+		return n;
+	}
+
 	
 }
