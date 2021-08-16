@@ -246,7 +246,7 @@ $(document).ready(function() {
 // 팔로잉 리스트 ajax
 $(function(){
 	$('#followingList').on('click', function (){
-		var user_id = $('#user_id').val();
+		var user_id = $('#user_id2').val();
 		$.ajax({
 			url: '${pageContext.request.contextPath}/followingList.do',
 	    	type:'post',
@@ -261,7 +261,7 @@ $(function(){
 // 팔로워 리스트 ajax
 $(function(){
 	$('#followerList').on('click', function (){
-		var user_id = $('#user_id').val();
+		var user_id = $('#user_id2').val();
 		$.ajax({
 			url: '${pageContext.request.contextPath}/followerList.do',
 	    	type:'post',
@@ -320,7 +320,7 @@ $('body').on('click', '#unfollow-btn',  function() {
 
 let followerCnt = ${followerCnt}
 function follow(check) {
-	var profile_id = $('#user_id').val();
+	var profile_id = $('#user_id2').val();
 	if(check) {
     	$.ajax({
 	    	url:'${pageContext.request.contextPath}/follow.do',
@@ -399,7 +399,7 @@ function writePopup() {
 						<input type="text" id="lon2" value="${profile.lon }" hidden="hidden" /> 
 						<input type="text" id="timezone2" value="${profile.timezone }" hidden="hidden" />
 						<input type="text" id="language2_level2" value="${profile.language2_level }" hidden="hidden" /> 
-						<input type="text" id="user_id" value="${profile.user_id }" hidden="hidden" />
+						<input type="text" id="user_id2" value="${profile.user_id }" hidden="hidden" />
 						<script async
 							src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBD523dZdQiMvJDOsNySdn1RdQlA_7g5DM&callback=initMap"></script>
 						<div class="avatar">
