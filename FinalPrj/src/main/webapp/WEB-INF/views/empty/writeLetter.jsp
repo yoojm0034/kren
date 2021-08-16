@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -144,12 +145,12 @@ $(function () {
 	$('#send').on('click',function() {
 		content = $('#text').val();
 		if(content == "") {
-			alert('내용을 입력하세요.');
+			alert('<spring:message code="letter.alert.blank"/>');
 			$('#text').focus();
 			return ;
 		}
 		if (getTextLength(content) < 100) {
-			alert("최소 100자 이상 입력해주세요.");
+			alert('<spring:message code="letter.alert.min"/>');
 			return ;
 		}
 		//우표수량 체크
@@ -160,7 +161,7 @@ $(function () {
 		    contentType : "application/json; charset=UTF-8",
 			success : function(data) {
 				if (data > 0) { //우표가 있으면
-					if(confirm("편지를 전송하시겠습니까?") ) {
+					if(confirm('<spring:message code="letter.confirm.send"/>') ) {
 						$.ajax({//편지전송횟수체크
 							url:'${pageContext.request.contextPath}/cntLetterCheck.do',
 							type:'post',
@@ -177,22 +178,22 @@ $(function () {
 								    	}),
 									    contentType : "application/json; charset=UTF-8",
 								    	success: function(data) {
-								    		alert('전송되었습니다.');
+								    		alert('<spring:message code="letter.send.success"/>');
 								    		sendLetterPush(toid);
 								    		opener.parent.location.reload();
 								    		window.close();
 								    	},
 								    	error: function(e) {
-								    		alert('편지전송실패');
+								    		alert('<spring:message code="letter.send.fail"/>');
 								    	}
 							    	});//$ajax	   
 								} else {
-									alert('편지전송횟수 초과!');
+									alert('<spring:message code="letter.send.five"/>');
 								}
 							}
 						});//$편지전송횟수	    	
 				    } else {
-				    	if(confirm("편지를 저장하시겠습니까?") ) {
+				    	if(confirm('<spring:message code="letter.confirm.save"/>') ) {
 						    $.ajax({
 						    	url:'${pageContext.request.contextPath}/insertLetter.do',
 						    	type:'post',
@@ -203,21 +204,21 @@ $(function () {
 						    	}),
 							    contentType : "application/json; charset=UTF-8",
 						    	success: function(data) {
-						    		alert('편지가 저장되었습니다.');
+						    		alert('<spring:message code="letter.save.success"/>');
 						    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 						    		window.close();
 						    	},
 						    	error: function(e) {
-						    		alert('저장실패');
+						    		alert('<spring:message code="letter.save.fail"/>');
 						    	}
 						    });		    	
 					    } else {
-					    	alert("편지작성이 취소되었습니다.");
+					    	alert('<spring:message code="letter.confirm.save.no"/>');
 					    }
 				    }
 				} else { //우표가 없으면
-					alert('우표수량을 확인해주세요.');
-					if(confirm("편지를 저장하시겠습니까?") ) {
+					alert('<spring:message code="letter.stamp.check"/>');
+					if(confirm('<spring:message code="letter.confirm.save"/>') ) {
 					    $.ajax({
 					    	url:'${pageContext.request.contextPath}/insertLetter.do',
 					    	type:'post',
@@ -228,19 +229,19 @@ $(function () {
 					    	}),
 						    contentType : "application/json; charset=UTF-8",
 					    	success: function(data) {
-					    		alert('편지가 저장되었습니다.');
+					    		alert('<spring:message code="letter.save.success"/>');
 					    		opener.parent.location.href = '${pageContext.request.contextPath}/savedLetter.do';
 					    		window.close();
 					    	},
 					    	error: function(e) {
-					    		alert('저장실패');
+					    		alert('<spring:message code="letter.save.fail"/>');
 					    	}
 					    });		    	
 				    }
 				}
 			},
 			error : function(e) {
-				alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+				alert('<spring:message code="letter.alert.errormsg"/>');
 			}
 		});
 	});
@@ -259,8 +260,8 @@ $(function () {
 				<div class="left"><span id="from">From.</span></div>	
 				<div class="right">
 					(<span id="textCnt">0</span> / 10000)
-					<button id="save" class="button">임시저장</button>
-					<button id="send" class="button is-solid primary-button raised">편지 보내기</button>
+					<button id="save" class="button"><spring:message code="letter.btn.save"/></button>
+					<button id="send" class="button is-solid primary-button raised"><spring:message code="letter.btn.send"/></button>
 				</div>	
 			</div>
 		</div>
