@@ -2299,19 +2299,18 @@ $(document).ready(function(){
 									<li class="on">
 										<div class="card is-birthday-card has-background-image"
 											data-background="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/cards/birthday-bg.svg">
-											<div class="card-heading" style="border-collapse: collapse;">
+											<div class="card-heading" style="border-collapse: collapse; ">
 												<div
 													class="dropdown is-spaced is-right dropdown-trigger is-light">
 													<div>
-														<div class="button"></div>
 													</div>
 												</div>
 											</div>
 											<div class="card-body">
 												<div>
-													<div class="birthday-avatar">
+													<div class="birthday-avatar" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='${vo.following }">
 														<img src="https://via.placeholder.com/300x300"
-															data-demo-src="assets/img/avatars/dan.jpg" alt="">
+															data-demo-src="assets/img/avatars/dan.jpg" alt="" style="cursor: pointer;">
 														<div class="birthday-indicator">${vo.age }</div>
 													</div>
 													<div class="birthday-content">
