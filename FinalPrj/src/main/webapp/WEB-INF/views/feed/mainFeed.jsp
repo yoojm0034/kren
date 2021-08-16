@@ -53,18 +53,6 @@ table {
 	border-radius: 6px;
 }
 
-.rolling {
-	position: relative;
-	width: 100%;
-	height: auto;
-}
-
-.rolling li {
-	width: 100%;
-	height: 340px;
-	line-height: 50px;
-}
-
 .view-wrapper {
 	padding: 40px 12px;
 }

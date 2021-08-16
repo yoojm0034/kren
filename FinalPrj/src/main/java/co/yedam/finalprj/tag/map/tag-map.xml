@@ -36,9 +36,12 @@
 								  SELECT LISTAGG(tags, ',') WITHIN GROUP (ORDER BY reg_date desc) as "TAGS"
 								  FROM feed
 				)
-				SELECT Regexp_Substr(TAGS,'[^,]+', 1, Level) COL From count 
+				SELECT  count(Regexp_Substr(TAGS,'[^,]+', 1, Level)) cnt, Regexp_Substr(TAGS,'[^,]+', 1, Level) COL From count 
+				GROUP BY Regexp_Substr(TAGS,'[^,]+', 1, Level)
 				Connect By Regexp_Substr(TAGS, '[^,]+', 1, Level) Is Not Null
-				) c 
+				)c  
+        WHERE cnt >= 2 
+        ORDER BY cnt desc
 	</select>
 	
 </mapper>

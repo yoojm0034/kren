@@ -6,7 +6,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -321,10 +320,9 @@
 }
 </style>
 <script>
-var countryCnt=0;
-var dcountryCnt=0;
 $(document).ready(function() {
 
+	//검색 옵션 
 	 $('#friendSearch').on('click',function() {
 		 var gender = $('input[name=genderval]:checked').val();
 		 var dgender = $('input[name=dgenderval]:checked').val();
@@ -351,33 +349,38 @@ $(document).ready(function() {
 		 $('#dtopic').val(distopic);
 		 $('#frm').submit();
 	 });
-
+	// 국가 드롭다운 
 	 $('#show-filters').on('click',function() {
 	 var url = '${pageContext.request.contextPath}/resources/template/assets/data/country.json';
 		 $.getJSON(url,function(data) {
 			 $.each(data,function(key,value) {
-				 console.log(key+value);
 				  $('#country-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
 				 $('#dcountry-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
 	 		});
 		 });
 	 });
-	
-	 $('#country-op').on('change',function(){
-		 var value = this.value;
-		 var hg = this.innerHTML;
-		 var id = this.id
+	//국가 선택시 라벨 어펜드 
+ 	 $('#country-op').on('change',function(){
+		 var enVal= this.value;
+		 var koVal= this.options[this.selectedIndex].text;
 
-		 if (countryCnt == 5) return;
-		 $('#append-op').append("<span class='append-label' id='"+value+"' onclick="+"'deleteCountry(\""+ value + "\")'>"+value+"</span>");
-		 countryCnt++;
-	 });		
-	
+	     if($('#append-op').children().length==5){
+	    	 return;
+	     }else{
+			 $('#append-op').append("<span class='append-label' id='"+enVal+"' onclick="+"'deleteCountry(\""+ koVal + "\")'>"+koVal+"</span>"); 
+	     }
+	 });
+
+	//제외국가 선택시 라벨 어펜드 
 	 $('#dcountry-op').on('change',function(){
-		 var value = this.value;
-		 if (dcountryCnt == 5) return;
-		 $('#append-dop').append("<span class='append-label' id='dis"+value+"' onclick="+"'deleteCountry(\"dis"+ value + "\")'>"+value+"</span>");
-		 dcountryCnt++;
+		 var enVal= this.value;
+		 var koVal= this.options[this.selectedIndex].text;
+
+	     if($('#append-dop').children().length==5){
+	    	 return;
+	     }else{
+	    	 $('#append-dop').append("<span class='append-label' id='dis"+enVal+"' onclick="+"'deleteCountry(\"dis"+ koVal + "\")'>"+koVal+"</span>");
+	     }
 	 });	
 	 
 	 // load more
@@ -485,12 +488,6 @@ $(document).ready(function() {
 
 function deleteCountry(val) {
 	 $('#'+val).remove();
-	 
-	 if(val.substring(0,3)=="dis"){
-	 	dcountryCnt--;
-	 }else{
-	 	countryCnt--; 
-	 }
 };	
 </script>
 <body>
