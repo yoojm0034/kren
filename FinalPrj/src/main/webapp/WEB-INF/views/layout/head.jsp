@@ -130,6 +130,11 @@ h5:hover {
     cursor: pointer;
 }
 
+.lang {
+	color:#727272;
+	cursor: pointer;
+}
+
 
 </style>
 <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -430,7 +435,38 @@ h5:hover {
 
         return '<spring:message code="time.1"/>';
  	}
+	
+	// 언어 선택
+	$('body').on('click', '.lang',  function() {
+		var search = window.location.search;	// 파라미터 값
+		var param = $(this).attr('id');
+		// 파라미터 값 없다면
+		if (search == "") {
+			if(param == 'kr') {
+				location.href="?lang=kr"
+			} else {
+				location.href="?lang=en"
+			}
+		}
 		
+		// 이미 lang 값 있을때 바꿔주기
+		if (search.includes("lang")){
+			if(param == 'kr') {
+				location.href=search.replace(search.substr(search.length-2,2),'kr');
+			} else {
+				location.href=search.replace(search.substr(search.length-2,2),'en');
+			}
+		}
+		
+		// id파라미터 값 있고 lang값은 없을때
+		if (search.includes("id") && !search.includes("lang")){
+			if(param == 'kr') {
+				location.href=search+"&lang=kr"
+			} else {
+				location.href=search+"&lang=en"
+			}
+		}
+	});
 </script>
 <!-- Pageloader -->
 <div class="pageloader"></div>
@@ -498,8 +534,8 @@ h5:hover {
 									<span><spring:message code="push.lang"/></span>
 								</div>
 								<div class="nav-drop-body is-notifications" style="line-height: 2;">	
-									<a href="?lang=kr" style="color:#727272">KOREAN</a>
-									<a href="?lang=en" style="color:#727272">ENGLISH</a>
+									<span class="lang" id="kr">KOREAN</span>
+									<span class="lang" id="en">ENGLISH</span>
 								</div>
 							</div>
 						</div>
