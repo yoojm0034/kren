@@ -136,7 +136,7 @@ $(function() {
 			$('textarea[data-letter="'+send+'"]').focus();
 			return ;
 		}
-		if (getTextLength(txtarea) < 100) {
+		if (getTextLength(txtarea) < 1000) {
 			alert('<spring:message code="letter.alert.min"/>');
 			return ;
 		}
