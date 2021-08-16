@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,27 +13,27 @@
   $(function() {
 	$('#btnQnaSubmit').click(function(){
 		if(frm.name.value == ""){
-			alert("이름를 입력하세요");
+			alert("<spring:message code="qna.alert.name"/>");
 			frm.name.focus();
 			return false;
 		}
 		if(frm.email.value == ""){
-			alert("이메일을 입력하세요");
+			alert("<spring:message code="qna.alert.email"/>");
 			frm.email.focus();
 			return false;
 		}
 		if(frm.content.value == ""){
-			alert("내용 입력하세요");
+			alert("<spring:message code="qna.alert.content"/>");
 			frm.content.focus();
 			return false;
 		}
-		var con = confirm("문의사항을 작성하시겠습니까?");
+		var con = confirm("<spring:message code="qna.alert.sendyn"/>");
 		if(con == true){
-		  alert("작성되었습니다.");
+		  alert("<spring:message code="qna.alert.sendy"/>.");
 		  frm.submit();
 		}
 		else if(con == false){
-		  alert("취소되었습니다.");
+		  alert("<spring:message code="qna.alert.sendn"/>.");
 		  window.reload();
 		}
 		
@@ -40,7 +41,12 @@
   })	
 </script>
 <style>
-
+.settings-wrapper .settings-section .settings-panel .settings-form-wrapper .illustration p {
+    max-width: 300px;
+    color: #7f80a2;
+    font-size: .8rem;
+    margin: 20px auto;
+}
 .settings-wrapper .settings-section .settings-panel .settings-form-wrapper .illustration img {
 	max-width: none;
 }
@@ -61,7 +67,7 @@
 <body>
 	<div class="view-wrapper is-full" >
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 60%; margin:auto; padding-top: 40px;">
+		<div class="inner-wrapper" style="width: 65%; margin:auto; padding-top: 40px;">
 
 			<div class="settings-wrapper">
 				<form id="frm" action="${pageContext.request.contextPath}/userQnaInsert.do" enctype="multipart/form-data" method="post">
@@ -71,7 +77,7 @@
 							<div class="title-wrap">
 								<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 								</a>
-								<p class="title">문의하기</p>
+								<p class="title"><spring:message code="qna.title"/></p>
 							</div>
 
 							<div class="settings-form-wrapper">
@@ -82,8 +88,8 @@
 											<!--Field-->
 											<div class="field field-group">
 												<div class="control">
-													<label>Name</label>
-													<input type="text" class="input is-fade" id="name" name="name" placeholder="이름을 입력해주세요." required="required">
+													<label><spring:message code="qna.name"/></label>
+													<input type="text" class="input is-fade" id="name" name="name" placeholder="<spring:message code="qna.name.placeholder"/>" required="required">
 												</div>
 											</div>
 											
@@ -93,8 +99,8 @@
 											<!--Field-->
 											<div class="field field-group">
 												<div class="control">
-													<label>Email</label>
-													<input type="text" class="input is-fade" id="email" name="email" placeholder="회신 받을 이메일을 입력하세요." required="required">
+													<label><spring:message code="qna.email"/></label>
+													<input type="text" class="input is-fade" id="email" name="email" placeholder="<spring:message code="qna.email.placeholder"/>" required="required">
 												</div>
 											</div>
 										</div>
@@ -103,8 +109,8 @@
 											<!--Field-->
 											<div class="field field-group">
 												<div class="control">
-												<label>Content</label>
-													<textarea class="textarea is-fade" rows="8" placeholder="여기에 내용을 작성해 주세요" 
+												<label><spring:message code="qna.content"/></label>
+													<textarea class="textarea is-fade" rows="8" placeholder="<spring:message code="qna.content.placeholder"/>" 
 													required="required" id="content" name="content" style="resize: none;"></textarea>
 												</div>
 											</div>
@@ -113,9 +119,9 @@
 										<div class="column is-12">
 											<div class="buttons" style="justify-content: center;">
 												<c:if test="${not empty user.user_id}">
-													<button class="button is-light form-button" onclick="history.back()">뒤로가기</button>
+													<button class="button is-light form-button" onclick="history.back()"><spring:message code="qna.back"/></button>
 												</c:if>
-												<button type="button" id="btnQnaSubmit" class="button is-solid accent-button form-button">작성하기</button>
+												<button type="button" id="btnQnaSubmit" class="button is-solid accent-button form-button"><spring:message code="qna.form.send"/></button>
 											</div>
 										</div>
 
@@ -127,8 +133,8 @@
 									<img class="dark-image" src="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/placeholders/1.svg" width="300px">
 									<br>
 									<p>
-										※궁금한 사항이 있으시면 문의해주세요.<br>
-										※이메일은 정확하게 입력해주세요.
+										<spring:message code="qna.notice.content1"/><br>
+										<spring:message code="qna.notice.content2"/>
 									</p>
 								
 								</div>

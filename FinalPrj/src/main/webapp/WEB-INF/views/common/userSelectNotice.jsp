@@ -1,6 +1,7 @@
 	<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,48 +21,51 @@
 		});
 	});
 </script>
+<style>
+
+</style>
 </head>
 <body>
 	<div class="stories-wrapper is-home">
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper"  style="width:80%">
+		<div class="inner-wrapper"  style="width:70%">
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
 			</a>
 			<div class="stories-content">
 				<div class="section-title main-section-title">
-					<h2>공지사항</h2>
+					<h2><spring:message code="notice.table.notice"/></h2>
 				</div>
 			</div>
 
-			<div class="stories-container">
-					<div>
+			<div class="stories-container" >
+					<div style="box-shadow: 0 0 19px 4px #b2b2b2;">
 						<input type="hidden" name="notice_id" value="${notice.notice_id}">	
 						<table class="table">
 							<tr>
 								<th colspan="4" align="left">${notice.title}</th>
 							</tr>
 							<tr>
-								<th>작성일</th>
-								<td width="80%" align="left">${notice.reg_date}</td>
-								<th>조회수</th>
+								<th width="10%"><spring:message code="notice.table.title"/></th>
+								<td width="82%" align="left">${notice.reg_date}</td>
+								<th width="8%"><spring:message code="notice.table.hit"/></th>
 								<td>${notice.hit}</td>
 							</tr>
 							<tr>
 								<td colspan="4" align="left">${notice.content}</td>
 							</tr>
 							<tr>
-								<th>등록된 파일</th>
+								<th><spring:message code="notice.table.uploadfile"/></th>
 								<td colspan="4" align="left"><a href="${pageContext.request.contextPath}/fileDown.do?notice_id=${notice.notice_id}">${notice.fileName}</a>
 									<c:if test="${empty notice.fileName}">
-										등록된 파일 없음
+										<spring:message code="notice.table.emptyfile"/>
 									</c:if>
 								</td>
 							</tr>
 						</table>
 					</div>
 					<div>
-						<button type="button" id="btnNoticeList" class="button grey-button">목록</button>
+						<button type="button" id="btnNoticeList" class="button grey-button"><spring:message code="notice.table.list"/></button>
 					</div>
 			</div>
 		</div>
