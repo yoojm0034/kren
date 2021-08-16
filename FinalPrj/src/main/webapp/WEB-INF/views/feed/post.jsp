@@ -79,6 +79,10 @@ $(function() {
 //--------교정END----------------------------------------
 </script>
 <div class="feedContents">
+<c:choose>
+<c:when test="${fn:length(feedList) == 0}">
+	No matching results
+</c:when>
 	<c:forEach items="${feedList }" var="vo" varStatus="status">
 		<div id="feed-post-1" class="card is-post">
 			<!-- Main wrap -->
@@ -619,6 +623,7 @@ $(function() {
 	<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
 		<a href="javascript:;" class="load-more-button">Load More</a>
 	</div>
+</c:choose>
 </div>
 <script type="text/javascript">
 
