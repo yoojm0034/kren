@@ -107,7 +107,8 @@
                         <h3 class="form-subtitle has-text-centered"><spring:message code="pw.title2" /></h3>
 
                         <!--Form-->
-                        <div class="login-form">
+                        <div id="signup-panel-1"
+						class="process-panel-wrap is-narrow is-active">
                             <div class="form-panel">
                                 <form action="findPW.do" method="post">
 									<div class="field">
@@ -115,8 +116,10 @@
 										<div class="control">
 											<input type="text" class="input" id="id" name="id"
 												placeholder="<spring:message code="enter.id" />">
-											<button type="button" id="findPw2Btn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 										</div>
+											<button type="button" id="findPw2Btn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
+									</div>
+									<div class="field">
 										<label><spring:message code="mail.title" /></label>
 										<div class="control">
 											<input type="text" class="input" id="email" name="email"

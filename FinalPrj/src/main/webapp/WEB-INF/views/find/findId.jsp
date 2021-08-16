@@ -113,7 +113,8 @@
 						<h3 class="form-subtitle has-text-centered"><spring:message code="id.title2" /></h3>
 
 						<!--Form-->
-						<div class="login-form">
+						<div id="signup-panel-1"
+						class="process-panel-wrap is-narrow is-active">
 							<div class="form-panel">
 								<form action="findID.do" method="post">
 									<div class="field">
@@ -121,10 +122,11 @@
 										<div class="control">
 											<input type="text" class="input" id="email" name="email"
 												placeholder="<spring:message code="enter.mail" />">
-											<button type="button" id="findIdBtn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 										</div>
+										<button type="button" id="findIdBtn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 									</div>
 								</form>
+								<br>
 								<form action="mailCheck2.do" method="post">
 									<div class="field">
 										<label><spring:message code="verification.title" /></label>
@@ -133,13 +135,9 @@
 												name="email_injeung" placeholder="<spring:message code="enter.verification" />">
 										</div>
 									</div>
-									<br>
 									<div class="buttons">
 										<a class="button is-solid primary-button is-fullwidth raised"
 											type="button" id="injeungBtn"><spring:message code="verification.button" /></a>
-										<!-- 
-                                <a class="button is-solid primary-button is-fullwidth raised" onclick="location.href='findID2.do'">button</a>
-                                 -->
 									</div>
 								</form>
 							</div>

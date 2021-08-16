@@ -54,11 +54,10 @@
                         <h3 class="form-subtitle has-text-centered"><spring:message code="id.title3" /></h3>
 
                         <!--Form-->
-                        <div class="login-form">
+                        <div id="signup-panel-1"
+						class="process-panel-wrap is-narrow is-active">
                             <div class="form-panel">
-                                <div class="field">
-                                    <h2>ID : ${id.user_id}</h2>
-                                </div>
+                            	<h2 style="text-align:center"><b>ID : ${id.user_id}</b></h2>
                             </div>
 						<br>
                             <div class="buttons">
