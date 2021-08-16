@@ -663,7 +663,7 @@
 												<p>${vo.content }</p>
 											</c:if>
 											<c:if test="${arrive_dt > today }">
-													<p><spring:message code="letter.to.msg"/></p>
+												<p><spring:message code="letter.to.msg"/></p>
 											</c:if>		
 											</div>
 										</div>
@@ -801,7 +801,7 @@
 	
 								<hr>
 								<div class="content">
-									<p>${vo.content }</p>
+									<p style="word-wrap:break-word; white-space: pre-line;">${vo.content }</p>
 									<input type="hidden" id="trans${status.index }" value="${vo.content }">
 									<input type="hidden" id="letter${vo.letter_id }" value="${vo.content }">
 									<div id="tdiv${status.index }"></div>

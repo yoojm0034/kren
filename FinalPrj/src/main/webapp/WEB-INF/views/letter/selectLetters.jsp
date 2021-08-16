@@ -817,7 +817,7 @@
 	
 								<hr>
 								<div class="content">
-									<p>${vo.content }</p>
+									<p style="word-wrap:break-word; white-space: pre-line;">${vo.content }</p>
 									<input type="hidden" id="trans${status.index }" value="${vo.content }">
 									<input type="hidden" id="letter${vo.letter_id }" value="${vo.content }">
 									<div id="tdiv${status.index }"></div>
