@@ -235,7 +235,7 @@ h5:hover {
 					        $('#replyA').append(div);
 					 }
 		    		 else if(data[i].type == 'letter') {
-		    			 	var userid = data[i].user_id;
+		    			 	var userid = data[i].name;
 					     	var letter = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'><spring:message code="push.letter" arguments="###"/></h5>"
 					     	letter = letter.replace('###',userid);
 					     	var div = $('<div class="media"></div>');
