@@ -99,6 +99,8 @@ public class UsersController {
 		model.addAttribute("photo", usersDao.userProfilePhoto(vo));
 		model.addAttribute("locale", locale.getLanguage());
 		
+		model.addAttribute("time", letterDao.letterDistance(vo));		
+		
 		return "users/profile";
 	} 
 	

@@ -69,4 +69,7 @@ public class UsersVO {
 	private String uuid;
 	private int file_size;
 	private String directory;
+	
+	//편지
+	private int distance;
 }

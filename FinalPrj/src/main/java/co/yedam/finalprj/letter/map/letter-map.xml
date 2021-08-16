@@ -220,5 +220,13 @@
 		UPDATE LETTER SET TO_DELETE = 'Y', FROM_DELETE = 'Y' 
 		WHERE LETTER_ID =#{letter_id}
 	</update>
+	
+	<!-- 프로필 -->
+	<select id="letterDistance" parameterType="co.yedam.finalprj.users.vo.UsersVO"
+	resultType="co.yedam.finalprj.users.vo.UsersVO">
+		SELECT <![CDATA[CASE WHEN #{user_id} <> #{session_id}
+						THEN trunc(cal(#{user_id},#{session_id}),0)
+						ELSE 0 END]]> AS distance FROM DUAL
+	</select>
 
 </mapper>

@@ -461,7 +461,31 @@ function writePopup() {
 									</c:when>
 									<c:otherwise>
 										<a class="button is-solid primary-button" id="btnLetter" onclick="writePopup()"><spring:message code="profile.letter"/></a>
-										<p class="arrow_box">편지가 20시간 후에 전달됩니다.</p>
+										<c:set var="letterDistance" value="${time.distance }"/>
+										<c:choose>
+											<c:when test="${letterDistance < 300 }">
+												<c:set var="letterTime" value="1"/>
+											</c:when>
+											<c:when test="${letterDistance < 2000 }">
+												<c:set var="letterTime" value="4"/>
+											</c:when>
+											<c:when test="${letterDistance < 4000 }">
+												<c:set var="letterTime" value="8"/>
+											</c:when>
+											<c:when test="${letterDistance < 6000 }">
+												<c:set var="letterTime" value="12"/>
+											</c:when>
+											<c:when test="${letterDistance < 8000 }">
+												<c:set var="letterTime" value="16"/>
+											</c:when>
+											<c:when test="${letterDistance < 10000 }">
+												<c:set var="letterTime" value="20"/>
+											</c:when>
+											<c:otherwise>
+												<c:set var="letterTime" value="24"/>
+											</c:otherwise>
+										</c:choose>
+										<p class="arrow_box"><spring:message code="profile.time" arguments="${letterTime }"/></p>
 										<div class="follow-area">
 											<c:choose>
 												<c:when test="${followCheck > 0}">
