@@ -12,17 +12,29 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <style>
+
+.inner-wrapper {
+	width: 60%;
+	margin: auto;
+}
+.title {
+	font-size:1.5rem;
+	font-weight: 600;
+	padding-top: 40px;
+}
 .pagination {
 	display: flex;
 	padding-left: 0;
 	list-style: none;
 	border-radius: .35rem;
+	padding-top: 3%;
+	
 }
 
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	margin: 2px 0;
 	white-space: nowrap;
-	justify-content: flex-end;
+	justify-content: center;
 }
 
 .page-link {
@@ -31,7 +43,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	padding: .5rem .75rem;
 	margin-left: -1px;
 	line-height: 1.25;
-	color: #4e73df;
+	color: #a2a2a5;
 	background-color: #fff;
 	border: 1px solid #dddfeb;
 }
@@ -50,12 +62,13 @@ tr:hover {
 	cursor: pointer;
 	background-color: silver;
 }
+.table th:not([align]){ text-align: center}
 </style>
 <script>
 	$(function() {
 		$("#table").DataTable({
 			// 표시 건수기능 숨기기
-			lengthChange : true,
+			lengthChange : false,
 			lengthMenu : [ 10, 20, 30, 40, 50 ],
 			// 검색 기능 숨기기
 			searching : true,
@@ -191,7 +204,7 @@ tr:hover {
 		</div>
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 80%">
+		<div class="inner-wrapper" style="width: 85%">
 			<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
 			<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
 			<button onclick="sendLetterPush('admin')" type="button">편지</button>
@@ -206,7 +219,6 @@ tr:hover {
 					<h2>회원관리</h2>
 				</div>
 			</div>
-
 			<div class="stories-container" id="page-top">
 				<form action="">
 					<!-- Page Wrapper -->
@@ -218,12 +230,12 @@ tr:hover {
 								<!-- Begin Page Content -->
 								<div class="container-fluid">
 									<!-- DataTales Example -->
-									<div class="card shadow mb-4">
+									<div class="card shadow mb-4" style="box-shadow: 0 0 19px 4px #b2b2b2;">
 										<div class="card-body">
 											<div class="table-responsive">
-												<table class="table table-bordered" id="table" 
+												<table class="table" id="table" 
 													style="width: 100%; cellspacing: 0;">
-													<thead>
+													<thead style="background-color: lightgray;">
 														<tr>
 															<th>이메일</th>
 															<th>아이디</th>
@@ -234,7 +246,7 @@ tr:hover {
 															<th>회원상태</th>
 														</tr>
 													</thead>
-													<tbody>
+													<tbody align="center">
 														<c:forEach items="${userList }" var="vo">
 															<tr>
 																<td>${vo.email}</td>

@@ -413,7 +413,9 @@ $(document).ready(function(){
 			tagval= tagval.replace(/#/g,",");
 		}
 		document.getElementById('tags').value = tagval;					
-		
+		console.log(feedId+" :  feedID 는 ")
+		if(feedId ==""){
+			
 		$.ajax({
 			url:"${pageContext.request.contextPath}/stamphFeedChk.do",
 			type:"POST",
@@ -427,6 +429,9 @@ $(document).ready(function(){
 				
 			}
 		});
+		}else{
+			$('#feedInsert').submit();	
+		}
 	});
 
 	//-------피드 Reset---------
@@ -497,7 +502,6 @@ $(document).ready(function(){
 
 	//-------최신글---------
 	$('#allSearch').on('click',function(){
-		$('#tagInput').hide();
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			success:function(result){
@@ -515,7 +519,6 @@ $(document).ready(function(){
 	
 	//-------내근처--------- 
 	$('#searchNear').on('click',function(){
-		$('#tagInput').hide();
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			data:{location : 'true' },
@@ -532,7 +535,6 @@ $(document).ready(function(){
 
 	//-------언어별 Ko---------
 	$('#searchKo').on('click',function(){
-		$('#tagInput').hide();
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			data:{write_lan : 'ko' },
@@ -550,7 +552,6 @@ $(document).ready(function(){
 
 	//-------언어별 En---------
 	$('#searchEn').on('click',function(){
-		$('#tagInput').hide();
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			data:{write_lan : 'en' },
@@ -656,6 +657,8 @@ $(document).ready(function(){
 							url:"${pageContext.request.contextPath}/feedSelect.do",
 							data:{tags : tagval },
 							success:function(result){
+								datePosdst();
+								loadMore();
 								$('.feedContents').html(result);
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
 							},

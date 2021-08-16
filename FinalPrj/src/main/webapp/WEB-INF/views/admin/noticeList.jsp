@@ -7,17 +7,28 @@
 <meta charset="UTF-8">
 <title>공지사항</title>
 <style>
+.inner-wrapper {
+	width: 60%;
+	margin: auto;
+}
+
+.title {
+	font-size:1.5rem;
+	font-weight: 600;
+	padding-top: 40px;
+}
 .pagination {
     display: flex;
     padding-left: 0;
     list-style: none;
     border-radius: .35rem;
+    padding-top: 3%;
 }
  
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     margin: 2px 0;
     white-space: nowrap;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .page-link {
@@ -26,7 +37,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     padding: .5rem .75rem;
     margin-left: -1px;
     line-height: 1.25;
-    color: #4e73df;
+    color: #a2a2a5;
     background-color: #fff;
     border: 1px solid #dddfeb;
 }
@@ -44,12 +55,13 @@ tr:hover {
 	cursor: pointer; 
 	background-color: silver;
 	}
+.table th:not([align]){ text-align: center}	
 </style>
 <script type="text/javascript">
  $(function(){
 			$("#table").DataTable({
 				// 표시 건수기능 숨기기
-				lengthChange : true,
+				lengthChange : false,
 				lengthMenu : [ 10, 20, 30, 40, 50 ],
 				// 검색 기능 숨기기
 				searching : true,
@@ -194,7 +206,7 @@ tr:hover {
 		</div>
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper"  style="width:80%">
+		<div class="inner-wrapper"  style="width:85%">
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
 			</a>
@@ -203,8 +215,11 @@ tr:hover {
 					<h2>공지사항</h2>
 				</div>
 			</div>
-
+			
 			<div class="stories-container" id="page-top">
+				<div align="right">
+				<button id="btnNotice" class="button grey-button" style="margin-bottom: 13px;">공지사항작성</button>
+				</div>
 				<form action="">
 					<!-- Page Wrapper -->
 					<div id="wrapper">
@@ -215,11 +230,11 @@ tr:hover {
 								<!-- Begin Page Content -->
 								<div class="container-fluid">
 									<!-- DataTales Example -->
-									<div class="card shadow mb-4">
+									<div class="card shadow mb-4" style="box-shadow: 0 0 10px 4px #b2b2b2;">
 										<div class="card-body">
 											<div class="table-responsive">
-												<table class="table table-bordered" id="table" style="width:100%;cellspacing:0;" >
-													<thead>
+												<table class="table" id="table" style="width:100%;cellspacing:0;" >
+													<thead style="background-color: #e2e1e1">
 														<tr>
 															<th>글번호</th>
 															<th width="50%">제목</th>
@@ -230,12 +245,12 @@ tr:hover {
 													</thead>
 													<tbody>
 														<c:forEach items="${noticeList }" var="vo">
-															<tr data-id="${vo.notice_id}">
-																<td>${vo.notice_id }</td>
+															<tr data-id="${vo.notice_id}" >
+																<td align="center">${vo.notice_id }</td>
 																<td>${vo.title }</td>
-																<td>${vo.reg_date }</td>
-																<td>관리자</td>
-																<td>${vo.hit }</td>
+																<td align="center">${vo.reg_date }</td>
+																<td align="center">관리자</td>
+																<td align="center">${vo.hit }</td>
 															</tr>
 														</c:forEach>
 													</tbody>
@@ -252,9 +267,7 @@ tr:hover {
 							<!-- End of Main Content -->
 				</form>
 			</div>
-			<div>
-				<button id="btnNotice" class="button grey-button">공지사항작성</button>
-			</div>
+			
 		</div>
 		<!-- 컨텐츠 종료 -->
 	</div>

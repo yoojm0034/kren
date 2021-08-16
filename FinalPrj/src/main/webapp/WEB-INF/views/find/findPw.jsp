@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +31,7 @@
 			var id = $('#id').val();
 			
 			if(id == ""){
-				alert('아이디를 입력하세요.');
+				alert('<spring:message code="id.check.alert1" />');
 				$('#id').focus();
 				return false;
 			}
@@ -42,13 +43,13 @@
 						if(res == true){
 							//이메일 입력창 떠야함
 							
-							alert('존재하는 회원 아이디입니다.');
+							alert('<spring:message code="id.check.alert3" />');
 						}else{
-							alert('존재하지 않는 회원 아이디입니다. 회원가입을 진행해주세요.');
+							alert('<spring:message code="id.check.alert2" />');
 						}
 					},
 					error: function(error){
-						alert('관리자에게 문의 요망');
+						alert('<spring:message code="check.alert" />');
 					}
 			});
 		});
@@ -61,7 +62,7 @@
 		  
 		//이메일 입력을 하지 않고 버튼을 누를 경우...
 		if(mail == ""){
-			alert('이메일을 입력하세요.');
+			alert('<spring:message code="mail.check.alert1" />');
 			$('#email').focus();
 			return false;
 		}
@@ -73,14 +74,14 @@
 				success: function(res){ //res= 컨트롤러에서 넘어오는 값
 					if(res == 1){
 						//회원정보와 동일한 이메일이 존재할 경우...
-						alert('임시 비밀번호가 이메일로 발송되었습니다.');
+						alert('<spring:message code="mail.check.alert.p" />');
 					}else{
 						//동일 이메일이 없을 경우...
-						alert('입력한 이메일 주소로 회원이 조회되지 않습니다. 회원가입을 진행해주세요.');
+						alert('<spring:message code="mail.check.alert2" />');
 					}
 				},
 				error: function(error){
-					alert('관리자에게 문의 요망');
+					alert('<spring:message code="check.alert" />');
 				}
 			});
 		});
@@ -102,32 +103,36 @@
                 <div class="columns is-vcentered">
                     <div class="column">
 
-                        <h2 class="form-title has-text-centered">Find PASSWORD</h2>
-                        <h3 class="form-subtitle has-text-centered">Checking your Email/ID.</h3>
+                        <h2 class="form-title has-text-centered"><spring:message code="pw.title" /></h2>
+                        <h3 class="form-subtitle has-text-centered"><spring:message code="pw.title2" /></h3>
 
                         <!--Form-->
                         <div class="login-form">
                             <div class="form-panel">
                                 <form action="findPW.do" method="post">
 									<div class="field">
-										<label>ID</label>
+										<label><spring:message code="id.check.title" /></label>
 										<div class="control">
 											<input type="text" class="input" id="id" name="id"
-												placeholder="Enter your ID">
-											<button type="button" id="findPw2Btn" class="button is-solid accent-button raised">Check</button>
+												placeholder="<spring:message code="enter.id" />">
+											<button type="button" id="findPw2Btn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 										</div>
-										<label>Email</label>
+										<label><spring:message code="mail.title" /></label>
 										<div class="control">
 											<input type="text" class="input" id="email" name="email"
-												placeholder="Enter your email address">
-											<button type="button" id="findPwBtn" class="button is-solid accent-button raised">Check</button>
+												placeholder="<spring:message code="enter.mail" />">
+											<button type="button" id="findPwBtn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 										</div>
 									</div>
 								</form>
                             </div>
+                            <br>
+                            <div class="account-link has-text-centered">
+                                <a href="findID.do"><spring:message code="forget.id" /></a>
+                            </div>
 							<br>
                             <div class="buttons">
-                                <a class="button is-solid primary-button is-fullwidth raised" href="${pageContext.request.contextPath}/home.do">Login</a>
+                                <a class="button is-solid primary-button is-fullwidth raised" href="${pageContext.request.contextPath}/home.do"><spring:message code="go.login.button" /></a>
                             </div>
                         </div>
                     </div>

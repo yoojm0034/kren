@@ -20,17 +20,28 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
+.inner-wrapper {
+	width: 60%;
+	margin: auto;
+}
+
+.title {
+	font-size:1.5rem;
+	font-weight: 600;
+	padding-top: 40px;
+}
 .pagination {
 	display: flex;
 	padding-left: 0;
 	list-style: none;
 	border-radius: .35rem;
+	padding-top: 3%;
 }
 
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	margin: 2px 0;
 	white-space: nowrap;
-	justify-content: flex-end;
+	justify-content: center;
 }
 
 .page-link {
@@ -39,7 +50,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 	padding: .5rem .75rem;
 	margin-left: -1px;
 	line-height: 1.25;
-	color: #4e73df;
+	color: #a2a2a5;
 	background-color: #fff;
 	border: 1px solid #dddfeb;
 }
@@ -58,12 +69,13 @@ tr:hover {
 	cursor: pointer;
 	background-color: silver;
 }
+.table th:not([align]){ text-align: center}
 </style>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#table").DataTable({
 			// 표시 건수기능 숨기기
-			lengthChange : true,
+			lengthChange : false,
 			lengthMenu : [ 10, 20, 30, 40, 50 ],
 			// 검색 기능 숨기기
 			searching : true,
@@ -203,7 +215,7 @@ tr:hover {
 		</div>
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 80%">
+		<div class="inner-wrapper" style="width: 85%">
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
 			</a>
@@ -223,12 +235,12 @@ tr:hover {
 								<!-- Begin Page Content -->
 								<div class="container-fluid">
 									<!-- DataTales Example -->
-									<div class="card shadow mb-4">
+									<div class="card shadow mb-4" style="box-shadow: 0 0 10px 4px #b2b2b2;">
 										<div class="card-body">
 											<div class="table-responsive">
-												<table class="table table-bordered" id="table"
+												<table class="table" id="table"
 													style="width: 100%; cellspacing: 0;">
-													<thead>
+													<thead style="background-color: #e2e1e1">
 														<tr>
 															<th>결제번호</th>
 															<th>유저ID</th>
@@ -237,7 +249,7 @@ tr:hover {
 
 														</tr>
 													</thead>
-													<tbody>
+													<tbody align="center">
 														<c:forEach items="${paymentList }" var="vo">
 															<tr>
 																<td>${vo.pay_id}</td>
