@@ -79,11 +79,11 @@ $(function () {
 	$('#save').on('click',function() {
 		content = $('#text').val();
 		if(content == "") {
-			alert('내용을 입력하세요.');
+			alert('<spring:message code="letter.alert.blank"/>');
 			$('#text').focus();
 			return ;
 		}
-		if(confirm("편지를 저장하시겠습니까?") ) {
+		if(confirm('<spring:message code="letter.confirm.save"/>') ) {
 		    $.ajax({
 		    	url:'${pageContext.request.contextPath}/insertLetter.do',
 		    	type:'post',
@@ -94,12 +94,12 @@ $(function () {
 		    	}),
 			    contentType : "application/json; charset=UTF-8",
 		    	success: function(data) {
-		    		alert('편지가 저장되었습니다.');
+		    		alert('<spring:message code="letter.save.success"/>');
 		    		opener.parent.location.href = '${pageContext.request.contextPath}/savedLetter.do';
 		    		window.close();
 		    	},
 		    	error: function(e) {
-		    		alert('저장실패');
+		    		alert('<spring:message code="letter.save.fail"/>');
 		    	}
 		    });		    	
 	    }
@@ -136,7 +136,7 @@ $(function () {
 			$(this).val(content.cut(10000));
 			$(this).get(0).focus();					
 			span.text('10000');
-			alert("최대 10000자까지 입력 가능합니다.");
+			alert('<spring:message code="letter.alert.max"/>');
 			return ;
 		}
 	});
