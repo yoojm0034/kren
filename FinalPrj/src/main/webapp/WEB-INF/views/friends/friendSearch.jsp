@@ -363,11 +363,10 @@ $(document).ready(function() {
  	 $('#country-op').on('change',function(){
 		 var enVal= this.value;
 		 var koVal= this.options[this.selectedIndex].text;
-
 	     if($('#append-op').children().length==5){
 	    	 return;
 	     }else{
-			 $('#append-op').append("<span class='append-label' id='"+enVal+"' onclick="+"'deleteCountry(\""+ koVal + "\")'>"+koVal+"</span>"); 
+			 $('#append-op').append("<span class='append-label' id='"+enVal+"' onclick="+"'deleteCountry(\""+ enVal + "\")'>"+koVal+"</span>"); 
 	     }
 	 });
 
@@ -375,11 +374,10 @@ $(document).ready(function() {
 	 $('#dcountry-op').on('change',function(){
 		 var enVal= this.value;
 		 var koVal= this.options[this.selectedIndex].text;
-
 	     if($('#append-dop').children().length==5){
 	    	 return;
 	     }else{
-	    	 $('#append-dop').append("<span class='append-label' id='dis"+enVal+"' onclick="+"'deleteCountry(\"dis"+ koVal + "\")'>"+koVal+"</span>");
+	    	 $('#append-dop').append("<span class='append-label' id='dis"+enVal+"' onclick="+"'deleteCountry(\"dis"+ enVal + "\")'>"+koVal+"</span>");
 	     }
 	 });	
 	 
@@ -486,8 +484,8 @@ $(document).ready(function() {
 });
 
 
-function deleteCountry(val) {
-	 $('#'+val).remove();
+function deleteCountry(value) {
+	$('#'+value).remove();
 };	
 </script>
 <body>

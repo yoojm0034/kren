@@ -446,7 +446,7 @@ $(function() {
 	
 								<hr>
 								<div class="content">
-									<table>
+									<table style="word-wrap:break-word; white-space: pre-line;">
 									<tr>
 									<td>
 										<spring:message code="letter.textarea.placeholder" var="placeholder1" />

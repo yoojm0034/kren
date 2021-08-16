@@ -110,7 +110,6 @@ public class UsersController {
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
 		vo.setSession_id(Sessionid);
-		
 		model.addAttribute("followingList", usersDao.followingList(vo));
 		return "no/users/followingList";
 	}
