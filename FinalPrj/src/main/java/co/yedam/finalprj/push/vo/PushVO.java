@@ -1,6 +1,5 @@
 package co.yedam.finalprj.push.vo;
 
-import org.springframework.web.socket.TextMessage;
 
 import lombok.Data;
 
@@ -15,5 +14,6 @@ public class PushVO {
 	private String url;
 	private String push_dt;
 	private String check_dt;
+	private String name;
 	
 }

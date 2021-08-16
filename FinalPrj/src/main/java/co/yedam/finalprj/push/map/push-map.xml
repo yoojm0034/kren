@@ -7,11 +7,13 @@
 	</insert>
 	
 	<select id="pushSelectList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.push.vo.PushVO">
-		select * 
-		from push
-		where check_dt is null
-		and to_id = #{user_id}
-		order by push_dt DESC
+		select a.name , b.*
+		from users a , (select * 
+		                from push
+		                where check_dt is null
+		                and to_id = #{user_id}
+		                order by push_dt DESC) b
+		where a.user_id = b.user_id
 	</select>
 	
 	<update id="updatePush" parameterType="co.yedam.finalprj.push.vo.PushVO">

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -15,6 +14,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import co.yedam.finalprj.push.service.PushService;
 import co.yedam.finalprj.push.vo.PushVO;
+import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 
@@ -22,6 +22,8 @@ import co.yedam.finalprj.users.vo.UsersVO;
 public class EchoHandler extends TextWebSocketHandler {
 	@Autowired
 	PushService pushDao;
+	@Autowired
+	UsersService usersDao;
 	
 	List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
 	// 로그인중인 개별유저
@@ -49,6 +51,7 @@ public class EchoHandler extends TextWebSocketHandler {
 			String[] strs = msg.split(",");
 			
 			PushVO vo = new PushVO();
+			UsersVO uvo = new UsersVO();
 			//댓글, 좋아요, 편지작성시
 			if(strs != null && strs.length == 4) {
 				String cmd = strs[0]; // 알람종류
@@ -60,6 +63,9 @@ public class EchoHandler extends TextWebSocketHandler {
 				System.out.println(users);
 				WebSocketSession boardWriterSession = users.get(receiver);
 				
+				//알람보내는사람 이름가져오기
+				uvo.setUser_id(caller);
+				uvo = usersDao.usersSelect(uvo);
 				
 				//댓글작성시
 				if("reply".equals(cmd) && boardWriterSession != null) {
@@ -75,7 +81,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect(vo);
-						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + caller + "님이 " + seq + " 번 게시글에 댓글을 달았습니다.</h5>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + uvo.getName() + "님이 " + seq + " 번 게시글에 댓글을 달았습니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 					
@@ -92,7 +98,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect(vo);
-						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + caller + "님이 " + seq + " 번 게시글을 좋아합니다.</h5>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + uvo.getName() + "님이 " + seq + " 번 게시글을 좋아합니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 				//댓글작성시
@@ -129,6 +135,10 @@ public class EchoHandler extends TextWebSocketHandler {
 				System.out.println(users);
 				WebSocketSession boardWriterSession = users.get(receiver);
 				
+				//알람보내는사람 이름가져오기
+				uvo.setUser_id(caller);
+				uvo = usersDao.usersSelect(uvo);
+				
 				if("follow".equals(cmd) && boardWriterSession != null) {
 					
 					vo.setTo_id(receiver);
@@ -140,7 +150,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect2(vo);
-						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + caller + "님이 " + receiver + " 님을 팔로우합니다.</h5>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + uvo.getName() + "님이 " + "팔로우를 신청했습니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 				}else if("follow".equals(cmd) && boardWriterSession == null) {
@@ -164,7 +174,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect2(vo);
-						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+ "'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + caller + "님으로부터 " + receiver + " 님에게 편지가 오고 있습니다.</h5>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+ "'data-uid='"+vo.getUser_id()+"'data-type='"+vo.getType()+"'>"  + uvo.getName() + "님으로부터 " + "편지가 오고 있습니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 				//상대가 접속안되었을때 DB에만 입력	

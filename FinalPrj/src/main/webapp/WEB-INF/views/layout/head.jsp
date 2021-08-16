@@ -177,7 +177,7 @@ h5:hover {
 		    	for(i=0 ; i < data.length ; i++) {
 							    		
 		    		 if(data[i].type == 'reply') {
-					        var rep = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + " <spring:message code="push.comment"/></h5>"
+					        var rep = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].name + " <spring:message code="push.comment"/></h5>"
 					        var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
 					        var h3 = $('<h5></h5>');
@@ -197,7 +197,7 @@ h5:hover {
 					        
 				     }
 		    		 else if(data[i].type == 'follow') {
-					     	var fol = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + " <spring:message code="push.follow"/></h5>"
+					     	var fol = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-uid='"+data[i].user_id+"'data-type='"+data[i].type+"'>" + data[i].name + " <spring:message code="push.follow"/></h5>"
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
 					        var h3 = $('<h5></h5>');
@@ -216,7 +216,7 @@ h5:hover {
 					        $('#replyA').append(div);
 					 }
 		    		 else if(data[i].type == 'like') {
-					     	var lik = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].user_id + " <spring:message code="push.like"/></h5>"
+					     	var lik = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].name + " <spring:message code="push.like"/></h5>"
 					     	var div = $('<div class="media"></div>');
 					        var div2 = $('<div class="media-content"></div>');
 					        var h3 = $('<h5></h5>');
@@ -357,6 +357,7 @@ h5:hover {
 	        div.append(div3);
 	        if(data.includes('편지')) {
 	        	$('#replyB').prepend(div);
+	        	$('#clearB').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 	        	toastr.options.escapeHtml = true;
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;
