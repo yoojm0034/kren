@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <jsp:useBean id="now" class="java.util.Date" />
 <style>
 .search-label {
@@ -50,7 +51,33 @@
 	src="${pageContext.request.contextPath}/resources/template/assets/js/autocompletes.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/template/assets/js/tour.js"></script>
-
+<script>
+//--------교정START--------------------------------------
+$(function() {
+	$("div[id^='load_'").each(function(i, el){
+		var cid = $(this).data('cid');//cc_id.line
+		var cdc = $(this).data('cdc');//content
+		var cdo = $(this).data('cdo');//origin
+		test_diff(cid,cdc,cdo);
+	});
+	
+	// 문자열 비교; diffButty.js; String
+	function test_diff(cid,dif,ori) {
+		var original = ori;
+		var revised = dif;
+		var output = $('<pre>');
+		var html = diffButty(original, revised);
+		output.html(html);
+		var div = $('div[data-cid="'+cid+'"]');
+		div.html(output);
+	} 
+	
+	//클릭이벤트
+	initPostComments();
+}
+	
+//--------교정END----------------------------------------
+</script>
 <div class="feedContents">
 	<c:forEach items="${feedList }" var="vo" varStatus="status">
 		<div id="feed-post-1" class="card is-post">
@@ -305,7 +332,7 @@
 			<!-- Header -->
 			<div class="comments-heading" data-card="${status.index }">
 				<h4>
-					Comments
+					<spring:message code="comment.h4.title"/>
 					<small>
 					<c:if test="${!empty vo.cmt and vo.cmt eq 0 }">(0)</c:if>
 					<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt})</c:if>
@@ -347,17 +374,25 @@
 						<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
 						<span class="time" id="cmt${cmt.comment_id }">
 						<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
-						</span>
-						<p>${cmt.content } </p>
 						<!-- Actions -->
 						<c:if test="${cmt.user_id eq user.user_id }">
 						<div class="controls">
 							<div class="edit">
 								<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
-								data-idx="${status.index }">삭제</a>
+								data-idx="${status.index }">
+								<svg
+									viewBox="0 0 24 24" width="15" height="15"
+									stroke="currentColor" stroke-width="2"
+									fill="none" stroke-linecap="round"
+									stroke-linejoin="round" class="css-i6dzq1">
+									<line x1="18" y1="6" x2="6" y2="18"></line>
+									<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+								</a>
 							</div>
 						</div>
 						</c:if>
+						</span>
+						<p>${cmt.content } </p>
 					</div>
 					<c:if test="${user.user_id ne cmt.user_id}">
 					<!-- Right side dropdown -->
@@ -373,52 +408,55 @@
 								</div>
 							</div>
 							<div class="dropdown-menu" role="menu">
-                                              <div class="dropdown-content">
-                                                  <div class="media">
-                                                  <table>
+                            <div class="dropdown-content">
+                                <div class="media">
+                                <table>
 	                        	<tr>
-                        		<td>
-                        		<input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물
-                        		</td>
+	                        		<td>
+	                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물"><spring:message code="comment.report.content"/></label>
+	                        		</td>
 	                        	</tr>
 	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공
-                        		</td>
+	                        		<td>
+										<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공"><spring:message code="comment.report.lie"/></label>
+	                        		</td>
 	                        	</tr>
 	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용
-                        		</td>
+	                        		<td>
+										<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용"><spring:message code="comment.report.sexual"/></label>
+	                        		</td>
 	                        	</tr>
 	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
-                        		</td>
+	                        		<td>
+										<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/></label>
+	                        		</td>
 	                        	</tr>
 	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방
-                        		</td>
+	                        		<td>
+										<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방"><spring:message code="letter.report.word"/></label>
+	                        		</td>
 	                        	</tr>
 	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타
-                        		</td>
+	                        		<td>
+										<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타"><spring:message code="letter.report.etc"/></label>
+	                        		</td>
 	                        	</tr>
 	                        	<tr>
-                        		<td>
-								<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
-		                        	   maxlength="30"></input>
-                        		</td>
+	                        		<td>
+									<spring:message code="comment.report.input.placeholder" var="cmt_placeholder" />								
+									<input data-rtxt="${cmt.comment_id }" placeholder="${cmt_placeholder }" hidden="true"
+			                        	   maxlength="30"></input>
+	                        		</td>
 	                        	</tr>
 	                        	</table>
-                                                  </div>
-                                                  <div class="dropdown-divider"></div>
-		                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } 차단
-								<button id="rbtn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
-                                              </div>
-                                          </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+		                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } <spring:message code="comment.report.block"/>
+								<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
+								<spring:message code="comment.report.btn"/>
+								</button>
+                              </div>
+                          </div>
 						</div>
 					</div>
 					<!-- /Right side dropdown -->
@@ -442,6 +480,17 @@
 						<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
 						<span class="time" id="cmt${cmt.comment_id }">
 						<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
+						<!-- Actions -->
+						<c:if test="${cmt.user_id eq user.user_id }">
+						<div class="controls">
+							<div class="edit">
+								<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
+								data-idx="${status.index }">
+								<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+								</a>
+							</div>
+						</div>
+						</c:if>
 						</span>
 						<!-- 교정댓글이면, line을 반복 -->
 						<c:forEach items="${cdList }" var="cd" varStatus="stat">
@@ -451,15 +500,6 @@
 							data-cdo="${cd.origin }">${cd.content }</div>
 							</c:if>
 						</c:forEach>
-						<!-- Actions -->
-						<c:if test="${cmt.user_id eq user.user_id }">
-						<div class="controls">
-							<div class="edit">
-								<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
-								data-idx="${status.index }">삭제</a>
-							</div>
-						</div>
-						</c:if>
 					</div>
 					<c:if test="${user.user_id ne cmt.user_id}">
 					<!-- Right side dropdown -->
@@ -475,52 +515,55 @@
 								</div>
 							</div>
 							<div class="dropdown-menu" role="menu">
-                                              <div class="dropdown-content">
-                                                  <div class="media">
-                                                  <table>
-						                        	<tr>
-					                        		<td>
-					                        		<input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물">스팸 게시물
-					                        		</td>
-						                        	</tr>
-						                        	<tr>
-					                        		<td>
-													<input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공">가짜정보 제공
-					                        		</td>
-						                        	</tr>
-						                        	<tr>
-					                        		<td>
-													<input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용">성적인 내용
-					                        		</td>
-						                        	</tr>
-						                        	<tr>
-					                        		<td>
-													<input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용">데이트가 목적인 내용
-					                        		</td>
-						                        	</tr>
-						                        	<tr>
-					                        		<td>
-													<input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방">욕설/비방
-					                        		</td>
-						                        	</tr>
-						                        	<tr>
-					                        		<td>
-													<input type="radio" id="msg" name="${cmt.comment_id }" value="기타">기타
-					                        		</td>
-						                        	</tr>
-						                        	<tr>
-					                        		<td>
-													<input data-rtxt="${cmt.comment_id }" placeholder="신고이유" hidden="true"
-							                        	   maxlength="30"></input>
-					                        		</td>
-						                        	</tr>
-						                        	</table>
-                                                  </div>
-                                                  <div class="dropdown-divider"></div>
-		                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } 차단
-								<button id="rbtn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">신고</button>
-                                              </div>
-                                          </div>
+                            <div class="dropdown-content">
+                                <div class="media">
+                                <table>
+		                        	<tr>
+		                       		<td>
+		                       		<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물"><spring:message code="comment.report.content"/></label>
+		                       		</td>
+		                        	</tr>
+		                        	<tr>
+		                       		<td>
+									<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공"><spring:message code="comment.report.lie"/></label>
+		                       		</td>
+		                        	</tr>
+		                        	<tr>
+		                       		<td>
+									<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용"><spring:message code="comment.report.sexual"/></label>
+		                       		</td>
+		                        	</tr>
+		                        	<tr>
+		                       		<td>
+									<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/></label>
+		                       		</td>
+		                        	</tr>
+		                        	<tr>
+		                       		<td>
+									<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방"><spring:message code="letter.report.word"/></label>
+		                       		</td>
+		                        	</tr>
+		                        	<tr>
+		                       		<td>
+									<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타"><spring:message code="letter.report.etc"/></label>
+		                       		</td>
+		                        	</tr>
+		                        	<tr>
+		                       		<td>
+									<spring:message code="comment.report.input.placeholder" var="cmt_placeholder" />	
+									<input data-rtxt="${cmt.comment_id }" placeholder="${cmt_placeholder}" hidden="true"
+			                        	   maxlength="30"></input>
+		                       		</td>
+		                        	</tr>
+		                        	</table>
+                                </div>
+                                <div class="dropdown-divider"></div>
+		                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } <spring:message code="comment.report.block"/>
+								<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
+								<spring:message code="comment.report.block"/>
+								</button>
+                                </div>
+                            </div>
 						</div>
 					</div>
 					<!-- /Right side dropdown -->
@@ -545,8 +588,9 @@
 					<div class="media-content">
 						<div class="field">
 							<p class="control">
+								<spring:message code="comment.textarea.placeholder" var="cmt_text_placeholder" />
 								<textarea data-content="${vo.feed_id }" class="textarea comment-textarea" rows="5"
-									placeholder="Write a comment..."></textarea>
+									placeholder="${cmt_text_placeholder }"></textarea>
 							</p>
 						</div>
 						<!-- Additional actions -->
@@ -558,7 +602,9 @@
 									data-user-popover="0" alt="">
 							</div>
 							<div class="toolbar">
-								<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-feeduser="${vo.user_id }" data-scr="${status.index }">Post Comment</a>
+								<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-feeduser="${vo.user_id }" data-scr="${status.index }">
+								<spring:message code="comment.btn.send"/>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -591,4 +637,5 @@
 		});
 	}
 	dateCmt();
+
 </script>
