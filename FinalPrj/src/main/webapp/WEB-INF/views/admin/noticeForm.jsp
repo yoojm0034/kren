@@ -167,13 +167,10 @@
 					</div>
 
 					<div align="center">
-						<button type="reset" class="button">작성취소</button>
-						<button type="submit" class="button">작성하기</button>
-						<br>
-					</div>
-					<div align="right">
 						<button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/noticeList.do'"
 							class="button">목록으로</button>
+						<button type="submit" class="button">작성하기</button>
+						<br>
 					</div>
 				</form>
 			</div>

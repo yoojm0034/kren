@@ -204,7 +204,7 @@
 		</div>
 		<!-- 사이드바 종료 -->
             <!-- 컨텐츠 시작 -->
-            <div class="inner-wrapper" style="width:80%">
+            <div class="inner-wrapper" style="width:85%">
                 <a class="mobile-sidebar-trigger is-home-v2">
                     <i data-feather="menu"></i>
                 </a>
