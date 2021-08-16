@@ -454,6 +454,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -510,6 +511,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -527,6 +529,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -544,6 +547,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -561,6 +565,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -664,6 +669,7 @@ $(document).ready(function(){
 							success:function(result){
 								//datePosdst();
 								loadMore();
+								initPostComments();
 								$('.feedContents').html(result);
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
 							},
