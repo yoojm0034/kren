@@ -3,10 +3,16 @@
 <mapper namespace="co.yedam.finalprj.stamph.map.StamphMap">
 	
 	<select id="stamphSelectList" resultType="co.yedam.finalprj.stamph.vo.StamphVO" parameterType="co.yedam.finalprj.stamph.vo.StamphVO">
-		SELECT *
-		FROM stamph
-		WHERE USER_ID = #{user_id}
-		order by SH_DT DESC
+		<![CDATA[
+		SELECT rownum, USER_ID, SH_TYPE, SH_DT, STAMPH_ID, CNT, TO_ID 
+		FROM (
+          		SELECT USER_ID, SH_TYPE, SH_DT, STAMPH_ID, CNT, TO_ID
+          		FROM stamph
+          		WHERE USER_ID = #{user_id}
+          		order by SH_DT DESC
+			 )
+		where rownum < 16
+		]]>
 	</select>
 
 	<select id="stamphLoginCheck" parameterType="co.yedam.finalprj.stamph.vo.StamphVO" resultType="int">
