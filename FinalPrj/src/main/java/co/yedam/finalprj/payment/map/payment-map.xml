@@ -29,7 +29,7 @@
 	<select id="yearSales" resultType="int">
 		select sum(price) 
 		from payment  
-		where pay_dt BETWEEN TO_CHAR(TRUNC(SYSDATE, 'yyyy') ,'yy/mm/dd') AND ADD_MONTHS (TRUNC (SYSDATE, 'YEAR'), 12) - 1 
+		where pay_dt BETWEEN TO_DATE(TRUNC(SYSDATE, 'yyyy') ,'yy/mm/dd') AND ADD_MONTHS (TRUNC (SYSDATE, 'YEAR'), 12) - 1 
 	</select>
 	
 </mapper>
