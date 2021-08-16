@@ -2028,7 +2028,7 @@ $(document).ready(function(){
 													</span>
 													<p style="color: #525252">${cmt.content } </p>
 												</div>
-												<c:if test="${user.user_id ne cmt.user_id}">
+												<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 												<!-- Right side dropdown -->
 												<div class="media-right">
 													<div
@@ -2138,7 +2138,7 @@ $(document).ready(function(){
 														</c:if>
 													</c:forEach>
 												</div>
-												<c:if test="${user.user_id ne cmt.user_id}">
+												<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 												<!-- Right side dropdown -->
 												<div class="media-right">
 													<div
@@ -2188,7 +2188,7 @@ $(document).ready(function(){
 								                        	<tr>
 								                        		<td>
 																	<spring:message code="comment.report.input.placeholder" var="cmt_placeholder" />
-																	<input data-rtxt="${cmt.comment_id }" placeholder="cmt_placeholder" hidden="true"
+																	<input data-rtxt="${cmt.comment_id }" placeholder="${cmt_placeholder}" hidden="true"
 										                        	   maxlength="30"></input>
 								                        		</td>
 								                        	</tr>

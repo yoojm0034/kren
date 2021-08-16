@@ -40,6 +40,18 @@
 
 </head>
 <style>
+.navbar-v1 {
+    height: auto;
+}
+.navbar-item.is-icon .icon-link svg {
+    width: 20px;
+    height: 20px;
+    stroke: #777;
+    stroke-width: 2px;
+}
+.options-nav.no-shadow {
+    margin-top: 11px;
+}
 .options-nav {
 	position: fixed;
 	left: 0;
@@ -68,7 +80,9 @@
 	transition: all .3s;
 	z-index: 2;
 }
-
+.input .textFilter-input{
+    width: auto;
+}
 .friends-wrapper {
 	position: relative;
 	margin: 0 auto;

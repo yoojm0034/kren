@@ -7,7 +7,6 @@
 	font-family: 'ONE-Mobile-Regular';
 	font-weight: 500;
 }
-
 </style>
 <div style="padding: 0px 12px 0px 12px;">
 	<div class="container is-custom">
@@ -16,6 +15,9 @@
 				<div id="profile-timeline-widgets" class="column is-8">
 					<div class="box-heading">
 						<h4><spring:message code="stamph.history"/></h4>
+						<h5 style="color: gray">
+							<span class="has-price"><spring:message code="stamph.guide"/></span>
+						</h5>
 					</div>
 					<br>
 					<div class="cart-content">
@@ -72,5 +74,4 @@
 			</div>
 		</div>
 	</div>
-</div>
 </div>

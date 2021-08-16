@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,7 +77,7 @@
 			<div class="cart-container">
 				<div class="cart-header">
 					<div class="header-inner">
-						<h2>STAMP SHOP</h2>
+						<h2><spring:message code="stamp.shop.title"/></h2>
 						<div class="header-actions"></div>
 					</div>
 				</div>
@@ -90,11 +91,11 @@
 									<div class="flex-table-item" id="stampId">
 										<div class="product">
 											<img src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png"> <span
-												class="product-name">마음을 담은 우표</span>
+												class="product-name"><spring:message code="stamp.name"/></span>
 										</div>
 
 										<div class="discount">
-											<span class="has-price" id="cnt">X${vo.cnt}개</span>
+											<span class="has-price" id="cnt">X${vo.cnt}<spring:message code="stamp.cnt"/></span>
 										</div>
 
 										<div class="price">
@@ -104,26 +105,22 @@
 										<div>
 											<button id="check_module" 
 											data-id="${vo.stamp_id}" data-pay="${vo.pay}" data-cnt="${vo.cnt}" 
-											class="button is-solid accent-button raised">Buy</button>
+											class="button is-solid accent-button raised"><spring:message code="stamp.buy.button"/></button>
 										</div>
 									</div>
 								</div>
 							</c:forEach>
-							<div class="continue-shopping">
-                            	<input type="button" value="Continue Shopping" onClick="history.go(-1)">
-                            </div>
-							
 						</div>
 						<div class="column is-4">
                             <div class="cart-summary">
                                 <div class="summary-header">
-                                    <h3>STATUS OF MY STAMP RETENTION</h3>
+                                    <h3><spring:message code="stamp.my"/></h3>
                                 </div>
 
                                 <!--card-->
                                 <div class="summary-card">
                                     <div class="order-line">
-                                        <h4 style="color:black">stamp</h4>
+                                        <h4 style="color:black"><spring:message code="stamp.my.title"/></h4>
                                         <h4 style="color:blue">${user.stamp}</h4>
                                     </div>
                                 </div>
@@ -131,8 +128,8 @@
                                     <!--card-->
                                     <div class="summary-card">
                                         <img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" alt="">
-                                        <h4>Accrual Event</h4>
-                                        <p>현재 진행 중인 우표적립 이벤트가 없습니다.</p>
+                                        <h4><spring:message code="stamp.event.title"/></h4>
+                                        <p><spring:message code="stamp.event"/></p>
                                     </div>
                                 </div>
                             </div>

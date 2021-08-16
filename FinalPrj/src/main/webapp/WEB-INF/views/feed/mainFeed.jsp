@@ -413,7 +413,9 @@ $(document).ready(function(){
 			tagval= tagval.replace(/#/g,",");
 		}
 		document.getElementById('tags').value = tagval;					
-		
+		console.log(feedId+" :  feedID 는 ")
+		if(feedId ==""){
+			
 		$.ajax({
 			url:"${pageContext.request.contextPath}/stamphFeedChk.do",
 			type:"POST",
@@ -427,6 +429,9 @@ $(document).ready(function(){
 				
 			}
 		});
+		}else{
+			$('#feedInsert').submit();	
+		}
 	});
 
 	//-------피드 Reset---------
@@ -441,8 +446,6 @@ $(document).ready(function(){
 	//-------태그라벨---------
 	$('.tag-label').on('click',function(){
 		var tagName = this.id;
-		console.log(tagName);
-		console.log('왜');
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do" ,
 			data:{tags : tagName},
@@ -458,18 +461,22 @@ $(document).ready(function(){
 	});
 	
    //-------태그등록---------
-   var maxAppend = 0;
    document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
    function tagFunction() {
+	  var div= $('#append_tag');
       if(event.keyCode==13){
           var tagval = $('#activities-autocpl').val();
           if(!tagval) {
             alert('태그를 입력해 주세요!');
          }else{
-            if (maxAppend >= 5) return; 
-            $('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
-            $('#activities-autocpl').val('');
-            maxAppend++;
+        	 
+			if(div.children().length == 5){
+				return;
+			}else{
+				div.append('<span class="tagDelete">#' + tagval+ ' </span>');
+			}
+            	$('#activities-autocpl').val('');
+        	 
             $.ajax({
                url: "tagInsert.do" ,
                type: "POST",
@@ -490,7 +497,6 @@ $(document).ready(function(){
       
      $('.tagDelete').on('click', function () {
          $( this ).remove(); 
-         maxAppend--;
      });
    }
 
@@ -580,8 +586,6 @@ $(document).ready(function(){
 	//-------태그자동완성---------
 	if ($('#activities-autocpl').length) {
 		var data1 = $(this);
-		console.log(data1);
-		console.log(this);
 	    var html = '';
 	    var activitiesOptions = {
 	      url: "${pageContext.request.contextPath}/autocpl.do",
@@ -610,9 +614,12 @@ $(document).ready(function(){
 
 	//-------태그검색---------
 	$('#searchTag').on('click',function(){
-		var display = $("#SearchDiv").css('display');
-		if(display == "none"){
-			$("#SearchDiv").css('display', 'block'); 
+		  	var input = $('#tagInput').attr("class");
+		  	if(input=="input is-hidden"){
+		  		$('#tagInput').removeClass('is-hidden').addClass('is-active');
+		  	}else{
+		  		$('#tagInput').removeClass('is-active').addClass('is-hidden');
+		  	}
 			if ($('#tagInput').length) {
 			    var html = '';
 			    var activitiesOptions = {
@@ -650,8 +657,10 @@ $(document).ready(function(){
 							url:"${pageContext.request.contextPath}/feedSelect.do",
 							data:{tags : tagval },
 							success:function(result){
-								console.log('태그검색결과');
+								datePosdst();
+								loadMore();
 								$('.feedContents').html(result);
+								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
 							},
 							error:function(err){
 								console.log(err);
@@ -660,9 +669,7 @@ $(document).ready(function(){
 					}
 				}
 			};
-		}else{
-			$("#SearchDiv").css('display', 'none'); 
-		}
+
 	});
 	
 	//---------피드신고---------
@@ -1681,9 +1688,8 @@ $(document).ready(function(){
 						<div class="menu" id="searchKo">한국어</div>
 						<div class="menu" id="searchEn">영어</div>
 
-						<div id="SearchDiv" class="control has-margin"
-							style="display: none;">
-							<input type="text" id="tagInput" class="input"
+						<div id="SearchDiv" class="control has-margin">
+							<input class="input is-hidden" type="text" id="tagInput"
 								placeholder="태그를 입력해 주세요">
 							<div class="icon">
 								<i data-feather="search"></i>
@@ -2238,7 +2244,7 @@ $(document).ready(function(){
 								</div>
 							</c:forEach>
 							<!------------------------ 포스트 끝 ------------------------->
-							<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
+							<div class="load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
 								<a href="javascript:;" class="load-more-button">Load More</a>
 							</div>
 						</div>

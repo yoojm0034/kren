@@ -3,6 +3,7 @@ package co.yedam.finalprj.feed.web;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import co.yedam.finalprj.commentDetail.service.CommentDetailService;
 import co.yedam.finalprj.comments.service.CommentsService;
@@ -109,97 +111,95 @@ public class FeedController {
 	}
 	
 	//피드등록,수정 
-	@RequestMapping("feedInsert.do")
-	public String feedInsert(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) throws IllegalStateException, IOException{
-		User user = (User) auth.getPrincipal();
-		String id = (String) user.getUsername();
-		String feedId = request.getParameter("feedid");
-		String updateChk = request.getParameter("photoChk");
-		String stampMessage="";
-		MultipartFile file = vo.getFile();	
-		
-		vo.setWrite_lan(vo.getContent());
-		String findLan= lanDao.transLan(vo);// 서비스에서 일을 진행 할 예정
-		findLan= findLan.substring(13, 15);
-
-	    vo.setWrite_lan(findLan);
-	    vo.setUser_id(id);
-	    
-		if(feedId.equals("")) {
+		@RequestMapping("feedInsert.do")
+		public String feedInsert(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) throws IllegalStateException, IOException{
+			User user = (User) auth.getPrincipal();
+			String id = (String) user.getUsername();
+			String feedId = request.getParameter("feedid");
+			String updateChk = request.getParameter("photoChk");
+			MultipartFile file = vo.getFile();	
 			
-			if(!file.isEmpty()) {
-				String fileName = file.getOriginalFilename();
-				String ext = null;
+			vo.setWrite_lan(vo.getContent());
+			String findLan= lanDao.transLan(vo);// 서비스에서 일을 진행 할 예정
+			findLan= findLan.substring(13, 15);
 
-				int fileSize = (int) file.getSize();
-				int dot = fileName.lastIndexOf(".");
+		    vo.setWrite_lan(findLan);
+		    vo.setUser_id(id);
+
+			if(feedId.equals("")) {
 				
-				if(dot != -1) {
-					ext = fileName.substring(dot);
+				if(!file.isEmpty()) {
+					String fileName = file.getOriginalFilename();
+					String ext = null;
+
+					int fileSize = (int) file.getSize();
+					int dot = fileName.lastIndexOf(".");
+					
+					if(dot != -1) {
+						ext = fileName.substring(dot);
+					}else {
+						ext = "";
+					}
+
+					UUID uuid = UUID.randomUUID();
+					String fileUUID = uuid.toString() + ext;
+					String path = request.getServletContext().getRealPath("/resources/upload/");
+					
+					vo.setOriginal_name(fileName);
+					vo.setFile_size(fileSize);
+					vo.setDirectory(path);
+					vo.setUuid(fileUUID);
+					file.transferTo(new File(path, fileUUID));
+					
+					feedDao.feedInsert(vo);
 				}else {
-					ext = "";
-				}
-
-				UUID uuid = UUID.randomUUID();
-				String fileUUID = uuid.toString() + ext;
-				String path = request.getServletContext().getRealPath("/resources/upload/");
-				
-				vo.setOriginal_name(fileName);
-				vo.setFile_size(fileSize);
-				vo.setDirectory(path);
-				vo.setUuid(fileUUID);
-				file.transferTo(new File(path, fileUUID));
-				
-				feedDao.feedInsert(vo);
-			}else {
-				  feedDao.feedInsert(vo);
-			}
-			
-		}else {
-			
-			String feedid = request.getParameter("feedid");
-			String photo = request.getParameter("photo");
-			vo.setFeed_id(feedid);
-			
-			if(!file.isEmpty()) {
-				String fileName = file.getOriginalFilename();		
-				String ext = null;
-				int fileSize = (int) file.getSize();
-				int dot = fileName.lastIndexOf(".");
-	
-				if(dot != -1) {
-					ext = fileName.substring(dot);
-				}else {
-					ext = "";
+					  feedDao.feedInsert(vo);
 				}
 				
-				UUID uuid = UUID.randomUUID();
-				String fileUUID = uuid.toString() + ext;
-				String path = request.getServletContext().getRealPath("/resources/upload/");
-		
-				vo.setFile_size(fileSize);
-				vo.setDirectory(path);
-				vo.setUuid(fileUUID);
-				vo.setOriginal_name(fileName);
-				
-				file.transferTo(new File(path, fileUUID));
-				feedDao.feedUpdate(vo);
-				 
 			}else {
 				
-				if(updateChk.equals("")) {
-					vo.setPhoto(photo);
-					feedDao.feedUpdate(vo);		
-				}else {
-					vo.setPhoto(null);
+				String feedid = request.getParameter("feedid");
+				String photo = request.getParameter("photo");
+				vo.setFeed_id(feedid);
+				
+				if(!file.isEmpty()) {
+					String fileName = file.getOriginalFilename();		
+					String ext = null;
+					int fileSize = (int) file.getSize();
+					int dot = fileName.lastIndexOf(".");
+		
+					if(dot != -1) {
+						ext = fileName.substring(dot);
+					}else {
+						ext = "";
+					}
+					
+					UUID uuid = UUID.randomUUID();
+					String fileUUID = uuid.toString() + ext;
+					String path = request.getServletContext().getRealPath("/resources/upload/");
+			
+					vo.setFile_size(fileSize);
+					vo.setDirectory(path);
+					vo.setUuid(fileUUID);
+					vo.setOriginal_name(fileName);
+					
+					file.transferTo(new File(path, fileUUID));
 					feedDao.feedUpdate(vo);
+					 
+				}else {
+					
+					if(updateChk.equals("")) {
+						vo.setPhoto(photo);
+						feedDao.feedUpdate(vo);		
+					}else {
+						vo.setPhoto(null);
+						feedDao.feedUpdate(vo);
+					}
 				}
 			}
+			
+			return "redirect:feed.do";
 		}
-		
-		return "redirect:feed.do";
-	}
-	
 	//피드삭제
 	@RequestMapping("feedDelete.do")
 	public String feedDelete(FeedVO vo, Model model) {
