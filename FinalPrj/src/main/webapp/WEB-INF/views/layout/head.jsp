@@ -464,7 +464,7 @@ h5:hover {
 					<li><a href="${pageContext.request.contextPath}/feed.do"><spring:message code="head.feed"/></a></li>
 					<li><a href="${pageContext.request.contextPath}/friendSearch.do"><spring:message code="head.friends"/></a></li>
 					<li><a href="${pageContext.request.contextPath}/letterBox.do"><spring:message code="head.letter"/></a></li>
-					<li><a href="${pageContext.request.contextPath}/aboutus.do"><spring:message code="head.notice"/></a></li>
+					<li><a href="${pageContext.request.contextPath}/userNoticeList.do"><spring:message code="head.notice"/></a></li>
 					<c:if test="${user.user_id eq 'admin' }">
 						<li><a href="${pageContext.request.contextPath}/admin/admin.do">관리자</a></li>
 					</c:if>

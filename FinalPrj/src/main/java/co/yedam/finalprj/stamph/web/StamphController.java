@@ -67,6 +67,4 @@ public class StamphController {
 		}
 		return n;
 	}
-
-	
 }

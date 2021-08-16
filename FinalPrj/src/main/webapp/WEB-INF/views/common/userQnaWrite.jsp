@@ -45,13 +45,23 @@
 	max-width: none;
 }
 
+.settings-wrapper {
+    box-shadow: 0 0 19px 4px #b2b2b2;
+}
+
+.title {
+	font-family: 'ONE-Mobile-Regular';
+    color: #616161;
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding: 15px 0 15px 0;
+}
 </style>
 </head>
 <body>
 	<div class="view-wrapper is-full" >
-
 		<!-- 컨텐츠 시작 -->
-		<div class="inner-wrapper" style="width: 80%">
+		<div class="inner-wrapper" style="width: 60%; margin:auto; padding-top: 40px;">
 
 			<div class="settings-wrapper">
 				<form id="frm" action="${pageContext.request.contextPath}/userQnaInsert.do" enctype="multipart/form-data" method="post">
@@ -61,7 +71,7 @@
 							<div class="title-wrap">
 								<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 								</a>
-								<h2 style="	font-family: 'ONE-Mobile-Regular'; color: #696969; font-weight: 600">문의하기</h2>
+								<p class="title">문의하기</p>
 							</div>
 
 							<div class="settings-form-wrapper">
@@ -94,8 +104,8 @@
 											<div class="field field-group">
 												<div class="control">
 												<label>Content</label>
-													<textarea type="text" class="textarea is-fade" rows="8"
-														placeholder="여기에 내용을 작성해 주세요" required="required" id="content" name="content"></textarea>
+													<textarea class="textarea is-fade" rows="8" placeholder="여기에 내용을 작성해 주세요" 
+													required="required" id="content" name="content" style="resize: none;"></textarea>
 												</div>
 											</div>
 										</div>
