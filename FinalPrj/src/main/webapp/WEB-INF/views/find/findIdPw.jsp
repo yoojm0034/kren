@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,24 +39,24 @@
                 <div class="columns is-vcentered">
                     <div class="column">
 
-                        <h2 class="form-title has-text-centered">forgot ID/password?</h2>
-                        <h3 class="form-subtitle has-text-centered">Choose between Find ID and Find Password.</h3>
+                        <h2 class="form-title has-text-centered"><spring:message code="findIdPw.title" /></h2>
+                        <h3 class="form-subtitle has-text-centered"><spring:message code="findIdPw.title2" /></h3>
 
                         <!--Form-->
                         <div class="login-form">
 
                             <div class="buttons">
                                 <a class="button is-solid primary-button is-fullwidth raised"
-                                type="button" onclick="location.href='findID.do'">Find ID</a>
+                                type="button" onclick="location.href='findID.do'"><spring:message code="findIdPw.button.id" /></a>
                             </div>
                             
                             <div class="buttons">
                                 <a class="button is-solid primary-button is-fullwidth raised"
-                                type="button" onclick="location.href='findPW.do'">Find Password</a>
+                                type="button" onclick="location.href='findPW.do'"><spring:message code="findIdPw.button.pw" /></a>
                             </div>
 
                             <div class="account-link has-text-centered">
-                                <a href="${pageContext.request.contextPath}/userQnaWrite.do">Having trouble? Please press our Help Center. for a quick answer to your problem.</a>
+                                <a href="${pageContext.request.contextPath}/userQnaWrite.do"><spring:message code="find.trouble" /></a>
                             </div>
                         </div>
                     </div>
