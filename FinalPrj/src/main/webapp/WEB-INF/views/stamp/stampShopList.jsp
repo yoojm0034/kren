@@ -110,13 +110,14 @@
 									</div>
 								</div>
 							</c:forEach>
+							<a href="javascript:history.back();" class="button is-solid dark-grey-button raised"
+							style="font-size: 1rem; width: 200px;"><spring:message code="stamp.back.button" /></a>
 						</div>
 						<div class="column is-4">
                             <div class="cart-summary">
                                 <div class="summary-header">
                                     <h3><spring:message code="stamp.my"/></h3>
                                 </div>
-
                                 <!--card-->
                                 <div class="summary-card">
                                     <div class="order-line">

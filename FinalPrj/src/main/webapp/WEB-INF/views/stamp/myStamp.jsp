@@ -7,6 +7,10 @@
 	font-family: 'ONE-Mobile-Regular';
 	font-weight: 500;
 }
+.x-small {
+	font-size: small;
+	color: gray;
+}
 </style>
 <div style="padding: 0px 12px 0px 12px;">
 	<div class="container is-custom">
@@ -14,10 +18,14 @@
 			<div class="columns profile-contents">
 				<div id="profile-timeline-widgets" class="column is-8">
 					<div class="box-heading">
-						<h4><spring:message code="stamph.history"/></h4>
-						<h5 style="color: gray">
-							<span class="has-price"><spring:message code="stamph.guide"/></span>
-						</h5>
+						<h4>
+							<b>
+								<spring:message code="stamph.history" />
+							</b>
+						</h4>
+						<p class="x-small"> 
+							<spring:message code="stamph.guide" />
+						</p>
 					</div>
 					<br>
 					<div class="cart-content">
@@ -31,18 +39,22 @@
 										</div>
 										<div class="discount"
 											style="width: 60%; justify-content: left; padding-left: 12px">
-												<c:if test="${vo.sh_type eq '편지작성' }">
-													<span class="has-price" id="sh_type"><spring:message code="stamph.letter" arguments="${vo.to_id}"/></span>
-												</c:if>
-												<c:if test="${vo.sh_type eq '출석체크' }">
-													<span class="has-price" id="sh_type"><spring:message code="stamph.login"/></span>
-												</c:if>
-												<c:if test="${vo.sh_type eq '게시글작성' }">
-													<span class="has-price" id="sh_type"><spring:message code="stamph.post"/></span>
-												</c:if>
-												<c:if test="${vo.sh_type eq '구매' }">
-													<span class="has-price" id="sh_type"><spring:message code="stamph.pay"/></span>
-												</c:if>
+											<c:if test="${vo.sh_type eq '편지작성' }">
+												<span class="has-price" id="sh_type"><spring:message
+														code="stamph.letter" arguments="${vo.to_id}" /></span>
+											</c:if>
+											<c:if test="${vo.sh_type eq '출석체크' }">
+												<span class="has-price" id="sh_type"><spring:message
+														code="stamph.login" /></span>
+											</c:if>
+											<c:if test="${vo.sh_type eq '게시글작성' }">
+												<span class="has-price" id="sh_type"><spring:message
+														code="stamph.post" /></span>
+											</c:if>
+											<c:if test="${vo.sh_type eq '구매' }">
+												<span class="has-price" id="sh_type"><spring:message
+														code="stamph.pay" /></span>
+											</c:if>
 										</div>
 										<div class="discount">
 											<span class="has-price" id="cnt"> <c:choose>
@@ -63,12 +75,16 @@
 				</div>
 				<div class="box-heading column is-4"
 					style="margin-top: 12px; width: 32.4%; height: 300px">
-					<div class="summary-card" style="width:100%; text-align:center;" >
-						<img
-							src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg"
-							alt="">
-						<h4><b><spring:message code="stamph.buy1"/></b></h4><br>
-						<a href="stampShopList.do" class="button is-solid dark-grey-button raised" style="font-size: 1rem; width:200px;"><spring:message code="stamph.buy2"/></a>
+					<div class="summary-card" style="width: 100%; text-align: center;">
+						<img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" alt="">
+						<h4>
+							<spring:message code="stamph.buy1" />
+						</h4>
+						<br> 
+						<a href="stampShopList.do"
+							class="button is-solid dark-grey-button raised"
+							style="font-size: 1rem; width: 200px;"><spring:message
+								code="stamph.buy2" /></a>
 					</div>
 				</div>
 			</div>
