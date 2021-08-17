@@ -83,7 +83,6 @@ $(function() {
 		    	data:JSON.stringify({letter_id:delid}),
 			    contentType : "application/json; charset=UTF-8",
 		    	success: function(data) {
-		    		alert('<spring:message code="letter.delete.success"/>');
 		    		location.reload(true);
 		    	},
 		    	error: function(e) {
@@ -300,7 +299,7 @@ $(function() {
 							<c:if test="${vo.cnt ne 1 }">
 							<a data-id="${vo.user_id}" class="item">
 								<span class="name">${vo.name }</span>
-								<c:if test="${vo.status eq '정지회원' or vo.status eq '탈퇴회원'">
+								<c:if test="${vo.status eq '정지회원' or vo.status eq '탈퇴회원'}">
 									<span>
 										<svg
 										viewBox="0 0 24 24" width="15" height="15"
