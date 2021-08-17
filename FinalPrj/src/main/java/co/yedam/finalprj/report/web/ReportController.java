@@ -2,7 +2,6 @@ package co.yedam.finalprj.report.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.tiles.autotag.core.runtime.annotation.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.finalprj.block.service.BlockService;
 import co.yedam.finalprj.block.vo.BlockVO;
+import co.yedam.finalprj.commentDetail.service.CommentDetailService;
+import co.yedam.finalprj.commentDetail.vo.CommentDetailVO;
 import co.yedam.finalprj.commentc.service.CommentcService;
 import co.yedam.finalprj.commentc.vo.CommentcVO;
 import co.yedam.finalprj.comments.service.CommentsService;
@@ -35,6 +36,7 @@ public class ReportController {
    @Autowired UsersService usersDao;
    @Autowired BlockService blockDao;
    @Autowired CommentcService commentcDao;
+   @Autowired CommentDetailService commentDetailDao;
    
    //신고여부 확인
    @RequestMapping("reportUserCheck.do")
@@ -108,13 +110,14 @@ public class ReportController {
    //팝업창에서 게시물삭제했을시 실행되는 컨트롤러
    @RequestMapping("admin/delContent.do")
    @ResponseBody
-   public int delContent(HttpServletRequest req,LetterVO vo, FeedVO fvo, ReportVO rvo, CommentsVO cvo) {
+   public int delContent(HttpServletRequest req,LetterVO vo, FeedVO fvo, ReportVO rvo, CommentsVO cvo, CommentcVO ccvo, CommentDetailVO cdvo) {
 	   String content = req.getParameter("content");
 	   int r = 0;
 	   if(content.contains("feed")) {
 			/*
 			 * 신고리스트에서 피드읽고, 피드에대한 댓글도 읽음처리되야된다. 넘어오는feed_id로 댓글번호를 검색한다. 읽음처리를 먼저해주고 피드삭제
 			 */
+		   System.out.println(rvo.getContent());
 		   int k = reportDao.reportAllUpdate(rvo);
 		   System.out.println(k + "건 읽음처리");
 		   
@@ -139,6 +142,19 @@ public class ReportController {
 		   rvo.setContent(content);
 		   int k = reportDao.reportUpdate(rvo);
 		   System.out.println(k + "건 읽음처리");
+	   }else if(content.contains("cc_")) {
+		   //교정테이블에서 삭제
+		   ccvo.setCc_id(content);
+		   r = commentcDao.commentcDelete(ccvo);
+		   System.out.println("교정댓글테이블"+ r + "건 삭제처리");
+		   //교정상세테이블에서도 삭제
+		   cdvo.setCc_id(content);
+		   int j = commentDetailDao.deleteCommentDetail(cdvo);
+		   System.out.println("교정댓글상세테이블" + j + "건 삭제처리");
+		   //신고들어온 게시물 삭제 처리 후 그 게시물에 관한 신고 읽음으로 처리.
+		   rvo.setContent(content);
+		   int k = reportDao.reportUpdate(rvo);
+		   System.out.println(k + "건 읽음처리");
 	   }
 	  
 	   return r;
@@ -146,7 +162,7 @@ public class ReportController {
    //신고가 들어왔지만 이상없을경우 읽음처리
    @RequestMapping("admin/readContent.do")
    @ResponseBody
-   public int readContent(HttpServletRequest req,LetterVO vo, FeedVO fvo, ReportVO rvo, CommentsVO cvo, UsersVO uvo) {
+   public int readContent(HttpServletRequest req,LetterVO vo, FeedVO fvo, ReportVO rvo, CommentsVO cvo, UsersVO uvo, CommentcVO ccvo) {
 	   String content = req.getParameter("content");
 	   String id = req.getParameter("user_id");
 	   rvo.setContent(content);

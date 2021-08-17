@@ -39,7 +39,7 @@
 					content : '${content.feed_id}'
 				},
 				success : function(data) {
-					if (data > 0) {
+					if (data < 0) {
 						console.log("데이터 전송이 성공적으로 끝났을 때 실행");
 						alert("게시물이 정상적으로 삭제되었습니다.");
 						opener.parent.location.reload();

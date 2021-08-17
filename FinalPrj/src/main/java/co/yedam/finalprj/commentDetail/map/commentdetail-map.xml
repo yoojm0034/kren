@@ -56,6 +56,6 @@
 	<!-- /COMMENTC 작성 후 작동 -->
 	
 	<delete id="deleteCommentDetail" parameterType="co.yedam.finalprj.commentDetail.vo.CommentDetailVO">
-			
+		DELETE FROM COMMENT_DETAIL WHERE cc_id=#{cc_id}	
 	</delete>
 </mapper>
