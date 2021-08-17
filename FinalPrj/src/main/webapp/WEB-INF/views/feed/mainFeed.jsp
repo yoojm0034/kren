@@ -454,6 +454,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -510,6 +511,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -527,6 +529,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -544,6 +547,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -561,6 +565,7 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
 			},
 			error:function(err){
 				console.log(err);
@@ -664,6 +669,7 @@ $(document).ready(function(){
 							success:function(result){
 								//datePosdst();
 								loadMore();
+								initPostComments();
 								$('.feedContents').html(result);
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
 							},
@@ -783,9 +789,11 @@ $(document).ready(function(){
 								success: function(cnt) {
 									var cnt = cnt;
 									console.log(cnt);
-									$('div[data-card="'+scr+'"]').children().eq(0).html('Comments ('+cnt+')');
+									$('div[data-card="'+scr+'"]').children().eq(0).html('<spring:message code="comment.h4.title"/>'+' ('+cnt+')');
 									span2.html(cnt);
-									sendTextPush(feeduser, feedid);
+									if(feeduser != '${user.user_id}') {//작성자가 내가 아니라면 알림주기
+										sendTextPush(feeduser, feedid);										
+									}
 								}
 							});//댓글수+1
 						}
@@ -813,7 +821,6 @@ $(document).ready(function(){
 					data: JSON.stringify({comment_id:delcmt}),
 					contentType:'application/json; charset=UTF-8',
 					success: function(data) {
-						alert('<spring:message code="comment.delete.success"/>');
 						del.remove();
 						//-------댓글수-1-------
 						$.ajax({
@@ -875,7 +882,6 @@ $(document).ready(function(){
 				contentType : "application/json; charset=UTF-8",
 				success: function(data) {
 					alert('<spring:message code="comment.report.success"/>');
-					location.reload(true);
 				},
 				error: function(err) {
 					alert('<spring:message code="comment.alert.errormsg"/>');
@@ -952,7 +958,6 @@ $(document).ready(function(){
 					method: 'post',
 					data: {cc_id:delcmt},
 					success: function(data) {
-						alert('<spring:message code="comment.delete.success"/>');
 						del.remove();
 						//-------댓글수-1-------
 						$.ajax({
@@ -961,7 +966,7 @@ $(document).ready(function(){
 							data: {feed_id:delcmtfeed},
 							success: function(cnt) {
 								var cnt = cnt;
-								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments ('+cnt+')');
+								$('div[data-card="'+delidx+'"]').children().eq(0).html('<spring:message code="comment.h4.title"/>'+' ('+cnt+')');
 								span.html(cnt);
 							}
 						});
@@ -1072,10 +1077,12 @@ $(document).ready(function(){
 									success: function(cnt) {
 										var cnt = cnt;
 										console.log(cnt);
-										$('div[data-card="'+idx+'"]').children().eq(0).html('Comments ('+cnt+')');
+										$('div[data-card="'+idx+'"]').children().eq(0).html('<spring:message code="comment.h4.title"/>'+' ('+cnt+')');
 										var span2 = $('span[data-minicmt="'+idx+'"]');
 										span2.html(cnt);
-										sendTextPush(fuser, fid);
+										if(feeduser != '${user.user_id}') {//작성자가 내가 아니라면 알림주기
+											sendTextPush(feeduser, feedid);										
+										}
 									}
 								});//댓글수+1
 							}
@@ -2088,7 +2095,7 @@ $(document).ready(function(){
 	                                                        </div>
 	                                                        <div class="dropdown-divider"></div>
 									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } <spring:message code="comment.report.block"/>
-															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
+									                        <button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
 															<spring:message code="comment.report.btn"/>
 															</button>
 	                                                    </div>
