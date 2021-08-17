@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.finalprj.block.service.BlockService;
 import co.yedam.finalprj.block.vo.BlockVO;
+import co.yedam.finalprj.commentc.service.CommentcService;
+import co.yedam.finalprj.commentc.vo.CommentcVO;
 import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.comments.vo.CommentsVO;
 import co.yedam.finalprj.feed.service.FeedService;
@@ -42,6 +44,10 @@ public class ReportController {
    
    @Autowired
    BlockService blockDao;
+   
+   @Autowired
+   CommentcService commentcDao;
+   
    //신고리스트
    @RequestMapping("admin/userReportList.do")
    public String reportList(ReportVO vo, Model model) {
@@ -75,7 +81,7 @@ public class ReportController {
    }
    //신고리스트에서 해당 게시물번호 클릭시 팝업창으로 가지고갈 정보
    @RequestMapping("admin/reportAdmin.do")
-   public String reportAdmin(HttpServletRequest req, Model model, LetterVO vo, FeedVO fvo, CommentsVO cvo) {
+   public String reportAdmin(HttpServletRequest req, Model model, LetterVO vo, FeedVO fvo, CommentsVO cvo, CommentcVO ccvo) {
 	   String content = req.getParameter("data");
 	   String path = "";
 	   if(content.contains("feed")) {
@@ -91,6 +97,11 @@ public class ReportController {
 		   cvo.setComment_id(content);
 		   model.addAttribute("content", commentDao.commentSelect(cvo));
 		   path = "empty/reportAdmin3";
+	   }else if(content.contains("cc")) {
+		   ccvo.setCc_id(content);
+		   System.out.println(commentcDao.oneSelect(ccvo));
+		   model.addAttribute("content", commentcDao.oneSelect(ccvo));
+		   path = "empty/reportAdmin4";
 	   }
 	   
 	   return path;

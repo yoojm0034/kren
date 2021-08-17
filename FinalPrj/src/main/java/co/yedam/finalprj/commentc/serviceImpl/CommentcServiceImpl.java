@@ -32,4 +32,9 @@ public class CommentcServiceImpl implements CommentcService {
 		return map.commentcDelete(vo);
 	}
 
+	@Override
+	public List<CommentcVO> oneSelect(CommentcVO vo) {
+		return map.oneSelect(vo);
+	}
+
 }

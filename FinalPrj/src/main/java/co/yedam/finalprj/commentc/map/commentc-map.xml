@@ -22,4 +22,12 @@
 		DELETE FROM COMMENTC
 		WHERE CC_ID=#{cc_id}
 	</delete>
+	
+	<select id="oneSelect" parameterType="co.yedam.finalprj.commentc.vo.CommentcVO" resultType="co.yedam.finalprj.commentc.vo.CommentcVO">
+		SELECT a.*, b.line, b.origin,b.content 
+		FROM commentc a , comment_detail b
+		WHERE a.cc_id = b.cc_id
+		AND a.cc_id = #{cc_id}
+	</select>
+	
 </mapper>
