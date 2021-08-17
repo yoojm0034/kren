@@ -367,6 +367,24 @@ $(document).ready(function(){
 		});  
 	};
 	
+	//새 편지 쓰기
+	function writePopup(id,name) {
+		var winWidth = 860;
+	    var winHeight = 580;
+	    var popupOption= "width="+winWidth+", height="+winHeight;
+		
+		var target ='pop';
+		var url = '${pageContext.request.contextPath}/writeLetter.do';
+		window.open('',target,popupOption);
+	
+		var letterform = document.letterform;
+		letterform.action=url;
+		letterform.target=target;
+		$('#to_id').val(id);
+		$('#to_name').val(name);
+		letterform.submit();	
+	}
+
 	function feedUpdate(feedId){
 		$('.app-overlay').addClass('is-active');
 		$('.is-new-content').addClass('is-highlighted');
@@ -2343,6 +2361,12 @@ $(document).ready(function(){
 						</div>
 						<!------------------------ 친구추천 끝 ------------------------->
 						<!------------------------ 생일 시작 ------------------------->
+						<form id="letterform" name="letterform" method="post">
+						<input type="hidden" id="to_id" name="to_id" value="">
+						<input type="hidden" id="user_id" value="${user.user_id }">
+						<input type="hidden" id="to_name" name="to_name" value="">
+						<input type="hidden" id="name" name="name" value="${user.name }">
+						</form>
 						<div id="widget-slide-1">
 						    <ul>
 							<c:forEach items="${birthUser }" var="vo" varStatus="status">
@@ -2358,15 +2382,15 @@ $(document).ready(function(){
 											</div>
 											<div class="card-body">
 												<div>
-													<div class="birthday-avatar" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='${vo.following }">
+													<div class="birthday-avatar" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='${vo.user_id }">
 														<img src="https://via.placeholder.com/300x300"
 															data-demo-src="assets/img/avatars/dan.jpg" alt="" style="cursor: pointer;">
-														<div class="birthday-indicator">${vo.age }</div>
+														<div class="birthday-indicator">${vo.cnt }</div>
 													</div>
 													<div class="birthday-content">
-														<h4>${vo.following }<spring:message code="feed.birth.msg1" arguments="${vo.age }"/></h4>
+														<h4>${vo.user_id }<spring:message code="feed.birth.msg1" arguments="${vo.cnt }"/></h4>
 														<p style="line-height: 2"><spring:message code="feed.birth.msg2"/></p>
-														<button type="button" class="button light-button"><spring:message code="profile.letter"/></button>
+														<button type="button" class="button light-button" onclick="writePopup('${vo.user_id}','${vo.name }')"><spring:message code="profile.letter"/></button>
 														<p></p>
 													</div>
 												</div>

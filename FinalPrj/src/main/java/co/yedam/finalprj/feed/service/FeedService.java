@@ -14,8 +14,7 @@ public interface FeedService {
 	 int feedInsert(FeedVO vo);										//피드등록
 	 int feedDelete(FeedVO vo);										//피드삭제
 
-	 List<UsersVO> birthUser(FriendsVO vo);							//생일인유저
-	
+	 List<UsersVO> birthUser(UsersVO vo);							//생일인유저
 	 List<UsersVO> sameTopicList(UsersVO vo); 						//나와일치하는관심사수
 	 
 	 FeedVO oneSelectFeed(FeedVO vo);		

@@ -71,12 +71,12 @@ public class FeedController {
 		uvo.setUser_id(id);
 		uvo = userDao.usersSelect(uvo);		
 		uvo.setTopic(uvo.getTopic());
-		fvo.setUser_id(id);
+
 
 		model.addAttribute("sameTopic",feedDao.sameTopicList(uvo));		
 		model.addAttribute("likeTag",tagDao.likeTag());				
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
-		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
+		model.addAttribute("birthUser",feedDao.birthUser(uvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 	
 		//댓글

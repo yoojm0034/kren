@@ -62,7 +62,7 @@ public class FeedController2 {
 		model.addAttribute("sameTopic",feedDao.sameTopicList(uvo));		
 		model.addAttribute("likeTag",tagDao.likeTag());				
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
-		model.addAttribute("birthUser",feedDao.birthUser(fvo));			
+		model.addAttribute("birthUser",feedDao.birthUser(uvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 		System.out.println(feedDao.feedSelectList(vo));
 		

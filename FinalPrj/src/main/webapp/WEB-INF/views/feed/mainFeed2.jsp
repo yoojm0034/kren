@@ -252,7 +252,6 @@ $(document).ready(function(){
 </head>
 <body>
 <script>
-
 	function loadMore(){
 	 // load more
 	  var increment=5;	
@@ -413,29 +412,8 @@ $(document).ready(function(){
 		$('#feedInsert').submit();
 	});
 	
-	var maxValue=0;
 
-/* 	$('body').on('click','#feed-upload-input-2',function(){
-		console.log(this);
-	  if (input.files && input.files[0]) {
-		    var reader = new FileReader();
-		    reader.onload = function (e) {
-			if(maxValue>=1) return;
-		      var deleteIcon = feather.icons.x.toSvg();
-		      var template = "\n                <div class=\"upload-wrap\">\n                    <img src=\"" + e.target.result + "\" alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
-		      $('#feed-upload').append(template);
-				maxValue++;	
-		      //$('#feed-upload-input-1, #feed-upload-input-2').attr('disabled', true);
-			 $('.remove-file').on('click', function () {
-		       //$('#feed-upload-input-1, #feed-upload-input-2').val('').attr('disabled', false);
-		        $(this).closest('.upload-wrap').remove();
-				maxValue--;
-		      });
-		    };
 
-		    reader.readAsDataURL(input.files[0]);
-		  }
-	}) */
 
 	//-------피드 Reset---------
 	$('.close-publish').on('click',function(){
@@ -618,59 +596,79 @@ $(document).ready(function(){
 
 	//-------태그검색---------
 	$('#searchTag').on('click',function(){
-		var display = $("#SearchDiv").css('display');
-		if(display == "none"){
-			$("#SearchDiv").css('display', 'block'); 
-			if ($('#tagInput').length) {
-			    var html = '';
-			    var activitiesOptions = {
-			      url: "${pageContext.request.contextPath}/autocpl.do",
-			      getValue: "tag_name",
-		 	      template: {
-			        type: "custom",
-			        method: function method(value) {
-			          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
-			        }
-			      }, 
-			      highlightPhrase: false,
-			      list: {
-			        maxNumberOfElements: 5,
-			        showAnimation: {
-							          type: "slide",
-							          time: 400,
-							          callback: function callback() {}
-			        },
-			        match: {
-			          enabled: true
-			        }
-			      }
-			    }
-			    $("#tagInput").easyAutocomplete(activitiesOptions);
-			  };
-			document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
-			function tagsFunction() {
-				if(event.keyCode==13){
-			    	var tagval=$('#tagInput').val();
-			    	if(!tagval) {
-						alert('태그를 입력해 주세요!');
-					}else{
-						$.ajax({
-							url:"${pageContext.request.contextPath}/feedSelect.do",
-							data:{tags : tagval },
-							success:function(result){
-								console.log('태그검색결과');
-								$('.feedContents').html(result);
-							},
-							error:function(err){
-								console.log(err);
-							}
-						});
-					}
+	  	var input = $('#tagInput').attr("class");
+	  	
+	  	if(input=="input is-hidden"){
+	  		$('#tagInput').removeClass('is-hidden').addClass('is-active');
+	  	}else{
+	  		$('#tagInput').removeClass('is-active').addClass('is-hidden');
+	  	}
+	  	
+		if ($('#tagInput').length) {
+		    var html = '';
+		    var activitiesOptions = {
+		      url: "${pageContext.request.contextPath}/autocpl.do",
+		      getValue: "tag_name",
+	 	      template: {
+		        type: "custom",
+		        method: function method(value) {
+		          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+		        }
+		      }, 
+		      highlightPhrase: false,
+		      list: {
+		        maxNumberOfElements: 5,
+		        showAnimation: {
+						          type: "slide",
+						          time: 400,
+						          callback: function callback() {}
+		        },
+		        match: {
+		          enabled: true
+		        }
+		      }
+		    }
+		    $("#tagInput").easyAutocomplete(activitiesOptions);
+		  };
+		  
+		document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
+		function tagsFunction() {
+			if(event.keyCode==13){
+		    	var tagval=$('#tagInput').val();
+		    	if(!tagval) {
+					alert('태그를 입력해 주세요!');
+				}else{
+					$.ajax({
+						url:"${pageContext.request.contextPath}/feedSelect.do",
+						data:{tags : tagval },
+						success:function(result){
+							//datePosdst();
+							loadMore();
+							initPostComments();
+							dateCmt();
+							$('.feedContents').html(result);
+							$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
+							$("div[id^='load_'").each(function(i, el){
+								var cid = $(this).data('cid');//cc_id.line
+								var cdc = $(this).data('cdc');//content
+								var cdo = $(this).data('cdo');//origin
+								test_diff(cid,cdc,cdo);
+							});
+						},
+						error:function(err){
+							console.log(err);
+						}
+					});
 				}
-			};
-		}else{
-			$("#SearchDiv").css('display', 'none'); 
-		}
+			}
+		};
+		
+		  $(document).click(function (e) {
+			    var target = e.target;
+			    if (!$(target).is('.menu .clicked_menu') && !$(target).parents().is('.dropdown-trigger')) {
+			   	$('#tagInput').removeClass('is-active').addClass('is-hidden');
+			    } 
+		 });
 	});
 	
 	//---------피드신고---------
@@ -1090,7 +1088,33 @@ $(document).ready(function(){
 	} //function commentc
 
 //--------교정END----------------------------------------
+	//새 편지 쓰기
+	function writePopup(id,name) {
+		var winWidth = 860;
+	    var winHeight = 580;
+	    var popupOption= "width="+winWidth+", height="+winHeight;
+		
+		var target ='pop';
+		var url = '${pageContext.request.contextPath}/writeLetter.do';
+		window.open('',target,popupOption);
+	
+		var letterform = document.letterform;
+		letterform.action=url;
+		letterform.target=target;
+		$('#to_id').val(id);
+		$('#to_name').val(name);
+		console.log($('#to_id').val());
+		console.log($('#to_name').val());
+		letterform.submit();	
+	}
+	
 </script>
+<form id="letterform" name="letterform" method="post">
+<input type="hidden" id="to_id" name="to_id" value="">
+<input type="hidden" id="user_id" value="${user.user_id }">
+<input type="hidden" id="to_name" name="to_name" value="">
+<input type="hidden" id="name" name="name" value="${user.name }">
+</form>
 	<!-- Pageloader -->
 	<div class="infraloader is-active"></div>
 	<div class="app-overlay"></div>
@@ -2291,6 +2315,7 @@ $(document).ready(function(){
 						</div>
 						<!------------------------ 친구추천 끝 ------------------------->
 						<!------------------------ 생일 시작 ------------------------->
+
 						<div class="notice">
 							<c:forEach items="${birthUser }" var="vo" varStatus="status">
 								<ul class="rolling">
@@ -2310,12 +2335,12 @@ $(document).ready(function(){
 													<div class="birthday-avatar">
 														<img src="https://via.placeholder.com/300x300"
 															data-demo-src="assets/img/avatars/dan.jpg" alt="">
-														<div class="birthday-indicator">${vo.age }</div>
+														<div class="birthday-indicator">${vo.cnt }</div>
 													</div>
 													<div class="birthday-content">
-														<h4>${vo.following }<spring:message code="feed.birth.msg1" arguments="${vo.age }"/></h4>
+														<h4>${vo.user_id }<spring:message code="feed.birth.msg1" arguments="${vo.cnt }"/></h4>
 														<p style="line-height: 2"><spring:message code="feed.birth.msg2"/></p>
-														<button type="button" class="button light-button"><spring:message code="profile.letter"/></button>
+														<button type="button" class="button light-button" onclick="writePopup('${vo.user_id}','${vo.name }')"><spring:message code="profile.letter"/></button>
 														<p></p>
 													</div>
 												</div>

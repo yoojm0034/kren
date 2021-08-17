@@ -79,9 +79,7 @@
 	transition: all .3s;
 	z-index: 2;
 }
-.input .textFilter-input{
-    width: auto;
-}
+
 .friends-wrapper {
 	position: relative;
 	margin: 0 auto;
@@ -315,13 +313,12 @@
 	right: 50%;
 	left: 42%;
 }
-.input .textFilter-input{
-    width: auto;
+input.input.textFilter-input {
+    width: 250px;
 }
 </style>
 <script>
 $(document).ready(function() {
-
 	//검색 옵션 
 	 $('#friendSearch').on('click',function() {
 		 var gender = $('input[name=genderval]:checked').val();
@@ -712,6 +709,7 @@ function deleteCountry(value) {
 												<c:if test="${vo.topicCnt ne 0 }">
 													<p style="">
 														<spring:message code="friends.search.topic.count"/><span style="color: blue;">${vo.topicCnt }</span>
+														<spring:message code="friends.search.topic.count2"/>
 													</p>
 												</c:if>
 											</div>
@@ -762,7 +760,7 @@ function deleteCountry(value) {
 												<c:if test="${vo.topicCnt ne 0 }">
 													<p style="">
 														<spring:message code="friends.search.topic.count"/><span style="color: blue;">${vo.topicCnt }</span>
-
+														<spring:message code="friends.search.topic.count2"/>
 													</p>
 												</c:if>
 											</div>

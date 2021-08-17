@@ -55,10 +55,11 @@
 	</select>
 
 	<!--오늘 생일인 친구 조회 , 블릭한 친구 제외-->
-	<select id="birthUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.friends.vo.FriendsVO">
+	<select id="birthUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		SELECT 
-			    f.FOLLOWING , 
-			    TO_CHAR(sysdate,'YYYY') - TO_CHAR(u.BIRTH,'YYYY') as "age"
+			    u.user_id, 
+			    u.NAME,
+			    TO_CHAR(sysdate,'YYYY') - TO_CHAR(u.BIRTH,'YYYY') as "cnt"
 		FROM    
 				friends f , users u
 		WHERE   

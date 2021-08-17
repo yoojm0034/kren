@@ -41,6 +41,7 @@ public class UsersVO {
 	private String session_id; 	// 세션아이디
 	private int followCheck; 	// 팔로잉 체크
 	
+	//친구검색조건
 	private int cnt;
 	private String s_age;			
 	private String e_age;			

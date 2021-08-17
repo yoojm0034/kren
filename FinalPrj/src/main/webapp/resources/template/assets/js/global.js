@@ -671,14 +671,13 @@ function initTextFilter() {
 
       if ($('#friends-page').length) {
         var cardCount = $('.card-row-wrap.is-active').find('.friend-card.is-match').length;
-        console.log(cardCount);
-
-        if (cardCount == 0) {
+       if (cardCount == 0) {
           $('.card-row-wrap.is-active').find('.card-row').addClass('is-hidden');
           $('.card-row-wrap.is-active').find('.card-row-placeholder').removeClass('is-hidden');
-        } else {
+        } else if (cardCount <12) {
           $('.card-row-wrap.is-active').find('.card-row-placeholder').addClass('is-hidden');
           $('.card-row-wrap.is-active').find('.card-row').removeClass('is-hidden');
+          $('.load-more-wrap.narrow-top.has-text-centered').find('.load-more-button').addClass('is-hidden');
         }
       }
     });

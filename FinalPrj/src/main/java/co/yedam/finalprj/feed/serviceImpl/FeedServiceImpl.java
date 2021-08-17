@@ -30,19 +30,16 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override 
 	public List<Map<String,Object>> feedSelectList(FeedVO vo) {
-		//피드리스트
 		return map.feedSelectList(vo);
 	}
 	@Override
-	public List<UsersVO> birthUser(FriendsVO vo) {
-		//생일인유저
+	public List<UsersVO> birthUser(UsersVO vo) {
 		return map.birthUser(vo);
 	}
 	@Override
 	public List<UsersVO> sameTopicList(UsersVO vo) {
 		return map.sameTopicList(vo);
 	}
-
 	@Override
 	public int feedInsert(FeedVO vo) {
 		return map.feedInsert(vo);
