@@ -580,10 +580,11 @@
 							</c:if>
 							</c:when>
 							<c:otherwise>
+							<c:if test="${vo.cnt ne 1 }">
 								<a data-id="${vo.user_id}" class="item">
 									<span class="name">${vo.name }</span>
 									<c:if test="${vo.status eq '정지회원' or vo.status eq '탈퇴회원' }">
-										<span id="del${vo.user_id}">
+										<span>
 											<svg
 											viewBox="0 0 24 24" width="15" height="15"
 											stroke="currentColor" stroke-width="2"
@@ -593,7 +594,8 @@
 											<line x1="6" y1="6" x2="18" y2="18"></line></svg>
 										</span>
 									</c:if>
-								</a>							
+								</a>
+							</c:if>							
 							</c:otherwise>
 							</c:choose>
 						</c:forEach>
