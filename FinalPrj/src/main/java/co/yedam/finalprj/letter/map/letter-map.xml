@@ -3,19 +3,25 @@
 <mapper namespace="co.yedam.finalprj.letter.map.LetterMap">
 	<!-- 나에게 편지를 보낸 친구목록 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT F.USER_ID, U.NAME FROM (select * from(
-													(
-													SELECT DISTINCT USER_ID FROM LETTER
-													 WHERE TO_ID=#{to_id}
-													)
-													 UNION
-													(
-													SELECT DISTINCT TO_ID FROM LETTER
-													WHERE USER_ID=#{to_id}
-													)
-									  )) F, USERS U
+		SELECT F.USER_ID, max(f.send_date) as send_date, U.NAME
+		FROM (select * from(
+							(
+							SELECT USER_ID, MAX(SEND_DATE) AS SEND_DATE FROM LETTER
+                   			 WHERE USER_ID IN (SELECT DISTINCT USER_ID FROM LETTER
+                                      		    WHERE TO_ID=#{to_id})
+				             GROUP BY USER_ID
+							)
+							 UNION
+							(
+							SELECT TO_ID AS USER_ID, MAX(SEND_DATE) AS SEND_DATE FROM LETTER
+                   			 WHERE TO_ID IN (SELECT DISTINCT TO_ID FROM LETTER
+                                   			  WHERE USER_ID=#{to_id})
+                   			 GROUP BY TO_ID
+							)
+			  )) F, USERS U
 		 WHERE F.USER_ID = U.USER_ID
-	     ORDER BY NAME
+	     GROUP BY F.USER_ID, U.NAME
+	     ORDER BY SEND_DATE DESC
 	</select>
 	
 	<!-- 답장 안한 편지목록 -->
