@@ -38,6 +38,18 @@
 	color: #999;
 	font-size: .9rem;
 }
+
+.inbox-wrapper .inbox-wrapper-inner .inbox-center-container .inbox-center-container-inner .inbox-messages {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 60px;
+    height: calc(100% - 60px);
+    max-height: calc(100% - 60px);
+    overflow-y: auto;
+    max-width: -webkit-fill-available;
+}
+    
 .content  table {
     table-layout: fixed;
     width: 100%;
@@ -290,8 +302,6 @@ $(function() {
 							</a>
 						</c:forEach>
 						</c:if>						
-						
-						
 					</div>
 					<!-- MOBILE ONLY CLOSE -->
 					<div class="close-menu is-hidden-desktop is-hidden-landscape">
@@ -329,19 +339,18 @@ $(function() {
 						</div>
 
 						<div class="control is-grouped">
-							<div class="control is-grouped">
-								<a class="button" href="javascript:location.reload()"> <svg
-										xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-										viewBox="0 0 24 24" fill="none" stroke="currentColor"
-										stroke-width="2" stroke-linecap="round"
-										stroke-linejoin="round" class="feather feather-refresh-cw">
+						<div class="control is-grouped">
+							<a class="button" href="javascript:location.reload()">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round"
+								stroke-linejoin="round" class="feather feather-refresh-cw">
 								<polyline points="23 4 23 10 17 10"></polyline>
 								<polyline points="1 20 1 14 7 14"></polyline>
-								<path
-											d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-							</svg>
-								</a>
-							</div>
+								<path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+								</svg>
+							</a>
+						</div>
 						</div>
 						<!-- /BUTTON GROUP -->
 						</div>
@@ -357,7 +366,7 @@ $(function() {
 										class="card is-msg has-attachment">
 										<div class="card-content">
 											<span class="msg-timestamp"> <fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd"/> <img
-												src="resources/template/assets/img/letter/stamp.png">
+												src="${pageContext.request.contextPath}/resources/template/assets/img/letter/stamp.png">
 											</span>
 											<div class="msg-header">
 												<div class="user-image">
@@ -446,7 +455,7 @@ $(function() {
 	
 								<hr>
 								<div class="content">
-									<table style="word-wrap:break-word; white-space: pre-line;">
+									<table style="word-wrap:break-word;">
 									<tr>
 									<td>
 										<spring:message code="letter.textarea.placeholder" var="placeholder1" />

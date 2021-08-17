@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -111,8 +112,8 @@ tr:hover {
 						<div class="card shadow mb-4" style="box-shadow: 0 0 19px 4px #b2b2b2;">
 							<div class="card-body">
 								<div style="padding-top: 40px;">
-								<span class="title">공지사항</span>
-								<button type="button" id="btnBack" class="button primary-button" style="float: right;">이전페이지</button>
+								<span class="title"><spring:message code="notice.table.notice"/></span>
+								<button type="button" id="btnBack" class="button primary-button" style="float: right;"><spring:message code="notice.table.back"/></button>
 								</div>
 								<hr>
 								<div class="table-responsive">
@@ -121,10 +122,10 @@ tr:hover {
 										<thead style="background-color: #edeaea">
 											<tr>
 												<th>글번호</th>
-												<th width="60%">제목</th>
-												<th width="20%">등록일</th>
-												<th width="10%">작성자</th>
-												<th width="10%">조회수</th>
+												<th width="60%"><spring:message code="notice.table.title"/></th>
+												<th width="20%"><spring:message code="notice.table.regdate"/></th>
+												<th width="10%"><spring:message code="notice.table.writer"/></th>
+												<th width="10%"><spring:message code="notice.table.hit"/></th>
 											</tr>
 										</thead>
 										<tbody>

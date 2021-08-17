@@ -736,7 +736,6 @@ $(document).ready(function(){
 				contentType : "application/json; charset=UTF-8",
 				success: function(data) {
 					alert('신고되었습니다.');
-					location.reload(true);
 				},
 				error: function(err) {
 					alert('관리자에게 문의해주세요.');
@@ -829,7 +828,7 @@ $(document).ready(function(){
 							data: {feed_id:delcmtfeed},
 							success: function(cnt) {
 								var cnt = cnt;
-								$('div[data-card="'+delidx+'"]').children().eq(0).html('Comments ('+cnt+')');
+								$('div[data-card="'+delidx+'"]').children().eq(0).html('<spring:message code="comment.h4.title"/>'+' ('+cnt+')');
 								span.html(cnt);
 							}
 						});
