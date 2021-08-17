@@ -153,4 +153,9 @@ public class UsersServiceImpl implements UsersService {
 		return loginmap.sessionProfilePhoto(vo);
 	}
 
+	@Override
+	public UsersVO userSelectStmap(String user_id) {
+		return loginmap.userSelectStmap(user_id);
+	}
+
 }

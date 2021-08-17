@@ -62,5 +62,9 @@
 		and p.delete_yn = 'N'
 	</select>
 	
-
+	<select id="userSelectStmap" resultType="co.yedam.finalprj.users.vo.UsersVO">
+		select stamp
+		from users
+		where user_id = #{user_id}
+	</select>
 </mapper>

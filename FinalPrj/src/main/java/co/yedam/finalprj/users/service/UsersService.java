@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import co.yedam.finalprj.friends.vo.FriendsVO;
+import co.yedam.finalprj.stamph.vo.StamphVO;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 public interface UsersService {
@@ -19,6 +20,8 @@ public interface UsersService {
 	public int idCheck(String id);
 	public int nameCheck(String name);
 	public int emailCheck(String email);
+	
+	UsersVO userSelectStmap(String user_id);
 	
 	//------------------프로필---------------------
 	//우표 구매시 보유 우표수 변경...

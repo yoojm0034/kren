@@ -14,7 +14,6 @@
 <script>
 	$(function() {
 		$(document).on("click","#check_module",function(){ 
-		//$("#check_module").on("click", function() { //최상단 버튼만 기능함
 			var name = "${user.name}"
 			var stamp = $(this).data('id');
 			var pay = $(this).data('pay');
@@ -57,8 +56,8 @@
 										}
 							}); 
 	 				//결제 성공 후 마이페이지-우표함으로 이동...
-	 				//location.href="${pageContext.request.contextPath}/myStamp.do"
-	 				location.reload();
+	 				location.href='profile.do';
+	 				//location.reload();
 				} else {
 					//결제 실패 로직
 					var msg = '결제에 실패하였습니다.';
@@ -118,21 +117,21 @@
 						<div class="column is-4">
                             <div class="cart-summary">
                                 <div class="summary-header">
-                                    <h3><spring:message code="stamp.my"/></h3>
+                                    <h3><spring:message code="stamp.event"/></h3>
                                 </div>
                                 <!--card-->
                                 <div class="summary-card">
-                                    <div class="order-line">
-                                        <h4 style="color:black"><spring:message code="stamp.my.title"/></h4>
-                                        <h4 style="color:blue">${user.stamp}</h4>
-                                    </div>
+                                    <img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" alt="">
+                                    <h4><spring:message code="stamp.event.title2"/></h4>
+                                    <p><spring:message code="stamp.event.c2"/></p>
+                                    
                                 </div>
                                     
                                     <!--card-->
                                     <div class="summary-card">
                                         <img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" alt="">
                                         <h4><spring:message code="stamp.event.title"/></h4>
-                                        <p><spring:message code="stamp.event"/></p>
+                                        <p><spring:message code="stamp.event.c"/></p>
                                     </div>
                                 </div>
                             </div>

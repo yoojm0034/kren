@@ -26,10 +26,13 @@ public interface LoginMap {
 	//우표 구매시 보유 우표수 변경...
 	public int stampUpdate(UsersVO vo);
 	
+	UsersVO userSelectStmap(String user_id);
+	
 	//세션에 사진 가져오기
 	UsersVO sessionProfilePhoto(UsersVO vo);
 	
 	//-----------------신고-----------------------
 	int reportUpdatePlus(UsersVO vo);
 	int reportUpdateMinus(UsersVO vo);
+	
 }
