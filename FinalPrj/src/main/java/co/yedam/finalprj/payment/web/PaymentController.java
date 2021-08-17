@@ -49,7 +49,7 @@ public class PaymentController {
 	//insert...
 	@ResponseBody
 	@RequestMapping(value="paymentInsert.do")
-	public PaymentVO paymentInsert(HttpServletRequest request, Authentication auth, PaymentVO vo, UsersVO uvo) {
+	public PaymentVO paymentInsert(Model model, HttpServletRequest request, Authentication auth, PaymentVO vo, UsersVO uvo) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		vo.setUser_id(id);

@@ -305,14 +305,14 @@ function processResult(
 	function ins(s /*: String*/) /*: void*/
 	{
 		if (!s) { return; }
-		s = "<ins style='background-color:lightblue; color:blue;'>" + escapeHTML(s) + "</ins>";
+		s = "<ins style='color:#3d70b2; font-family:ONE-Mobile-Regular'>" + escapeHTML(s) + "</ins>";
 		html.push(s);
 	}
 
 	function del(s /*: String*/) /*: void*/
 	{
 		if (!s) { return ""; }
-		s = "<del style='background-color:pink;color:red;'>" + escapeHTML(s) + "</del>";
+		s = "<del style='color:#e03b3b; font-family:ONE-Mobile-Regular'>" + escapeHTML(s) + "</del>";
 		html.push(s);
 	}
 

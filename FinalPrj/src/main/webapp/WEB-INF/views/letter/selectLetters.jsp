@@ -746,73 +746,78 @@
 									</div>
 									<div class="meta">
 										<div class="name">${vo.name }</div>
-										<div class="date"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/> </div>
+										<c:if test="${arrive_dt <= today}">
+											<div class="date"><fmt:formatDate value="${vo.arrive_date }" pattern="yy/MM/dd HH:mm"/> </div>
+										</c:if>
+										<c:if test="${arrive_dt > today and vo.user_id eq user.user_id }">
+											<div class="date"></div>
+										</c:if>
 									</div>
 									<c:if test="${vo.user_id ne user.user_id }">
 									<div class="meta-right">
 									<!-- report Btn -->
-				               	<div class="navbar-item is-icon drop-trigger" id="drop">
-            					<a class="icon-link" id="btnModal" href="javascript:void(0);">
-                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                             	</a>
-               					<div class="nav-drop is-account-dropdown is-active">
-		                     	<div class="inner">
-		                        <div class="nav-drop-header">
-		                           <span><spring:message code="letter.report.title"/></span>
-		                        </div>
-		                        <div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
-	                        	<table>
-	                        	<tr>
-                        		<td>
-                        		<input type="radio" id="msg" name="${vo.letter_id }" value="스팸 게시물"><spring:message code="letter.report.content"/>
-                        		</td>
-	                        	</tr>
-	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="가짜정보 제공"><spring:message code="letter.report.lie"/>
-                        		</td>
-	                        	</tr>
-	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="성적인 내용"><spring:message code="letter.report.sexual"/>
-                        		</td>
-	                        	</tr>
-	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/>
-                        		</td>
-	                        	</tr>
-	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="욕설/비방"><spring:message code="letter.report.word"/>
-                        		</td>
-	                        	</tr>
-	                        	<tr>
-                        		<td>
-								<input type="radio" id="msg" name="${vo.letter_id }" value="기타"><spring:message code="letter.report.etc"/>
-                        		</td>
-	                        	</tr>
-	                        	<tr>
-                        		<td>
-								<spring:message code="letter.report.input.placeholder" var="placeholder1" />
-								<input data-rtxt="${vo.letter_id }" placeholder="${placeholder1 }" hidden="true" maxlength="30"></input>
-                        		</td>
-	                        	</tr>
-	                        	</table>
-		                        </div>
-		                        <div class="nav-drop-footer">
-		                        <input type="checkbox" id="blocked" data-rchk="${vo.letter_id }" value="${vo.user_id }">${vo.name } <spring:message code="letter.report.block"/>
-								<button id="rbtn" data-repo="${vo.letter_id }" data-report="${vo.user_id }"><spring:message code="letter.btn.report"/></button>
-		                        </div>
-		                        </div>
-			                   </div>               
-              					</div><!-- /report Btn -->
+					               	<div class="navbar-item is-icon drop-trigger" id="drop">
+	            					<a class="icon-link" id="btnModal" href="javascript:void(0);">
+	                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+	                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+	                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+	                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+	                             	</a>
+	               					<div class="nav-drop is-account-dropdown is-active">
+			                     	<div class="inner">
+			                        <div class="nav-drop-header">
+			                           <span><spring:message code="letter.report.title"/></span>
+			                        </div>
+			                        <div class="nav-drop-body is-friend-requests" id="replyB" style="overflow:scroll;height:200px;">
+		                        	<table>
+		                        	<tr>
+	                        		<td>
+	                        		<input type="radio" id="msg" name="${vo.letter_id }" value="스팸 게시물"><spring:message code="letter.report.content"/>
+	                        		</td>
+		                        	</tr>
+		                        	<tr>
+	                        		<td>
+									<input type="radio" id="msg" name="${vo.letter_id }" value="가짜정보 제공"><spring:message code="letter.report.lie"/>
+	                        		</td>
+		                        	</tr>
+		                        	<tr>
+	                        		<td>
+									<input type="radio" id="msg" name="${vo.letter_id }" value="성적인 내용"><spring:message code="letter.report.sexual"/>
+	                        		</td>
+		                        	</tr>
+		                        	<tr>
+	                        		<td>
+									<input type="radio" id="msg" name="${vo.letter_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/>
+	                        		</td>
+		                        	</tr>
+		                        	<tr>
+	                        		<td>
+									<input type="radio" id="msg" name="${vo.letter_id }" value="욕설/비방"><spring:message code="letter.report.word"/>
+	                        		</td>
+		                        	</tr>
+		                        	<tr>
+	                        		<td>
+									<input type="radio" id="msg" name="${vo.letter_id }" value="기타"><spring:message code="letter.report.etc"/>
+	                        		</td>
+		                        	</tr>
+		                        	<tr>
+	                        		<td>
+									<spring:message code="letter.report.input.placeholder" var="placeholder1" />
+									<input data-rtxt="${vo.letter_id }" placeholder="${placeholder1 }" hidden="true" maxlength="30"></input>
+	                        		</td>
+		                        	</tr>
+		                        	</table>
+			                        </div>
+			                        <div class="nav-drop-footer">
+			                        <input type="checkbox" id="blocked" data-rchk="${vo.letter_id }" value="${vo.user_id }">${vo.name } <spring:message code="letter.report.block"/>
+									<button id="rbtn" data-repo="${vo.letter_id }" data-report="${vo.user_id }"><spring:message code="letter.btn.report"/></button>
+			                        </div>
+			                        </div>
+				                   </div>               
+	              					</div>
+	              					<!-- /report Btn -->
 									</div>
 									</c:if>
-
 								</div>
 	
 								<hr>

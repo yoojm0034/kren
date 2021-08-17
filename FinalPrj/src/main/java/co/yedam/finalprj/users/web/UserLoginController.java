@@ -211,7 +211,7 @@ public class UserLoginController {
 
 							System.getProperty("line.separator") +
 
-							"일회성 비밀번호이기 때문에 개인정보 보안을 위해 로그인 후 비밀번호를 꼭 변경해주세요."; // 내용
+							"개인정보 보안을 위해 로그인 후 비밀번호를 꼭 변경해주세요."; // 내용
 			
 			System.out.println("발송된 임시비밀번호: " + imsiPw);
 			

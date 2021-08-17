@@ -152,6 +152,7 @@ table {
     padding: 0 !important;
     white-space: pre-wrap;
     word-wrap: normal;
+    font-family:ONE-Mobile-Regular;
 }
 
 .dropdown-content .reportMenu {
@@ -455,6 +456,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -512,6 +520,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -530,6 +545,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -548,6 +570,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -566,6 +595,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -670,8 +706,15 @@ $(document).ready(function(){
 								//datePosdst();
 								loadMore();
 								initPostComments();
+								dateCmt();
 								$('.feedContents').html(result);
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
+								$("div[id^='load_'").each(function(i, el){
+									var cid = $(this).data('cid');//cc_id.line
+									var cdc = $(this).data('cdc');//content
+									var cdo = $(this).data('cdo');//origin
+									test_diff(cid,cdc,cdo);
+								});
 							},
 							error:function(err){
 								console.log(err);
@@ -1864,7 +1907,8 @@ $(document).ready(function(){
 										<div class="card-body">
 											<!-- Post body text -->
 											<div class="post-text">
-												<p style="font-size: 1rem; color: #5f5f5f; line-height: 1.5;">${vo.content }</p>
+												<p style="font-size: 1rem; color: #5f5f5f; line-height: 1.5;
+												 word-wrap:break-word; white-space: pre-line;">${vo.content }</p>
 												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 												<div class="twdiv" id="${vo.write_lan }"></div>
 											</div>
@@ -2034,7 +2078,7 @@ $(document).ready(function(){
 													</div>
 													</c:if>
 													</span>
-													<p style="color: #525252">${cmt.content } </p>
+													<p style="color: #525252; word-wrap:break-word; white-space: pre-line;">${cmt.content } </p>
 												</div>
 												<c:if test="${user.user_id ne cmt.user_id}">
 												<!-- Right side dropdown -->
