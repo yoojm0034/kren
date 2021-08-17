@@ -152,6 +152,7 @@ table {
     padding: 0 !important;
     white-space: pre-wrap;
     word-wrap: normal;
+    font-family:ONE-Mobile-Regular;
 }
 
 .dropdown-content .reportMenu {

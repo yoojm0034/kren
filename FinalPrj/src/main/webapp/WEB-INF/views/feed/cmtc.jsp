@@ -4,6 +4,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<style>
+.media-content > div > pre {
+    background-color: transparent !important;
+    color: unset;
+    font-size: .875em;
+    overflow-x: auto;
+    padding: 0 !important;
+    white-space: pre-wrap;
+    word-wrap: normal;
+    font-family:ONE-Mobile-Regular;
+}
+</style>
 <script>
 $(function() {
 $("div[id^='load_'").each(function(i, el){

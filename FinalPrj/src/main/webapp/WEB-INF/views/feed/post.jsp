@@ -42,6 +42,7 @@
     padding: 0 !important;
     white-space: pre-wrap;
     word-wrap: normal;
+    font-family:ONE-Mobile-Regular;
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
