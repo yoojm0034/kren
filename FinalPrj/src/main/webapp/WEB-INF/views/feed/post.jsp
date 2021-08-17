@@ -55,27 +55,6 @@
 
 <script src="${pageContext.request.contextPath}/resources/template/assets/css/app.css"></script>
 <script src="${pageContext.request.contextPath}/resources/template/assets/css/core.css"></script>
-<script>
-// 문자열 비교; diffButty.js; String
-function test_diff(cid,dif,ori) {
-	var original = ori;
-	var revised = dif;
-	var output = $('<pre>');
-	var html = diffButty(original, revised);
-	output.html(html);
-	var div = $('div[data-cid="'+cid+'"]');
-	div.html(output);
-} 
-
-$(function() {
-	$("div[id^='load_'").each(function(i, el){
-		var cid = $(this).data('cid');//cc_id.line
-		var cdc = $(this).data('cdc');//content
-		var cdo = $(this).data('cdo');//origin
-		test_diff(cid,cdc,cdo);
-	});
-});
-</script>
 <div class="feedContents">
 	<c:forEach items="${feedList }" var="vo" varStatus="status">
 		<div id="feed-post-1" class="card is-post">
@@ -368,11 +347,13 @@ $(function() {
 					<!-- Content -->
 					<div class="media-content">
 						<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
-						<span class="time" id="cmt${cmt.comment_id }">
-						<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
+						<span class="time">
+						<span id="cmt${cmt.comment_id }">
+						<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
+						</span>
 						<!-- Actions -->
 						<c:if test="${cmt.user_id eq user.user_id }">
-						<div class="controls">
+						<div class="controls" style="display: inline-block">
 							<div class="edit">
 								<a id="del" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
 								data-idx="${status.index }">
@@ -388,9 +369,9 @@ $(function() {
 						</div>
 						</c:if>
 						</span>
-						<p>${cmt.content } </p>
+						<p style="color: #525252">${cmt.content } </p>
 					</div>
-					<c:if test="${user.user_id ne cmt.user_id}">
+					<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 					<!-- Right side dropdown -->
 					<div class="media-right">
 						<div
@@ -474,11 +455,13 @@ $(function() {
 					<!-- Content -->
 					<div class="media-content">
 						<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
-						<span class="time" id="cmt${cmt.comment_id }">
-						<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
+						<span class="time">
+						<span id="cmt${cmt.comment_id }">
+						<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
+						</span>
 						<!-- Actions -->
 						<c:if test="${cmt.user_id eq user.user_id }">
-						<div class="controls">
+						<div class="controls" style="display: inline-block">
 							<div class="edit">
 								<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
 								data-idx="${status.index }">
@@ -627,11 +610,29 @@ $(function() {
 	
 	function dateCmt() {
 		$('span[id^="cmt"]').each(function(i, el) {
-			var dete = $(this).text();
-			$(this).text(timeForToday(dete));
+			var date = $(this).text();
+			$(this).text(timeForToday(date));
 		});
 	}
 	dateCmt();
-
 	
+	// 문자열 비교; diffButty.js; String
+	function test_diff(cid,dif,ori) {
+		var original = ori;
+		var revised = dif;
+		var output = $('<pre>');
+		var html = diffButty(original, revised);
+		output.html(html);
+		var div = $('div[data-cid="'+cid+'"]');
+		div.html(output);
+	} 
+
+	$(function() {
+		$("div[id^='load_'").each(function(i, el){
+			var cid = $(this).data('cid');//cc_id.line
+			var cdc = $(this).data('cdc');//content
+			var cdo = $(this).data('cdo');//origin
+			test_diff(cid,cdc,cdo);
+		});		
+	});
 </script>

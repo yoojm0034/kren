@@ -455,6 +455,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -512,6 +519,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -530,6 +544,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -548,6 +569,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -566,6 +594,13 @@ $(document).ready(function(){
 				datePosdst();
 				loadMore();
 				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -670,8 +705,15 @@ $(document).ready(function(){
 								//datePosdst();
 								loadMore();
 								initPostComments();
+								dateCmt();
 								$('.feedContents').html(result);
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
+								$("div[id^='load_'").each(function(i, el){
+									var cid = $(this).data('cid');//cc_id.line
+									var cdc = $(this).data('cdc');//content
+									var cdo = $(this).data('cdo');//origin
+									test_diff(cid,cdc,cdo);
+								});
 							},
 							error:function(err){
 								console.log(err);
