@@ -335,8 +335,8 @@ $(document).ready(function() {
 		 $("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ ",";});
 		
 		 country_op.each(function(i,v){country += v.id + ",";});
-		 discountry_op.each(function(i,v){discountry += v.id + ",";});
-		
+		 discountry_op.each(function(i,v){discountry += v.id.substr(3) + ",";});
+		 
 		 $('#gender').val(gender);
 		 $('#dgender').val(dgender);
 		 $('#country').val(country);

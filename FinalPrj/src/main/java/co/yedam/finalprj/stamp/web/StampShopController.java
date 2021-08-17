@@ -30,12 +30,15 @@ public class StampShopController {
 	//우표-판매목록...
 	@RequestMapping("stampShopList.do")
 	public String stampShopList(Model model, StampVO vo, UsersVO uvo, Authentication auth) {
-
+		
 		model.addAttribute("list", stampDao.stampSelectList());
-	
-//		Model model2 = (Model) new ModelAndView();
-//		model2.addAttribute("user", userDao.usersSelect(uvo));
-//		System.out.println(uvo);
+		
+//		User user = (User) auth.getPrincipal();
+//		String id = (String) user.getUsername();
+//		uvo.setUser_id(id);
+//		
+//		uvo = userDao.userSelectStmap(id);
+//		System.out.println("우표갯수"+uvo);
 		
 		return "stamp/stampShopList";
 	}
