@@ -31,6 +31,7 @@
 			// i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
 			IMP.request_pay({
 				pg : 'kakao',
+				//pg : 'danal',
 				pay_method : 'card',
 				merchant_uid : 'merchant_' + new Date().getTime(),
 				//상품명
@@ -56,7 +57,8 @@
 										}
 							}); 
 	 				//결제 성공 후 마이페이지-우표함으로 이동...
-	 				location.href="myStamp.do"
+	 				//location.href="${pageContext.request.contextPath}/myStamp.do"
+	 				location.reload();
 				} else {
 					//결제 실패 로직
 					var msg = '결제에 실패하였습니다.';
