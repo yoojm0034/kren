@@ -2,11 +2,13 @@ package co.yedam.finalprj.report.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tiles.autotag.core.runtime.annotation.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.finalprj.block.service.BlockService;
@@ -81,27 +83,25 @@ public class ReportController {
    }
    //신고리스트에서 해당 게시물번호 클릭시 팝업창으로 가지고갈 정보
    @RequestMapping("admin/reportAdmin.do")
-   public String reportAdmin(HttpServletRequest req, Model model, LetterVO vo, FeedVO fvo, CommentsVO cvo, CommentcVO ccvo) {
-	   String content = req.getParameter("data");
+   public String reportAdmin(@RequestParam("data") String str, Model model, LetterVO vo, FeedVO fvo, CommentsVO cvo, CommentcVO ccvo) {
 	   String path = "";
-	   if(content.contains("feed")) {
+	   if(str.contains("feed")) {
 		   //피드자체정보 
-		   fvo.setFeed_id(content);
+		   fvo.setFeed_id(str);
 		   model.addAttribute("content", feedDao.oneSelectFeed(fvo));
 		   path = "empty/reportAdmin";
-	   }else if(content.contains("letter")) {
-		   vo.setLetter_id(content);
+	   }else if(str.contains("letter")) {
+		   vo.setLetter_id(str);
 		   model.addAttribute("content", letterDao.oneSelect(vo));
 		   path = "empty/reportAdmin2";
-	   }else if(content.contains("comment")) {
-		   cvo.setComment_id(content);
+	   }else if(str.contains("comment")) {
+		   cvo.setComment_id(str);
 		   model.addAttribute("content", commentDao.commentSelect(cvo));
 		   path = "empty/reportAdmin3";
-	   }else if(content.contains("cc")) {
-		   ccvo.setCc_id(content);
-		   System.out.println(commentcDao.oneSelect(ccvo));
+	   }else if(str.startsWith("cc_")) {
+		   ccvo.setCc_id(str);
 		   model.addAttribute("content", commentcDao.oneSelect(ccvo));
-		   path = "empty/reportAdmin4";
+		   path = "empty/reportCcid";
 	   }
 	   
 	   return path;

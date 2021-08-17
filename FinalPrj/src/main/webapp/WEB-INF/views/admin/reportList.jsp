@@ -362,7 +362,7 @@ tr:hover {
 																<c:set var="content" value="${vo.content}" />
 																<%-- <c:if test="${fn:contains(content,'feed')}"> data-modal="share-modal"  class="button modal-trigger" --%>
 																<td align="center">
-																	<a data-content="${vo.content }" id="clickContent" onclick="clickContent('${vo.content }')">${vo.content }</a>
+																	<a id="clickContent" onclick="clickContent('${vo.content }')">${vo.content }</a>
 																</td>
 															</tr>
 														</c:forEach>
