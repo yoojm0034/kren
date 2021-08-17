@@ -63,6 +63,34 @@ tr:hover {
 	background-color: silver;
 }
 .table th:not([align]){ text-align: center}
+/* The Modal (background) */
+.searchModal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 10; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+/* Modal Content/Box */
+.search-modal-content {
+	background-color: #fefefe;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	padding-top: 100px;
+	width: 50%; /* Could be more or less, depending on screen size */
+	height: 50%;
+}
 </style>
 <script>
 	$(function() {
@@ -79,6 +107,38 @@ tr:hover {
 			// 페이징 기능 숨기기
 			paging : true
 		});
+		$('#table tbody').on('click', 'tr',function(){
+			var id = $(this).data('id');
+			$.ajax({
+				url : "${pageContext.request.contextPath}/admin/userdata.do?data="+id,
+				method : "post",
+				type : "json",
+				success : function(data) {
+					var div = '<table class="table"><tr>'
+							+ '<th colspan="4" align="left"><h2>'+data.name+'의 상세정보</h2></th></tr>'
+							+ '<tr><th>아이디</th><td width="10%" align="left">'+data.user_id+'</td>'
+							+ '<th>이름</th><td>'+data.name+'</td></tr>'
+							+ '<tr><th>소개</th><td colspan="4" align="left"><textarea class="textarea comment-textarea" rows="6" id="content" name="content" width="100%" readonly="readonly">'+data.profile+'</textarea></td></tr>'
+							+ '<tr><th>이메일</th><td colspan="4" align="left">'+data.email+'</td></tr>'
+							+ '<tr><th>모국어</th><td width="10%" align="left">'+data.language1+'</td>'
+							+ '<th>배울언어</th><td>'+data.language2+'</td></tr>'
+							+ '<tr><th>나라</th><td width="10%" align="left">'+data.country+'</td>'
+							+ '<th>도시</th><td>'+data.city+'</td></tr>'
+							+ '<tr><th>가입일</th><td width="10%" align="left">'+data.reg_date+'</td>'
+							+ '<th>회원상태</th><td>'+data.status+'</td></tr>'
+							+ '<tr><th>국기</th><td  align="left"><img src='+data.flag+' width="20px"></td><th>성별</th><td>'+data.gender+'</td></tr>'
+							+ '</table>'
+							
+					$('#modalcontent').append(div);		
+				}
+			});
+			$("#modal").show();
+		});
+		$('#closeModal').click(function() {
+			$("#modalcontent").html('');
+			$('.searchModal').hide();
+		});
+		
 	});
 </script>
 </head>
@@ -205,11 +265,6 @@ tr:hover {
 		<!-- 사이드바 종료 -->
 		<!-- 컨텐츠 시작 -->
 		<div class="inner-wrapper" style="width: 85%">
-			<button onclick="sendTextPush('admin','feed_2')" type="button">댓글</button>
-			<button onclick="sendFollowPush('admin')" type="button">팔로우</button>
-			<button onclick="sendLetterPush('admin')" type="button">편지</button>
-			<button onclick="sendLikePush('admin','feed_2')" type="button">좋아요</button>
-
 			<!-- 컨텐츠 시작 -->
 			<a class="mobile-sidebar-trigger is-home-v2"> <i
 				data-feather="menu"></i>
@@ -248,7 +303,7 @@ tr:hover {
 													</thead>
 													<tbody align="center">
 														<c:forEach items="${userList }" var="vo">
-															<tr>
+															<tr data-id="${vo.user_id}">
 																<td>${vo.email}</td>
 																<td>${vo.user_id }</td>
 																<td>${vo.name }</td>
@@ -277,7 +332,15 @@ tr:hover {
 		</div>
 	</div>
 	<!-- 컨텐츠 종료 -->
-
+		<!-- 모달창 영역 -->
+	<div id="modal" class="searchModal">
+		<div class="search-modal-content" align="center">
+			<div id="modalcontent" style="width:100%">
+			</div>
+			<br>
+			<button class="button" id="closeModal">close</button>
+		</div>
+	</div>
 
 
 

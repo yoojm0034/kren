@@ -1,7 +1,5 @@
 package co.yedam.finalprj.common.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +22,7 @@ import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.notice.vo.NoticeVO;
 import co.yedam.finalprj.push.service.PushService;
 import co.yedam.finalprj.push.vo.PushVO;
+import co.yedam.finalprj.users.service.UsersService;
 import co.yedam.finalprj.users.vo.UsersVO;
 
 @Controller
@@ -34,6 +33,8 @@ public class PushController {
 	SearchService searchDao;
 	@Autowired
 	VisitCountService visitDao;
+	@Autowired
+	UsersService usersDao;
 
 	@RequestMapping("pushSelectList.do")
 	@ResponseBody
@@ -102,8 +103,14 @@ public class PushController {
 		}else {
 			return visitDao.dayCount();
 		}
-		
-		
 	}
-
+	@RequestMapping("admin/userdata.do")
+	@ResponseBody
+	public UsersVO userdata(HttpServletRequest req,UsersVO uvo) {
+		String id = req.getParameter("data");
+		uvo.setUser_id(id);
+		
+		return usersDao.usersSelect(uvo);
+	}
+	
 }
