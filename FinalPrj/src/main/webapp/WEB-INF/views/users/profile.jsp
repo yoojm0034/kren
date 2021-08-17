@@ -154,17 +154,18 @@ a[href^="https://maps.google.com/maps"] {
 
 
 .arrow_box {
-  display: none;
-  position: absolute;
-  top: 28%;
-  right: 6%;
-  padding: 12px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;  
-  border-radius: 8px;
-  background: #0000001a;
-  color: #2a2a2a;
-  font-size: 14px;
+	display: none;
+	position: absolute;
+	top: 330px;
+    right: 95px;
+	padding: 12px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;  
+	border-radius: 8px;
+	background: #0000001a;
+	color: #2a2a2a;
+	font-size: 14px;
+	z-index: 99;
 }
 
 .arrow_box:after {
@@ -187,7 +188,11 @@ a[href^="https://maps.google.com/maps"] {
   display: block;
 }
 
-
+.fbutton {
+	font-family: 'ONE-Mobile-Regular' !important;
+	font-size: 1rem !important;
+	
+}
 
 </style>
 <script
@@ -320,7 +325,8 @@ $('body').on('click', '#unfollow-btn',  function() {
 
 let followerCnt = ${followerCnt}
 function follow(check) {
-	var profile_id = $('#user_id2').val();
+	var profile_id = $(".fbutton").val();
+	var session_id = '${user.user_id}';
 	if(check) {
     	$.ajax({
 	    	url:'${pageContext.request.contextPath}/follow.do',
@@ -331,9 +337,22 @@ function follow(check) {
 	    		console.log("result : " + result);
 	    		if(result === "FollowOK") {
 	    			$(".follow-area").remove("#follow-btn");
-	    			$(".follow-area").html('<a class="button" id="unfollow-btn"><spring:message code="unfollow"/></a>');
+	    			$(".follow-area").html('<button class="button fbutton" id="unfollow-btn" value="${profile.user_id}"><spring:message code="unfollow"/></button>');
 	    			followerCnt = followerCnt + 1
 	    			$("#followerCnt").html(followerCnt);
+	    			var sessioninfo = '<div class="card-flex friend-card" id="${user.user_id}">'
+	    							+ '<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id }">'
+	    							+ '<div class="img-container">'
+	    							+ '<img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt=""> <img class="flag" src="${user.flag }" alt="">'
+	    							+ '</div>'
+	    							+ '<div class="friend-info">'
+	    							+ '<div class="friend-name">${user.name }</div>'
+	    							+ '<div class="friend-location">'
+	    							+ '<span><svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>'
+	    							+ '<span id="friend-city">${user.city}, ${user.country}</span>'
+	    							+ '</div></div></a>'
+	    							+ '<div class="friend-stats">';
+	    			$(".followerList").append(sessioninfo);
 	    		}
 	    	}
 		}); // end of follow ajax
@@ -347,9 +366,10 @@ function follow(check) {
 	    		console.log("result : " + result);
 	    		if(result === "UnFollowOK") {
 	    			$(".follow-area").remove("#unfollow-btn");
-	    			$(".follow-area").html('<a class="button" id="follow-btn"><spring:message code="follow"/></a>');
+	    			$(".follow-area").html('<button class="button fbutton" id="follow-btn" value="${profile.user_id}"><spring:message code="follow"/></button>');
 	    			followerCnt = followerCnt - 1
 	    			$("#followerCnt").html(followerCnt);
+	    			$('#'+session_id).remove();
 	    		}
 	    	}
 		}); // end of unfollow ajax
@@ -489,10 +509,10 @@ function writePopup() {
 										<div class="follow-area">
 											<c:choose>
 												<c:when test="${followCheck > 0}">
-													<a class="button" id="unfollow-btn"><spring:message code="unfollow"/></a>
+													<button class="button fbutton" id="unfollow-btn" value="${profile.user_id }"><spring:message code="unfollow"/></button>
 												</c:when>
 												<c:otherwise>
-													<a class="button" id="follow-btn"><spring:message code="follow"/></a>
+													<button class="button fbutton" id="follow-btn" value="${profile.user_id }"><spring:message code="follow"/></button>
 												</c:otherwise>
 											</c:choose>
 										</div>
@@ -549,7 +569,7 @@ function writePopup() {
 							<div class="info-row" style="display: block">
 								<div>
 									<h4><spring:message code="profile.aboutme"/></h4>
-									<span class="info" style="color: #6d6d6d !important">${profile.profile }</span>
+									<span class="info" style="color: #6d6d6d !important; word-wrap:break-word; white-space: pre-line;">${profile.profile }</span>
 								</div>
 							</div>
 						</div>

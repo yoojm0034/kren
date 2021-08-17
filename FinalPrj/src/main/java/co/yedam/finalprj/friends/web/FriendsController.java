@@ -43,7 +43,7 @@ public class FriendsController {
 		String Sessionid = (String) user.getUsername();
 		String following = vo.getFollowing();
 		vo.setUser_id(Sessionid);
-		
+		System.out.println(vo);
 		int r = FriendsDao.follow(vo);
 		if (r>0) {
 			System.out.println("[" + Sessionid + "]유저가 [" + following + "]를 팔로잉 했습니다.");

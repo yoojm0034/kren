@@ -255,15 +255,15 @@ a[href^="https://maps.google.com/maps"] {
 	//팔로우 언팔로우 버튼
 	$('body').on('click', '#friend-follow-btn', function() {
 		var friend = $(this).val();
-		follow(true, friend);
+		follow2(true, friend);
 	});
 
 	$('body').on('click', '#friend-unfollow-btn', function() {
 		var friend = $(this).val();
-		follow(false, friend);
+		follow2(false, friend);
 	});
 
-	function follow(check, friend) {
+	function follow2(check, friend) {
 		if (check) {
 			$.ajax({
 				url : '${pageContext.request.contextPath}/follow.do',
@@ -317,10 +317,10 @@ a[href^="https://maps.google.com/maps"] {
 					<div class="basic-infos-wrapper">
 						<div id="friends-page" class="friends-wrapper main-container">
 							<div id="all-friends" class="card-row-wrap is-active">
-								<div class="card-row">
+								<div class="card-row followerList">
 									<!-- 팔로워 리스트 반복 -->
 									<c:forEach items="${followerList }" var="friend" varStatus="status">
-										<div class="card-flex friend-card">
+										<div class="card-flex friend-card" id="${friend.user_id }">
 											<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${friend.user_id }">
 												<div class="img-container">
 													<img class="avatar"
@@ -336,8 +336,8 @@ a[href^="https://maps.google.com/maps"] {
 																fill="none" stroke-linecap="round"
 																stroke-linejoin="round" class="css-i6dzq1">
 																<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-																<circle cx="12" cy="10" r="3"></circle></svg></span> <span
-															id="friend-city">${friend.city}, ${friend.country}</span>
+																<circle cx="12" cy="10" r="3"></circle></svg></span>
+														<span id="friend-city">${friend.city}, ${friend.country}</span>
 													</div>
 												</div>
 											</a>
