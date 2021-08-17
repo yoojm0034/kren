@@ -33,6 +33,6 @@
 			</div>
 		</div>
 		</span>
-		<p>${cmt.content }</p>
+		<p style="word-wrap:break-word; white-space: pre-line;">${cmt.content }</p>
 	</div>
 </div>

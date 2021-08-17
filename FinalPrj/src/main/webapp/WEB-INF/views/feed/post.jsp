@@ -202,7 +202,8 @@
 				<div class="card-body">
 					<!-- Post body text -->
 					<div class="post-text">
-						<p>${vo.content }</p>
+						<p style="font-size: 1rem; color: #5f5f5f; line-height: 1.5;
+						word-wrap:break-word; white-space: pre-line;">${vo.content }</p>
 						<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 						<div class="twdiv" id="${vo.write_lan }"></div>
 					</div>
@@ -369,7 +370,7 @@
 						</div>
 						</c:if>
 						</span>
-						<p style="color: #525252">${cmt.content } </p>
+						<p style="color: #525252; word-wrap:break-word; white-space: pre-line;">${cmt.content } </p>
 					</div>
 					<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 					<!-- Right side dropdown -->
