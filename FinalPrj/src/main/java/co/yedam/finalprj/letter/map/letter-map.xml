@@ -3,8 +3,8 @@
 <mapper namespace="co.yedam.finalprj.letter.map.LetterMap">
 	<!-- 나에게 편지를 보낸 친구목록 -->
 	<select id="selectAllFriend" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT F.USER_ID, max(f.send_date) as send_date, U.NAME
-		FROM (select * from(
+		SELECT F.USER_ID, MAX(F.SEND_DATE) AS SEND_DATE, U.NAME, U.STATUS, F_LETTER_CNT(#{to_id},F.USER_ID) AS CNT
+		FROM (SELECT * FROM(
 							(
 							SELECT USER_ID, MAX(SEND_DATE) AS SEND_DATE FROM LETTER
                    			 WHERE USER_ID IN (SELECT DISTINCT USER_ID FROM LETTER
@@ -20,7 +20,8 @@
 							)
 			  )) F, USERS U
 		 WHERE F.USER_ID = U.USER_ID
-	     GROUP BY F.USER_ID, U.NAME
+    	   AND F.USER_ID NOT IN(SELECT BLOCKED FROM BLOCK WHERE USER_ID=#{to_id})
+	     GROUP BY F.USER_ID, U.NAME, U.STATUS
 	     ORDER BY SEND_DATE DESC
 	</select>
 	

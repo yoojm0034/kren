@@ -31,5 +31,7 @@ public class LetterVO {
 	private String uid;
 	private String lid;
 	private int distance;
+	private String status;
+	private String cnt;
 
 }

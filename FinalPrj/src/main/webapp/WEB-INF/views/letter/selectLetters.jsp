@@ -17,7 +17,6 @@
 	overflow: auto;
 }
 
-`+ 
 .inbox-wrapper .inbox-wrapper-inner .inbox-center-container .inbox-center-container-inner .messages .action-buttons .button
 	{
 	max-height: 32px;
@@ -528,6 +527,21 @@
 			}
 		});
 	} //function letterc	
+	
+	function friendDelete(id) {
+		console.log(id);
+		$.ajax({
+			url:'${pageContext.request.contextPath}/letterAllDelete.do',
+			type:"post",
+			data:{user_id:id},
+			success:function(data) {
+				location.href = '${pageContext.request.contextPath}/letterBox.do';
+			},
+			error:function(e) {
+				console.log('에러');
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -548,13 +562,37 @@
 						<c:forEach items="${friends }" var="vo">
 							<c:choose>
 							<c:when test="${req.user_id eq vo.user_id }">
+							<c:if test="${vo.cnt ne 1 }">
 								<a data-id="${vo.user_id}" class="item is-active">
 									<span class="name">${vo.name }</span>
+									<c:if test="${vo.status eq '정지회원' or vo.status eq '탈퇴회원'}">
+										<span>
+											<svg
+											viewBox="0 0 24 24" width="15" height="15"
+											stroke="currentColor" stroke-width="2"
+											fill="none" stroke-linecap="round"
+											stroke-linejoin="round" class="css-i6dzq1">
+											<line x1="18" y1="6" x2="6" y2="18"></line>
+											<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+										</span>
+									</c:if>
 								</a>
+							</c:if>
 							</c:when>
 							<c:otherwise>
 								<a data-id="${vo.user_id}" class="item">
 									<span class="name">${vo.name }</span>
+									<c:if test="${vo.status eq '정지회원' or vo.status eq '탈퇴회원' }">
+										<span id="del${vo.user_id}">
+											<svg
+											viewBox="0 0 24 24" width="15" height="15"
+											stroke="currentColor" stroke-width="2"
+											fill="none" stroke-linecap="round"
+											stroke-linejoin="round" class="css-i6dzq1">
+											<line x1="18" y1="6" x2="6" y2="18"></line>
+											<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+										</span>
+									</c:if>
 								</a>							
 							</c:otherwise>
 							</c:choose>
