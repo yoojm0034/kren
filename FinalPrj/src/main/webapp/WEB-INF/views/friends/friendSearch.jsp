@@ -64,7 +64,6 @@
 	-webkit-transition: all .3s;
 	transition: all .3s;
 }
-
 .filters-panel {
 	position: fixed;
 	top: 107px;
@@ -79,7 +78,6 @@
 	transition: all .3s;
 	z-index: 2;
 }
-
 .friends-wrapper {
 	position: relative;
 	margin: 0 auto;
@@ -87,23 +85,19 @@
 	padding: 0 6%;
 	min-height: calc(100vh - 280px);
 }
-
 .main-container.has-sidebar {
 	width: calc(98% - 150px);
 	margin-left: 300px;
 }
-
 .friends-wrapper.has-sidebar .card-row .friend-card {
 	width: calc(25.3% - 16px);
 	margin-left: 0;
 }
-
 .friends-wrapper .card-row {
 	margin-top: 20px;
 	margin-left: 20px;
 	padding-bottom: 60px;
 }
-
 .friends-wrapper {
 	position: relative;
 	margin: 0 0%;
@@ -111,53 +105,44 @@
 	padding: 0 6%;
 	min-height: calc(100vh - 280px);
 }
-
 .filters-panel .panel-inner .filter-block {
 	padding: 5px;
 	margin-left: 15px;
 	overflow: auto;
 }
-
 .filters-panel .panel-inner {
 	padding-left: 19px;
 	padding-right: 12px;
 	font-size: xx-small;
 }
-
 .filters-panel::-webkit-scrollbar {
 	width: 0 !important;
 	display: none;
 }
-
 .search-label {
 	font-size: .7rem;
 	font-weight: 500;
 	margin-right: 21px;
 }
-
 .topic-label>.left {
 	float: left;
 }
-
 .topic-label>.right {
 	float: right;
 	display: inline-block;
 	margin-bottom: 15px;
 }
-
 .topic-list {
 	overflow: auto;
 	height: 200px;
 	-ms-overflow-style: none;
 	margin-top: 15px;
 }
-
 .topic-list::-webkit-scrollbar {
 	display: inline-block;
 	width: 0 !important;
 	display: none;
 }
-
 .text-nicelabel+label {
 	display: inline-block;
 	font-size: 14px;
@@ -172,7 +157,6 @@
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
-
 .img-container .flag {
 	position: absolute;
 	bottom: 0;
@@ -192,7 +176,6 @@
 	cursor: pointer;
 	z-index: 1;
 }
-
 .location-info {
 	position: absolute;
 	right: 6%;
@@ -203,28 +186,23 @@
 	border-radius: 0.5rem;
 	color: white;
 }
-
 .friend-name {
 	font-size: 1.2rem;
 	color: #393a4f !important;
 	font-weight: 600;
 }
-
 .friend-location {
 	color: #9b9b9b;
 	font-size: 0.85rem;
 }
-
 .control.has-icons-left .icon.is-left {
 	left: 32px;
 	padding-bottom: 10px;
 }
-
 .control.has-icons-left .input, .control.has-icons-left .select select {
 	padding-left: 2.5em;
 	height: 29px;
 }
-
 .dropdown.is-spaced .dropdown-menu {
     -webkit-box-shadow: 0px 5px 16px rgb(0 0 0 / 5%);
     box-shadow: 0px 5px 16px rgb(0 0 0 / 5%);
@@ -236,12 +214,10 @@
 	height: 25px;
 	font-size: small;
 }
-
 .div-margin {
 	margin-bottom: 18px;
 	margin-top: 7px;
 }
-
 .input {
 	font-size: .9rem;
 	height: 28px;
@@ -250,7 +226,6 @@
 	transition: all .3s;
 	border-radius: 142px;
 }
-
 .append-label {
 	display: inline-block;
 	font-size: 14px;
@@ -266,15 +241,12 @@
 	color: white;
 	margin-left: 10px;
 }
-
 #append-op {
 	margin-top: 20px;
 }
-
 #append-dop {
 	margin-top: 20px;
 }
-
 .no-result {
 	min-height: calc(100vh - 280px);
 	min-width: -webkit-fill-available;
@@ -288,25 +260,18 @@
 	-ms-flex-pack: center;
 	justify-content: center;
 }
-
 #friendSearch {
 	left: 286px;
 }
-
 .title {
 	padding-top: 11px;
 }
-
 .field label {
 	font-size: .7rem;
-	/* font-weight: 500;
-     color: #393a4f;*/
 }
-
 .radio {
 	margin-left: 5px;
 }
-
 .load-more-wrap {
 	padding: 40px 0;
 	POSITION: relative;
@@ -315,6 +280,14 @@
 }
 input.input.textFilter-input {
     width: 250px;
+}
+.spanCnt{
+	font-weight: 600;
+    color: crimson;
+    margin: 0px 2px 0px 4px;
+}
+.divCnt{
+	margin-top: 14px;
 }
 </style>
 <script>
@@ -335,8 +308,8 @@ $(document).ready(function() {
 		 $("input[name=dtopic-label]:checked").each(function() {distopic += $(this).val()+ ",";});
 		
 		 country_op.each(function(i,v){country += v.id + ",";});
-		 discountry_op.each(function(i,v){discountry += v.id + ",";});
-		
+		 discountry_op.each(function(i,v){discountry += v.id.substr(3) + ",";});
+		 
 		 $('#gender').val(gender);
 		 $('#dgender').val(dgender);
 		 $('#country').val(country);
@@ -707,10 +680,13 @@ function deleteCountry(value) {
 													id="friend-city textFilter-match">${vo.city},
 													${vo.country}</span>
 												<c:if test="${vo.topicCnt ne 0 }">
-													<p style="">
-														<spring:message code="friends.search.topic.count"/><span style="color: blue;">${vo.topicCnt }</span>
-														<spring:message code="friends.search.topic.count2"/>
+													<div class="divCnt">
+													<p><spring:message code="friends.search.topic.count"/><span class="spanCnt">${vo.topicCnt }</span><spring:message code="friends.search.topic.count2"/>
 													</p>
+													</div>
+												</c:if>
+												<c:if test="${vo.topicCnt eq 0 }">
+													<div></div>
 												</c:if>
 											</div>
 										</div>
@@ -758,10 +734,12 @@ function deleteCountry(value) {
 													id="friend-city textFilter-match">${vo.city},
 													${vo.country}</span>
 												<c:if test="${vo.topicCnt ne 0 }">
-													<p style="">
-														<spring:message code="friends.search.topic.count"/><span style="color: blue;">${vo.topicCnt }</span>
-														<spring:message code="friends.search.topic.count2"/>
-													</p>
+													<div class="divCnt">
+													<p><spring:message code="friends.search.topic.count"/><span class="spanCnt">${vo.topicCnt }</span><spring:message code="friends.search.topic.count2"/></p>
+													</div>
+												</c:if>
+												<c:if test="${vo.topicCnt eq 0 }">
+													<div></div>
 												</c:if>
 											</div>
 										</div>

@@ -264,7 +264,7 @@ a[href^="https://maps.google.com/maps"] {
 		var friend = $(this).val();
 		follow(false, friend);
 	});
-
+	
 	function follow(check, friend) {
 		if (check) {
 			$.ajax({
@@ -280,7 +280,8 @@ a[href^="https://maps.google.com/maps"] {
 						console.log(friend);
 						// 팔로우버튼 지우고 언팔로우 버튼 달기
 						$('.' + friend + '-follow-area').empty();
-						$('.' + friend + '-follow-area').html('<button class="button" id="friend-unfollow-btn" value="' + friend + '">Unfollow</button>');
+						$('.' + friend + '-follow-area').html('<button class="button" id="friend-unfollow-btn" value="' + friend + '"><spring:message code="unfollow"/></button>');
+						sendFollowPush(friend);
 					}
 				}
 			}); // end of follow ajax
@@ -298,7 +299,7 @@ a[href^="https://maps.google.com/maps"] {
 						console.log(friend);
 						// 언팔로우 버튼 지우고 팔로우버튼 갈기
 						$('.' + friend + '-follow-area').empty();
-						$('.' + friend + '-follow-area').html('<button class="button" id="friend-follow-btn" value="' + friend + '">follow</button>');
+						$('.' + friend + '-follow-area').html('<button class="button" id="friend-follow-btn" value="' + friend + '"><spring:message code="follow"/></button>');
 					}
 				}
 			}); // end of unfollow ajax

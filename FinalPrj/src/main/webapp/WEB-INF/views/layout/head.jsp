@@ -312,8 +312,7 @@ h5:hover {
 		});
 		$('#search').keydown(function() {
 			 if (event.keyCode === 13) {
-				  console.
-				  searchForm.submit();
+				 searchForm.submit();
 			 };
 		});
 		

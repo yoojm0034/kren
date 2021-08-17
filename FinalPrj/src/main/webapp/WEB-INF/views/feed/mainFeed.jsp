@@ -210,6 +210,12 @@ reported-div {
 #widget-slide-1 ul li.on {
 	display: block;
 }
+
+.activeCnt {
+	padding-left: 7px;
+    color: #777777;
+}
+
 </style>
 <script>
 $(document).ready(function(){
@@ -221,7 +227,7 @@ $(document).ready(function(){
         var now   = 0;
         var next  = 0;
         var tmr   = null;
-        var timr  = 3000;
+        var timr  = 5000;
         function change(){if(next > max) next = 0; else if(next < 0) next = max; for(var i=0; i <= max; i++ )elm[i].className = "";elm[next].className = "on";now = next;}
         function befor(){next--; change();}
         function after(){next++; change();}
@@ -239,7 +245,6 @@ $(document).ready(function(){
 		$('.menu[menu-index!=' + index + ']').removeClass('clicked_menu');
 	});
 	
-	$('.reportMenu').hide();
 	//-------공지사항이동---------
 	$('.page-block').on('click',function(){
 		var noticeId= this.id;
@@ -295,8 +300,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<script>
-
+<script>
 	function loadMore(){
 	 // load more
 	  var increment=5;	
@@ -484,8 +488,8 @@ $(document).ready(function(){
 				}
 				$('#feedInsert').submit();		
 			},
-			error:function(){
-				
+			error:function(err){
+				console.log(err);
 			}
 		});
 		}else{
@@ -543,7 +547,6 @@ $(document).ready(function(){
 				div.append('<span class="tagDelete">#' + tagval+ ' </span>');
 			}
             	$('#activities-autocpl').val('');
-        	 
             $.ajax({
                url: "tagInsert.do" ,
                type: "POST",
@@ -615,23 +618,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
-	//-------한건조회----------
-	$('#searchSelect').on('click',function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do",
-			data:{feed_id:'feed_170'},
-			success:function(result){
-				$('.feedContents').html(result);
-				loadMore();
-				initPostComments();
-				dateCmt();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		})
-	})
 	
 	//-------언어별 Ko---------
 	$('#searchKo').on('click',function(){
@@ -1818,7 +1804,6 @@ $(document).ready(function(){
 						<div class="menu" id="searchTag">태그</div>
 						<div class="menu" id="searchKo">한국어</div>
 						<div class="menu" id="searchEn">영어</div>
-						<div class="menu" id="searchSelect">한건조회</div>
 
 						<div id="SearchDiv" class="control has-margin">
 							<input class="input is-hidden" type="text" id="tagInput"
@@ -1848,15 +1833,7 @@ $(document).ready(function(){
 												</div>
 												<div class="user-info" id="${vo.user_id }">
 													<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
-													<svg viewBox="0 0 24 24" width="21" height="15"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-														<path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-														<path d="M2 2l7.586 7.586"></path>
-														<circle cx="11" cy="11" r="2"></circle></svg>
-													${vo.write_lan } <span class="time"> <script
+													<span class="time"> <script
 															type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
 													</script>
@@ -1966,8 +1943,7 @@ $(document).ready(function(){
 														<c:if test="${vo.user_id eq user.user_id}">
 															<hr class="dropdown-divider">
 															<a class="dropdown-item">
-																<div class="media feedUpdate" id="update${vo.feed_id }"
-																	onclick="feedUpdate('${vo.feed_id }')">
+																<div class="media feedUpdate" id="update${vo.feed_id }" onclick="feedUpdate('${vo.feed_id }')">
 																	<i data-feather="bell"></i>
 																	<div class="media-content">
 																		<input type="hidden" id="update-tag" name="update-tag"
@@ -2003,59 +1979,11 @@ $(document).ready(function(){
 												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 												<div class="twdiv" id="${vo.write_lan }"></div>
 											</div>
-											<!-- Featured image -->
-											<c:if test="${empty vo.fphoto}">
-												<div class="post-image"
-													style="margin-bottom: 50px; margin-top: 30px">
-													<!-- Action buttons -->
-													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-													<div class="like-wrapper">
-														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
-															class="mdi mdi-heart not-liked bouncy"></i> <i
-															class="mdi mdi-heart is-liked bouncy"></i> <span
-															class="like-overlay"></span>
-														</a>
-													</div>
-													<div class="fab-wrapper is-comment">
-														<a href="javascript:void(0);" class="small-fab"> <svg
-																viewBox="0 0 24 24" width="24" height="24"
-																stroke="currentColor" stroke-width="2" fill="none"
-																stroke-linecap="round" stroke-linejoin="round"
-																class="css-i6dzq1">
-																<path
-																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-														</a>
-													</div>
-												</div>
-											</c:if>
-											<c:if test="${not empty vo.fphoto}">
 												<div class="post-image">
 													<img
 														src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 														alt="" />
-													<!-- Action buttons -->
-													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-													<div class="like-wrapper">
-														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
-															class="mdi mdi-heart not-liked bouncy"></i> <i
-															class="mdi mdi-heart is-liked bouncy"></i> <span
-															class="like-overlay"></span>
-														</a>
-													</div>
-													<div class="fab-wrapper is-comment">
-														<a href="javascript:void(0);" class="small-fab"> <svg
-																viewBox="0 0 24 24" width="24" height="24"
-																stroke="currentColor" stroke-width="2" fill="none"
-																stroke-linecap="round" stroke-linejoin="round"
-																class="css-i6dzq1">
-																<path
-																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-														</a>
-													</div>
 												</div>
-											</c:if>
 											<div>
 												<p>
 													<c:if test="${not empty vo.tags }">
@@ -2070,27 +1998,32 @@ $(document).ready(function(){
 										<div class="card-footer">
 											<!-- Post statistics -->
 											<div class="social-count">
-												<div class="comments-count">
-													<svg viewBox="0 0 24 24" width="24" height="24"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path
-															d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-													<span id="minicmt" data-minicmt="${status.index }">
-														<c:if test="${vo.cmt eq 0 }">0</c:if> <c:if
-															test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
-													</span>
-												</div>
-												<div class="likes-count">
-													<svg viewBox="0 0 24 24" width="24" height="24"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path
-															d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-													<span id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
-												</div>
+													<!-- Action buttons -->
+													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+													<!-- 댓글 카운트 -->
+													<div class="fab-wrapper is-comment" style="padding-right: 10px;">
+														<a href="javascript:void(0);" class="small-fab"> <svg
+																viewBox="0 0 24 24" width="24" height="24"
+																stroke="currentColor" stroke-width="2" fill="none"
+																stroke-linecap="round" stroke-linejoin="round"
+																class="css-i6dzq1">
+																<path
+																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+														<span class="activeCnt" id="minicmt" data-minicmt="${status.index }">
+															<c:if test="${vo.cmt eq 0 }">0</c:if>
+															<c:if test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
+														</span>
+														</a>
+													</div>
+													<!-- 좋아요 카운트 -->
+													<div class="like-wrapper">
+														<a class="like-button"
+															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
+															class="mdi mdi-heart not-liked bouncy"></i> <i
+															class="mdi mdi-heart is-liked bouncy"></i> 
+															<span class="activeCnt" id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
+														</a>
+													</div>
 											</div>
 										</div>
 										<div data-table="${status.index }"></div>
@@ -2516,7 +2449,7 @@ $(document).ready(function(){
 														<div class="birthday-indicator">${vo.cnt }</div>
 													</div>
 													<div class="birthday-content">
-														<h4>${vo.user_id }<spring:message
+														<h4>${vo.name }<spring:message
 																code="feed.birth.msg1" arguments="${vo.cnt }" />
 														</h4>
 														<p style="line-height: 2">

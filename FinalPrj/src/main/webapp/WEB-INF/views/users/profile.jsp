@@ -291,7 +291,15 @@ $(function(){
 			success: function(result) {
 				$('.editProfile-area').empty();
 				$('.editProfile-area').html('<button class="button is-solid primary-button" id="saveBtn">Save</button>');
-				$('.photo-upload').html('<a class="upload-button dz-clickable"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></a>');
+				$('.photo-upload').empty();
+				var img = '<div class="preview">'
+						+ '<a class="upload-button dz-clickable">'
+						+ '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>'
+						+ '</a>'
+						+ '<img id="upload-preview" src="https://via.placeholder.com/150x150" data-demo-src="/FinalPrj/assets/img/avatars/avatar-w.png" alt="">'
+						+ '<form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/">'
+						+ '<div class="dz-default dz-message"><span>Drop files here to upload</span></div></form></div>';
+				$('.photo-upload').append(img);
 				$('.profile-contents').html(result);
 			}
 		});
@@ -340,6 +348,7 @@ function follow(check) {
 	    			$(".follow-area").html('<button class="button fbutton" id="unfollow-btn" value="${profile.user_id}"><spring:message code="unfollow"/></button>');
 	    			followerCnt = followerCnt + 1
 	    			$("#followerCnt").html(followerCnt);
+	    			// 팔로워 리스트에 그려주기
 	    			var sessioninfo = '<div class="card-flex friend-card" id="${user.user_id}">'
 	    							+ '<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id }">'
 	    							+ '<div class="img-container">'
@@ -353,6 +362,7 @@ function follow(check) {
 	    							+ '</div></div></a>'
 	    							+ '<div class="friend-stats">';
 	    			$(".followerList").append(sessioninfo);
+	    			sendFollowPush(profile_id);
 	    		}
 	    	}
 		}); // end of follow ajax
@@ -369,6 +379,7 @@ function follow(check) {
 	    			$(".follow-area").html('<button class="button fbutton" id="follow-btn" value="${profile.user_id}"><spring:message code="follow"/></button>');
 	    			followerCnt = followerCnt - 1
 	    			$("#followerCnt").html(followerCnt);
+	    			// 팔로워 리스트에서 지우기
 	    			$('#'+session_id).remove();
 	    		}
 	    	}
@@ -425,12 +436,8 @@ function writePopup() {
 						<div class="avatar">
 							<div class="photo-upload">
 								<div class="preview">
-									<a class="upload-button dz-clickable">
-                               	     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                	</a>
 									<img id="upload-preview" class="avatar-image"
 										src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }">
-									<form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"></form>
 								</div>
 							</div>
 							<div class="avatar-flag">
@@ -1581,8 +1588,6 @@ function writePopup() {
 				</div>
 			</div>
 		</div>
-	<!-- Signup page js -->
-	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>
 </body>
 </html>
 

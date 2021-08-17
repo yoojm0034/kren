@@ -112,7 +112,7 @@
 						u.email,
 						u.name,
 						u.birth,
-						u.gender "gender",
+						u.gender,
 						u.topic,
 						u.LANGUAGE1 "LANGUAGE1",
 						u.LANGUAGE2,

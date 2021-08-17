@@ -68,6 +68,8 @@
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/popovers-users.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/popovers-pages.js"></script>
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/lightbox.js"></script>
+   	<!-- Signup page js -->
+	<script src="${pageContext.request.contextPath}/resources/template/assets/js/signup.js"></script>
 
     <!-- Landing page js -->
     <script src="${pageContext.request.contextPath}/resources/template/assets/js/landing.js"></script>

@@ -27,7 +27,7 @@
 			<div class="settings-wrapper">
 				<div class="stories-content">
 					<div class="section-title main-section-title">
-						<h1>검색결과</h1>
+						<h1><spring:message code="search.result"/></h1>
 					</div>
 				</div>
 				<c:if test="${not empty notices }">
@@ -37,7 +37,7 @@
 						<div class="title-wrap">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>공지사항</h2>
+							<h2><spring:message code="search.notice.title"/></h2>
 						</div>
 						
 						<div class="settings-form-wrapper">
@@ -70,16 +70,16 @@
 						<div class="title-wrap">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>피드</h2>
+							<h2><spring:message code="search.feed.title"/></h2>
 						</div>
 						<div class="settings-form-wrapper">
 							<div class="illustration">
 								<div class="link-content">
 								<table class="table">							
 										<tr>
-											<th>피드번호</th>
-											<th>태그</th>
-											<th>피드내용</th>
+											<th><spring:message code="search.feed.num"/></th>
+											<th><spring:message code="search.feed.tags"/></th>
+											<th><spring:message code="search.feed.content"/></th>
 										</tr>	
 									<c:forEach items="${feeds }" var="list">
 										<tr>
@@ -106,16 +106,16 @@
 						<div class="title-wrap">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>댓글</h2>
+							<h2><spring:message code="search.comment.title"/></h2>
 						</div>
 						<div class="settings-form-wrapper">
 							<div class="illustration">
 								<div class="link-content">
 								<table class="table">							
 										<tr>
-											<th>피드번호</th>
-											<th>댓글번호</th>
-											<th>댓글내용</th>
+											<th><spring:message code="search.feed.num"/></th>
+											<th><spring:message code="search.comment.num"/></th>
+											<th><spring:message code="search.comment.content"/></th>
 										</tr>	
 									<c:forEach items="${commentsList }" var="list">
 										<tr>
@@ -142,17 +142,17 @@
 						<div class="title-wrap">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>교정댓글</h2>
+							<h2><spring:message code="search.commentc.title"/></h2>
 						</div>
 						<div class="settings-form-wrapper">
 							<div class="illustration">
 								<div class="link-content">
 								<table class="table">							
 										<tr>
-											<th>피드번호</th>
-											<th>댓글번호</th>
-											<th>원글내용</th>
-											<th>교정내용</th>
+											<th><spring:message code="search.feed.num"/></th>
+											<th><spring:message code="search.commentc.num"/></th>
+											<th><spring:message code="search.commentc.origin"/></th>
+											<th><spring:message code="search.commentc.correct"/></th>
 										</tr>	
 									<c:forEach items="${commentcList }" var="list">
 										<tr>
@@ -181,7 +181,7 @@
 						<div class="title-wrap">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>유저</h2>
+							<h2><spring:message code="search.user.id"/></h2>
 						</div>
 						<div class="settings-form-wrapper">
 							<div class="settings-form">
@@ -217,7 +217,7 @@
 <c:if test="${empty notices and empty feeds and empty commentsList and empty commentcList and empty members }">
 	<br><br>
 	<div align="center">
-		<h1>검색결과 없음.</h1>
+		<h1><spring:message code="search.no.result"/></h1>
 	</div>
 	
 </c:if>

@@ -279,6 +279,7 @@ a[href^="https://maps.google.com/maps"] {
 						// 팔로우버튼 지우고 언팔로우 버튼 달기
 						$('.' + friend + '-follow-area').empty();
 						$('.' + friend + '-follow-area').html('<button class="button" id="friend-unfollow-btn" value="' + friend + '"><spring:message code="unfollow"/></button>');
+						sendFollowPush(friend);
 					}
 				}
 			}); // end of follow ajax
