@@ -227,7 +227,7 @@ $(document).ready(function(){
         var now   = 0;
         var next  = 0;
         var tmr   = null;
-        var timr  = 3000;
+        var timr  = 5000;
         function change(){if(next > max) next = 0; else if(next < 0) next = max; for(var i=0; i <= max; i++ )elm[i].className = "";elm[next].className = "on";now = next;}
         function befor(){next--; change();}
         function after(){next++; change();}
@@ -1833,15 +1833,7 @@ $(document).ready(function(){
 												</div>
 												<div class="user-info" id="${vo.user_id }">
 													<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
-													<svg viewBox="0 0 24 24" width="21" height="15"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-														<path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-														<path d="M2 2l7.586 7.586"></path>
-														<circle cx="11" cy="11" r="2"></circle></svg>
-													${vo.write_lan } <span class="time"> <script
+													<span class="time"> <script
 															type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
 													</script>
@@ -2457,7 +2449,7 @@ $(document).ready(function(){
 														<div class="birthday-indicator">${vo.cnt }</div>
 													</div>
 													<div class="birthday-content">
-														<h4>${vo.user_id }<spring:message
+														<h4>${vo.name }<spring:message
 																code="feed.birth.msg1" arguments="${vo.cnt }" />
 														</h4>
 														<p style="line-height: 2">

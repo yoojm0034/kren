@@ -89,16 +89,9 @@
 								data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1"
 								alt="">
 						</div>
-						<div class="user-info" id="${vo.feed_id }">
-							<a href="#">${vo.name } <svg viewBox="0 0 24 24" width="21"
-									height="15" stroke="currentColor" stroke-width="2" fill="none"
-									stroke-linecap="round" stroke-linejoin="round"
-									class="css-i6dzq1">
-									<path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-									<path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-									<path d="M2 2l7.586 7.586"></path>
-									<circle cx="11" cy="11" r="2"></circle></svg> ${vo.write_lan }
-							</a> <span class="time postTime"><fmt:formatDate
+						<div class="user-info" id="${vo.user_id }">
+							<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
+							<span class="time postTime"><fmt:formatDate
 									value="${vo.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 
 						</div>
