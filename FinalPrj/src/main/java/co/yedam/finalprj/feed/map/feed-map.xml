@@ -51,6 +51,9 @@
 	  	    <if test="location != null">
 			AND 1 BETWEEN 0 AND 2000
 	  	    </if>
+	  	    <if test="feed_id != null">
+			AND f.feed_id = #{feed_id}
+	  	    </if>
 			ORDER BY f.REG_DATE DESC)
 	</select>
 

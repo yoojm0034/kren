@@ -95,7 +95,7 @@ public class FeedController {
 	public String tagSelect(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
-	
+		
 		vo.setUser_id(id);
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
 	

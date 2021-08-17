@@ -576,14 +576,30 @@ $(document).ready(function(){
 			}
 		});
 	});
-
+	
+	//-------한건조회----------
+	$('#searchSelect').on('click',function(){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do",
+			data:{feed_id:'feed_170'},
+			success:function(result){
+				$('.feedContents').html(result);
+				loadMore();
+				initPostComments();
+				dateCmt();
+			},
+			error:function(err){
+				console.log(err);
+			}
+		})
+	})
+	
 	//-------언어별 Ko---------
 	$('#searchKo').on('click',function(){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			data:{write_lan : 'ko' },
 			success:function(result){
-				console.log('한국어만 나옴');
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
@@ -608,7 +624,6 @@ $(document).ready(function(){
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			data:{write_lan : 'en' },
 			success:function(result){
-				console.log('영어만 나옴');
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
@@ -1759,7 +1774,8 @@ $(document).ready(function(){
 						<div class="menu" id="searchTag">태그</div>
 						<div class="menu" id="searchKo">한국어</div>
 						<div class="menu" id="searchEn">영어</div>
-
+						<div class="menu" id="searchSelect">한건조회</div>
+						
 						<div id="SearchDiv" class="control has-margin">
 							<input class="input is-hidden" type="text" id="tagInput"
 								placeholder="태그를 입력해 주세요">
