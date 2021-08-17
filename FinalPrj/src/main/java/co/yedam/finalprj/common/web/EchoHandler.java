@@ -81,7 +81,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect(vo);
-						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + uvo.getName() + "님이 " + seq + " 번 게시글에 댓글을 달았습니다.</h5>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + uvo.getName()+ " 님이 " + " 회원님의 게시글에 댓글을 달았습니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 					
@@ -98,7 +98,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					System.out.println(r + "건 입력");
 					if(r > 0) {
 						vo = pushDao.pushSelect(vo);
-						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + uvo.getName() + "님이 " + seq + " 번 게시글을 좋아합니다.</h5>");
+						TextMessage tmpMsg = new TextMessage("<h5 id='clickUpdatePush' data-id='"+vo.getPush_id()+"'data-fid='"+vo.getContent_id()+"'data-type='"+vo.getType()+"'>" + uvo.getName() + "님이 " + " 회원님의 게시글을 좋아합니다.</h5>");
 						boardWriterSession.sendMessage(tmpMsg);
 					}
 				//댓글작성시

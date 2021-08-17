@@ -328,7 +328,7 @@ $(function(){
 						<div class="illustration">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>누적 방문자 수: ${totalCount}명  오늘의 방문자 수: ${todayCount}명</h2>
+							<h2>누적 방문자 수: ${totalCount}명</h2>
 						</div>
 					</div>
 				</div>
@@ -379,10 +379,10 @@ $(function(){
 						<div class="illustration">
 							<a class="mobile-sidebar-trigger"> <i data-feather="menu"></i>
 							</a>
-							<h2>누적 매출액 : <fmt:formatNumber value="${all }" pattern="#,###" />원  올해 매출액 : <fmt:formatNumber value="${year }" pattern="#,###" />원</h2>
+							<h2>누적 매출액 : <fmt:formatNumber value="${all }" pattern="#,###" />원</h2>
 						</div>
 					</div>
-				</div>
+				</div>	
 				<!-- /partials/settings/sections/general-settings.html -->
 				<div id="general-settings" class="settings-section is-active">
 					<div class="settings-panel">
