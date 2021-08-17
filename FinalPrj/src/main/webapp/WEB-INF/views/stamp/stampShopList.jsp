@@ -56,7 +56,7 @@
 										}
 							}); 
 	 				//결제 성공 후 마이페이지-우표함으로 이동...
-	 				location.href='profile.do';
+	 				location.href='profile.do?user_id='+"${user.user_id}";
 	 				//location.reload();
 				} else {
 					//결제 실패 로직
