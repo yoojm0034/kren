@@ -47,7 +47,7 @@
 												<span class="has-price" id="sh_type"><spring:message
 														code="stamph.login" /></span>
 											</c:if>
-											<c:if test="${vo.sh_type eq '게시글작성' }">
+											<c:if test="${vo.sh_type eq '피드등록' }">
 												<span class="has-price" id="sh_type"><spring:message
 														code="stamph.post" /></span>
 											</c:if>
