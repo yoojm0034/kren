@@ -16,4 +16,7 @@ public interface ReportMap {
 	
 	//정지회원으로 변경시 관려 데이터 일괄삭제
 	int stopUserUpdate(UsersVO vo);
+	
+	//신고내역 확인
+	int reportUserCheck(ReportVO vo);
 }

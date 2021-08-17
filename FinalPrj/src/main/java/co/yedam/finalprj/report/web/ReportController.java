@@ -28,27 +28,25 @@ import co.yedam.finalprj.users.vo.UsersVO;
 
 @Controller
 public class ReportController {
+   @Autowired ReportService reportDao; 
+   @Autowired FeedService feedDao;
+   @Autowired LetterService letterDao;
+   @Autowired CommentsService commentDao; 
+   @Autowired UsersService usersDao;
+   @Autowired BlockService blockDao;
+   @Autowired CommentcService commentcDao;
    
-   @Autowired
-   ReportService reportDao; 
+   //신고여부 확인
+   @RequestMapping("reportUserCheck.do")
+   @ResponseBody
+   public int reportUserCheck(ReportVO vo) {
+	   int n = reportDao.reportUserCheck(vo);
+	   if(n == 0) {
+		   n = 0;
+	   }
+	   return n;
+   }
    
-   @Autowired
-   FeedService feedDao;
-   
-   @Autowired
-   LetterService letterDao;
-   
-   @Autowired
-   CommentsService commentDao; 
-   
-   @Autowired
-   UsersService usersDao;
-   
-   @Autowired
-   BlockService blockDao;
-   
-   @Autowired
-   CommentcService commentcDao;
    
    //신고리스트
    @RequestMapping("admin/userReportList.do")
@@ -81,6 +79,7 @@ public class ReportController {
 	   
       return n;
    }
+
    //신고리스트에서 해당 게시물번호 클릭시 팝업창으로 가지고갈 정보
    @RequestMapping("admin/reportAdmin.do")
    public String reportAdmin(@RequestParam("data") String str, Model model, LetterVO vo, FeedVO fvo, CommentsVO cvo, CommentcVO ccvo) {

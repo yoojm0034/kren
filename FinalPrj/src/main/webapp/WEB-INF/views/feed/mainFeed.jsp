@@ -822,27 +822,41 @@ $(document).ready(function(){
 		
 		console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부 : "  +chk +"체크사유 & 기타사유"+ txt);	
 		
- 		if(confirm('신고하시겠습니까?')) {
-			$.ajax({
-				url:'${pageContext.request.contextPath}/reportInsert.do',
+		if(confirm('신고하시겠습니까?')) {
+			$.ajax({//신고 여부 확인
+				url:'${pageContext.request.contextPath}/reportUserCheck.do',
 				type:'post',
-				data:JSON.stringify({
-					user_id:'${user.user_id}',	//신고자
-					content:repo,				//피드아이디
-					msg:txt,					//신고냐용
-					reported:report,			//신고당한자
-					blocked:chk					//블락체크여부
-				}),
-				contentType : "application/json; charset=UTF-8",
-				success: function(data) {
-					alert('신고되었습니다.');
+				data:{content:repo,user_id:'${user.user_id}'},
+				success: function(cnt) {
+					if(cnt == 0) {
+						$.ajax({
+							url:'${pageContext.request.contextPath}/reportInsert.do',
+							type:'post',
+							data:JSON.stringify({
+								user_id:'${user.user_id}',	//신고자
+								content:repo,				//피드아이디
+								msg:txt,					//신고냐용
+								reported:report,			//신고당한자
+								blocked:chk					//블락체크여부
+							}),
+							contentType : "application/json; charset=UTF-8",
+							success: function(data) {
+								alert('신고되었습니다.');
+							},
+							error: function(err) {
+								alert('관리자에게 문의해주세요.');
+							}
+						});
+					} else {
+						alert('신고내역이 존재합니다.');
+					}
 				},
-				error: function(err) {
+				error: function(e) {
 					alert('관리자에게 문의해주세요.');
 				}
-			})
-		} 
-	})
+			});//$.ajax신고 여부 확인
+		}
+	});//버튼을 누르면
 	})
 
 	//-------댓글-------- 
@@ -967,29 +981,43 @@ $(document).ready(function(){
 		}
 		var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
 		console.log(report, repo, radio, chk, txt);
+		
+		
 		if(confirm('<spring:message code="comment.confirm.report"/>')) {
-			$.ajax({
-				url:'${pageContext.request.contextPath}/reportInsert.do',
+			$.ajax({//신고 여부 확인
+				url:'${pageContext.request.contextPath}/reportUserCheck.do',
 				type:'post',
-				data:JSON.stringify({
-					user_id:'${user.user_id}',
-					content:repo,
-					msg:txt,
-					reported:report,
-					blocked:chk
-				}),
-				contentType : "application/json; charset=UTF-8",
-				success: function(data) {
-					alert('<spring:message code="comment.report.success"/>');
+				data:{content:repo,user_id:'${user.user_id}'},
+				success: function(cnt) {
+					if(cnt == 0) {
+						$.ajax({
+							url:'${pageContext.request.contextPath}/reportInsert.do',
+							type:'post',
+							data:JSON.stringify({
+								user_id:'${user.user_id}',
+								content:repo,
+								msg:txt,
+								reported:report,
+								blocked:chk
+							}),
+							contentType : "application/json; charset=UTF-8",
+							success: function(data) {
+								alert('<spring:message code="comment.report.success"/>');
+							},
+							error: function(err) {
+								alert('<spring:message code="comment.alert.errormsg"/>');
+							}
+						});
+				 } else {
+						alert('<spring:message code="letter.report.did"/>');
+					}
 				},
-				error: function(err) {
+				error: function(e) {
 					alert('<spring:message code="comment.alert.errormsg"/>');
 				}
-			});
+			});//$.ajax신고 여부 확인
 		}
-		
-		
-	});
+	});//신고버튼을 누르면
 	
 	$('body').on('click','#msg', function() { //기타를 누르면 값을 입력할 수 있도록
 		var select = $(this);
