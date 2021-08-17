@@ -239,7 +239,6 @@ $(document).ready(function(){
 		$('.menu[menu-index!=' + index + ']').removeClass('clicked_menu');
 	});
 	
-	$('.reportMenu').hide();
 	//-------공지사항이동---------
 	$('.page-block').on('click',function(){
 		var noticeId= this.id;
@@ -295,8 +294,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<script>
-
+<script>
 	function loadMore(){
 	 // load more
 	  var increment=5;	
@@ -484,8 +482,8 @@ $(document).ready(function(){
 				}
 				$('#feedInsert').submit();		
 			},
-			error:function(){
-				
+			error:function(err){
+				console.log(err);
 			}
 		});
 		}else{
@@ -543,7 +541,6 @@ $(document).ready(function(){
 				div.append('<span class="tagDelete">#' + tagval+ ' </span>');
 			}
             	$('#activities-autocpl').val('');
-        	 
             $.ajax({
                url: "tagInsert.do" ,
                type: "POST",
@@ -615,23 +612,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
-	//-------한건조회----------
-	$('#searchSelect').on('click',function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do",
-			data:{feed_id:'feed_170'},
-			success:function(result){
-				$('.feedContents').html(result);
-				loadMore();
-				initPostComments();
-				dateCmt();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		})
-	})
 	
 	//-------언어별 Ko---------
 	$('#searchKo').on('click',function(){
@@ -1818,7 +1798,6 @@ $(document).ready(function(){
 						<div class="menu" id="searchTag">태그</div>
 						<div class="menu" id="searchKo">한국어</div>
 						<div class="menu" id="searchEn">영어</div>
-						<div class="menu" id="searchSelect">한건조회</div>
 
 						<div id="SearchDiv" class="control has-margin">
 							<input class="input is-hidden" type="text" id="tagInput"
