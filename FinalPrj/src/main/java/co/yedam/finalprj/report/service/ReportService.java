@@ -15,4 +15,7 @@ public interface ReportService {
 	int reportDelete(ReportVO vo);
 	
 	int stopUserUpdate(UsersVO vo);
+	
+	//신고내역 확인
+	int reportUserCheck(ReportVO vo);
 }	

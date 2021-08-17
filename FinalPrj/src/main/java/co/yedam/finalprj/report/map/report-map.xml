@@ -45,4 +45,10 @@
 		SET read_date = sysdate
 		where reported = #{reported}	
 	</update>
+	
+	<select id="reportUserCheck" parameterType="co.yedam.finalprj.report.vo.ReportVO" resultType="int">
+		SELECT COUNT(*) FROM REPORT
+         WHERE CONTENT = #{content}
+           AND USER_ID = #{user_id}
+	</select>
 </mapper>

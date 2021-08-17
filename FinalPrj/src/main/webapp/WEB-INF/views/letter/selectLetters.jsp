@@ -397,28 +397,42 @@
 			console.log(report, repo, radio, chk, txt);
 			
 			if(confirm('<spring:message code="letter.confirm.report"/>')) {
-				$.ajax({
-					url:'${pageContext.request.contextPath}/reportInsert.do',
+				$.ajax({//신고 여부 확인
+					url:'${pageContext.request.contextPath}/reportUserCheck.do',
 					type:'post',
-					data:JSON.stringify({
-						user_id:'${user.user_id}',
-						content:repo,
-						msg:txt,
-						reported:report,
-						blocked:chk
-					}),
-					contentType : "application/json; charset=UTF-8",
-					success: function(data) {
-						alert('<spring:message code="letter.report.success"/>');
-						location.reload(true);
+					data:{content:repo,user_id:'${user.user_id}'},
+					success: function(cnt) {
+						if(cnt == 0) {
+							$.ajax({//신고내역 입력
+								url:'${pageContext.request.contextPath}/reportInsert.do',
+								type:'post',
+								data:JSON.stringify({
+									user_id:'${user.user_id}',
+									content:repo,
+									msg:txt,
+									reported:report,
+									blocked:chk
+								}),
+								contentType : "application/json; charset=UTF-8",
+								success: function(data) {
+									alert('<spring:message code="letter.report.success"/>');
+									location.reload(true);
+								},
+								error: function(err) {
+									alert('<spring:message code="letter.alert.errormsg"/>');
+								}
+							});
+						} else {
+							alert('<spring:message code="letter.report.did"/>');
+						}
 					},
-					error: function(err) {
+					error: function(e) {
 						alert('<spring:message code="letter.alert.errormsg"/>');
 					}
-				});
+				});//$.ajax신고 여부 확인
 			}
 			
-		});
+		});//#rbtn,신고버튼을 누르면
 		
 		$('body').on('click','#msg', function() { //기타를 누르면 값을 입력할 수 있도록
 			var select = $(this);

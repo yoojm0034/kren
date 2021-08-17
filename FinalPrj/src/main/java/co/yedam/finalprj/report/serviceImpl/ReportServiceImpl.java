@@ -17,19 +17,16 @@ public class ReportServiceImpl implements ReportService {
 	
 	@Override
 	public List<ReportVO> reportSelectList() {
-
 		return map.reportSelectList();
 	}
 
 	@Override
 	public ReportVO reportSelect(ReportVO vo) {
-
 		return map.reportSelect(vo);
 	}
 
 	@Override
 	public int reportInsert(ReportVO vo) {
-
 		return map.reportInsert(vo);
 	}
 
@@ -41,26 +38,27 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public int reportDelete(ReportVO vo) {
-
 		return map.reportDelete(vo);
 	}
 
 	@Override
 	public int reportAllUpdate(ReportVO vo) {
-		// TODO Auto-generated method stub
 		return map.reportAllUpdate(vo);
 	}
 
 	@Override
 	public int reportUpdateUser(ReportVO vo) {
-		// TODO Auto-generated method stub
 		return map.reportUpdateUser(vo);
 	}
 
 	@Override
 	public int stopUserUpdate(UsersVO vo) {
-		// TODO Auto-generated method stub
 		return map.stopUserUpdate(vo);
+	}
+
+	@Override
+	public int reportUserCheck(ReportVO vo) {
+		return map.reportUserCheck(vo);
 	}
 
 }
