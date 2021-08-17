@@ -210,6 +210,12 @@ reported-div {
 #widget-slide-1 ul li.on {
 	display: block;
 }
+
+.activeCnt {
+	padding-left: 7px;
+    color: #777777;
+}
+
 </style>
 <script>
 $(document).ready(function(){
@@ -1945,8 +1951,7 @@ $(document).ready(function(){
 														<c:if test="${vo.user_id eq user.user_id}">
 															<hr class="dropdown-divider">
 															<a class="dropdown-item">
-																<div class="media feedUpdate" id="update${vo.feed_id }"
-																	onclick="feedUpdate('${vo.feed_id }')">
+																<div class="media feedUpdate" id="update${vo.feed_id }" onclick="feedUpdate('${vo.feed_id }')">
 																	<i data-feather="bell"></i>
 																	<div class="media-content">
 																		<input type="hidden" id="update-tag" name="update-tag"
@@ -1982,59 +1987,11 @@ $(document).ready(function(){
 												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 												<div class="twdiv" id="${vo.write_lan }"></div>
 											</div>
-											<!-- Featured image -->
-											<c:if test="${empty vo.fphoto}">
-												<div class="post-image"
-													style="margin-bottom: 50px; margin-top: 30px">
-													<!-- Action buttons -->
-													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-													<div class="like-wrapper">
-														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
-															class="mdi mdi-heart not-liked bouncy"></i> <i
-															class="mdi mdi-heart is-liked bouncy"></i> <span
-															class="like-overlay"></span>
-														</a>
-													</div>
-													<div class="fab-wrapper is-comment">
-														<a href="javascript:void(0);" class="small-fab"> <svg
-																viewBox="0 0 24 24" width="24" height="24"
-																stroke="currentColor" stroke-width="2" fill="none"
-																stroke-linecap="round" stroke-linejoin="round"
-																class="css-i6dzq1">
-																<path
-																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-														</a>
-													</div>
-												</div>
-											</c:if>
-											<c:if test="${not empty vo.fphoto}">
 												<div class="post-image">
 													<img
 														src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 														alt="" />
-													<!-- Action buttons -->
-													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-													<div class="like-wrapper">
-														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
-															class="mdi mdi-heart not-liked bouncy"></i> <i
-															class="mdi mdi-heart is-liked bouncy"></i> <span
-															class="like-overlay"></span>
-														</a>
-													</div>
-													<div class="fab-wrapper is-comment">
-														<a href="javascript:void(0);" class="small-fab"> <svg
-																viewBox="0 0 24 24" width="24" height="24"
-																stroke="currentColor" stroke-width="2" fill="none"
-																stroke-linecap="round" stroke-linejoin="round"
-																class="css-i6dzq1">
-																<path
-																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-														</a>
-													</div>
 												</div>
-											</c:if>
 											<div>
 												<p>
 													<c:if test="${not empty vo.tags }">
@@ -2049,27 +2006,32 @@ $(document).ready(function(){
 										<div class="card-footer">
 											<!-- Post statistics -->
 											<div class="social-count">
-												<div class="comments-count">
-													<svg viewBox="0 0 24 24" width="24" height="24"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path
-															d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-													<span id="minicmt" data-minicmt="${status.index }">
-														<c:if test="${vo.cmt eq 0 }">0</c:if> <c:if
-															test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
-													</span>
-												</div>
-												<div class="likes-count">
-													<svg viewBox="0 0 24 24" width="24" height="24"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path
-															d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-													<span id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
-												</div>
+													<!-- Action buttons -->
+													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+													<!-- 댓글 카운트 -->
+													<div class="fab-wrapper is-comment" style="padding-right: 10px;">
+														<a href="javascript:void(0);" class="small-fab"> <svg
+																viewBox="0 0 24 24" width="24" height="24"
+																stroke="currentColor" stroke-width="2" fill="none"
+																stroke-linecap="round" stroke-linejoin="round"
+																class="css-i6dzq1">
+																<path
+																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+														<span class="activeCnt" id="minicmt" data-minicmt="${status.index }">
+															<c:if test="${vo.cmt eq 0 }">0</c:if>
+															<c:if test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
+														</span>
+														</a>
+													</div>
+													<!-- 좋아요 카운트 -->
+													<div class="like-wrapper">
+														<a class="like-button"
+															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
+															class="mdi mdi-heart not-liked bouncy"></i> <i
+															class="mdi mdi-heart is-liked bouncy"></i> 
+															<span class="activeCnt" id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
+														</a>
+													</div>
 											</div>
 										</div>
 										<div data-table="${status.index }"></div>

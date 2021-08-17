@@ -533,6 +533,22 @@ $(function() {
 					<div class="box-heading">
 						<h4><spring:message code="usersUpdate.edit"/></h4>
 					</div>
+<%-- 					<div class="basic-infos-wrapper">
+						<div class="card is-profile-info">
+							<div class="photo-upload">
+                            <div class="preview">
+                                <a class="upload-button dz-clickable">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </a>
+                                <img id="upload-preview" src="https://via.placeholder.com/150x150" data-demo-src="/FinalPrj/assets/img/avatars/avatar-w.png" alt="">
+                                <form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"><div class="dz-default dz-message"><span>Drop files here to upload</span></div></form>
+                            </div>
+                            <div class="limitation">
+                                <small>이미지는 3MB내로만 업로드 가능합니다.</small>
+                            </div>
+                        </div>
+						</div>
+					</div> --%>
 					<div class="basic-infos-wrapper">
 						<div class="card is-profile-info">
 							<div class="info-row">
