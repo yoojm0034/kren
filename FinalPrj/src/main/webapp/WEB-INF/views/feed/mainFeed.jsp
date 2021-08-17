@@ -343,7 +343,6 @@ $(document).ready(function(){
 			contentType: 'application/json; charset=utf-8',
 			success:function(data){
 				sendFollowPush(id);
-				alert(data);
 			},
 			error:function(err){
 				console.log(err);

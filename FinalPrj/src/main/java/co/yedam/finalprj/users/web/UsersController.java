@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.yedam.finalprj.commentDetail.service.CommentDetailService;
+import co.yedam.finalprj.comments.service.CommentsService;
 import co.yedam.finalprj.feed.service.FeedService;
 import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.service.FriendsService;
@@ -60,6 +62,8 @@ public class UsersController {
 	@Autowired ReportService reportDao;
 	@Autowired FeedService feedDao;
 	@Autowired LetterService letterDao;
+	@Autowired CommentsService CommentDao;
+	@Autowired CommentDetailService commentDetailDao;
 	
 	
 	@Inject JavaMailSender mailSender;   
@@ -97,7 +101,11 @@ public class UsersController {
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
 		model.addAttribute("mytrip", usersDao.myTripList(vo));
 		model.addAttribute("photo", usersDao.userProfilePhoto(vo));
+		model.addAttribute("posts", usersDao.usersFeedList(vo));
 		model.addAttribute("locale", locale.getLanguage());
+		
+		model.addAttribute("commentList",CommentDao.commentSelectList());
+		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
 		
 		model.addAttribute("time", letterDao.letterDistance(vo));		
 		

@@ -1,9 +1,11 @@
 package co.yedam.finalprj.users.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.stamph.vo.StamphVO;
 import co.yedam.finalprj.users.vo.UsersVO;
@@ -43,6 +45,9 @@ public interface UsersService {
 	//프로필 사진
 	UsersVO userProfilePhoto(UsersVO vo);
 	UsersVO sessionProfilePhoto(UsersVO vo);
+	
+	//작성글 리스트
+	List<Map<String,Object>> usersFeedList(UsersVO vo);
 	
 	//-----------------로그인 로그아웃---------------
 	public int loginCheck(UsersVO vo);

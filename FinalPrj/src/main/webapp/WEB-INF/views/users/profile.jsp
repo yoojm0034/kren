@@ -194,6 +194,11 @@ a[href^="https://maps.google.com/maps"] {
 	
 }
 
+.activeCnt {
+	padding-left: 7px;
+    color: #777777;
+}
+
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -202,6 +207,7 @@ a[href^="https://maps.google.com/maps"] {
 
 <script>
 $(document).ready(function() {
+	initPostComments();
 	initMap();
 	//지도 출력
 	function initMap() {
@@ -278,6 +284,118 @@ $(function(){
 	});
 });
 
+function initPic() {
+	  if ($("#profile-pic-dz").length) {
+		    var myDropzone = new Dropzone("#profile-pic-dz", {
+		      maxFilesize: 8,
+		      // MB
+		      acceptedFiles: ".jpeg,.jpg,.png",
+		      clickable: ".upload-button",
+		      init: function init() {
+		        this.on("error", function (file, message) {
+		          console.log(message);
+		          this.removeFile(file);
+		        });
+
+		        if (this.files[1] != null) {
+		          this.removeFile(this.files[0]);
+		        }
+
+		        ;
+		      },
+		      transformFile: function transformFile(file, done) {
+		        $('#crop-modal').addClass('is-active'); //pictures = [];
+		        // Create the image editor overlay
+
+		        var editor = document.createElement('div');
+		        editor.style.position = 'absolute';
+		        editor.style.left = 0;
+		        editor.style.right = 0;
+		        editor.style.top = 0;
+		        editor.style.bottom = 0;
+		        editor.style.zIndex = 9999;
+		        editor.style.backgroundColor = '#fff';
+		        document.getElementById('cropper-wrapper').appendChild(editor); // Create confirm button at the top left of the viewport
+
+		        var buttonConfirm = document.createElement('button');
+		        buttonConfirm.style.position = 'absolute';
+		        buttonConfirm.style.right = '10px';
+		        buttonConfirm.style.bottom = '10px';
+		        buttonConfirm.style.zIndex = 9999;
+		        buttonConfirm.textContent = 'Crop';
+		        buttonConfirm.classList.add('button');
+		        editor.appendChild(buttonConfirm);
+		        buttonConfirm.addEventListener('click', function () {
+		          // Get the canvas with image data from Cropper.js
+		          var canvas = cropper.getCroppedCanvas({
+		            width: 256,
+		            height: 256
+		          }); // Turn the canvas into a Blob (file object without a name)
+
+		          canvas.toBlob(function (blob) {
+		            // Create a new Dropzone file thumbnail
+		            myDropzone.createThumbnail(blob, myDropzone.options.thumbnailWidth, myDropzone.options.thumbnailHeight, myDropzone.options.thumbnailMethod, false, function (dataURL) {
+		              // Update the Dropzone file thumbnail
+		              myDropzone.emit('thumbnail', file, dataURL); // Return the file to Dropzone
+
+		              done(blob); //console.log(blob);
+		              //Display image preview
+
+		              var previewReader = new FileReader();
+
+		              previewReader.onload = function (event) {
+		                // event.target.result contains base64 encoded image
+		                $('#upload-preview').attr('src', blob.dataURL); //Show popover
+
+		                $('.picture-container').webuiPopover({
+		                  title: '',
+		                  content: 'Your photo is ready to be uploaded. Hit the "Save Changes" button to complete the upload process.',
+		                  animation: 'pop',
+		                  width: 300,
+		                  style: 'inverse',
+		                  placement: 'top',
+		                  offsetTop: -16
+		                }).trigger('click'); //console.log('THIS IS THE BLOB', blob)
+		              };
+
+		              previewReader.readAsDataURL(file);
+		            });
+		            var reader = new FileReader();
+		            reader.addEventListener("loadend", function (event) {// put picture in a holding var
+
+		              /*pictures.push({
+		                  binaryData: btoa(reader.result),
+		                  filePath: file.name,
+		                  seoFilename: file.name.substring(0, file.name.lastIndexOf(".")),
+		                  titleAttribute: file.name,
+		                  altAttribute: file.name,
+		                  mimeType: file.type,
+		                  isNew: true
+		              });*/
+		              // accept the file
+		              //done();
+		              //console.log('THIS IS THE RESULT', reader.result);
+		              //console.log('THIS IS THE ARRAY', pictures);
+		            }); //reader.readAsBinaryString(file);
+
+		            reader.readAsBinaryString(blob);
+		          }); // Remove the editor from the view
+
+		          document.getElementById('cropper-wrapper').removeChild(editor);
+		          document.getElementById('crop-modal').classList.remove('is-active');
+		        }); // Create an image node for Cropper.js
+
+		        var image = new Image();
+		        image.src = URL.createObjectURL(file);
+		        editor.appendChild(image); // Create Cropper.js
+
+		        var cropper = new Cropper(image, {
+		          aspectRatio: 1
+		        });
+		      }
+		    });
+		  }
+}
 
 // 프로필 수정 페이지로 이동
 $(function(){
@@ -301,6 +419,7 @@ $(function(){
 						+ '<div class="dz-default dz-message"><span>Drop files here to upload</span></div></form></div>';
 				$('.photo-upload').append(img);
 				$('.profile-contents').html(result);
+				initPic();
 			}
 		});
 	});
@@ -642,532 +761,569 @@ function writePopup() {
 					<div id="profile-timeline-posts" class="box-heading">
 						<h4><spring:message code="profile.posts"/></h4>
 					</div>
-
 					<div class="profile-timeline">
-
-						<!-- Timeline post 1 -->
-						<!-- html/partials/pages/profile/posts/timeline-post1.html -->
 						<!-- Timeline POST #1 -->
-						<div class="profile-post">
+						<div class="feedContents">
 							<!-- Post -->
-							<div class="card is-post">
-								<!-- Main wrap -->
-								<div class="content-wrap">
-									<!-- Header -->
-									<div class="card-heading">
-										<div class="user-block">
-											<div class="image">
-												<img src="https://via.placeholder.com/300x300">
+							<!------------------------ 포스트 시작 ------------------------->
+							<c:forEach items="${posts }" var="vo" varStatus="status">
+								<div id="feed-post-1" class="card is-post">
+									<!-- Main wrap -->
+									<div class="content-wrap" data-crap="${status.index }">
+										<!-- Post header -->
+										<div class="card-heading">
+											<!-- User meta -->
+											<div class="user-block">
+												<div class="image">
+													<img src="https://via.placeholder.com/300x300"
+														data-demo-src="assets/img/avatars/dan.jpg"
+														data-user-popover="1" alt="">
+												</div>
+												<div class="user-info" id="${vo.user_id }">
+													<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
+													<span class="time"> <script
+															type="text/javascript">														
+														document.write(timeForToday('${vo.reg_date}'));
+													</script>
+													</span>
+												</div>
 											</div>
-											<div class="user-info">
-												<a href="#">Jenna Davis</a> <span class="time">October
-													17 2018, 11:03am</span>
+											<!-- Right side dropdown -->
+											<!-- /partials/pages/feed/dropdowns/feed-post-dropdown.html -->
+											<div
+												class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+												<div>
+													<div class="button">
+														<svg viewBox="0 0 24 24" width="24" height="24"
+															stroke="currentColor" stroke-width="2" fill="none"
+															stroke-linecap="round" stroke-linejoin="round"
+															class="css-i6dzq1">
+															<line x1="8" y1="6" x2="21" y2="6"></line>
+															<line x1="8" y1="12" x2="21" y2="12"></line>
+															<line x1="8" y1="18" x2="21" y2="18"></line>
+															<line x1="3" y1="6" x2="3.01" y2="6"></line>
+															<line x1="3" y1="12" x2="3.01" y2="12"></line>
+															<line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+													</div>
+												</div>
+												<div class="dropdown-menu" role="menu">
+													<div class="dropdown-content">
+														<a href="#" class="dropdown-item">
+															<div class="media">
+																<div class="media-content" id="${vo.content }"
+																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
+																	<h3>번역</h3>
+																</div>
+															</div>
+														</a>
+														<c:if test="${vo.user_id ne user.user_id}">
+															<a class="dropdown-item">
+																<div class="media">
+																	<div class="media-content" id="feedcor"
+																		data-fid="${vo.feed_id }" data-fidx="${status.index }"
+																		data-fuser="${vo.user_id }">
+																		<h3>교정</h3>
+																	</div>
+																</div>
+															</a>
+															<hr class="dropdown-divider">
+															<a class="dropdown-item">
+																<div class="media">
+																	<div class="media-content" id="frbtn"
+																		data-repo2="${vo.feed_id }"
+																		data-report2="${vo.user_id }">
+																		<h3>신고</h3>
+																	</div>
+																	<div class="dropdown-menu">
+																		<div class="dropdown-content reportMenu">
+																			<div class="media freport" style="border: 0px;">
+																				<table id="report-table">
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물">스팸
+																								게시물</label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">가짜정보
+																								제공</label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="성적인 내용">성적인
+																								내용</label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }"
+																								value="데이트가 목적인 내용">데이트가 목적인 내용</label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="욕설/비방">욕설/비방</label>
+																						</td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="기타">기타</label>
+																						</td>
+																					</tr>
+																					<tr>
+																						<td><input placeholder="신고이유" hidden="true"
+																							data-rftxt="${vo.feed_id }" maxlength="30"></input>
+																						</td>
+																					</tr>
+																				</table>
+																			</div>
+																			<div class="dropdown-divider"></div>
+																			<div class="reported-div">
+																				<input type="checkbox" id="feed-blocked"
+																					data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
+																				차단
+																				<button id="report-btn" data-repo2="${vo.feed_id  }"
+																					data-report2="${vo.user_id }">신고</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</a>
+														</c:if>
+														<c:if test="${vo.user_id eq user.user_id}">
+															<hr class="dropdown-divider">
+															<a class="dropdown-item">
+																<div class="media feedUpdate" id="update${vo.feed_id }" onclick="feedUpdate('${vo.feed_id }')">
+																	<i data-feather="bell"></i>
+																	<div class="media-content">
+																		<input type="hidden" id="update-tag" name="update-tag"
+																			value="${vo.tags }"> <input type="hidden"
+																			id="update-content" name="update-content"
+																			value="${vo.content }"> <input type="hidden"
+																			id="update-photo" name="update-photo"
+																			value="${vo.uuid }"> <input type="hidden"
+																			id="update-fphoto" name="update-fphoto"
+																			value="${vo.fphoto }">
+																		<h3>수정</h3>
+																	</div>
+																</div> <a href="#" class="dropdown-item">
+																	<div class="media">
+																		<i data-feather="flag"></i>
+																		<div class="media-content delFeed" id="${vo.feed_id }">
+																			<h3>삭제</h3>
+																		</div>
+																	</div>
+															</a>
+														</c:if>
+													</div>
+												</div>
 											</div>
 										</div>
-
-										<div
-											class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+										<!-- /Post header -->
+										<!-- Post body -->
+										<div class="card-body">
+											<!-- Post body text -->
+											<div class="post-text">
+												<p
+													style="font-size: 1rem; color: #5f5f5f; line-height: 1.5; word-wrap: break-word; white-space: pre-line;">${vo.content }</p>
+												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
+												<div class="twdiv" id="${vo.write_lan }"></div>
+											</div>
+												<div class="post-image">
+													<img
+														src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
+														alt="" />
+												</div>
 											<div>
-												<div class="button">
-													<i data-feather="more-vertical"></i>
+												<p>
+													<c:if test="${not empty vo.tags }">
+														<a>#${fn:replace(vo.tags,',','#')}</a>
+													</c:if>
+												</p>
+											</div>
+										</div>
+										<!-- /Post body -->
+
+										<!-- Post footer -->
+										<div class="card-footer">
+											<!-- Post statistics -->
+											<div class="social-count">
+													<!-- Action buttons -->
+													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+													<!-- 댓글 카운트 -->
+													<div class="fab-wrapper is-comment" style="padding-right: 10px;">
+														<a href="javascript:void(0);" class="small-fab"> <svg
+																viewBox="0 0 24 24" width="24" height="24"
+																stroke="currentColor" stroke-width="2" fill="none"
+																stroke-linecap="round" stroke-linejoin="round"
+																class="css-i6dzq1">
+																<path
+																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+														<span class="activeCnt" id="minicmt" data-minicmt="${status.index }">
+															<c:if test="${vo.cmt eq 0 }">0</c:if>
+															<c:if test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
+														</span>
+														</a>
+													</div>
+													<!-- 좋아요 카운트 -->
+													<div class="like-wrapper">
+														<a class="like-button"
+															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
+															class="mdi mdi-heart not-liked bouncy"></i> <i
+															class="mdi mdi-heart is-liked bouncy"></i> 
+															<span class="activeCnt" id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
+														</a>
+													</div>
+											</div>
+										</div>
+										<div data-table="${status.index }"></div>
+										<!-- /Post footer -->
+									</div>
+									<!-- /Main wrap -->
+
+
+									<!-- Post #1 Comments -->
+									<div class="comments-wrap is-hidden">
+										<!-- Header -->
+										<div class="comments-heading" data-card="${status.index }">
+											<h4>
+												<spring:message code="comment.h4.title" />
+												<small> <c:if
+														test="${!empty vo.cmt and vo.cmt eq 0 }">(0)</c:if> <c:if
+														test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt})</c:if>
+												</small>
+											</h4>
+											<div class="close-comments">
+												<svg viewBox="0 0 24 24" width="24" height="24"
+													stroke="currentColor" stroke-width="2" fill="none"
+													stroke-linecap="round" stroke-linejoin="round"
+													class="css-i6dzq1">
+													<line x1="18" y1="6" x2="6" y2="18"></line>
+													<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+											</div>
+										</div>
+										<!-- /Header -->
+
+										<!-- Comments body -->
+										<div class="comments-body has-slimscroll"
+											data-scroll="${status.index }">
+
+											<!-- Comment -->
+											<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">
+												<c:forEach items="${commentList }" var="cmt">
+													<!-- 피드번호가 같으면 -->
+													<c:if test="${vo.feed_id eq cmt.feed_id }">
+														<c:choose>
+															<c:when test="${cmt.content ne '-'}">
+																<!-- 일반댓글이면 -->
+																<div class="media is-comment">
+																	<!-- User image -->
+																	<div class="media-left">
+																		<div class="image">
+																			<img src="https://via.placeholder.com/300x300"
+																				data-demo-src="assets/img/avatars/dan.jpg"
+																				data-user-popover="1" alt="">
+																		</div>
+																	</div>
+																	<!-- Content -->
+																	<div class="media-content">
+																		<a
+																			href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
+																		<span class="time"> <fmt:formatDate
+																				value="${cmt.reg_date }"
+																				pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt" /> <script
+																				type="text/javascript">														
+														document.write(timeForToday('${rg_dt}'));
+													</script> <!-- Actions --> <c:if
+																				test="${cmt.user_id eq user.user_id }">
+																				<div class="controls" style="display: inline-block">
+																					<div class="edit">
+																						<a id="del" data-delcmt="${cmt.comment_id }"
+																							data-delcmtfeed="${cmt.feed_id }"
+																							data-idx="${status.index }"> <svg
+																								viewBox="0 0 24 24" width="15" height="15"
+																								stroke="currentColor" stroke-width="2"
+																								fill="none" stroke-linecap="round"
+																								stroke-linejoin="round" class="css-i6dzq1">
+																	<line x1="18" y1="6" x2="6" y2="18"></line>
+																	<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+																						</a>
+																					</div>
+																				</div>
+																			</c:if>
+																		</span>
+																		<p
+																			style="color: #525252; word-wrap: break-word; white-space: pre-line;">${cmt.content }
+																		</p>
+																	</div>
+																	<c:if test="${user.user_id ne cmt.user_id}">
+																		<!-- Right side dropdown -->
+																		<div class="media-right">
+																			<div
+																				class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																				<div>
+																					<div class="button">
+																						<svg viewBox="0 0 24 24" width="24" height="24"
+																							stroke="currentColor" stroke-width="2"
+																							fill="none" stroke-linecap="round"
+																							stroke-linejoin="round" class="css-i6dzq1">
+							                                    <path
+																								d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+							                                    <line x1="12" y1="9" x2="12"
+																								y2="13"></line>
+							                                    <line x1="12" y1="17"
+																								x2="12.01" y2="17"></line></svg>
+																					</div>
+																				</div>
+																				<div class="dropdown-menu" role="menu">
+																					<div class="dropdown-content">
+																						<div class="media">
+																							<table id="report-table">
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="스팸 게시물">
+																										<spring:message code="comment.report.content" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="가짜정보 제공">
+																										<spring:message code="comment.report.lie" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="성적인 내용">
+																										<spring:message code="comment.report.sexual" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="데이트가 목적인 내용">
+																										<spring:message code="letter.report.date" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="욕설/비방">
+																										<spring:message code="letter.report.word" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }" value="기타">
+																										<spring:message code="letter.report.etc" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><spring:message
+																											code="comment.report.input.placeholder"
+																											var="cmt_placeholder" /> <input
+																										data-rtxt="${cmt.comment_id }"
+																										placeholder="${cmt_placeholder}" hidden="true"
+																										maxlength="30"></input></td>
+																								</tr>
+																							</table>
+																						</div>
+																						<div class="dropdown-divider"></div>
+																						<input type="checkbox" id="blocked"
+																							data-rchk="${cmt.comment_id  }"
+																							value="${cmt.user_id }">${cmt.name }
+																						<spring:message code="comment.report.block" />
+																						<button id="fr-btn"
+																							data-repo="${cmt.comment_id  }"
+																							data-report="${cmt.user_id }">
+																							<spring:message code="comment.report.btn" />
+																						</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<!-- /Right side dropdown -->
+																	</c:if>
+																</div>
+																<!-- /일반댓글이면 -->
+															</c:when>
+															<c:otherwise>
+																<!-- 교정댓글이면 -->
+																<div class="media is-comment">
+																	<!-- User image -->
+																	<div class="media-left">
+																		<div class="image">
+																			<img src="https://via.placeholder.com/300x300"
+																				data-demo-src="assets/img/avatars/dan.jpg"
+																				data-user-popover="1" alt="">
+																		</div>
+																	</div>
+																	<!-- Content -->
+																	<div class="media-content">
+																		<a
+																			href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
+																		<span class="time"> <fmt:formatDate
+																				value="${cmt.reg_date }"
+																				pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt" /> <script
+																				type="text/javascript">														
+														document.write(timeForToday('${rg_dt}'));
+													</script> <!-- Actions --> <c:if
+																				test="${cmt.user_id eq user.user_id }">
+																				<div class="controls" style="display: inline-block">
+																					<div class="edit">
+																						<a id="cdel" data-delcmt="${cmt.comment_id }"
+																							data-delcmtfeed="${cmt.feed_id }"
+																							data-idx="${status.index }"> <svg
+																								viewBox="0 0 24 24" width="15" height="15"
+																								stroke="currentColor" stroke-width="2"
+																								fill="none" stroke-linecap="round"
+																								stroke-linejoin="round" class="css-i6dzq1">
+																								<line x1="18" y1="6" x2="6" y2="18"></line>
+																								<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+																						</a>
+																					</div>
+																				</div>
+																			</c:if>
+																		</span>
+																		<!-- 교정댓글이면, line을 반복 -->
+																		<c:forEach items="${cdList }" var="cd">
+																			<c:if test="${cmt.comment_id eq cd.cc_id }">
+																				<div id="load_${cd.cc_id }${cd.line}"
+																					data-cid="${cd.cc_id }${cd.line}"
+																					data-cdc="${cd.content }" data-cdo="${cd.origin }">${cd.content }</div>
+																			</c:if>
+																		</c:forEach>
+																	</div>
+																	<c:if test="${user.user_id ne cmt.user_id}">
+																		<!-- Right side dropdown -->
+																		<div class="media-right">
+																			<div
+																				class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																				<div>
+																					<div class="button">
+																						<svg viewBox="0 0 24 24" width="24" height="24"
+																							stroke="currentColor" stroke-width="2"
+																							fill="none" stroke-linecap="round"
+																							stroke-linejoin="round" class="css-i6dzq1">
+							                                    <path
+																								d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+							                                    <line x1="12" y1="9" x2="12"
+																								y2="13"></line>
+							                                    <line x1="12" y1="17"
+																								x2="12.01" y2="17"></line></svg>
+																					</div>
+																				</div>
+																				<div class="dropdown-menu" role="menu">
+																					<div class="dropdown-content">
+																						<div class="media">
+																							<table id="report-table">
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="스팸 게시물">
+																										<spring:message code="comment.report.content" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="가짜정보 제공">
+																										<spring:message code="comment.report.lie" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="성적인 내용">
+																										<spring:message code="comment.report.sexual" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="데이트가 목적인 내용">
+																										<spring:message code="letter.report.date" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="욕설/비방">
+																										<spring:message code="letter.report.word" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }" value="기타">
+																										<spring:message code="letter.report.etc" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><spring:message
+																											code="comment.report.input.placeholder"
+																											var="cmt_placeholder" /> <input
+																										data-rtxt="${cmt.comment_id }"
+																										placeholder="cmt_placeholder" hidden="true"
+																										maxlength="30"></input></td>
+																								</tr>
+																							</table>
+																						</div>
+																						<div class="dropdown-divider"></div>
+																						<input type="checkbox" id="blocked"
+																							data-rchk="${cmt.comment_id  }"
+																							value="${cmt.user_id }">${cmt.name }
+																						<spring:message code="comment.report.block" />
+																						<button id="fr-btn"
+																							data-repo="${cmt.comment_id  }"
+																							data-report="${cmt.user_id }">
+																							<spring:message code="comment.report.block" />
+																						</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<!-- /Right side dropdown -->
+																	</c:if>
+																</div>
+																<!-- /교정댓글이면 -->
+															</c:otherwise>
+														</c:choose>
+													</c:if>
+													<!-- /피드번호가 같으면 -->
+												</c:forEach>
+											</c:if>
+											<!-- /Comment -->
+
+										</div>
+										<!-- /Comments body -->
+
+										<!-- Comments footer -->
+										<div class="card-footer">
+											<div class="media post-comment has-emojis">
+												<!-- Comment Textarea -->
+												<div class="media-content">
+													<div class="field">
+														<p class="control">
+															<spring:message code="comment.textarea.placeholder"
+																var="cmt_text_placeholder" />
+															<textarea data-content="${vo.feed_id }"
+																class="textarea comment-textarea" rows="5"
+																placeholder="${cmt_text_placeholder }"></textarea>
+														</p>
+													</div>
+													<!-- Additional actions -->
+													<div class="actions">
+														<div class="toolbar">
+															<a class="button is-solid primary-button raised"
+																id="post" data-feedid="${vo.feed_id }"
+																data-feeduser="${vo.user_id }"
+																data-scr="${status.index }"> <spring:message
+																	code="comment.btn.send" />
+															</a>
+														</div>
+													</div>
 												</div>
 											</div>
-											<div class="dropdown-menu" role="menu">
-												<div class="dropdown-content">
-													<a href="#" class="dropdown-item">
-														<div class="media">
-															<i data-feather="bookmark"></i>
-															<div class="media-content">
-																<h3>Bookmark</h3>
-																<small>Add this post to your bookmarks.</small>
-															</div>
-														</div>
-													</a> <a class="dropdown-item">
-														<div class="media">
-															<i data-feather="bell"></i>
-															<div class="media-content">
-																<h3>Notify me</h3>
-																<small>Send me the updates.</small>
-															</div>
-														</div>
-													</a>
-													<hr class="dropdown-divider">
-													<a href="#" class="dropdown-item">
-														<div class="media">
-															<i data-feather="flag"></i>
-															<div class="media-content">
-																<h3>Flag</h3>
-																<small>In case of inappropriate content.</small>
-															</div>
-														</div>
-													</a>
-												</div>
-											</div>
 										</div>
+										<!-- Comments footer -->
 									</div>
-									<!-- /Header -->
-
-									<!-- Post body -->
-									<div class="card-body">
-										<!-- Post body text -->
-										<div class="post-text">
-											<p>Today i visited this amazing little fashion store in
-												Church street. Everything is handmade, from skirts to bags.
-												Their products really have an outstanding quality. If you
-												don't know them already, well it's time to make your move!
-											<p>
-										</div>
-										<!-- Featured image -->
-										<div class="post-image">
-											<a data-fancybox="profile-post1"
-												data-lightbox-type="comments"
-												data-thumb="assets/img/demo/unsplash/8.jpg"
-												href="https://via.placeholder.com/1600x900"
-												data-demo-href="assets/img/demo/unsplash/8.jpg"> <img
-												src="https://via.placeholder.com/1600x900"
-												data-demo-src="assets/img/demo/unsplash/8.jpg" alt="">
-											</a>
-											<!-- Post actions -->
-											<div class="like-wrapper">
-												<a href="javascript:void(0);" class="like-button"> <i
-													class="mdi mdi-heart not-liked bouncy"></i> <i
-													class="mdi mdi-heart is-liked bouncy"></i> <span
-													class="like-overlay"></span>
-												</a>
-											</div>
-
-											<div class="fab-wrapper is-share">
-												<a href="javascript:void(0);"
-													class="small-fab share-fab modal-trigger"
-													data-modal="share-modal"> <i data-feather="link-2"></i>
-												</a>
-											</div>
-
-											<div class="fab-wrapper is-comment">
-												<a href="javascript:void(0);" class="small-fab"> <i
-													data-feather="message-circle"></i>
-												</a>
-											</div>
-										</div>
-									</div>
-									<!-- /Post body -->
-
-									<!-- Post footer -->
-									<div class="card-footer">
-										<!-- Followers -->
-										<div class="likers-group">
-											<img src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/milly.jpg"
-												data-user-popover="7" alt=""> <img
-												src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/david.jpg"
-												data-user-popover="4" alt=""> <img
-												src="https://via.placeholder.com/300x300"
-												data-demo-src="assets/img/avatars/nelly.png"
-												data-user-popover="9" alt="">
-										</div>
-										<div class="likers-text">
-											<p>
-												<a href="#">Milly</a>, <a href="#">David</a>
-											</p>
-											<p>and 1 more liked this</p>
-										</div>
-										<!-- Post statistics -->
-										<div class="social-count">
-											<div class="likes-count">
-												<i data-feather="heart"></i> <span>32</span>
-											</div>
-											<div class="shares-count">
-												<i data-feather="link-2"></i> <span>4</span>
-											</div>
-											<div class="comments-count">
-												<i data-feather="message-circle"></i> <span>5</span>
-											</div>
-										</div>
-									</div>
-									<!-- /Post footer -->
+									<!-- /Post #1 Comments -->
 								</div>
-								<!-- /Main wrap -->
-
-								<!-- Comments -->
-								<div class="comments-wrap is-hidden">
-									<!-- Header -->
-									<div class="comments-heading">
-										<h4>
-											Comments <small>(5)</small>
-										</h4>
-										<div class="close-comments">
-											<i data-feather="x"></i>
-										</div>
-									</div>
-									<!-- Header -->
-
-									<!-- Comments body -->
-									<div class="comments-body has-slimscroll">
-
-										<!-- Comment -->
-										<div class="media is-comment">
-											<!-- User image -->
-											<div class="media-left">
-												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/bobby.jpg"
-														data-user-popover="8" alt="">
-												</div>
-											</div>
-											<!-- Content -->
-											<div class="media-content">
-												<a href="#">Bobby Brown</a> <span class="time">1 hour
-													ago</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-													elit, sed do eiusmod tempo incididunt ut labore et dolore
-													magna aliqua. Ut enim ad minim veniam, quis nostrud
-													exercitation ullamco laboris consequat.</p>
-												<!-- Comment actions -->
-												<div class="controls">
-													<div class="like-count">
-														<i data-feather="thumbs-up"></i> <span>1</span>
-													</div>
-													<div class="reply">
-														<a href="#">Reply</a>
-													</div>
-												</div>
-												<!-- Nested Comment -->
-												<div class="media is-comment">
-													<!-- User image -->
-													<div class="media-left">
-														<div class="image">
-															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/daniel.jpg"
-																data-user-popover="3" alt="">
-														</div>
-													</div>
-													<!-- Content -->
-													<div class="media-content">
-														<a href="#">Daniel Wellington</a> <span class="time">3
-															minutes ago</span>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-															elit, sed do eiusmod tempo incididunt ut labore et dolore
-															magna aliqua.</p>
-														<!-- Comment actions -->
-														<div class="controls">
-															<div class="like-count">
-																<i data-feather="thumbs-up"></i> <span>4</span>
-															</div>
-															<div class="reply">
-																<a href="#">Reply</a>
-															</div>
-														</div>
-													</div>
-													<!-- Right side dropdown -->
-													<div class="media-right">
-														<div
-															class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-															<div>
-																<div class="button">
-																	<i data-feather="more-vertical"></i>
-																</div>
-															</div>
-															<div class="dropdown-menu" role="menu">
-																<div class="dropdown-content">
-																	<a class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="x"></i>
-																			<div class="media-content">
-																				<h3>Hide</h3>
-																				<small>Hide this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																	<div class="dropdown-divider"></div>
-																	<a href="#" class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="flag"></i>
-																			<div class="media-content">
-																				<h3>Report</h3>
-																				<small>Report this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- /Nested Comment -->
-											</div>
-											<!-- Right side dropdown -->
-											<div class="media-right">
-												<div
-													class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-													<div>
-														<div class="button">
-															<i data-feather="more-vertical"></i>
-														</div>
-													</div>
-													<div class="dropdown-menu" role="menu">
-														<div class="dropdown-content">
-															<a class="dropdown-item">
-																<div class="media">
-																	<i data-feather="x"></i>
-																	<div class="media-content">
-																		<h3>Hide</h3>
-																		<small>Hide this comment.</small>
-																	</div>
-																</div>
-															</a>
-															<div class="dropdown-divider"></div>
-															<a href="#" class="dropdown-item">
-																<div class="media">
-																	<i data-feather="flag"></i>
-																	<div class="media-content">
-																		<h3>Report</h3>
-																		<small>Report this comment.</small>
-																	</div>
-																</div>
-															</a>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- /Comment -->
-
-										<!-- Comment -->
-										<div class="media is-comment">
-											<!-- User image -->
-											<div class="media-left">
-												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/mike.jpg"
-														data-user-popover="12" alt="">
-												</div>
-											</div>
-											<!-- Content -->
-											<div class="media-content">
-												<a href="#">Mike Lasalle</a> <span class="time">Yesterday</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-													elit, sed do eiusmod tempo incididunt ut labore et dolore
-													magna aliqua.</p>
-												<!-- Comment actions -->
-												<div class="controls">
-													<div class="like-count">
-														<i data-feather="thumbs-up"></i> <span>3</span>
-													</div>
-													<div class="reply">
-														<a href="#">Reply</a>
-													</div>
-												</div>
-												<!-- Nested Comment -->
-												<div class="media is-comment">
-													<!-- User image -->
-													<div class="media-left">
-														<div class="image">
-															<img src="https://via.placeholder.com/300x300"
-																data-demo-src="assets/img/avatars/lana.jpeg"
-																data-user-popover="10" alt="">
-														</div>
-													</div>
-													<!-- Content -->
-													<div class="media-content">
-														<a href="#">Lana Henrikssen</a> <span class="time">3
-															minutes ago</span>
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-															elit, sed do eiusmod tempo incididunt ut labore et dolore
-															magna aliqua.</p>
-														<!-- Comment actions -->
-														<div class="controls">
-															<div class="like-count">
-																<i data-feather="thumbs-up"></i> <span>4</span>
-															</div>
-															<div class="reply">
-																<a href="#">Reply</a>
-															</div>
-														</div>
-													</div>
-													<!-- Right side dropdown -->
-													<div class="media-right">
-														<div
-															class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-															<div>
-																<div class="button">
-																	<i data-feather="more-vertical"></i>
-																</div>
-															</div>
-															<div class="dropdown-menu" role="menu">
-																<div class="dropdown-content">
-																	<a class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="x"></i>
-																			<div class="media-content">
-																				<h3>Hide</h3>
-																				<small>Hide this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																	<div class="dropdown-divider"></div>
-																	<a href="#" class="dropdown-item">
-																		<div class="media">
-																			<i data-feather="flag"></i>
-																			<div class="media-content">
-																				<h3>Report</h3>
-																				<small>Report this comment.</small>
-																			</div>
-																		</div>
-																	</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- /Nested Comment -->
-											</div>
-											<!-- Right side dropdown -->
-											<div class="media-right">
-												<div
-													class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-													<div>
-														<div class="button">
-															<i data-feather="more-vertical"></i>
-														</div>
-													</div>
-													<div class="dropdown-menu" role="menu">
-														<div class="dropdown-content">
-															<a class="dropdown-item">
-																<div class="media">
-																	<i data-feather="x"></i>
-																	<div class="media-content">
-																		<h3>Hide</h3>
-																		<small>Hide this comment.</small>
-																	</div>
-																</div>
-															</a>
-															<div class="dropdown-divider"></div>
-															<a href="#" class="dropdown-item">
-																<div class="media">
-																	<i data-feather="flag"></i>
-																	<div class="media-content">
-																		<h3>Report</h3>
-																		<small>Report this comment.</small>
-																	</div>
-																</div>
-															</a>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- /Comment -->
-
-										<!-- Comment -->
-										<div class="media is-comment">
-											<!-- User image -->
-											<div class="media-left">
-												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/nelly.png"
-														data-user-popover="9" alt="">
-												</div>
-											</div>
-											<!-- Content -->
-											<div class="media-content">
-												<a href="#">Nelly Schwartz</a> <span class="time">2
-													days ago</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-													elit, sed do eiusmod tempo incididunt ut labore et dolore
-													magna aliqua.</p>
-												<!-- Comment actions -->
-												<div class="controls">
-													<div class="like-count">
-														<i data-feather="thumbs-up"></i> <span>1</span>
-													</div>
-													<div class="reply">
-														<a href="#">Reply</a>
-													</div>
-												</div>
-											</div>
-											<!-- Right side dropdown -->
-											<div class="media-right">
-												<div
-													class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-													<div>
-														<div class="button">
-															<i data-feather="more-vertical"></i>
-														</div>
-													</div>
-													<div class="dropdown-menu" role="menu">
-														<div class="dropdown-content">
-															<a class="dropdown-item">
-																<div class="media">
-																	<i data-feather="x"></i>
-																	<div class="media-content">
-																		<h3>Hide</h3>
-																		<small>Hide this comment.</small>
-																	</div>
-																</div>
-															</a>
-															<div class="dropdown-divider"></div>
-															<a href="#" class="dropdown-item">
-																<div class="media">
-																	<i data-feather="flag"></i>
-																	<div class="media-content">
-																		<h3>Report</h3>
-																		<small>Report this comment.</small>
-																	</div>
-																</div>
-															</a>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- /Comment -->
-									</div>
-									<!-- Comments body -->
-
-									<!-- Comments footer -->
-									<div class="card-footer">
-										<div class="media post-comment has-emojis">
-											<!-- Textarea -->
-											<div class="media-content">
-												<div class="field">
-													<p class="control">
-														<textarea class="textarea comment-textarea" rows="5"
-															placeholder="Write a comment..."></textarea>
-													</p>
-												</div>
-												<!-- Additional actions -->
-												<div class="actions">
-													<div class="image is-32x32">
-														<img class="is-rounded"
-															src="https://via.placeholder.com/300x300"
-															data-demo-src="assets/img/avatars/jenna.png"
-															data-user-popover="0" alt="">
-													</div>
-													<div class="toolbar">
-														<div class="action is-auto">
-															<i data-feather="at-sign"></i>
-														</div>
-														<div class="action is-emoji">
-															<i data-feather="smile"></i>
-														</div>
-														<div class="action is-upload">
-															<i data-feather="camera"></i> <input type="file">
-														</div>
-														<a class="button is-solid primary-button raised">Post
-															Comment</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<!-- /Comments footer -->
-								</div>
-								<!-- /Comments -->
-							</div>
+							</c:forEach>
 							<!-- /Post -->
 						</div>
-						<!-- /Timeline POST #3 -->
 					</div>
 				</div>
 			</div>
@@ -1265,306 +1421,6 @@ function writePopup() {
 					<button id="submit-profile-picture"
 						class="button is-solid accent-button is-fullwidth raised is-disabled">Use
 						Picture</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
-	<!-- Share modal -->
-	<!-- /partials/pages/feed/modals/share-modal.html -->
-	<div id="share-modal" class="modal share-modal is-xsmall has-light-bg">
-		<div class="modal-background"></div>
-		<div class="modal-content">
-
-			<div class="card">
-				<div class="card-heading">
-					<div class="dropdown is-primary share-dropdown">
-						<div>
-							<div class="button">
-								<i class="mdi mdi-format-float-left"></i> <span>Share in
-									your feed</span> <i data-feather="chevron-down"></i>
-							</div>
-						</div>
-						<div class="dropdown-menu" role="menu">
-							<div class="dropdown-content">
-								<div class="dropdown-item" data-target-channel="feed">
-									<div class="media">
-										<i class="mdi mdi-format-float-left"></i>
-										<div class="media-content">
-											<h3>Share in your feed</h3>
-											<small>Share this publication on your feed.</small>
-										</div>
-									</div>
-								</div>
-								<div class="dropdown-item" data-target-channel="friend">
-									<div class="media">
-										<i class="mdi mdi-account-heart"></i>
-										<div class="media-content">
-											<h3>Share in a friend's feed</h3>
-											<small>Share this publication on a friend's feed.</small>
-										</div>
-									</div>
-								</div>
-								<div class="dropdown-item" data-target-channel="group">
-									<div class="media">
-										<i class="mdi mdi-account-group"></i>
-										<div class="media-content">
-											<h3>Share in a group</h3>
-											<small>Share this publication in a group.</small>
-										</div>
-									</div>
-								</div>
-								<div class="dropdown-item" data-target-channel="page">
-									<div class="media">
-										<i class="mdi mdi-file-document-box"></i>
-										<div class="media-content">
-											<h3>Share in a page</h3>
-											<small>Share this publication in a page.</small>
-										</div>
-									</div>
-								</div>
-								<hr class="dropdown-divider">
-								<div class="dropdown-item" data-target-channel="private-message">
-									<div class="media">
-										<i class="mdi mdi-email-plus"></i>
-										<div class="media-content">
-											<h3>Share in message</h3>
-											<small>Share this publication in a private message.</small>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Close X button -->
-					<div class="close-wrap">
-						<span class="close-modal"> <i data-feather="x"></i>
-						</span>
-					</div>
-				</div>
-				<div class="share-inputs">
-					<div class="field is-autocomplete">
-						<div id="share-to-friend"
-							class="control share-channel-control is-hidden">
-							<input id="share-with-friend" type="text"
-								class="input is-sm no-radius share-input simple-users-autocpl"
-								placeholder="Your friend's name">
-							<div class="input-heading">Friend :</div>
-						</div>
-					</div>
-
-					<div class="field is-autocomplete">
-						<div id="share-to-group"
-							class="control share-channel-control is-hidden">
-							<input id="share-with-group" type="text"
-								class="input is-sm no-radius share-input simple-groups-autocpl"
-								placeholder="Your group's name">
-							<div class="input-heading">Group :</div>
-						</div>
-					</div>
-
-					<div id="share-to-page"
-						class="control share-channel-control no-border is-hidden">
-						<div class="page-controls">
-							<div class="page-selection">
-
-								<div class="dropdown is-accent page-dropdown">
-									<div>
-										<div class="button page-selector">
-											<img src="https://via.placeholder.com/150x150"
-												data-demo-src="assets/img/avatars/hanzo.svg" alt=""> <span>Css
-												Ninja</span> <i data-feather="chevron-down"></i>
-										</div>
-									</div>
-									<div class="dropdown-menu" role="menu">
-										<div class="dropdown-content">
-											<div class="dropdown-item">
-												<div class="media">
-													<img src="https://via.placeholder.com/150x150"
-														data-demo-src="assets/img/avatars/hanzo.svg" alt="">
-													<div class="media-content">
-														<h3>Css Ninja</h3>
-														<small>Share on Css Ninja.</small>
-													</div>
-												</div>
-											</div>
-
-											<div class="dropdown-item">
-												<div class="media">
-													<img src="https://via.placeholder.com/150x150"
-														data-demo-src="assets/img/icons/logos/nuclearjs.svg"
-														alt="">
-													<div class="media-content">
-														<h3>NuclearJs</h3>
-														<small>Share on NuclearJs.</small>
-													</div>
-												</div>
-											</div>
-
-											<div class="dropdown-item">
-												<div class="media">
-													<img src="https://via.placeholder.com/150x150"
-														data-demo-src="assets/img/icons/logos/slicer.svg" alt="">
-													<div class="media-content">
-														<h3>Slicer</h3>
-														<small>Share on Slicer.</small>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-							</div>
-
-							<div class="alias">
-								<img src="https://via.placeholder.com/150x150"
-									data-demo-src="assets/img/avatars/jenna.png" alt="">
-							</div>
-						</div>
-					</div>
-
-					<div class="field is-autocomplete">
-						<div id="share-to-private-message"
-							class="control share-channel-control is-hidden">
-							<input id="share-with-private-message" type="text"
-								class="input is-sm no-radius share-input simple-users-autocpl"
-								placeholder="Message a friend">
-							<div class="input-heading">To :</div>
-						</div>
-					</div>
-				</div>
-				<div class="card-body">
-					<div class="control">
-						<textarea class="textarea comment-textarea" rows="1"
-							placeholder="Say something about this ..."></textarea>
-						<button class="emoji-button">
-							<i data-feather="smile"></i>
-						</button>
-					</div>
-					<div class="shared-publication">
-						<div class="featured-image">
-							<img id="share-modal-image"
-								src="https://via.placeholder.com/1600x900"
-								data-demo-src="assets/img/demo/unsplash/1.jpg" alt="">
-						</div>
-						<div class="publication-meta">
-							<div class="inner-flex">
-								<img id="share-modal-avatar"
-									src="https://via.placeholder.com/300x300"
-									data-demo-src="assets/img/avatars/dan.jpg"
-									data-user-popover="1" alt="">
-								<p id="share-modal-text">
-									Yesterday with <a href="#">@Karen Miller</a> and <a href="#">@Marvin
-										Stemperd</a> at the <a href="#">#Rock'n'Rolla</a> concert in LA.
-									Was totally fantastic! People were really excited about this
-									one!
-								</p>
-							</div>
-							<div class="publication-footer">
-								<div class="stats">
-									<div class="stat-block">
-										<i class="mdi mdi-earth"></i> <small>Public</small>
-									</div>
-									<div class="stat-block">
-										<i class="mdi mdi-eye"></i> <small>163 views</small>
-									</div>
-								</div>
-								<div class="publication-origin">
-									<small>Friendkit.io</small>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-				<div class="bottom-share-inputs">
-
-					<div id="action-place"
-						class="field is-autocomplete is-dropup is-hidden">
-						<div id="share-place" class="control share-bottom-channel-control">
-							<input type="text"
-								class="input is-sm no-radius share-input simple-locations-autocpl"
-								placeholder="Where are you?">
-							<div class="input-heading">Location :</div>
-						</div>
-					</div>
-
-					<div id="action-tag"
-						class="field is-autocomplete is-dropup is-hidden">
-						<div id="share-tags" class="control share-bottom-channel-control">
-							<input id="share-friend-tags-autocpl" type="text"
-								class="input is-sm no-radius share-input"
-								placeholder="Who are you with">
-							<div class="input-heading">Friends :</div>
-						</div>
-						<div id="share-modal-tag-list" class="tag-list no-margin"></div>
-					</div>
-
-				</div>
-				<div class="card-footer">
-					<div class="action-wrap">
-						<div class="footer-action" data-target-action="tag">
-							<i class="mdi mdi-account-plus"></i>
-						</div>
-						<div class="footer-action" data-target-action="place">
-							<i class="mdi mdi-map-marker"></i>
-						</div>
-						<div
-							class="footer-action dropdown is-spaced is-neutral dropdown-trigger is-up"
-							data-target-action="permissions">
-							<div>
-								<i class="mdi mdi-lock-clock"></i>
-							</div>
-							<div class="dropdown-menu" role="menu">
-								<div class="dropdown-content">
-									<a href="#" class="dropdown-item">
-										<div class="media">
-											<i data-feather="globe"></i>
-											<div class="media-content">
-												<h3>Public</h3>
-												<small>Anyone can see this publication.</small>
-											</div>
-										</div>
-									</a> <a class="dropdown-item">
-										<div class="media">
-											<i data-feather="users"></i>
-											<div class="media-content">
-												<h3>Friends</h3>
-												<small>only friends can see this publication.</small>
-											</div>
-										</div>
-									</a> <a class="dropdown-item">
-										<div class="media">
-											<i data-feather="user"></i>
-											<div class="media-content">
-												<h3>Specific friends</h3>
-												<small>Don't show it to some friends.</small>
-											</div>
-										</div>
-									</a>
-									<hr class="dropdown-divider">
-									<a class="dropdown-item">
-										<div class="media">
-											<i data-feather="lock"></i>
-											<div class="media-content">
-												<h3>Only me</h3>
-												<small>Only me can see this publication.</small>
-											</div>
-										</div>
-									</a>
-								</div>
-							</div>
-
-						</div>
-					</div>
-					<div class="button-wrap">
-						<button type="button"
-							class="button is-solid dark-grey-button close-modal">Cancel</button>
-						<button type="button"
-							class="button is-solid primary-button close-modal">Publish</button>
-					</div>
 				</div>
 			</div>
 

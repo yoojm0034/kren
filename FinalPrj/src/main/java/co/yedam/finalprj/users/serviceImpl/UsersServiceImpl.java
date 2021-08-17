@@ -1,6 +1,7 @@
 package co.yedam.finalprj.users.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -156,6 +157,11 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public UsersVO userSelectStmap(String user_id) {
 		return loginmap.userSelectStmap(user_id);
+	}
+
+	@Override
+	public List<Map<String, Object>> usersFeedList(UsersVO vo) {
+		return map.usersFeedList(vo);
 	}
 
 }

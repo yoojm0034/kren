@@ -1,6 +1,7 @@
 package co.yedam.finalprj.users.map;
 
 import java.util.List;
+import java.util.Map;
 
 import co.yedam.finalprj.users.vo.UsersVO;
 
@@ -24,6 +25,7 @@ public interface UsersMap {
 	List<UsersVO> followingList(UsersVO vo);
 	List<UsersVO> followerList(UsersVO vo);
 	UsersVO userProfilePhoto(UsersVO vo);
+	List<Map<String,Object>> usersFeedList(UsersVO vo);
 
 	//admin
 	int adminUsersUpdate(UsersVO vo);
