@@ -325,9 +325,8 @@ a[href^="https://maps.google.com/maps"] {
 											<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${friend.user_id }">
 												<div class="img-container">
 													<img class="avatar"
-														src="https://via.placeholder.com/300x300"
-														data-demo-src="resources/template/assets/img/avatars/elise.jpg"
-														alt=""> <img class="flag" src="${friend.flag }" alt="">
+														src="${pageContext.request.contextPath}/resources/upload/${friend.photo }"
+														alt=""><img class="flag" src="${friend.flag }" alt="">
 												</div>
 												<div class="friend-info">
 													<div class="friend-name">${friend.name }</div>

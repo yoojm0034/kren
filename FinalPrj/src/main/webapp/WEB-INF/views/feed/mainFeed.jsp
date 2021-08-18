@@ -553,7 +553,6 @@ $(document).ready(function(){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			success:function(result){
-				console.log(result);
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();

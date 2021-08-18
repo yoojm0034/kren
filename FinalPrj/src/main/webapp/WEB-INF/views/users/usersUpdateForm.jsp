@@ -303,7 +303,9 @@ $(document).ready(function(){
 	//자기소개 글자수
     var content = $('#profile').val();
     $('#contentCnt').text(content.length);
-	
+    //이미지 변경 확인
+    var currentphoto = $('#upload-preview').attr("src");
+    $('#currentPhoto').val(currentphoto);
 });
 
 // 이메일 체크
@@ -471,8 +473,6 @@ $(function() {
 	$('#saveBtn').click(function() { 
 		var result = false;
 		
-		// 들어갈 값 : email, password, language2_level, country, city, lat, lon, timezone, flag, profile, topic, visited
-		
 		// 이메일 변경되었는지 비교
 			result = beforeSubmit();
 			if (result == true) {
@@ -507,13 +507,43 @@ $(function() {
 				console.log('topic : ' + $('#topic').val());
 				console.log('visited : ' + $("#visited").val());
 				
-				profileUpdate.submit();
-		}
-	});
+				var src = $('#upload-preview').attr("src");
+				
+				if ($('#currentPhoto').val() == src){
+					//프로필사진 변경안된 경우
+					alert("사진 변경 없이 프로필 변경 수행");
+					$('#profileUpdate').submit();
+				} else {
+					//프로필 사진 변경된 경우
+	 				//$('#base64Photo').val(src);
+					const base64 = src;//'data:image/png;base64,....' // Place your base64 url here.
+					fetch(base64)
+					.then(res => res.blob())
+					.then(blob => {
+					  const fd = new FormData(document.profileUpdate);
+					  const file = new File([blob], "profile.jpeg");
+					  fd.append('base64Photo', file)
+					  
+					 // Let's upload the file
+					 // Don't set contentType manually → https://github.com/github/fetch/issues/505#issuecomment-293064470
+					 // form에있는 파일 다 묶어서 컨트롤러로 보낸다.
+					 const API_URL = '${pageContext.request.contextPath}/usersUpdate.do'
+					 fetch(API_URL, {
+						 method: 'POST', 
+						 body: fd
+						 })
+					 .then(res => res.json()) 
+					 .then(res => console.log(res))
+						alert("정보수정완료");
+						window.location.reload(true);
+					}); 
+				}
+	}; // 첫번째 if 끝
 });	
+});
 
 </script>
-<form id="profileUpdate" action="${pageContext.request.contextPath}/usersUpdate.do" method="post">
+<form id="profileUpdate" action="${pageContext.request.contextPath}/usersUpdateNoPhoto.do" name="profileUpdate" method="post">
 <div style="padding: 0px 12px 0px 12px;">
 	<div class="container is-custom">
 		<div id="profile-main" class="view-wrap is-headless">
@@ -528,27 +558,12 @@ $(function() {
 					<input type="hidden" id="visited" name="visited">
 					<input type="hidden" id="topic" name="topic">
 					<input type="hidden" id="language2_level" name="language2_level" value="${profile.language2_level }">
+					<input type="hidden" id="currentPhoto" name="currentPhoto">
 					
 					<!-- Basic Infos widget -->
 					<div class="box-heading">
 						<h4><spring:message code="usersUpdate.edit"/></h4>
 					</div>
-<%-- 					<div class="basic-infos-wrapper">
-						<div class="card is-profile-info">
-							<div class="photo-upload">
-                            <div class="preview">
-                                <a class="upload-button dz-clickable">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                </a>
-                                <img id="upload-preview" src="https://via.placeholder.com/150x150" data-demo-src="/FinalPrj/assets/img/avatars/avatar-w.png" alt="">
-                                <form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/"><div class="dz-default dz-message"><span>Drop files here to upload</span></div></form>
-                            </div>
-                            <div class="limitation">
-                                <small>이미지는 3MB내로만 업로드 가능합니다.</small>
-                            </div>
-                        </div>
-						</div>
-					</div> --%>
 					<div class="basic-infos-wrapper">
 						<div class="card is-profile-info">
 							<div class="info-row">

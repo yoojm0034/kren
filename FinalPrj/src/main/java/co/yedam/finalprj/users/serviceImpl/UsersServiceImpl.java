@@ -145,8 +145,8 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public UsersVO userProfilePhoto(UsersVO vo) {
-		return map.userProfilePhoto(vo);
+	public UsersVO userProfilePhoto(String user_id) {
+		return map.userProfilePhoto(user_id);
 	}
 
 	@Override
@@ -162,6 +162,11 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public List<Map<String, Object>> usersFeedList(UsersVO vo) {
 		return map.usersFeedList(vo);
+	}
+
+	@Override
+	public int usersUpdateNoPhoto(UsersVO vo) {
+		return map.usersUpdateNoPhoto(vo);
 	}
 
 }

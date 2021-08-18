@@ -16,6 +16,7 @@ public interface UsersService {
 	int usersInsert(UsersVO vo);
 	int usersPhotoInsert(UsersVO vo);
 	int usersUpdate(UsersVO vo);
+	int usersUpdateNoPhoto(UsersVO vo);
 	int usersDelete(UsersVO vo);
 	
 	//------------------회원가입-------------------
@@ -43,7 +44,7 @@ public interface UsersService {
 	List<UsersVO> followerList(UsersVO vo);
 	
 	//프로필 사진
-	UsersVO userProfilePhoto(UsersVO vo);
+	UsersVO userProfilePhoto(String user_id);
 	UsersVO sessionProfilePhoto(UsersVO vo);
 	
 	//작성글 리스트

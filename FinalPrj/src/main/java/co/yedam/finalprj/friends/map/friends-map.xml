@@ -61,10 +61,6 @@
 							              FROM block
 								    	  WHERE USER_ID = #{user_id}
 				                    )
-				AND  NOT  u.USER_ID IN (  SELECT following
-							        	  FROM friends
-								    	  WHERE USER_ID = #{user_id}
-				                      	) 
 	</select>
 	<select id="newUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
 	   select   u.email,
