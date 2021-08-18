@@ -115,6 +115,11 @@ p {
 	line-height: 20px;
 	vertical-align: top;
 }
+
+.x-small {
+	font-size: small;
+	color: red;
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -182,12 +187,34 @@ $(document).ready(function() {
 													</div>
 												</div>
 											</div>
+											<!--  
+											<c:choose>
+												<c:when test="${user.status eq '탈퇴회원' }">
+													<p style="color: red">존재하지 않는 회원 아이디입니다.</p>
+													<c:remove var="user.status" scope="session" />
+												</c:when>
+												<c:when test="${user.status eq '정지회원' }">
+													<p style="color: red">(관리자문의요망)정지된 계정입니다.</p>
+													<c:remove var="user.status" scope="session" />
+												</c:when>
+											</c:choose>
+											
 											<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
 												<p style="color: red">
-													아이디 또는 비밀번호가 일치하지 않습니다.
+													에러${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</p>
 													<c:remove var="SPRING_SECURITY_LAST_EXCEPTION"
 														scope="session" />
 											</c:if>
+											<c:if test="${not empty errorMsg}">
+												<p style="color: red"> Error : <c:out value="${errMsg}"/> </p>
+											</c:if>
+											<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+												<p style="color: red">
+													${LoginFailMessage }</p>
+												<c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session" />
+											</c:if>
+											-->
+											<p class="x-small">${LoginFailMessage }</p>
 											<div class="field">
 												<div class="control">
 													<button

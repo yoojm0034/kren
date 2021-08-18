@@ -46,6 +46,22 @@ public class UserLoginController {
 
 		return vo;
 	}
+	
+	//로그인 실패 메세지 출력용...
+	@RequestMapping("loginCheck.do")
+	public String loginCheck(Model model, HttpServletRequest request, UsersVO vo, String user_id, String password) {
+		String id = request.getParameter(user_id);
+		vo.setUser_id(id);
+		
+		UsersVO vo2 = usersDao.loginCheck(vo);
+		
+		System.out.println("=======================VO2" + vo2);
+		
+//		request.setAttribute("user", vo2);
+		model.addAttribute("user", vo2);
+		
+		return "";
+	}
 
 	// ------------------------------------아이디 찾기...
 	@RequestMapping("find/find.do")

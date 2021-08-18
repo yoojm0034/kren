@@ -64,6 +64,7 @@ public class StamphController {
 		int n = stamphDao.stamphFeedCheck(vo);
 		if(n==0){
 			stamphDao.stamphFeedInsert(vo);
+			stamphDao.stamphLoginUserPlus(vo);
 		}
 		return n;
 	}

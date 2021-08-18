@@ -24,7 +24,11 @@ function initSidebar() {
       $('#show-filters, #hide-filters').toggleClass('is-hidden');
       $('.filters-panel').toggleClass('is-active');
       $('.main-container').toggleClass('has-sidebar');
+      
+
+  
     });
+    
   }
 }
 

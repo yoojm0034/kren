@@ -1,6 +1,7 @@
 package co.yedam.finalprj.friends.web;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +73,7 @@ public class FriendsController {
 
 	//친구검색화면 
 	@RequestMapping("friendSearch.do")
-	public String allUserList(UsersVO vo,Model model,Authentication auth){
+	public String allUserList(Locale locale, UsersVO vo,Model model,Authentication auth){
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 		
@@ -84,17 +85,17 @@ public class FriendsController {
 		model.addAttribute("allList",FriendsDao.allUser(vo));
 		model.addAttribute("newList",FriendsDao.newUser(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
+		model.addAttribute("locale", locale.getLanguage());
 		return "friends/friendSearch";
 	};
 	
 	//친구검색
 	@RequestMapping("searchList.do")
-	public String friendSearchList(Model model,UsersVO vo,Authentication auth) {
+	public String friendSearchList(Locale locale,Model model,UsersVO vo,Authentication auth) {
 		User user = (User) auth.getPrincipal();
 		String id = (String) user.getUsername();
 
 		vo.setUser_id(id);
-
 		if(vo.getS_age().equals("") || vo.getE_age().equals("") ){
 			vo.setS_age(null);
 		}
@@ -132,6 +133,7 @@ public class FriendsController {
 		model.addAttribute("allList",FriendsDao.allUser(uvo));
 		model.addAttribute("newList",FriendsDao.newUser(vo));
 		model.addAttribute("topicList",topicDao.topicSelectList());
+		model.addAttribute("locale", locale.getLanguage());
 		return "friends/friendSearch";
 	}
 

@@ -51,7 +51,7 @@ public interface UsersService {
 	List<Map<String,Object>> usersFeedList(UsersVO vo);
 	
 	//-----------------로그인 로그아웃---------------
-	public int loginCheck(UsersVO vo);
+	public UsersVO loginCheck(UsersVO vo);
 	public void logout(HttpSession session);
 	
 	//아이디 비밀번호 찾기...

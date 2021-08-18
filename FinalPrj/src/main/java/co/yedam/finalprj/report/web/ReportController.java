@@ -56,7 +56,9 @@ public class ReportController {
    @RequestMapping("admin/userReportList.do")
    public String reportList(ReportVO vo, Model model) {
 	  //content가 삭제되었다면 불러올때부터 update가 실행되도록.
-	  reportDao.reportContentDeleteRead();
+	   if(reportDao.reportContentDeleteRead() != 0) {
+		   reportDao.reportContentDeleteRead();		   
+	   }
       model.addAttribute("reportList", reportDao.reportSelectList());
       
       return "admin/reportList";
