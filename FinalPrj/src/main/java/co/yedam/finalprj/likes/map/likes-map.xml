@@ -25,4 +25,5 @@
 		DELETE FROM likes 
        	WHERE feed_id = #{feed_id} AND user_id= #{user_id}
 	</delete>
+	
 </mapper>

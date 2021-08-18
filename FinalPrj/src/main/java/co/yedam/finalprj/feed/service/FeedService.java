@@ -10,6 +10,7 @@ import co.yedam.finalprj.users.vo.UsersVO;
 public interface FeedService {
 	 List<Map<String,Object>> feedSelectList(FeedVO vo);			//피드리스트
 	 List<Map<String,Object>> pushSelect(FeedVO vo); 
+	 List<FeedVO> feedLikeUser();
 	 int feedUpdate(FeedVO vo);										//피드수정
 	 int feedInsert(FeedVO vo);										//피드등록
 	 int feedDelete(FeedVO vo);										//피드삭제

@@ -691,7 +691,6 @@ $(document).ready(function(){
 
 	//-------태그검색---------
 	$('#searchTag').on('click',function(){
-		
 		  	var input = $('#tagInput').attr("class");
 		  	if(input=="input is-hidden"){
 		  		$('#tagInput').removeClass('is-hidden').addClass('is-active');
@@ -699,6 +698,14 @@ $(document).ready(function(){
 		  		$('#tagInput').removeClass('is-active').addClass('is-hidden');
 		  	}
 		  	
+		    $(document).click(function (e) {
+		        var target = e.target.id;
+	
+  		        if (target != 'searchTag' && target != 'tagInput') {
+		    	  $('#tagInput').removeClass('is-active').addClass('is-hidden');
+		        }  
+		      });
+		    
 			if ($('#tagInput').length) {
 			    var html = '';
 			    var activitiesOptions = {

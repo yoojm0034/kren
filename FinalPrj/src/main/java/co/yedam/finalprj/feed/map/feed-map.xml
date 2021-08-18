@@ -149,6 +149,23 @@
                			on f.FEED_ID = likeCnt.FEED_ID
 			  WHERE  	f.feed_id= #{feed_id}
 	</select>
-	
+	<select id="feedLikeUser" resultType="co.yedam.finalprj.feed.vo.FeedVO">
+     SELECT 
+     	  l.FEED_ID,
+          l.LIKE_DATE,
+          l.USER_ID,
+          u.PHOTO,
+          d.DIRECTORY,
+          d.ORIGINAL_NAME,
+          d.UUID
+      FROM feed f JOIN likes l
+      ON f.feed_id = l.feed_id
+      LEFT OUTER JOIN users u 
+      ON u.USER_ID = l.USER_ID
+      LEFT OUTER JOIN PHOTO p 
+      ON u.PHOTO = p.PHOTO_ID
+      LEFT OUTER JOIN PHOTO_DETAIL d
+      ON d.PHOTO_ID = p.PHOTO_ID
+	</select>
 	             
 </mapper>

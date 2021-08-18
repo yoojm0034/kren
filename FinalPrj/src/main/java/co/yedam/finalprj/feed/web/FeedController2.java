@@ -18,6 +18,7 @@ import co.yedam.finalprj.feed.service.LanguageService;
 import co.yedam.finalprj.feed.vo.FeedVO;
 import co.yedam.finalprj.friends.vo.FriendsVO;
 import co.yedam.finalprj.letter.service.TransService;
+import co.yedam.finalprj.likes.service.LikesService;
 import co.yedam.finalprj.notice.service.NoticeService;
 import co.yedam.finalprj.stamph.service.StamphService;
 import co.yedam.finalprj.stamph.vo.StamphVO;
@@ -38,7 +39,6 @@ public class FeedController2 {
 	@Autowired CommentsService CommentDao;
 	@Autowired CommentDetailService commentDetailDao;
 	@Autowired StamphService stamphDao;
-	
 	@RequestMapping("feed2.do")
 	public String feed(FeedVO vo, Model model, HttpServletRequest request, Authentication auth) {
 
@@ -64,12 +64,11 @@ public class FeedController2 {
 		model.addAttribute("noticeList", noticeDao.noticeSelectList());	
 		model.addAttribute("birthUser",feedDao.birthUser(uvo));			
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
-		System.out.println(feedDao.feedSelectList(vo));
 		
 		//댓글
 		model.addAttribute("commentList",CommentDao.commentSelectList());
 		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
-		
+		model.addAttribute("likeUsers",feedDao.feedLikeUser());
 		//출석여부
 		StamphVO sh = new StamphVO();
 		sh.setUser_id(id);

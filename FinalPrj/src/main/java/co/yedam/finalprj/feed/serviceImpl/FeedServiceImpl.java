@@ -60,6 +60,11 @@ public class FeedServiceImpl implements FeedService {
 	public List<Map<String, Object>> pushSelect(FeedVO vo) {
 		return map.pushSelect(vo);
 	}
+	
+	@Override
+	public List<FeedVO> feedLikeUser() {
+		return map.feedLikeUser();
+	}
 
 
 

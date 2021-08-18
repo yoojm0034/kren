@@ -14,7 +14,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/template/assets/js/diffButty.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/template/assets/js/diffButty.js"></script>
 <meta charset="UTF-8">
 <title>Main Feed</title>
 <style>
@@ -43,26 +44,6 @@ blockquote:before, blockquote:after, q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
-}
-/* 자동완성 css */
-.notice {
-	width: 100%;
-	height: 340px;
-	overflow: hidden;
-	margin-bottom: 24px;
-	border-radius: 6px;
-}
-
-.rolling {
-	position: relative;
-	width: 100%;
-	height: auto;
-}
-
-.rolling li {
-	width: 100%;
-	height: 340px;
-	line-height: 50px;
 }
 
 .view-wrapper {
@@ -99,23 +80,24 @@ table {
 }
 
 .media table {
-    table-layout: fixed;
-    width: 100%;
-    text-align: left;
+	table-layout: fixed;
+	width: 100%;
+	text-align: left;
 }
 
 .content-wrap table {
-    table-layout: fixed;
-    width: 100%;
-    text-align: left;
+	table-layout: fixed;
+	width: 100%;
+	text-align: left;
 }
 
 .content-wrap table textarea {
-    width: -webkit-fill-available;
-    border: none;
-    resize: none;
-    padding: revert;
+	width: -webkit-fill-available;
+	border: none;
+	resize: none;
+	padding: revert;
 }
+
 .user-info .time {
 	margin-top: 5px;
 }
@@ -127,66 +109,143 @@ table {
 	line-height: 2;
 }
 
-.menu{ /*기본 menu 버튼 style 속성*/   
-    position: relative;
-    color: #5f6368;
-    border: solid 1px #dadce0;
-    border-radius: 1vw;
-    display: inline-block;
-    padding: 10px;
-    cursor: pointer;
-    width: 14%;
-    text-align: center;
-    margin: 1rem 0.5rem 1rem 0;
-    font-size: 0.9rem;
-}
-	
-.clicked_menu{ /*클릭 시 적용되는 style 속성*/
-		color: ;border-color: #4285f4;
-		color: #4285f4;
-		background: #e9f1fe;
+.menu { /*기본 menu 버튼 style 속성*/
+	position: relative;
+	color: #5f6368;
+	border: solid 1px #dadce0;
+	border-radius: 1vw;
+	display: inline-block;
+	padding: 10px;
+	cursor: pointer;
+	width: 14%;
+	text-align: center;
+	margin: 1rem 0.5rem 1rem 0;
+	font-size: 0.9rem;
 }
 
-.label-round { cursor: pointer }
+.clicked_menu { /*클릭 시 적용되는 style 속성*/
+	color:;
+	border-color: #4285f4;
+	color: #4285f4;
+	background: #e9f1fe;
+}
 
-#correcting-table td { font-size: 0.9rem; padding: 2.5%; border-top: solid 1px #f1f1f1; }
+.label-round {
+	cursor: pointer
+}
 
-#report-table td { font-size: 0.9rem; padding: 7px; }
+#correcting-table td {
+	font-size: 0.9rem;
+	padding: 2.5%;
+	border-top: solid 1px #f1f1f1;
+}
 
-.is-comment .media-content { line-height: 1.6; }
+#report-table td {
+	font-size: 0.9rem;
+	padding: 7px;
+}
 
-.card.is-post .comments-wrap .comments-body .is-comment .media-content a, .shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .comments-wrap .comments-body .is-comment .media-content a { display: inline; font-weight: 600 !important; font-size: 0.9rem;}
+.is-comment .media-content {
+	line-height: 1.6;
+}
 
-.is-comment > .media-content > .time {
+.card.is-post .comments-wrap .comments-body .is-comment .media-content a,
+	.shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .comments-wrap .comments-body .is-comment .media-content a
+	{
+	display: inline;
+	font-weight: 600 !important;
+	font-size: 0.9rem;
+}
+
+.is-comment>.media-content>.time {
 	display: inline !important;
 	font-size: .8rem !important;
-    color: #888da8;
-    margin-bottom: 10px;
-    margin-left: 0.5rem;
+	color: #888da8;
+	margin-bottom: 10px;
+	margin-left: 0.5rem;
 }
 
-.media-content > div > pre {
-    background-color: transparent !important;
-    color: unset;
-    font-size: .875em;
-    overflow-x: auto;
-    padding: 0 !important;
-    white-space: pre-wrap;
-    word-wrap: normal;
+.media-content>div>pre {
+	background-color: transparent !important;
+	color: unset;
+	font-size: .875em;
+	overflow-x: auto;
+	padding: 0 !important;
+	white-space: pre-wrap;
+	word-wrap: normal;
+	font-family: ONE-Mobile-Regular;
 }
 
 .dropdown-content .reportMenu {
-    margin-top: 18px;
-    padding-left: 7px;
-    
+	margin-top: 18px;
+	padding-left: 7px;
 }
+
 reported-div {
-padding-left: 49px;
+	padding-left: 49px;
+}
+
+#widget-slide-1 {
+	position: relative;
+	margin: 20px auto;
+}
+
+#widget-slide-1 ul {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+}
+
+#widget-slide-1 ul li {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: none; /*순번표기용*/
+	text-align: center; /*순번표기용 끝*/
+}
+
+#widget-slide-1 ul li.on {
+	display: block;
+}
+.activeCnt {
+	padding-left: 7px;
+    color: #777777;
+}
+input#fmsg {
+    margin-right: 11px;
+}
+input#feed-blocked {
+    margin-right: 8px;
+    margin-top: 3px;
+}
+
+button#report-btn {
+    margin-left: 66px;
 }
 </style>
 <script>
 $(document).ready(function(){
-	
+	//생일
+    function setSlide(){// 동작 함수 생성
+        var box   = document.getElementById("widget-slide-1");
+        var elm   = box.getElementsByTagName( 'li' );
+        var max   = elm.length-1;
+        var now   = 0;
+        var next  = 0;
+        var tmr   = null;
+        var timr  = 5000;
+        function change(){if(next > max) next = 0; else if(next < 0) next = max; for(var i=0; i <= max; i++ )elm[i].className = "";elm[next].className = "on";now = next;}
+        function befor(){next--; change();}
+        function after(){next++; change();}
+        function stop(){ clearInterval(tmr);}
+        function start(){tmr = setInterval(function(){after();}, timr); }
+        if(max>0){start();}
+    }
+    setSlide();// 실행
+    
 	$('.menu').each(function(index){
 		$(this).attr('menu-index', index);
 	}).click(function(){
@@ -195,7 +254,6 @@ $(document).ready(function(){
 		$('.menu[menu-index!=' + index + ']').removeClass('clicked_menu');
 	});
 	
-	$('.reportMenu').hide();
 	//-------공지사항이동---------
 	$('.page-block').on('click',function(){
 		var noticeId= this.id;
@@ -253,11 +311,10 @@ $(document).ready(function(){
 <body>
 <script>
 	function loadMore(){
-	 // load more
-	  var increment=5;	
+	 //-------load more-------
+	  var increment=5;	//---5개씩추가----- 
 	  var startFilter=0;
 	  var endFilter=increment;
-	  
 	  var $this = $('.feedContents');						
 	  var elementLength = $this.children('#feed-post-1').length;
 
@@ -266,7 +323,6 @@ $(document).ready(function(){
 	  }else{
 		  $('#buttonToogle').hide();
 	  }
-	  
 	  $('.feedContents #feed-post-1').slice(startFilter, endFilter).addClass('shown');
 	  $('.feedContents #feed-post-1').not('.shown').hide();
 	  $('body').off('click','.load-more-button');
@@ -284,7 +340,7 @@ $(document).ready(function(){
 	  });
 	} 
 	
-	//-------친구 추천 팔로우--------
+	//-------친구팔로우--------
 	function addFriend(id){
 		var data = {following : id};
 		$.ajax({
@@ -293,7 +349,7 @@ $(document).ready(function(){
 			data: JSON.stringify(data),
 			contentType: 'application/json; charset=utf-8',
 			success:function(data){
-				alert(data);
+				sendFollowPush(id);
 			},
 			error:function(err){
 				console.log(err);
@@ -302,9 +358,9 @@ $(document).ready(function(){
 	};
 
 	//-------좋아요--------
-	function likeIt(feedId){
+	function likeIt(feedId,userId){
 		var span = $('#recCnt'+feedId);
-			
+		var myId= '${user.user_id}';
 		$.ajax({
 			url:"${pageContext.request.contextPath}/likeCnt.do",
 			type:"POST",
@@ -312,16 +368,17 @@ $(document).ready(function(){
 			dataType:"JSON",
 			success:function(data){
 				var count=data.length;	//새로운 카운트 
-				var chk=0;
-				
+				var chk=0;				
                	$.each(data, function(idx, val) {
                		if('${user.user_id}' == val.user_id){
                			chk = 1; 
                		}
               	});
-	               	
 				if(chk){
 					alert('좋아요!');
+					if(userId != myId ){
+						sendLikePush(userId,feedId);						
+					}
 				}else{
 					alert('좋아요 취소');				
 				}
@@ -360,8 +417,25 @@ $(document).ready(function(){
 		});  
 	};
 	
+	//새 편지 쓰기
+	function writePopup(id,name) {
+		var winWidth = 860;
+	    var winHeight = 580;
+	    var popupOption= "width="+winWidth+", height="+winHeight;
+		
+		var target ='pop';
+		var url = '${pageContext.request.contextPath}/writeLetter.do';
+		window.open('',target,popupOption);
+	
+		var letterform = document.letterform;
+		letterform.action=url;
+		letterform.target=target;
+		$('#to_id').val(id);
+		$('#to_name').val(name);
+		letterform.submit();	
+	}
+
 	function feedUpdate(feedId){
-		var maxCnt = 0;
 		$('.app-overlay').addClass('is-active');
 		$('.is-new-content').addClass('is-highlighted');
 		$('#publish').focus();
@@ -376,27 +450,24 @@ $(document).ready(function(){
 		$('#feedid').val(feedId);	
 		$('#publish').val(content);
 		document.getElementById('photo').value = fphoto;
+		
 		if(retag != ""){
 			$('#append_tag').append("#"+retag);			
 		}
 		
 		if(photo != ""){	
-		  if(maxCnt >= 1 ) return;
 		  var deleteIcon = feather.icons.x.toSvg();
 		  var template = "\n                <div class=\"upload-wrap\">\n                    <img src=/FinalPrj/resources/upload/" + photo + " alt=\"\">\n                    <span class=\"remove-file\">\n                        " + deleteIcon + "\n                    </span>\n                </div>\n            ";
 		  $('#feed-upload').append(template);
-		  maxCnt++;
-		  maxValue++;
+
 		}
 
 	  	$('.remove-file').on('click', function () {
 	         $(this).closest('.upload-wrap').remove();
 	         photoChk.val(1);
-	         maxCnt--;
-	         maxValue--;
 	  	});
 	}
-	
+
 	$(function(){
 	loadMore();
 	//-------피드 등록---------
@@ -408,13 +479,27 @@ $(document).ready(function(){
 			tagval= tagval.replace("#","");
 			tagval= tagval.replace(/#/g,",");
 		}
-		document.getElementById('tags').value = tagval;					
-		$('#feedInsert').submit();
+		document.getElementById('tags').value = tagval;		
+		//피드작성스탬프지급
+		if(feedId ==""){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/stamphFeedChk.do",
+			type:"POST",
+			success:function(v){
+				if(v==0){
+					alert('<spring:message code="feed.feed.stamp"/>');				
+				}
+				$('#feedInsert').submit();		
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
+		}else{
+			$('#feedInsert').submit();	
+		}
 	});
 	
-
-
-
 	//-------피드 Reset---------
 	$('.close-publish').on('click',function(){
 		$('#publish').val('');
@@ -422,40 +507,24 @@ $(document).ready(function(){
 		$('#photoChk').val('');
 		$('#feed-upload').empty();
 		$('#feedid').val('');
-	}); 
-	
-	//-------태그라벨---------
-	$('.tag-label').on('click',function(){
-		var tagName = this.id;
-		console.log(tagName);
-		console.log('왜');
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do" ,
-			data:{tags : tagName},
-			success:function(result){
-				$('.feedContents').html(result);
-				datePosdst();
-				loadMore();
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-	
+	});  
+
    //-------태그등록---------
-   var maxAppend = 0;
    document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
    function tagFunction() {
+	  var div= $('#append_tag');
       if(event.keyCode==13){
           var tagval = $('#activities-autocpl').val();
           if(!tagval) {
-            alert('태그를 입력해 주세요!');
+            alert('<spring:message code="feed.insert.tag"/>');
          }else{
-            if (maxAppend >= 5) return; 
-            $('#append_tag').append('<span class="tagDelete">#' + tagval+ ' </span>');
-            $('#activities-autocpl').val('');
-            maxAppend++;
+        	 
+			if(div.children().length == 5){
+				return;
+			}else{
+				div.append('<span class="tagDelete">#' + tagval+ ' </span>');
+			}
+            	$('#activities-autocpl').val('');
             $.ajax({
                url: "tagInsert.do" ,
                type: "POST",
@@ -476,7 +545,6 @@ $(document).ready(function(){
       
      $('.tagDelete').on('click', function () {
          $( this ).remove(); 
-         maxAppend--;
      });
    }
 
@@ -485,17 +553,23 @@ $(document).ready(function(){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			success:function(result){
-				console.log(result);
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
 			}
 		});
 	});
-	
 	
 	//-------내근처--------- 
 	$('#searchNear').on('click',function(){
@@ -506,23 +580,38 @@ $(document).ready(function(){
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
 			}
 		});
 	});
-
+	
 	//-------언어별 Ko---------
 	$('#searchKo').on('click',function(){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			data:{write_lan : 'ko' },
 			success:function(result){
-				console.log('한국어만 나옴');
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
@@ -536,38 +625,43 @@ $(document).ready(function(){
 			url:"${pageContext.request.contextPath}/feedSelect.do",
 			data:{write_lan : 'en' },
 			success:function(result){
-				console.log('영어만 나옴');
 				$('.feedContents').html(result);
 				datePosdst();
 				loadMore();
+				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
 			},
 			error:function(err){
 				console.log(err);
 			}
 		});
 	});
-
-
-
+	
 	//-------프로필클릭시---------
 	$('.user-info').on('click',function(){
 		var userId= this.id;
 		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
 	});
+	
 	$('.delFeed').on('click',function(){
 		var feedId= this.id;
-		if(confirm('삭제하시겠습니까?')){
+		if(confirm('<spring:message code="feed.confirm.delete"/>')){
 		location.href='${pageContext.request.contextPath}/feedDelete.do?feed_id='+feedId			
 		}
 	})
-	});
+	
+});
 	
 	$(function(){
 	//-------태그자동완성---------
 	if ($('#activities-autocpl').length) {
 		var data1 = $(this);
-		console.log(data1);
-		console.log(this);
 	    var html = '';
 	    var activitiesOptions = {
 	      url: "${pageContext.request.contextPath}/autocpl.do",
@@ -593,82 +687,101 @@ $(document).ready(function(){
 	    };
 	    $('#activities-autocpl').easyAutocomplete(activitiesOptions);
 	 };
+	 
 
 	//-------태그검색---------
 	$('#searchTag').on('click',function(){
-	  	var input = $('#tagInput').attr("class");
-	  	
-	  	if(input=="input is-hidden"){
-	  		$('#tagInput').removeClass('is-hidden').addClass('is-active');
-	  	}else{
-	  		$('#tagInput').removeClass('is-active').addClass('is-hidden');
-	  	}
-	  	
-		if ($('#tagInput').length) {
-		    var html = '';
-		    var activitiesOptions = {
-		      url: "${pageContext.request.contextPath}/autocpl.do",
-		      getValue: "tag_name",
-	 	      template: {
-		        type: "custom",
-		        method: function method(value) {
-		          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
-		        }
-		      }, 
-		      highlightPhrase: false,
-		      list: {
-		        maxNumberOfElements: 5,
-		        showAnimation: {
-						          type: "slide",
-						          time: 400,
-						          callback: function callback() {}
-		        },
-		        match: {
-		          enabled: true
-		        }
-		      }
-		    }
-		    $("#tagInput").easyAutocomplete(activitiesOptions);
-		  };
-		  
-		document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
-		function tagsFunction() {
-			if(event.keyCode==13){
-		    	var tagval=$('#tagInput').val();
-		    	if(!tagval) {
-					alert('태그를 입력해 주세요!');
-				}else{
-					$.ajax({
-						url:"${pageContext.request.contextPath}/feedSelect.do",
-						data:{tags : tagval },
-						success:function(result){
-							//datePosdst();
-							loadMore();
-							initPostComments();
-							dateCmt();
-							$('.feedContents').html(result);
-							$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
-							$("div[id^='load_'").each(function(i, el){
-								var cid = $(this).data('cid');//cc_id.line
-								var cdc = $(this).data('cdc');//content
-								var cdo = $(this).data('cdo');//origin
-								test_diff(cid,cdc,cdo);
-							});
-						},
-						error:function(err){
-							console.log(err);
-						}
-					});
-				}
-			}
-		};
 		
-		  $(document).click(function (e) {
-			    var target = e.target;
-			    if (!$(target).is('.menu .clicked_menu') && !$(target).parents().is('.dropdown-trigger')) {
-			   	$('#tagInput').removeClass('is-active').addClass('is-hidden');
-			    } 
-		 });
+		  	var input = $('#tagInput').attr("class");
+		  	if(input=="input is-hidden"){
+		  		$('#tagInput').removeClass('is-hidden').addClass('is-active');
+		  	}else{
+		  		$('#tagInput').removeClass('is-active').addClass('is-hidden');
+		  	}
+		  	
+			if ($('#tagInput').length) {
+			    var html = '';
+			    var activitiesOptions = {
+			      url: "${pageContext.request.contextPath}/autocpl.do",
+			      getValue: "tag_name",
+		 	      template: {
+			        type: "custom",
+			        method: function method(value) {
+			          return "<div class=" + 'template-wrapper' + "><div class=" + 'avatar-wrapper' + ">" + "</div><div class=" + 'entry-text' + ">#" + value + "<br>" + "</div></div>";
+			        }
+			      }, 
+			      highlightPhrase: false,
+			      list: {
+			        maxNumberOfElements: 5,
+			        showAnimation: {
+							          type: "slide",
+							          time: 400,
+							          callback: function callback() {}
+			        },
+			        match: {
+			          enabled: true
+			        }
+			      }
+			    }
+			    $("#tagInput").easyAutocomplete(activitiesOptions);
+			  };
+			  
+			document.getElementById("tagInput").onkeypress = function() {tagsFunction()};
+			function tagsFunction() {
+				if(event.keyCode==13){
+			    	var tagval=$('#tagInput').val();
+			    	if(!tagval) {
+						alert('<spring:message code="feed.insert.tag"/>');
+					}else{
+						$.ajax({
+							url:"${pageContext.request.contextPath}/feedSelect.do",
+							data:{tags : tagval },
+							success:function(result){
+								$('.feedContents').html(result);
+								datePosdst();
+								loadMore();
+								initPostComments();
+								dateCmt();
+								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
+								$("div[id^='load_'").each(function(i, el){
+									var cid = $(this).data('cid');//cc_id.line
+									var cdc = $(this).data('cdc');//content
+									var cdo = $(this).data('cdo');//origin
+									test_diff(cid,cdc,cdo);
+								});
+							},
+							error:function(err){
+								console.log(err);
+							}
+						});
+					}
+				}
+			};
+	});
+	
+	//-------태그라벨---------
+	$('body').on('click','.tag-label',function(){
+		var tagName = this.id;
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do" ,
+			data:{tags : tagName},
+			success:function(result){
+				$('.feedContents').html(result);
+				datePosdst();
+				loadMore();
+				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
 	});
 	
 	//---------피드신고---------
@@ -697,41 +810,52 @@ $(document).ready(function(){
 		if(radio == '기타') {
 			txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
 			if(txt=='') {
-				alert('신고이유를 입력하세요.');
+				alert('<spring:message code="feed.report.blank"/>');
 				return;
 			}
 		} else {
 			txt = radio;
 		}
 		if(txt == null) {//값이 선택되지 않았으면
-			alert('신고사유를 선택하세요');
+			alert('<spring:message code="feed.report.text.empty"/>');
 			return;
 		} 
 		
-		console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부 : "  +chk +"체크사유 & 기타사유"+ txt);	
-		
- 		if(confirm('신고하시겠습니까?')) {
-			$.ajax({
-				url:'${pageContext.request.contextPath}/reportInsert.do',
+		if(confirm('<spring:message code="feed.confirm.report"/>')) {
+			$.ajax({//신고 여부 확인
+				url:'${pageContext.request.contextPath}/reportUserCheck.do',
 				type:'post',
-				data:JSON.stringify({
-					user_id:'${user.user_id}',	//신고자
-					content:repo,				//피드아이디
-					msg:txt,					//신고냐용
-					reported:report,			//신고당한자
-					blocked:chk					//블락체크여부
-				}),
-				contentType : "application/json; charset=UTF-8",
-				success: function(data) {
-					alert('신고되었습니다.');
-					location.reload(true);
+				data:{content:repo,user_id:'${user.user_id}'},
+				success: function(cnt) {
+					if(cnt == 0) {
+						$.ajax({
+							url:'${pageContext.request.contextPath}/reportInsert.do',
+							type:'post',
+							data:JSON.stringify({
+								user_id:'${user.user_id}',	//신고자
+								content:repo,				//피드아이디
+								msg:txt,					//신고냐용
+								reported:report,			//신고당한자
+								blocked:chk					//블락체크여부
+							}),
+							contentType : "application/json; charset=UTF-8",
+							success: function(data) {
+								alert('<spring:message code="feed.report.success"/>');
+							},
+							error: function(err) {
+								alert('<spring:message code="feed.alert.errormsg"/>');
+							}
+						});
+					} else {
+						alert('<spring:message code="feed.report.did"/>');
+					}
 				},
-				error: function(err) {
-					alert('관리자에게 문의해주세요.');
+				error: function(e) {
+					alert('<spring:message code="feed.alert.errormsg"/>');
 				}
-			})
-		} 
-	})
+			});//$.ajax신고 여부 확인
+		}
+	});//버튼을 누르면
 	})
 
 	//-------댓글-------- 
@@ -809,7 +933,6 @@ $(document).ready(function(){
 					data: JSON.stringify({comment_id:delcmt}),
 					contentType:'application/json; charset=UTF-8',
 					success: function(data) {
-						alert('<spring:message code="comment.delete.success"/>');
 						del.remove();
 						//-------댓글수-1-------
 						$.ajax({
@@ -857,30 +980,43 @@ $(document).ready(function(){
 		}
 		var chk = $("input:checkbox[data-rchk='"+repo+"']:checked").val(); //체크된값
 		console.log(report, repo, radio, chk, txt);
+		
+		
 		if(confirm('<spring:message code="comment.confirm.report"/>')) {
-			$.ajax({
-				url:'${pageContext.request.contextPath}/reportInsert.do',
+			$.ajax({//신고 여부 확인
+				url:'${pageContext.request.contextPath}/reportUserCheck.do',
 				type:'post',
-				data:JSON.stringify({
-					user_id:'${user.user_id}',
-					content:repo,
-					msg:txt,
-					reported:report,
-					blocked:chk
-				}),
-				contentType : "application/json; charset=UTF-8",
-				success: function(data) {
-					alert('<spring:message code="comment.report.success"/>');
-					location.reload(true);
+				data:{content:repo,user_id:'${user.user_id}'},
+				success: function(cnt) {
+					if(cnt == 0) {
+						$.ajax({
+							url:'${pageContext.request.contextPath}/reportInsert.do',
+							type:'post',
+							data:JSON.stringify({
+								user_id:'${user.user_id}',
+								content:repo,
+								msg:txt,
+								reported:report,
+								blocked:chk
+							}),
+							contentType : "application/json; charset=UTF-8",
+							success: function(data) {
+								alert('<spring:message code="comment.report.success"/>');
+							},
+							error: function(err) {
+								alert('<spring:message code="comment.alert.errormsg"/>');
+							}
+						});
+				 } else {
+						alert('<spring:message code="letter.report.did"/>');
+					}
 				},
-				error: function(err) {
+				error: function(e) {
 					alert('<spring:message code="comment.alert.errormsg"/>');
 				}
-			});
+			});//$.ajax신고 여부 확인
 		}
-		
-		
-	});
+	});//신고버튼을 누르면
 	
 	$('body').on('click','#msg', function() { //기타를 누르면 값을 입력할 수 있도록
 		var select = $(this);
@@ -948,7 +1084,6 @@ $(document).ready(function(){
 					method: 'post',
 					data: {cc_id:delcmt},
 					success: function(data) {
-						alert('<spring:message code="comment.delete.success"/>');
 						del.remove();
 						//-------댓글수-1-------
 						$.ajax({
@@ -1071,7 +1206,9 @@ $(document).ready(function(){
 										$('div[data-card="'+idx+'"]').children().eq(0).html('<spring:message code="comment.h4.title"/>'+' ('+cnt+')');
 										var span2 = $('span[data-minicmt="'+idx+'"]');
 										span2.html(cnt);
-										sendTextPush(fuser, fid);
+										if(feeduser != '${user.user_id}') {//작성자가 내가 아니라면 알림주기
+											sendTextPush(feeduser, feedid);										
+										}
 									}
 								});//댓글수+1
 							}
@@ -1088,34 +1225,9 @@ $(document).ready(function(){
 	} //function commentc
 
 //--------교정END----------------------------------------
-	//새 편지 쓰기
-	function writePopup(id,name) {
-		var winWidth = 860;
-	    var winHeight = 580;
-	    var popupOption= "width="+winWidth+", height="+winHeight;
-		
-		var target ='pop';
-		var url = '${pageContext.request.contextPath}/writeLetter.do';
-		window.open('',target,popupOption);
-	
-		var letterform = document.letterform;
-		letterform.action=url;
-		letterform.target=target;
-		$('#to_id').val(id);
-		$('#to_name').val(name);
-		console.log($('#to_id').val());
-		console.log($('#to_name').val());
-		letterform.submit();	
-	}
-	
 </script>
-<form id="letterform" name="letterform" method="post">
-<input type="hidden" id="to_id" name="to_id" value="">
-<input type="hidden" id="user_id" value="${user.user_id }">
-<input type="hidden" id="to_name" name="to_name" value="">
-<input type="hidden" id="name" name="name" value="${user.name }">
-</form>
 	<!-- Pageloader -->
+
 	<div class="infraloader is-active"></div>
 	<div class="app-overlay"></div>
 	<div class="view-wrapper">
@@ -1374,13 +1486,14 @@ $(document).ready(function(){
 					<div class="column is-3 is-hidden-mobile">
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>지금 인기있는 주제</h4>
+								<h4><spring:message code="feed.tag.title"/></h4>
 							</div>
 							<div class="card-body">
 								<c:forEach var="vo" items="${likeTag }" end="9">
 									<!-- Recommended Page -->
 									<label class="nicelabel-default-position"> <span
-										class="label-round tag-label" id="${vo.tag_name }">#${vo.tag_name }</span>
+										class="label-round tag-label" id="${vo.tag_name }">#${vo.tag_name
+											}</span>
 									</label>
 								</c:forEach>
 							</div>
@@ -1389,7 +1502,7 @@ $(document).ready(function(){
 						<!------------------------ 공지사항 시작 ------------------------->
 						<div id="latest-activity-1" class="card">
 							<div class="card-heading is-bordered">
-								<h4>공지사항</h4>
+								<h4><spring:message code="feed.notice.title"/></h4>
 							</div>
 							<div class="card-body no-padding">
 								<c:forEach items="${noticeList }" var="vo" end="3">
@@ -1405,20 +1518,24 @@ $(document).ready(function(){
 						<!------------------------ 출석 시작 ------------------------->
 						<div id="latest-activity-2" class="card">
 							<div class="card-heading is-bordered">
-								<h4><spring:message code="feed.check.title"/></h4>
+								<h4>
+									<spring:message code="feed.check.title" />
+								</h4>
 							</div>
 							<div class="card-body no-padding">
 								<div class="add-friend-block" id="todayCheck">
 									<div>
-										<img src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg" style="width: 60px; height: 60px; max-height: none;">
+										<img
+											src="${pageContext.request.contextPath}/resources/template/assets/img/icons/explore/clover.svg"
+											style="width: 60px; height: 60px; max-height: none;">
 									</div>
 									<div class="checkMsg">
 										<c:choose>
 											<c:when test="${loginStamp eq 0}">
-												<span><spring:message code="feed.check.click"/></span>
+												<span><spring:message code="feed.check.click" /></span>
 											</c:when>
 											<c:otherwise>
-												<span><spring:message code="feed.check.done"/></span>
+												<span><spring:message code="feed.check.done" /></span>
 											</c:otherwise>
 										</c:choose>
 									</div>
@@ -1446,7 +1563,7 @@ $(document).ready(function(){
 										<ul>
 											<li class="is-active"><a> <span
 													class="icon is-small"><i data-feather="edit-3"></i></span>
-													<span>Publish</span>
+													<span><spring:message code="feed.feed.publish"/></span>
 											</a></li>
 											<!-- Close X button -->
 											<li class="close-wrap"><span class="close-publish">
@@ -1468,7 +1585,7 @@ $(document).ready(function(){
 													data-demo-src="assets/img/avatars/jenna.png" alt="">
 												<div class="control">
 													<textarea id="publish" name="content" class="textarea"
-														rows="3" placeholder="Write something about you..."></textarea>
+														rows="3" placeholder=""></textarea>
 												</div>
 											</div>
 											<div id="feed-upload" class="feed-upload"></div>
@@ -1682,15 +1799,15 @@ $(document).ready(function(){
 										<div id="basic-options" class="compose-options">
 											<!-- Upload action -->
 											<div class="compose-option" style="height: 32px">
-												<span>📷 PHOTO</span> <input
-													id="feed-upload-input-2" name="file" type="file"
-													accept=".png, .jpg, .jpeg" onchange="readURL(this)">
+												<span>📷 <spring:message code="feed.feed.photo"/></span> <input id="feed-upload-input-2"
+													name="file" type="file" accept=".png, .jpg, .jpeg"
+													onchange="readURL(this)">
 											</div>
 											<!-- Tag action -->
 											<div id="show-activities" class="compose-option">
 												<img
 													src="resources/template/assets/img/icons/emoji/emoji-1.svg"
-													alt=""> <span>Tag</span>
+													alt=""> <span><spring:message code="feed.feed.tag"/></span>
 											</div>
 										</div>
 										<!-- /General basic options -->
@@ -1708,15 +1825,14 @@ $(document).ready(function(){
 						</form>
 
 						<!-------------- 검색 태그 부분------------ -->
-						<div class="menu" id="allSearch">최신글</div>
-						<div class="menu" id="searchNear">내 근처</div>
-						<div class="menu" id="searchTag">태그</div>
-						<div class="menu" id="searchKo">한국어</div>
-						<div class="menu" id="searchEn">영어</div>
+						<div class="menu" id="allSearch"><spring:message code="feed.new"/></div>
+						<div class="menu" id="searchNear"><spring:message code="feed.neer"/></div>
+						<div class="menu" id="searchTag"><spring:message code="feed.tag"/></div>
+						<div class="menu" id="searchKo"><spring:message code="feed.ko"/></div>
+						<div class="menu" id="searchEn"><spring:message code="feed.en"/></div>
 
-						<div id="SearchDiv" class="control has-margin"
-							style="display: none;">
-							<input type="text" id="tagInput" class="input"
+						<div id="SearchDiv" class="control has-margin">
+							<input class="input is-hidden" type="text" id="tagInput"
 								placeholder="태그를 입력해 주세요">
 							<div class="icon">
 								<i data-feather="search"></i>
@@ -1742,10 +1858,9 @@ $(document).ready(function(){
 														data-user-popover="1" alt="">
 												</div>
 												<div class="user-info" id="${vo.user_id }">
-													<a href="#" style="font-size:1rem; display: inline">${vo.name }</a>
-													<svg viewBox="0 0 24 24" width="21" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
-														${vo.write_lan }  <span class="time">
-													<script type="text/javascript">														
+													<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
+													<span class="time"> <script
+															type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
 													</script>
 													</span>
@@ -1775,76 +1890,79 @@ $(document).ready(function(){
 															<div class="media">
 																<div class="media-content" id="${vo.content }"
 																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
-																	<h3>번역</h3>
+																	<h3><spring:message code="feed.drop.trans"/></h3>
 																</div>
 															</div>
 														</a>
 														<c:if test="${vo.user_id ne user.user_id}">
-														<a class="dropdown-item">
-															<div class="media">
-																<div class="media-content" id="feedcor" data-fid="${vo.feed_id }"
-																data-fidx="${status.index }" data-fuser="${vo.user_id }" >
-																	<h3>교정</h3>
+															<a class="dropdown-item">
+																<div class="media">
+																	<div class="media-content" id="feedcor"
+																		data-fid="${vo.feed_id }" data-fidx="${status.index }"
+																		data-fuser="${vo.user_id }">
+																		<h3><spring:message code="feed.drop.corr"/></h3>
+																	</div>
 																</div>
-															</div>
-														</a>
+															</a>
 															<hr class="dropdown-divider">
 															<a class="dropdown-item">
-																<div class="media" >
-																	<div class="media-content" id="frbtn" data-repo2="${vo.feed_id }" data-report2="${vo.user_id }">
-																		<h3>신고</h3>
+																<div class="media">
+																	<div class="media-content" id="frbtn"
+																		data-repo2="${vo.feed_id }"
+																		data-report2="${vo.user_id }">
+																		<h3><spring:message code="feed.drop.report"/></h3>
 																	</div>
-														<div class="dropdown-menu">
-	                                                    <div class="dropdown-content reportMenu">
-	                                                        <div class="media freport" style="border: 0px;">
-	                                                        <table id="report-table">
-									                        <tr>
-									                        	<td>
-									                        		<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="스팸 게시물">스팸 게시물</label>
-									                        	</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">가짜정보 제공</label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="성적인 내용">성적인 내용</label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="데이트가 목적인 내용">데이트가 목적인 내용</label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="욕설/비방">욕설/비방</label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="fmsg" name="${vo.feed_id }" value="기타">기타</label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<input  placeholder="신고이유" hidden="true"  data-rftxt="${vo.feed_id }"
-										                        	   maxlength="30"></input>
-								                        		</td>
-								                        	</tr>
-								                        	</table>
-	                                                        </div>
-	                                                        <div class="dropdown-divider"></div>
-	                                                        <div class="reported-div">
-									                        <input type="checkbox" id="feed-blocked" data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name } 차단
-															<button id="report-btn"  data-repo2="${vo.feed_id  }" data-report2="${vo.user_id }">신고</button>
-	                                                        </div>
-	                                                    </div>
-		                                               </div>
-													</div>
-												</a>
+																	<div class="dropdown-menu">
+																		<div class="dropdown-content reportMenu">
+																			<div class="media freport" style="border: 0px;">
+																				<table id="report-table">
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물"><spring:message code="feed.report.content"/></label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공"><spring:message code="feed.report.lie"/>
+																								</label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="성적인 내용"><spring:message code="feed.report.sexual"/></label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }"
+																								value="데이트가 목적인 내용"><spring:message code="feed.report.date"/></label></td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="욕설/비방"><spring:message code="feed.report.word"/></label>
+																						</td>
+																					</tr>
+																					<tr>
+																						<td><label><input type="radio"
+																								id="fmsg" name="${vo.feed_id }" value="기타"><spring:message code="feed.report.etc"/></label>
+																						</td>
+																					</tr>
+																					<tr>
+																						<td><input placeholder="신고이유" hidden="true"
+																							data-rftxt="${vo.feed_id }" maxlength="30"></input>
+																						</td>
+																					</tr>
+																				</table>
+																			</div>
+																			<div class="dropdown-divider"></div>
+																			<div class="reported-div">
+																				<input type="checkbox" id="feed-blocked"
+																					data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
+																				<spring:message code="feed.report.block"/>
+																				<button id="report-btn" data-repo2="${vo.feed_id  }"
+																					data-report2="${vo.user_id }"><spring:message code="feed.report.btn"/></button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</a>
 														</c:if>
 														<c:if test="${vo.user_id eq user.user_id}">
 															<hr class="dropdown-divider">
@@ -1860,13 +1978,13 @@ $(document).ready(function(){
 																			value="${vo.uuid }"> <input type="hidden"
 																			id="update-fphoto" name="update-fphoto"
 																			value="${vo.fphoto }">
-																		<h3>수정</h3>
+																		<h3><spring:message code="feed.drop.update"/></h3>
 																	</div>
 																</div> <a href="#" class="dropdown-item">
 																	<div class="media">
 																		<i data-feather="flag"></i>
-																		<div class="media-content delFeed">
-																			<h3>삭제</h3>
+																		<div class="media-content delFeed" id="${vo.feed_id }">
+																			<h3><spring:message code="feed.drop.delete"/></h3>
 																		</div>
 																	</div>
 															</a>
@@ -1880,67 +1998,22 @@ $(document).ready(function(){
 										<div class="card-body">
 											<!-- Post body text -->
 											<div class="post-text">
-												<p style="font-size: 1rem; color: #5f5f5f; line-height: 1.5;">${vo.content }</p>
+												<p
+													style="font-size: 1rem; color: #5f5f5f; line-height: 1.5; word-wrap: break-word; white-space: pre-line;">${vo.content }</p>
 												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 												<div class="twdiv" id="${vo.write_lan }"></div>
 											</div>
-											<!-- Featured image -->
-											<c:if test="${empty vo.fphoto}">
-												<div class="post-image"
-													style="margin-bottom: 50px; margin-top: 30px">
-													<!-- Action buttons -->
-													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-													<div class="like-wrapper">
-														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}'); return false;"> <i
-															class="mdi mdi-heart not-liked bouncy"></i> <i
-															class="mdi mdi-heart is-liked bouncy"></i> <span
-															class="like-overlay"></span>
-														</a>
-													</div>
-													<div class="fab-wrapper is-comment">
-														<a href="javascript:void(0);" class="small-fab"> <svg
-																viewBox="0 0 24 24" width="24" height="24"
-																stroke="currentColor" stroke-width="2" fill="none"
-																stroke-linecap="round" stroke-linejoin="round"
-																class="css-i6dzq1">
-																<path
-																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-														</a>
-													</div>
-												</div>
-											</c:if>
-											<c:if test="${not empty vo.fphoto}">
 												<div class="post-image">
 													<img
 														src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 														alt="" />
-													<!-- Action buttons -->
-													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-													<div class="like-wrapper">
-														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}'); return false;"> <i
-															class="mdi mdi-heart not-liked bouncy"></i> <i
-															class="mdi mdi-heart is-liked bouncy"></i> <span
-															class="like-overlay"></span>
-														</a>
-													</div>
-													<div class="fab-wrapper is-comment">
-														<a href="javascript:void(0);" class="small-fab"> <svg
-																viewBox="0 0 24 24" width="24" height="24"
-																stroke="currentColor" stroke-width="2" fill="none"
-																stroke-linecap="round" stroke-linejoin="round"
-																class="css-i6dzq1">
-																<path
-																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-														</a>
-													</div>
 												</div>
-											</c:if>
 											<div>
 												<p>
 													<c:if test="${not empty vo.tags }">
-														<a>#${fn:replace(vo.tags,',','#')}</a>
+														<c:forTokens items="${vo.tags }" delims="," var="item">
+														    <a class="tag-label" id="${item}">#${item}</a>
+														</c:forTokens>
 													</c:if>
 												</p>
 											</div>
@@ -1949,48 +2022,72 @@ $(document).ready(function(){
 
 										<!-- Post footer -->
 										<div class="card-footer">
-											<!-- Post statistics -->
+										<!-- Post statistics -->
+										<c:if test="${vo.like_cnt > 1 }">
+	                                    <div class="likers-group" id="likers-group${vo.feed_id }">
+		                                    <c:forEach items="${likeUsers }" var="likes" end="4">
+		                                        <c:if test="${vo.feed_id eq likes.feed_id}">
+		                                        <img src="${pageContext.request.contextPath}/resources/upload/${userPhoto.uuid }" alt="">
+		                                        </c:if>
+		                                    </c:forEach>
+		                                    <!-- 좋아요 유저 없으면 텍스트 출력 X -->
+	                                    	<div class="likers-text" id="likers-text${vo.feed_id }">
+		                                        <p>
+												<c:forEach items="${likeUsers }" var="likes" end="1">
+													<c:if test="${vo.feed_id eq likes.feed_id}">
+		                                            <a href="#">${likes.user_id}</a>
+		                                            </c:if>
+												</c:forEach>
+		                                        </p>
+		                                        <p>and ${vo.like_cnt} more liked this</p>
+		                                    </div>
+	                                   	</div>
+										</c:if>
 											<div class="social-count">
-												<div class="comments-count">
-													<svg viewBox="0 0 24 24" width="24" height="24"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path
-															d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-													<span id="minicmt" data-minicmt="${status.index }">
-													<c:if test="${vo.cmt eq 0 }">0</c:if>
-													<c:if test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
-													</span>
-												</div>
-												<div class="likes-count">
-													<svg viewBox="0 0 24 24" width="24" height="24"
-														stroke="currentColor" stroke-width="2" fill="none"
-														stroke-linecap="round" stroke-linejoin="round"
-														class="css-i6dzq1">
-														<path
-															d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-													<span id="recCnt${vo.feed_id }" >
-													 ${vo.like_cnt }
-													</span>
-												</div>
+											<!-- Followers avatars -->
+													<!-- Action buttons -->
+													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+													<!-- 댓글 카운트 -->
+													<div class="fab-wrapper is-comment" style="padding-right: 10px;">
+														<a href="javascript:void(0);" class="small-fab"> <svg
+																viewBox="0 0 24 24" width="24" height="24"
+																stroke="currentColor" stroke-width="2" fill="none"
+																stroke-linecap="round" stroke-linejoin="round"
+																class="css-i6dzq1">
+																<path
+																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+														<span class="activeCnt" id="minicmt" data-minicmt="${status.index }">
+															<c:if test="${vo.cmt eq 0 }">0</c:if>
+															<c:if test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
+														</span>
+														</a>
+													</div>
+													<!-- 좋아요 카운트 -->
+													<div class="like-wrapper">
+														<a class="like-button"
+															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
+															class="mdi mdi-heart not-liked bouncy"></i> <i
+															class="mdi mdi-heart is-liked bouncy"></i> 
+															<span class="activeCnt" id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
+														</a>
+													</div>
 											</div>
 										</div>
 										<div data-table="${status.index }"></div>
 										<!-- /Post footer -->
 									</div>
 									<!-- /Main wrap -->
-									
-									
+
+
 									<!-- Post #1 Comments -->
 									<div class="comments-wrap is-hidden">
 										<!-- Header -->
 										<div class="comments-heading" data-card="${status.index }">
 											<h4>
-												<spring:message code="comment.h4.title"/>
-												<small>
-												<c:if test="${!empty vo.cmt and vo.cmt eq 0 }">(0)</c:if>
-												<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt})</c:if>
+												<spring:message code="comment.h4.title" />
+												<small> <c:if
+														test="${!empty vo.cmt and vo.cmt eq 0 }">(0)</c:if> <c:if
+														test="${!empty vo.cmt and vo.cmt gt 0 }">(${vo.cmt})</c:if>
 												</small>
 											</h4>
 											<div class="close-comments">
@@ -2005,240 +2102,289 @@ $(document).ready(function(){
 										<!-- /Header -->
 
 										<!-- Comments body -->
-										<div class="comments-body has-slimscroll" data-scroll="${status.index }">
+										<div class="comments-body has-slimscroll"
+											data-scroll="${status.index }">
 
-										<!-- Comment -->
-										<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">
-											<c:forEach items="${commentList }" var="cmt">
-											<!-- 피드번호가 같으면 -->
-											<c:if test="${vo.feed_id eq cmt.feed_id }">
-											<c:choose>
-											<c:when test="${cmt.content ne '-'}">
-											<!-- 일반댓글이면 -->
-											<div class="media is-comment">
-												<!-- User image -->
-												<div class="media-left">
-													<div class="image">
-														<img src="https://via.placeholder.com/300x300"
-															data-demo-src="assets/img/avatars/dan.jpg"
-															data-user-popover="1" alt="">
-													</div>
-												</div>
-												<!-- Content -->
-												<div class="media-content">
-													<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
-													<span class="time">
-													<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
-													 <script type="text/javascript">														
+											<!-- Comment -->
+											<c:if test="${!empty vo.cmt and vo.cmt gt 0 }">
+												<c:forEach items="${commentList }" var="cmt">
+													<!-- 피드번호가 같으면 -->
+													<c:if test="${vo.feed_id eq cmt.feed_id }">
+														<c:choose>
+															<c:when test="${cmt.content ne '-'}">
+																<!-- 일반댓글이면 -->
+																<div class="media is-comment">
+																	<!-- User image -->
+																	<div class="media-left">
+																		<div class="image">
+																			<img src="https://via.placeholder.com/300x300"
+																				data-demo-src="assets/img/avatars/dan.jpg"
+																				data-user-popover="1" alt="">
+																		</div>
+																	</div>
+																	<!-- Content -->
+																	<div class="media-content">
+																		<a
+																			href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
+																		<span class="time"> <fmt:formatDate
+																				value="${cmt.reg_date }"
+																				pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt" /> <script
+																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
-													</script>
-													<!-- Actions -->
-													<c:if test="${cmt.user_id eq user.user_id }">
-													<div class="controls" style="display: inline-block">
-														<div class="edit">
-															<a id="del" data-delcmt="${cmt.comment_id }"
-																data-delcmtfeed="${cmt.feed_id }"
-																data-idx="${status.index }"> <svg
-																	viewBox="0 0 24 24" width="15" height="15"
-																	stroke="currentColor" stroke-width="2"
-																	fill="none" stroke-linecap="round"
-																	stroke-linejoin="round" class="css-i6dzq1">
+													</script> <!-- Actions --> <c:if
+																				test="${cmt.user_id eq user.user_id }">
+																				<div class="controls" style="display: inline-block">
+																					<div class="edit">
+																						<a id="del" data-delcmt="${cmt.comment_id }"
+																							data-delcmtfeed="${cmt.feed_id }"
+																							data-idx="${status.index }"> <svg
+																								viewBox="0 0 24 24" width="15" height="15"
+																								stroke="currentColor" stroke-width="2"
+																								fill="none" stroke-linecap="round"
+																								stroke-linejoin="round" class="css-i6dzq1">
 																	<line x1="18" y1="6" x2="6" y2="18"></line>
 																	<line x1="6" y1="6" x2="18" y2="18"></line></svg>
-															</a>
-														</div>
-													</div>
-													</c:if>
-													</span>
-													<p style="color: #525252">${cmt.content } </p>
-												</div>
-												<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
-												<!-- Right side dropdown -->
-												<div class="media-right">
-													<div
-														class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-														<div>
-															<div class="button">
-																<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-							                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-							                                    <line x1="12" y1="9" x2="12" y2="13"></line>
-							                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-															</div>
-														</div>
-														<div class="dropdown-menu" role="menu">
-	                                                    <div class="dropdown-content">
-	                                                        <div class="media">
-	                                                        <table id="report-table">
-								                        	<tr>
-								                        		<td>
-								                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물"><spring:message code="comment.report.content"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공"><spring:message code="comment.report.lie"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용"><spring:message code="comment.report.sexual"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방"><spring:message code="letter.report.word"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타"><spring:message code="letter.report.etc"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<spring:message code="comment.report.input.placeholder" var="cmt_placeholder" />
-																	<input data-rtxt="${cmt.comment_id }" placeholder="${cmt_placeholder}" hidden="true"
-										                        	   maxlength="30"></input>
-								                        		</td>
-								                        	</tr>
-								                        	</table>
-	                                                        </div>
-	                                                        <div class="dropdown-divider"></div>
-									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } <spring:message code="comment.report.block"/>
-															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
-															<spring:message code="comment.report.btn"/>
-															</button>
-	                                                    </div>
-		                                               </div>
-													</div>
-												</div>
-												<!-- /Right side dropdown -->
-												</c:if>
-												</div>
-												<!-- /일반댓글이면 -->
-											</c:when>
-											<c:otherwise>
-											<!-- 교정댓글이면 -->
-											<div class="media is-comment">
-												<!-- User image -->
-												<div class="media-left">
-													<div class="image">
-														<img src="https://via.placeholder.com/300x300"
-															data-demo-src="assets/img/avatars/dan.jpg"
-															data-user-popover="1" alt="">
-													</div>
-												</div>
-												<!-- Content -->
-												<div class="media-content">
-													<a href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
-													<span class="time">
-													<fmt:formatDate value="${cmt.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt"/>
-													 <script type="text/javascript">														
+																						</a>
+																					</div>
+																				</div>
+																			</c:if>
+																		</span>
+																		<p
+																			style="color: #525252; word-wrap: break-word; white-space: pre-line;">${cmt.content }
+																		</p>
+																	</div>
+																	<c:if test="${user.user_id ne cmt.user_id}">
+																		<!-- Right side dropdown -->
+																		<div class="media-right">
+																			<div
+																				class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																				<div>
+																					<div class="button">
+																						<svg viewBox="0 0 24 24" width="24" height="24"
+																							stroke="currentColor" stroke-width="2"
+																							fill="none" stroke-linecap="round"
+																							stroke-linejoin="round" class="css-i6dzq1">
+							                                    <path
+																								d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+							                                    <line x1="12" y1="9" x2="12"
+																								y2="13"></line>
+							                                    <line x1="12" y1="17"
+																								x2="12.01" y2="17"></line></svg>
+																					</div>
+																				</div>
+																				<div class="dropdown-menu" role="menu">
+																					<div class="dropdown-content">
+																						<div class="media">
+																							<table id="report-table">
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="스팸 게시물">
+																										<spring:message code="comment.report.content" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="가짜정보 제공">
+																										<spring:message code="comment.report.lie" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="성적인 내용">
+																										<spring:message code="comment.report.sexual" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="데이트가 목적인 내용">
+																										<spring:message code="letter.report.date" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="욕설/비방">
+																										<spring:message code="letter.report.word" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }" value="기타">
+																										<spring:message code="letter.report.etc" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><spring:message
+																											code="comment.report.input.placeholder"
+																											var="cmt_placeholder" /> <input
+																										data-rtxt="${cmt.comment_id }"
+																										placeholder="${cmt_placeholder}" hidden="true"
+																										maxlength="30"></input></td>
+																								</tr>
+																							</table>
+																						</div>
+																						<div class="dropdown-divider"></div>
+																						<input type="checkbox" id="blocked"
+																							data-rchk="${cmt.comment_id  }"
+																							value="${cmt.user_id }">${cmt.name }
+																						<spring:message code="comment.report.block" />
+																						<button id="fr-btn"
+																							data-repo="${cmt.comment_id  }"
+																							data-report="${cmt.user_id }">
+																							<spring:message code="comment.report.btn" />
+																						</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<!-- /Right side dropdown -->
+																	</c:if>
+																</div>
+																<!-- /일반댓글이면 -->
+															</c:when>
+															<c:otherwise>
+																<!-- 교정댓글이면 -->
+																<div class="media is-comment">
+																	<!-- User image -->
+																	<div class="media-left">
+																		<div class="image">
+																			<img src="https://via.placeholder.com/300x300"
+																				data-demo-src="assets/img/avatars/dan.jpg"
+																				data-user-popover="1" alt="">
+																		</div>
+																	</div>
+																	<!-- Content -->
+																	<div class="media-content">
+																		<a
+																			href="${pageContext.request.contextPath}/profile.do?user_id=${cmt.user_id }">${cmt.name }</a>
+																		<span class="time"> <fmt:formatDate
+																				value="${cmt.reg_date }"
+																				pattern="yyyy-MM-dd HH:mm:ss" var="rg_dt" /> <script
+																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
-													</script>
-													<!-- Actions -->
-													<c:if test="${cmt.user_id eq user.user_id }">
-													<div class="controls" style="display: inline-block">
-														<div class="edit">
-															<a id="cdel" data-delcmt="${cmt.comment_id }" data-delcmtfeed="${cmt.feed_id }"
-															data-idx="${status.index }">
-															<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-															</a>
-														</div>
-													</div>
+													</script> <!-- Actions --> <c:if
+																				test="${cmt.user_id eq user.user_id }">
+																				<div class="controls" style="display: inline-block">
+																					<div class="edit">
+																						<a id="cdel" data-delcmt="${cmt.comment_id }"
+																							data-delcmtfeed="${cmt.feed_id }"
+																							data-idx="${status.index }"> <svg
+																								viewBox="0 0 24 24" width="15" height="15"
+																								stroke="currentColor" stroke-width="2"
+																								fill="none" stroke-linecap="round"
+																								stroke-linejoin="round" class="css-i6dzq1">
+																								<line x1="18" y1="6" x2="6" y2="18"></line>
+																								<line x1="6" y1="6" x2="18" y2="18"></line></svg>
+																						</a>
+																					</div>
+																				</div>
+																			</c:if>
+																		</span>
+																		<!-- 교정댓글이면, line을 반복 -->
+																		<c:forEach items="${cdList }" var="cd">
+																			<c:if test="${cmt.comment_id eq cd.cc_id }">
+																				<div id="load_${cd.cc_id }${cd.line}"
+																					data-cid="${cd.cc_id }${cd.line}"
+																					data-cdc="${cd.content }" data-cdo="${cd.origin }">${cd.content }</div>
+																			</c:if>
+																		</c:forEach>
+																	</div>
+																	<c:if test="${user.user_id ne cmt.user_id}">
+																		<!-- Right side dropdown -->
+																		<div class="media-right">
+																			<div
+																				class="dropdown is-spaced is-right is-neutral dropdown-trigger">
+																				<div>
+																					<div class="button">
+																						<svg viewBox="0 0 24 24" width="24" height="24"
+																							stroke="currentColor" stroke-width="2"
+																							fill="none" stroke-linecap="round"
+																							stroke-linejoin="round" class="css-i6dzq1">
+							                                    <path
+																								d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+							                                    <line x1="12" y1="9" x2="12"
+																								y2="13"></line>
+							                                    <line x1="12" y1="17"
+																								x2="12.01" y2="17"></line></svg>
+																					</div>
+																				</div>
+																				<div class="dropdown-menu" role="menu">
+																					<div class="dropdown-content">
+																						<div class="media">
+																							<table id="report-table">
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="스팸 게시물">
+																										<spring:message code="comment.report.content" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="가짜정보 제공">
+																										<spring:message code="comment.report.lie" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="성적인 내용">
+																										<spring:message code="comment.report.sexual" /></label>
+																									</td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="데이트가 목적인 내용">
+																										<spring:message code="letter.report.date" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }"
+																											value="욕설/비방">
+																										<spring:message code="letter.report.word" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><label><input type="radio"
+																											id="msg" name="${cmt.comment_id }" value="기타">
+																										<spring:message code="letter.report.etc" /></label></td>
+																								</tr>
+																								<tr>
+																									<td><spring:message
+																											code="comment.report.input.placeholder"
+																											var="cmt_placeholder" /> <input
+																										data-rtxt="${cmt.comment_id }"
+																										placeholder="cmt_placeholder" hidden="true"
+																										maxlength="30"></input></td>
+																								</tr>
+																							</table>
+																						</div>
+																						<div class="dropdown-divider"></div>
+																						<input type="checkbox" id="blocked"
+																							data-rchk="${cmt.comment_id  }"
+																							value="${cmt.user_id }">${cmt.name }
+																						<spring:message code="comment.report.block" />
+																						<button id="fr-btn"
+																							data-repo="${cmt.comment_id  }"
+																							data-report="${cmt.user_id }">
+																							<spring:message code="comment.report.block" />
+																						</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<!-- /Right side dropdown -->
+																	</c:if>
+																</div>
+																<!-- /교정댓글이면 -->
+															</c:otherwise>
+														</c:choose>
 													</c:if>
-													</span>
-													<!-- 교정댓글이면, line을 반복 -->
-													<c:forEach items="${cdList }" var="cd">
-														<c:if test="${cmt.comment_id eq cd.cc_id }">
-														<div id="load_${cd.cc_id }${cd.line}" data-cid="${cd.cc_id }${cd.line}"
-														data-cdc="${cd.content }"
-														data-cdo="${cd.origin }">${cd.content }</div>
-														</c:if>
-													</c:forEach>
-												</div>
-												<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
-												<!-- Right side dropdown -->
-												<div class="media-right">
-													<div
-														class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-														<div>
-															<div class="button">
-																<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-							                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-							                                    <line x1="12" y1="9" x2="12" y2="13"></line>
-							                                    <line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-															</div>
-														</div>
-														<div class="dropdown-menu" role="menu">
-	                                                    <div class="dropdown-content">
-	                                                        <div class="media">
-	                                                        <table id="report-table">
-									                        <tr>
-								                        		<td>
-								                        			<label><input type="radio" id="msg" name="${cmt.comment_id }" value="스팸 게시물"><spring:message code="comment.report.content"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="가짜정보 제공"><spring:message code="comment.report.lie"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="성적인 내용"><spring:message code="comment.report.sexual"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="데이트가 목적인 내용"><spring:message code="letter.report.date"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="욕설/비방"><spring:message code="letter.report.word"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<label><input type="radio" id="msg" name="${cmt.comment_id }" value="기타"><spring:message code="letter.report.etc"/></label>
-								                        		</td>
-								                        	</tr>
-								                        	<tr>
-								                        		<td>
-																	<spring:message code="comment.report.input.placeholder" var="cmt_placeholder" />
-																	<input data-rtxt="${cmt.comment_id }" placeholder="${cmt_placeholder}" hidden="true"
-										                        	   maxlength="30"></input>
-								                        		</td>
-								                        	</tr>
-								                        	</table>
-	                                                        </div>
-	                                                        <div class="dropdown-divider"></div>
-									                        <input type="checkbox" id="blocked" data-rchk="${cmt.comment_id  }" value="${cmt.user_id }">${cmt.name } <spring:message code="comment.report.block"/>
-															<button id="fr-btn" data-repo="${cmt.comment_id  }" data-report="${cmt.user_id }">
-															<spring:message code="comment.report.block"/>
-															</button>
-	                                                    </div>
-		                                               </div>
-													</div>
-												</div>
-												<!-- /Right side dropdown -->
-												</c:if>
-												</div>
-											<!-- /교정댓글이면 -->
-											</c:otherwise>
-											</c:choose>
-												</c:if>
-												<!-- /피드번호가 같으면 -->
+													<!-- /피드번호가 같으면 -->
 												</c:forEach>
 											</c:if>
 											<!-- /Comment -->
-											
+
 										</div>
 										<!-- /Comments body -->
 
@@ -2249,16 +2395,21 @@ $(document).ready(function(){
 												<div class="media-content">
 													<div class="field">
 														<p class="control">
-															<spring:message code="comment.textarea.placeholder" var="cmt_text_placeholder" />
-															<textarea data-content="${vo.feed_id }" class="textarea comment-textarea" rows="5"
+															<spring:message code="comment.textarea.placeholder"
+																var="cmt_text_placeholder" />
+															<textarea data-content="${vo.feed_id }"
+																class="textarea comment-textarea" rows="5"
 																placeholder="${cmt_text_placeholder }"></textarea>
 														</p>
 													</div>
 													<!-- Additional actions -->
 													<div class="actions">
 														<div class="toolbar">
-															<a class="button is-solid primary-button raised" id="post" data-feedid="${vo.feed_id }" data-feeduser="${vo.user_id }" data-scr="${status.index }">
-															<spring:message code="comment.btn.send"/>
+															<a class="button is-solid primary-button raised"
+																id="post" data-feedid="${vo.feed_id }"
+																data-feeduser="${vo.user_id }"
+																data-scr="${status.index }"> <spring:message
+																	code="comment.btn.send" />
 															</a>
 														</div>
 													</div>
@@ -2271,8 +2422,9 @@ $(document).ready(function(){
 								</div>
 							</c:forEach>
 							<!------------------------ 포스트 끝 ------------------------->
-							<div class=" load-more-wrap narrow-top has-text-centered"  id="buttonToogle">
-								<a href="javascript:;" class="load-more-button">Load More</a>
+							<div class="load-more-wrap narrow-top has-text-centered"
+								id="buttonToogle">
+								<a href="javascript:;" class="load-more-button"><spring:message code="feed.loadmore"/> </a>
 							</div>
 						</div>
 						<!-- /Load more posts -->
@@ -2280,10 +2432,10 @@ $(document).ready(function(){
 					<!-- /Middle column -->
 					<!-- Right side column -->
 					<div class="column is-3">
-					<!------------------------ 친구추천 시작!------------------------->
+						<!------------------------ 친구추천 시작!------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>친구 추천</h4>
+								<h4><spring:message code="feed.friend.title"/></h4>
 							</div>
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
@@ -2292,10 +2444,11 @@ $(document).ready(function(){
 										<div class="add-friend-block transition-block">
 											<img src="https://via.placeholder.com/300x300"
 												data-demo-src="assets/img/avatars/nelly.png"
-												data-user-popover="9" alt="" style="cursor: pointer;"  onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'"> 
+												data-user-popover="9" alt="" style="cursor: pointer;"
+												onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
 											<div class="page-meta">
-												<span style="font-size:0.9rem">${vo.name }</span>
-												<span style="font-size:0.75rem">일치하는 관심사 ${vo.topicCnt }개</span>
+												<span style="font-size: 0.9rem">${vo.name }</span> <span
+													style="font-size: 0.75rem"><spring:message code="feed.friend.topic"/> ${vo.topicCnt }<spring:message code="feed.friend.topic2"/> </span>
 											</div>
 											<div class="add-friend add-transition" id="${vo.user_id }"
 												onclick="addFriend('${vo.user_id }')">
@@ -2315,40 +2468,52 @@ $(document).ready(function(){
 						</div>
 						<!------------------------ 친구추천 끝 ------------------------->
 						<!------------------------ 생일 시작 ------------------------->
-
-						<div class="notice">
-							<c:forEach items="${birthUser }" var="vo" varStatus="status">
-								<ul class="rolling">
-									<li>
+						<form id="letterform" name="letterform" method="post">
+							<input type="hidden" id="to_id" name="to_id" value=""> <input
+								type="hidden" id="user_id" value="${user.user_id }"> <input
+								type="hidden" id="to_name" name="to_name" value=""> <input
+								type="hidden" id="name" name="name" value="${user.name }">
+						</form>
+						<div id="widget-slide-1">
+							<ul>
+								<c:forEach items="${birthUser }" var="vo" varStatus="status">
+									<li class="on">
 										<div class="card is-birthday-card has-background-image"
 											data-background="${pageContext.request.contextPath}/resources/template/assets/img/illustrations/cards/birthday-bg.svg">
 											<div class="card-heading" style="border-collapse: collapse;">
 												<div
 													class="dropdown is-spaced is-right dropdown-trigger is-light">
-													<div>
-														<div class="button"></div>
-													</div>
+													<div></div>
 												</div>
 											</div>
 											<div class="card-body">
 												<div>
-													<div class="birthday-avatar">
+													<div class="birthday-avatar"
+														onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='${vo.user_id }">
 														<img src="https://via.placeholder.com/300x300"
-															data-demo-src="assets/img/avatars/dan.jpg" alt="">
+															data-demo-src="assets/img/avatars/dan.jpg" alt=""
+															style="cursor: pointer;">
 														<div class="birthday-indicator">${vo.cnt }</div>
 													</div>
 													<div class="birthday-content">
-														<h4>${vo.user_id }<spring:message code="feed.birth.msg1" arguments="${vo.cnt }"/></h4>
-														<p style="line-height: 2"><spring:message code="feed.birth.msg2"/></p>
-														<button type="button" class="button light-button" onclick="writePopup('${vo.user_id}','${vo.name }')"><spring:message code="profile.letter"/></button>
+														<h4>${vo.name }<spring:message
+																code="feed.birth.msg1" arguments="${vo.cnt }" />
+														</h4>
+														<p style="line-height: 2">
+															<spring:message code="feed.birth.msg2" />
+														</p>
+														<button type="button" class="button light-button"
+															onclick="writePopup('${vo.user_id}','${vo.name }')">
+															<spring:message code="profile.letter" />
+														</button>
 														<p></p>
 													</div>
 												</div>
 											</div>
 										</div>
 									</li>
-								</ul>
-							</c:forEach>
+								</c:forEach>
+							</ul>
 						</div>
 						<!------------------------ 생일 끝 ------------------------->
 
@@ -2359,7 +2524,7 @@ $(document).ready(function(){
 			<!-- /Feed page main wrapper -->
 		</div>
 		<!-- /Container -->
-</div>
+	</div>
 </body>
 </html>
 
