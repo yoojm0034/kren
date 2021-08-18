@@ -200,10 +200,14 @@ a[href^="https://maps.google.com/maps"] {
 }
 
 </style>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+let contextpath = '${pageContext.request.contextPath}';
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="resources/template/assets/js/moment.js"></script>
 <script src="resources/template/assets/js/moment-timezone-with-data.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/template/assets/js/mainfeed.js"></script>
 
 <script>
 $(document).ready(function() {
