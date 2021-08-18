@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,7 @@ public class UsersVO {
 	private String country;
 	private String city;
 	private String visited;
+	@JsonFormat(pattern = "yyyy/MM/dd")
 	private Date reg_date;
 	private Date edit_dt;
 	private String profile;
