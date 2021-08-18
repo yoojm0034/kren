@@ -472,7 +472,7 @@ h5:hover {
 <div class="pageloader"></div>
 <div class="infraloader is-active"></div>
 <div class="app-overlay"></div>
-	<div class="floating" onclick="location.href='userQnaWrite.do'">
+	<div class="floating" onclick="location.href='${pageContext.request.contextPath}/userQnaWrite.do'">
 		<span style="vertical-align: sub;"><img src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png" width="20px"></span>
 		<span><spring:message code="head.contact"/></span>
 	</div>

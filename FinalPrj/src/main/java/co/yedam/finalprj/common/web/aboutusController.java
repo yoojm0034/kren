@@ -56,7 +56,7 @@ public class aboutusController {
 	public String userQnaInsert(QnaVO vo) {
 		int r = qnaDao.qnaInsert(vo);
 		System.out.println(r + "건 입력");
-		return "redirect:aboutus.do";
+		return "redirect:feed.do";
 	}
 	
 }
