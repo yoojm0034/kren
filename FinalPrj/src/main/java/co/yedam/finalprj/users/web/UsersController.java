@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,7 +101,7 @@ public class UsersController {
 		model.addAttribute("postCnt", usersDao.postCnt(vo));
 		model.addAttribute("mytopic", usersDao.myTopicList(vo));
 		model.addAttribute("mytrip", usersDao.myTripList(vo));
-		model.addAttribute("photo", usersDao.userProfilePhoto(vo));
+		model.addAttribute("userPhoto", usersDao.userProfilePhoto(user_id));
 		model.addAttribute("posts", usersDao.usersFeedList(vo));
 		model.addAttribute("locale", locale.getLanguage());
 		
@@ -150,9 +151,9 @@ public class UsersController {
 		return "no/users/usersUpdateForm";
 	}	
 	
-	// 프로필 업데이트 실행
-	@RequestMapping("usersUpdate.do")
-	public String usersUpdate(UsersVO vo, Model model, Authentication auth) {
+	// 사진X 프로필 업데이트 실행
+	@RequestMapping("usersUpdateNoPhoto.do")
+	public String usersUpdateNoPhoto(UsersVO vo, Model model, Authentication auth) {
 		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
@@ -163,7 +164,56 @@ public class UsersController {
 		vo.setPassword(scpwd.encode(vo.getPassword()));
 		
 		System.out.println(vo);
+		System.out.println("사진 없이" + Sessionid + "의 프로필 정보가 수정됨.");
+		usersDao.usersUpdateNoPhoto(vo);
+		return "redirect:profile.do?user_id="+Sessionid;
+	}	
+	
+	
+	// 사진 + 프로필 업데이트 실행
+	@RequestMapping("usersUpdate.do")
+	public String usersUpdate(UsersVO vo, Model model, Authentication auth, HttpServletRequest request) throws Exception {
+		//로그인한 아이디 
+		User user = (User) auth.getPrincipal();
+		String Sessionid = (String) user.getUsername();
+		vo.setUser_id(Sessionid);
+		
+		// 파일 처리
+		MultipartFile file  = vo.getBase64Photo();
+		String fileName = file.getOriginalFilename();
+		String ext = null;
+
+		int fileSize = (int) file.getSize();
+		int dot = fileName.lastIndexOf(".");
+		
+		if(dot != -1) {
+			ext = fileName.substring(dot);
+		}else {
+			ext = "";
+		}
+
+		UUID uuid = UUID.randomUUID();
+		String fileUUID = uuid.toString() + ext;
+		String path = request.getServletContext().getRealPath("/resources/upload/");
+		
+		vo.setOriginal_name(fileName);
+		vo.setFile_size(fileSize);
+		vo.setDirectory(path);
+		vo.setUuid(fileUUID);
+		file.transferTo(new File(path, fileUUID));
+		
+		System.out.println(vo);
+		
+		// 비밀번호 암호화
+		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
+		vo.setPassword(scpwd.encode(vo.getPassword()));
+		
 		usersDao.usersUpdate(vo);
+		
+		//세션에 있는 사진 값 지우고 다시 넣어주기
+		request.getSession().removeAttribute("photo");
+		request.getSession().setAttribute("photo", usersDao.sessionProfilePhoto(vo));
+		
 		return "redirect:profile.do?user_id="+Sessionid;
 	}	
 	

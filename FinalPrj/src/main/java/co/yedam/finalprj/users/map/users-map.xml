@@ -83,28 +83,47 @@
 	
 	<!-- 팔로잉 리스트 -->
 	<select id="followingList" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		select name, photo, flag, city, country, user_id, (select count(*)
-                                                		   from friends
-                                                 		   where user_id=#{session_id} and following=u.user_id) as followCheck
+		select name, flag, city, country, user_id, 
+       		    (select count(*)
+         		 from friends
+           		 where user_id=#{session_id} and following=u.user_id) as followCheck,
+           		(select d.uuid
+            	 from photo_detail d, users uu, photo p
+          		 where d.photo_id = uu.photo
+          		 and d.photo_id = p.photo_id
+          		 and uu.user_id=u.user_id
+          		 and p.delete_yn = 'N') as photo
 		from users u
-		where user_id IN ( select following 
-						   from friends 
-						   where user_id=#{user_id})
+		where user_id IN (select following 
+                    	  from friends 
+                    	  where user_id=#{user_id})
 	</select>	
 
 	<!-- 팔로워 리스트 -->
 	<select id="followerList" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		select name, photo, flag, city, country, user_id, (select count(*)
-                                                		   from friends
-                                                 		   where user_id=#{session_id} and following=u.user_id) as followCheck
+		select name, flag, city, country, user_id, 
+       		    (select count(*)
+         		 from friends
+           		 where user_id=#{session_id} and following=u.user_id) as followCheck,
+           		(select d.uuid
+            	 from photo_detail d, users uu, photo p
+          		 where d.photo_id = uu.photo
+          		 and d.photo_id = p.photo_id
+          		 and uu.user_id=u.user_id
+          		 and p.delete_yn = 'N') as photo
 		from users u
 		where user_id IN ( select user_id
 						   from friends 
 						   where following=#{user_id})
 	</select>	
 	
-	<!-- 프로필 수정 -->
-	<update id="usersUpdate" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+	<!-- 사진 + 프로필 수정 -->
+	<update id="usersUpdate" statementType="CALLABLE" parameterType="co.yedam.finalprj.users.vo.UsersVO">
+		{ CALL uphoto_update(#{user_id},#{email},#{password},#{topic},#{country},#{city},#{lat},#{lon},#{flag},#{language2_level},#{timezone},#{profile},#{visited},#{original_name},#{uuid},#{file_size},#{directory})} 
+	</update>
+	
+	<!-- 사진X 프로필 수정 -->
+	<update id="usersUpdateNoPhoto" parameterType="co.yedam.finalprj.users.vo.UsersVO">
 		update users
 		set (email, password, topic, country, city, visited, edit_dt, profile, lat, lon, timezone, flag, language2_level) 
 			= (select #{email}, #{password}, #{topic}, #{country}, #{city}, #{visited}, sysdate, #{profile}, #{lat}, #{lon}, #{timezone}, #{flag}, #{language2_level}          
@@ -123,7 +142,7 @@
 	</insert>
 	
 	<!-- 프로필 사진 가져오기 -->
-	<select id="userProfilePhoto" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+	<select id="userProfilePhoto" parameterType="String" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		select d.uuid
 		from photo_detail d, users u, photo p
 		where d.photo_id = u.photo

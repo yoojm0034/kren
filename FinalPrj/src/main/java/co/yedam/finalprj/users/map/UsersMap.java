@@ -11,6 +11,7 @@ public interface UsersMap {
 	int usersInsert(UsersVO vo);
 	int usersPhotoInsert(UsersVO vo);
 	int usersUpdate(UsersVO vo);
+	int usersUpdateNoPhoto(UsersVO vo);
 	int usersDelete(UsersVO vo);
 	
 	//회원가입
@@ -24,7 +25,7 @@ public interface UsersMap {
 	int postCnt(UsersVO vo);
 	List<UsersVO> followingList(UsersVO vo);
 	List<UsersVO> followerList(UsersVO vo);
-	UsersVO userProfilePhoto(UsersVO vo);
+	UsersVO userProfilePhoto(String user_id);
 	List<Map<String,Object>> usersFeedList(UsersVO vo);
 
 	//admin
