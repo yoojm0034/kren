@@ -68,7 +68,7 @@ public class FeedController2 {
 		//댓글
 		model.addAttribute("commentList",CommentDao.commentSelectList());
 		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
-		model.addAttribute("likeUsers",feedDao.feedLikeUser());
+		model.addAttribute("likeUsers");
 		//출석여부
 		StamphVO sh = new StamphVO();
 		sh.setUser_id(id);

@@ -61,10 +61,7 @@ public class FeedServiceImpl implements FeedService {
 		return map.pushSelect(vo);
 	}
 	
-	@Override
-	public List<FeedVO> feedLikeUser() {
-		return map.feedLikeUser();
-	}
+
 
 
 

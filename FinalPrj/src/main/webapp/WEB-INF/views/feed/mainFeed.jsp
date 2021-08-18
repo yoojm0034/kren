@@ -452,7 +452,7 @@ $(document).ready(function(){
 		document.getElementById('photo').value = fphoto;
 		
 		if(retag != ""){
-			$('#append_tag').append("#"+retag);			
+			$('#append_tag').append("<a>#"+retag+"</a>");			
 		}
 		
 		if(photo != ""){	

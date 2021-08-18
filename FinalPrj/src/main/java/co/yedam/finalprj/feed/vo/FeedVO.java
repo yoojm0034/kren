@@ -32,6 +32,9 @@ public class FeedVO {
 	private MultipartFile file;
 	private String like_cnt;
 	
+	//like 
+	private String likers;
+	private String likersuuid;
 	//comment
 	private int cmt;
 }

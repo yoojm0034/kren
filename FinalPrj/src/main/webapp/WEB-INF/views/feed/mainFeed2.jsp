@@ -361,6 +361,7 @@ $(document).ready(function(){
 	function likeIt(feedId,userId){
 		var span = $('#recCnt'+feedId);
 		var myId= '${user.user_id}';
+		
 		$.ajax({
 			url:"${pageContext.request.contextPath}/likeCnt.do",
 			type:"POST",
@@ -2027,7 +2028,7 @@ $(document).ready(function(){
 	                                    <div class="likers-group" id="likers-group${vo.feed_id }">
 		                                    <c:forEach items="${likeUsers }" var="likes" end="4">
 		                                        <c:if test="${vo.feed_id eq likes.feed_id}">
-		                                        <img src="${pageContext.request.contextPath}/resources/upload/${userPhoto.uuid }" alt="">
+		                                        <img src="${pageContext.request.contextPath}/resources/upload/${userPhoto.uuid }" id="photo${vo.user_id }" alt="">
 		                                        </c:if>
 		                                    </c:forEach>
 		                                    <!-- 좋아요 유저 없으면 텍스트 출력 X -->
@@ -2039,7 +2040,7 @@ $(document).ready(function(){
 		                                            </c:if>
 												</c:forEach>
 		                                        </p>
-		                                        <p>and ${vo.like_cnt} more liked this</p>
+		                                        <p>그리고 ${vo.like_cnt} 명이 이 피드를 좋아합니다</p>
 		                                    </div>
 	                                   	</div>
 										</c:if>
