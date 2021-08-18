@@ -153,98 +153,114 @@ $(function () {
 			alert('<spring:message code="letter.alert.min"/>');
 			return ;
 		}
-		//우표수량 체크
+		
+		//오늘 보낸 내역이 있는지
 		$.ajax({
-			url : '${pageContext.request.contextPath}/stampLetterCheck.do',
-			type : 'post',
-			data : JSON.stringify({user_id:user_id}),
-		    contentType : "application/json; charset=UTF-8",
-			success : function(data) {
-				if (data > 0) { //우표가 있으면
-					if(confirm('<spring:message code="letter.confirm.send"/>') ) {
-						$.ajax({//편지전송횟수체크
-							url:'${pageContext.request.contextPath}/cntLetterCheck.do',
-							type:'post',
-							data:{user_id:'${user.user_id}'},
-							success: function(cnt) {
-								if(cnt < 5) {//하루에 5통만 전송가능
-								    $.ajax({//편지작성
+			url:'${pageContext.request.contextPath}/letterTodayHistory.do',
+			type:'post',
+			data:{user_id:user_id,to_id:toid},
+			success:function(today) {
+				if(today < 1) {//오늘 안보냈으면
+					//우표수량 체크
+					$.ajax({
+						url : '${pageContext.request.contextPath}/stampLetterCheck.do',
+						type : 'post',
+						data : JSON.stringify({user_id:user_id}),
+					    contentType : "application/json; charset=UTF-8",
+						success : function(data) {
+							if (data > 0) { //우표가 있으면
+								if(confirm('<spring:message code="letter.confirm.send"/>') ) {
+									$.ajax({//편지전송횟수체크
+										url:'${pageContext.request.contextPath}/cntLetterCheck.do',
+										type:'post',
+										data:{user_id:'${user.user_id}'},
+										success: function(cnt) {
+											if(cnt < 5) {//하루에 5통만 전송가능
+											    $.ajax({//편지작성
+											    	url:'${pageContext.request.contextPath}/insertLetter.do',
+											    	type:'post',
+											    	data:JSON.stringify({
+											    		to_id:toid,
+											    		content:content,
+											    		gubun:'일반'
+											    	}),
+												    contentType : "application/json; charset=UTF-8",
+											    	success: function(data) {
+											    		alert('<spring:message code="letter.send.success"/>');
+											    		sendLetterPush(toid);
+											    		opener.parent.location.reload();
+											    		window.close();
+											    	},
+											    	error: function(e) {
+											    		alert('<spring:message code="letter.send.fail"/>');
+											    	}
+										    	});//$ajax	   
+											} else {
+												alert('<spring:message code="letter.send.five"/>');
+											}
+										}
+									});//$편지전송횟수	    	
+							    } else {
+							    	if(confirm('<spring:message code="letter.confirm.save"/>') ) {
+									    $.ajax({
+									    	url:'${pageContext.request.contextPath}/insertLetter.do',
+									    	type:'post',
+									    	data:JSON.stringify({
+									    		to_id:to,
+									    		content:content,
+									    		gubun:'임시저장'
+									    	}),
+										    contentType : "application/json; charset=UTF-8",
+									    	success: function(data) {
+									    		alert('<spring:message code="letter.save.success"/>');
+									    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
+									    		window.close();
+									    	},
+									    	error: function(e) {
+									    		alert('<spring:message code="letter.save.fail"/>');
+									    	}
+									    });		    	
+								    } else {
+								    	alert('<spring:message code="letter.confirm.save.no"/>');
+								    }
+							    }
+							} else { //우표가 없으면
+								alert('<spring:message code="letter.stamp.check"/>');
+								if(confirm('<spring:message code="letter.confirm.save"/>') ) {
+								    $.ajax({
 								    	url:'${pageContext.request.contextPath}/insertLetter.do',
 								    	type:'post',
 								    	data:JSON.stringify({
-								    		to_id:toid,
+								    		to_id:to,
 								    		content:content,
-								    		gubun:'일반'
+								    		gubun:'임시저장'
 								    	}),
 									    contentType : "application/json; charset=UTF-8",
 								    	success: function(data) {
-								    		alert('<spring:message code="letter.send.success"/>');
-								    		sendLetterPush(toid);
-								    		opener.parent.location.reload();
+								    		alert('<spring:message code="letter.save.success"/>');
+								    		opener.parent.location.href = '${pageContext.request.contextPath}/savedLetter.do';
 								    		window.close();
 								    	},
 								    	error: function(e) {
-								    		alert('<spring:message code="letter.send.fail"/>');
+								    		alert('<spring:message code="letter.save.fail"/>');
 								    	}
-							    	});//$ajax	   
-								} else {
-									alert('<spring:message code="letter.send.five"/>');
-								}
+								    });		    	
+							    }
 							}
-						});//$편지전송횟수	    	
-				    } else {
-				    	if(confirm('<spring:message code="letter.confirm.save"/>') ) {
-						    $.ajax({
-						    	url:'${pageContext.request.contextPath}/insertLetter.do',
-						    	type:'post',
-						    	data:JSON.stringify({
-						    		to_id:to,
-						    		content:content,
-						    		gubun:'임시저장'
-						    	}),
-							    contentType : "application/json; charset=UTF-8",
-						    	success: function(data) {
-						    		alert('<spring:message code="letter.save.success"/>');
-						    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
-						    		window.close();
-						    	},
-						    	error: function(e) {
-						    		alert('<spring:message code="letter.save.fail"/>');
-						    	}
-						    });		    	
-					    } else {
-					    	alert('<spring:message code="letter.confirm.save.no"/>');
-					    }
-				    }
-				} else { //우표가 없으면
-					alert('<spring:message code="letter.stamp.check"/>');
-					if(confirm('<spring:message code="letter.confirm.save"/>') ) {
-					    $.ajax({
-					    	url:'${pageContext.request.contextPath}/insertLetter.do',
-					    	type:'post',
-					    	data:JSON.stringify({
-					    		to_id:to,
-					    		content:content,
-					    		gubun:'임시저장'
-					    	}),
-						    contentType : "application/json; charset=UTF-8",
-					    	success: function(data) {
-					    		alert('<spring:message code="letter.save.success"/>');
-					    		opener.parent.location.href = '${pageContext.request.contextPath}/savedLetter.do';
-					    		window.close();
-					    	},
-					    	error: function(e) {
-					    		alert('<spring:message code="letter.save.fail"/>');
-					    	}
-					    });		    	
-				    }
+						},
+						error : function(e) {
+							alert('<spring:message code="letter.alert.errormsg"/>');
+						}
+					});
+				} else {//오늘 보냈으면
+					alert('<spring:message code="letter.popup.today.send"/>');
 				}
 			},
-			error : function(e) {
+			error:function(e) {
 				alert('<spring:message code="letter.alert.errormsg"/>');
 			}
-		});
-	});
+		});//$.ajax오늘보낸내역
+	});//전송클릭이벤트
 })
 
 </script>

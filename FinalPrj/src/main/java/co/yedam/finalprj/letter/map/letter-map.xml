@@ -236,5 +236,22 @@
 						THEN trunc(cal(#{user_id},#{session_id}),0)
 						ELSE 0 END]]> AS distance FROM DUAL
 	</select>
+	
+	<!-- 하루에 편지 제한 -->
+	<!-- 같은 사람에게 하루에 한번만 편지쓰기 가능하도록/신중하게 -->
+	<select id="letterTodayHistory" parameterType="co.yedam.finalprj.letterc.vo.LettercVO" resultType="int">
+		SELECT COUNT(*) FROM STAMPH
+		WHERE USER_ID=#{user_id}
+		AND TO_ID=#{to_id}
+		AND TO_CHAR(SH_DT,'yyyy/mm/dd') = TO_CHAR(SYSDATE, 'yyyy/mm/dd')
+	</select>
+	
+	<!-- 편지주고받은 내역이 있는지 -->
+	<select id="letterHistoryCheck" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="int">
+		SELECT COUNT(*) FROM LETTER
+		WHERE TO_ID=#{to_id} AND USER_ID=#{user_id}
+		   OR TO_ID=#{user_id} AND USER_ID=#{to_id}
+	</select>
+	
 
 </mapper>
