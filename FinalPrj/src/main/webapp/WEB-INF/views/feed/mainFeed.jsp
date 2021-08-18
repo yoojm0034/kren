@@ -210,16 +210,25 @@ reported-div {
 #widget-slide-1 ul li.on {
 	display: block;
 }
-
 .activeCnt {
 	padding-left: 7px;
     color: #777777;
 }
+input#fmsg {
+    margin-right: 11px;
+}
+input#feed-blocked {
+    margin-right: 8px;
+    margin-top: 3px;
+}
 
+button#report-btn {
+    margin-left: 100px;
+}
 </style>
 <script>
 $(document).ready(function(){
-	//생일 슬라이드 이미지 
+	//생일
     function setSlide(){// 동작 함수 생성
         var box   = document.getElementById("widget-slide-1");
         var elm   = box.getElementsByTagName( 'li' );
@@ -302,8 +311,8 @@ $(document).ready(function(){
 <body>
 <script>
 	function loadMore(){
-	 // load more
-	  var increment=5;	
+	 //-------load more-------
+	  var increment=5;	//---5개씩추가----- 
 	  var startFilter=0;
 	  var endFilter=increment;
 	  
@@ -333,7 +342,7 @@ $(document).ready(function(){
 	  });
 	} 
 	
-	//-------친구 추천 팔로우--------
+	//-------친구팔로우--------
 	function addFriend(id){
 		var data = {following : id};
 		$.ajax({
@@ -361,7 +370,7 @@ $(document).ready(function(){
 			dataType:"JSON",
 			success:function(data){
 				var count=data.length;	//새로운 카운트 
-				var chk=0;
+				var chk=0;				
                	$.each(data, function(idx, val) {
                		if('${user.user_id}' == val.user_id){
                			chk = 1; 
@@ -370,7 +379,7 @@ $(document).ready(function(){
 				if(chk){
 					alert('좋아요!');
 					if(userId != myId ){
-						sendLikePush(myId,feedId);						
+						sendLikePush(userId,feedId);						
 					}
 				}else{
 					alert('좋아요 취소');				
@@ -760,11 +769,11 @@ $(document).ready(function(){
 							url:"${pageContext.request.contextPath}/feedSelect.do",
 							data:{tags : tagval },
 							success:function(result){
-								//datePosdst();
+								$('.feedContents').html(result);
+								datePosdst();
 								loadMore();
 								initPostComments();
 								dateCmt();
-								$('.feedContents').html(result);
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
 								$("div[id^='load_'").each(function(i, el){
 									var cid = $(this).data('cid');//cc_id.line
@@ -1917,19 +1926,16 @@ $(document).ready(function(){
 																				<table id="report-table">
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물">
-																								<spring:message code="feed.report.content"/></label></td>
+																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물"><spring:message code="feed.report.content"/></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">
-																								<spring:message code="feed.report.lie"/>
+																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공"><spring:message code="feed.report.lie"/>
 																								</label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="성적인 내용">
-																								<spring:message code="feed.report.sexual"/></label></td>
+																								id="fmsg" name="${vo.feed_id }" value="성적인 내용"><spring:message code="feed.report.sexual"/></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
@@ -1938,8 +1944,7 @@ $(document).ready(function(){
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="욕설/비방">
-																								<spring:message code="feed.report.word"/></label>
+																								id="fmsg" name="${vo.feed_id }" value="욕설/비방"><spring:message code="feed.report.word"/></label>
 																						</td>
 																					</tr>
 																					<tr>
