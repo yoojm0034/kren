@@ -122,7 +122,7 @@
 										<i data-feather="bookmark"></i>
 										<div class="media-content" id="${vo.content }"
 											onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
-											<h3>번역</h3>
+											<h3><spring:message code="feed.drop.trans"/></h3>
 										</div>
 									</div>
 								</a>
@@ -131,7 +131,7 @@
 										<div class="media">
 											<div class="media-content" id="feedcor"
 												data-fid="${vo.feed_id }" data-fidx="${status.index }">
-												<h3>교정</h3>
+												<h3><spring:message code="feed.drop.corr"/></h3>
 											</div>
 										</div>
 									</a>
@@ -140,7 +140,7 @@
 										<div class="media">
 											<div class="media-content" id="frbtn"
 												data-repo2="${vo.feed_id }" data-report2="${vo.user_id }">
-												<h3>신고</h3>
+												<h3><spring:message code="feed.drop.report"/></h3>
 											</div>
 											<div class="dropdown-menu">
 												<div class="dropdown-content reportMenu">
@@ -148,28 +148,33 @@
 														<table id="report-table">
 															<tr>
 																<td><input type="radio" id="fmsg"
-																	name="${vo.feed_id }" value="스팸 게시물">스팸 게시물</td>
+																	name="${vo.feed_id }" value="스팸 게시물">
+																	<spring:message code="feed.report.content"/></td>
 															</tr>
 															<tr>
 																<td><input type="radio" id="fmsg"
-																	name="${vo.feed_id }" value="가짜정보 제공">가짜정보 제공</td>
+																	name="${vo.feed_id }" value="가짜정보 제공">
+																	<spring:message code="feed.report.lie"/></td>
 															</tr>
 															<tr>
 																<td><input type="radio" id="fmsg"
-																	name="${vo.feed_id }" value="성적인 내용">성적인 내용</td>
+																	name="${vo.feed_id }" value="성적인 내용">
+																	<spring:message code="feed.report.sexual"/></td>
 															</tr>
 															<tr>
 																<td><input type="radio" id="fmsg"
-																	name="${vo.feed_id }" value="데이트가 목적인 내용">데이트가
-																	목적인 내용</td>
+																	name="${vo.feed_id }" value="데이트가 목적인 내용">
+																	<spring:message code="feed.report.date"/></td>
 															</tr>
 															<tr>
 																<td><input type="radio" id="fmsg"
-																	name="${vo.feed_id }" value="욕설/비방">욕설/비방</td>
+																	name="${vo.feed_id }" value="욕설/비방">
+																	<spring:message code="feed.report.word"/></td>
 															</tr>
 															<tr>
 																<td><input type="radio" id="fmsg"
-																	name="${vo.feed_id }" value="기타">기타</td>
+																	name="${vo.feed_id }" value="기타">
+																	<spring:message code="feed.report.etc"/></td>
 															</tr>
 															<tr>
 																<td><input placeholder="신고이유" hidden="true"
@@ -181,9 +186,10 @@
 													<div class="reported-div">
 														<input type="checkbox" id="feed-blocked"
 															data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
-														차단
+														<spring:message code="feed.report.block"/>
 														<button id="report-btn" data-repo2="${vo.feed_id  }"
-															data-report2="${vo.user_id }">신고</button>
+															data-report2="${vo.user_id }">
+															<spring:message code="feed.report.btn"/></button>
 													</div>
 												</div>
 											</div>
@@ -204,13 +210,13 @@
 													id="update-photo" name="update-photo" value="${vo.uuid }">
 												<input type="hidden" id="update-fphoto" name="update-fphoto"
 													value="${vo.fphoto }">
-												<h3>수정</h3>
+												<h3><spring:message code="feed.drop.update"/></h3>
 											</div>
 										</div> <a href="#" class="dropdown-item">
 											<div class="media">
 												<i data-feather="flag"></i>
 												<div class="media-content delFeed" id="${vo.feed_id }">
-													<h3>삭제</h3>
+													<h3><spring:message code="feed.drop.delete"/></h3>
 												</div>
 											</div>
 									</a>
@@ -606,7 +612,7 @@
 	<!------------------------ 포스트 끝 ------------------------->
 	<div class=" load-more-wrap narrow-top has-text-centered"
 		id="buttonToogle">
-		<a href="javascript:;" class="load-more-button">Load More</a>
+		<a href="javascript:;" class="load-more-button"><spring:message code="feed.loadmore"/></a>
 	</div>
 </div>
 <script type="text/javascript">

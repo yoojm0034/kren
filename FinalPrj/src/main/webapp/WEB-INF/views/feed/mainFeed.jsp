@@ -483,7 +483,7 @@ $(document).ready(function(){
 			type:"POST",
 			success:function(v){
 				if(v==0){
-					alert('스탬프 1개가 지급되었습니다');				
+					alert('<spring:message code="feed.feed.stamp"/>');				
 				}
 				$('#feedInsert').submit();		
 			},
@@ -537,7 +537,7 @@ $(document).ready(function(){
       if(event.keyCode==13){
           var tagval = $('#activities-autocpl').val();
           if(!tagval) {
-            alert('태그를 입력해 주세요!');
+            alert('<spring:message code="feed.insert.tag"/>');
          }else{
         	 
 			if(div.children().length == 5){
@@ -675,7 +675,7 @@ $(document).ready(function(){
 	});
 	$('.delFeed').on('click',function(){
 		var feedId= this.id;
-		if(confirm('삭제하시겠습니까?')){
+		if(confirm('<spring:message code="feed.confirm.delete"/>')){
 		location.href='${pageContext.request.contextPath}/feedDelete.do?feed_id='+feedId			
 		}
 	})
@@ -754,7 +754,7 @@ $(document).ready(function(){
 				if(event.keyCode==13){
 			    	var tagval=$('#tagInput').val();
 			    	if(!tagval) {
-						alert('태그를 입력해 주세요!');
+						alert('<spring:message code="feed.insert.tag"/>');
 					}else{
 						$.ajax({
 							url:"${pageContext.request.contextPath}/feedSelect.do",
@@ -809,20 +809,18 @@ $(document).ready(function(){
 		if(radio == '기타') {
 			txt = $('input[data-rftxt="'+repo+'"]').val();//기타사유
 			if(txt=='') {
-				alert('신고이유를 입력하세요.');
+				alert('<spring:message code="feed.report.blank"/>');
 				return;
 			}
 		} else {
 			txt = radio;
 		}
 		if(txt == null) {//값이 선택되지 않았으면
-			alert('신고사유를 선택하세요');
+			alert('<spring:message code="feed.report.text.empty"/>');
 			return;
 		} 
 		
-		console.log('신고자 : '+report+" 피드번호 : "+ repo + " 체크된사유 값" + radio +"블락여부 : "  +chk +"체크사유 & 기타사유"+ txt);	
-		
-		if(confirm('신고하시겠습니까?')) {
+		if(confirm('<spring:message code="feed.confirm.report"/>')) {
 			$.ajax({//신고 여부 확인
 				url:'${pageContext.request.contextPath}/reportUserCheck.do',
 				type:'post',
@@ -841,18 +839,18 @@ $(document).ready(function(){
 							}),
 							contentType : "application/json; charset=UTF-8",
 							success: function(data) {
-								alert('신고되었습니다.');
+								alert('<spring:message code="feed.report.success"/>');
 							},
 							error: function(err) {
-								alert('관리자에게 문의해주세요.');
+								alert('<spring:message code="feed.alert.errormsg"/>');
 							}
 						});
 					} else {
-						alert('신고내역이 존재합니다.');
+						alert('<spring:message code="feed.report.did"/>');
 					}
 				},
 				error: function(e) {
-					alert('관리자에게 문의해주세요.');
+					alert('<spring:message code="feed.alert.errormsg"/>');
 				}
 			});//$.ajax신고 여부 확인
 		}
@@ -1487,7 +1485,7 @@ $(document).ready(function(){
 					<div class="column is-3 is-hidden-mobile">
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>지금 인기있는 주제</h4>
+								<h4><spring:message code="feed.tag.title"/></h4>
 							</div>
 							<div class="card-body">
 								<c:forEach var="vo" items="${likeTag }" end="9">
@@ -1503,7 +1501,7 @@ $(document).ready(function(){
 						<!------------------------ 공지사항 시작 ------------------------->
 						<div id="latest-activity-1" class="card">
 							<div class="card-heading is-bordered">
-								<h4>공지사항</h4>
+								<h4><spring:message code="feed.notice.title"/></h4>
 							</div>
 							<div class="card-body no-padding">
 								<c:forEach items="${noticeList }" var="vo" end="3">
@@ -1564,7 +1562,7 @@ $(document).ready(function(){
 										<ul>
 											<li class="is-active"><a> <span
 													class="icon is-small"><i data-feather="edit-3"></i></span>
-													<span>Publish</span>
+													<span><spring:message code="feed.feed.publish"/></span>
 											</a></li>
 											<!-- Close X button -->
 											<li class="close-wrap"><span class="close-publish">
@@ -1586,7 +1584,7 @@ $(document).ready(function(){
 													data-demo-src="assets/img/avatars/jenna.png" alt="">
 												<div class="control">
 													<textarea id="publish" name="content" class="textarea"
-														rows="3" placeholder="Write something about you..."></textarea>
+														rows="3" placeholder=""></textarea>
 												</div>
 											</div>
 											<div id="feed-upload" class="feed-upload"></div>
@@ -1800,7 +1798,7 @@ $(document).ready(function(){
 										<div id="basic-options" class="compose-options">
 											<!-- Upload action -->
 											<div class="compose-option" style="height: 32px">
-												<span>📷 PHOTO</span> <input id="feed-upload-input-2"
+												<span>📷 <spring:message code="feed.feed.photo"/></span> <input id="feed-upload-input-2"
 													name="file" type="file" accept=".png, .jpg, .jpeg"
 													onchange="readURL(this)">
 											</div>
@@ -1808,7 +1806,7 @@ $(document).ready(function(){
 											<div id="show-activities" class="compose-option">
 												<img
 													src="resources/template/assets/img/icons/emoji/emoji-1.svg"
-													alt=""> <span>Tag</span>
+													alt=""> <span><spring:message code="feed.feed.tag"/></span>
 											</div>
 										</div>
 										<!-- /General basic options -->
@@ -1826,11 +1824,11 @@ $(document).ready(function(){
 						</form>
 
 						<!-------------- 검색 태그 부분------------ -->
-						<div class="menu" id="allSearch">최신글</div>
-						<div class="menu" id="searchNear">내 근처</div>
-						<div class="menu" id="searchTag">태그</div>
-						<div class="menu" id="searchKo">한국어</div>
-						<div class="menu" id="searchEn">영어</div>
+						<div class="menu" id="allSearch"><spring:message code="feed.new"/></div>
+						<div class="menu" id="searchNear"><spring:message code="feed.neer"/></div>
+						<div class="menu" id="searchTag"><spring:message code="feed.tag"/></div>
+						<div class="menu" id="searchKo"><spring:message code="feed.ko"/></div>
+						<div class="menu" id="searchEn"><spring:message code="feed.en"/></div>
 
 						<div id="SearchDiv" class="control has-margin">
 							<input class="input is-hidden" type="text" id="tagInput"
@@ -1891,7 +1889,7 @@ $(document).ready(function(){
 															<div class="media">
 																<div class="media-content" id="${vo.content }"
 																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
-																	<h3>번역</h3>
+																	<h3><spring:message code="feed.drop.trans"/></h3>
 																</div>
 															</div>
 														</a>
@@ -1901,7 +1899,7 @@ $(document).ready(function(){
 																	<div class="media-content" id="feedcor"
 																		data-fid="${vo.feed_id }" data-fidx="${status.index }"
 																		data-fuser="${vo.user_id }">
-																		<h3>교정</h3>
+																		<h3><spring:message code="feed.drop.corr"/></h3>
 																	</div>
 																</div>
 															</a>
@@ -1911,7 +1909,7 @@ $(document).ready(function(){
 																	<div class="media-content" id="frbtn"
 																		data-repo2="${vo.feed_id }"
 																		data-report2="${vo.user_id }">
-																		<h3>신고</h3>
+																		<h3><spring:message code="feed.drop.report"/></h3>
 																	</div>
 																	<div class="dropdown-menu">
 																		<div class="dropdown-content reportMenu">
@@ -1919,32 +1917,34 @@ $(document).ready(function(){
 																				<table id="report-table">
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물">스팸
-																								게시물</label></td>
+																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물">
+																								<spring:message code="feed.report.content"/></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">가짜정보
-																								제공</label></td>
+																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">
+																								<spring:message code="feed.report.lie"/>
+																								</label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="성적인 내용">성적인
-																								내용</label></td>
+																								id="fmsg" name="${vo.feed_id }" value="성적인 내용">
+																								<spring:message code="feed.report.sexual"/></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
 																								id="fmsg" name="${vo.feed_id }"
-																								value="데이트가 목적인 내용">데이트가 목적인 내용</label></td>
+																								value="데이트가 목적인 내용"><spring:message code="feed.report.date"/></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="욕설/비방">욕설/비방</label>
+																								id="fmsg" name="${vo.feed_id }" value="욕설/비방">
+																								<spring:message code="feed.report.word"/></label>
 																						</td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="기타">기타</label>
+																								id="fmsg" name="${vo.feed_id }" value="기타"><spring:message code="feed.report.etc"/></label>
 																						</td>
 																					</tr>
 																					<tr>
@@ -1958,9 +1958,9 @@ $(document).ready(function(){
 																			<div class="reported-div">
 																				<input type="checkbox" id="feed-blocked"
 																					data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
-																				차단
+																				<spring:message code="feed.report.block"/>
 																				<button id="report-btn" data-repo2="${vo.feed_id  }"
-																					data-report2="${vo.user_id }">신고</button>
+																					data-report2="${vo.user_id }"><spring:message code="feed.report.btn"/></button>
 																			</div>
 																		</div>
 																	</div>
@@ -1981,13 +1981,13 @@ $(document).ready(function(){
 																			value="${vo.uuid }"> <input type="hidden"
 																			id="update-fphoto" name="update-fphoto"
 																			value="${vo.fphoto }">
-																		<h3>수정</h3>
+																		<h3><spring:message code="feed.drop.update"/></h3>
 																	</div>
 																</div> <a href="#" class="dropdown-item">
 																	<div class="media">
 																		<i data-feather="flag"></i>
 																		<div class="media-content delFeed" id="${vo.feed_id }">
-																			<h3>삭제</h3>
+																			<h3><spring:message code="feed.drop.delete"/></h3>
 																		</div>
 																	</div>
 															</a>
@@ -2404,7 +2404,7 @@ $(document).ready(function(){
 							<!------------------------ 포스트 끝 ------------------------->
 							<div class="load-more-wrap narrow-top has-text-centered"
 								id="buttonToogle">
-								<a href="javascript:;" class="load-more-button">Load More</a>
+								<a href="javascript:;" class="load-more-button"><spring:message code="feed.loadmore"/> </a>
 							</div>
 						</div>
 						<!-- /Load more posts -->
@@ -2415,7 +2415,7 @@ $(document).ready(function(){
 						<!------------------------ 친구추천 시작!------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4>친구 추천</h4>
+								<h4><spring:message code="feed.friend.title"/></h4>
 							</div>
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
@@ -2428,7 +2428,7 @@ $(document).ready(function(){
 												onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
 											<div class="page-meta">
 												<span style="font-size: 0.9rem">${vo.name }</span> <span
-													style="font-size: 0.75rem">일치하는 관심사 ${vo.topicCnt }개</span>
+													style="font-size: 0.75rem"><spring:message code="feed.friend.topic"/> ${vo.topicCnt }<spring:message code="feed.friend.topic2"/> </span>
 											</div>
 											<div class="add-friend add-transition" id="${vo.user_id }"
 												onclick="addFriend('${vo.user_id }')">
