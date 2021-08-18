@@ -32,6 +32,7 @@
     	   AND SEND_YN ='N'
     	   AND TO_DELETE='N'
 		   AND TO_ID =#{to_id}
+       	   AND L.USER_ID NOT IN (SELECT BLOCK.BLOCKED FROM BLOCK WHERE USER_ID = #{to_id})
 		   AND ARRIVE_DATE IS NOT NULL
 		   AND GUBUN !='임시저장'
 		 ORDER BY ARRIVE_DATE DESC
