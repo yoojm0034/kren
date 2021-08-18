@@ -57,7 +57,8 @@
 											</c:if>
 										</div>
 										<div class="discount">
-											<span class="has-price" id="cnt"> <c:choose>
+											<span class="has-price" id="cnt"> 
+												<c:choose>
 													<c:when test="${vo.sh_type eq '편지작성' }">
 														<span style="color: red">-${vo.cnt}</span>
 													</c:when>

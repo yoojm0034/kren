@@ -35,6 +35,7 @@
 					password-parameter="password"
 					login-processing-url="/loginCheck.do"
 					authentication-success-handler-ref="customSuccessHandler"
+					authentication-failure-handler-ref="loginFailHandler"
 		/>
 		<security:remember-me/>
 		<security:logout logout-url="/logout"
@@ -49,6 +50,13 @@
 	<bean id="customSuccessHandler"
 		  class="co.yedam.finalprj.users.handler.CustomSuccessHandler">
 		<constructor-arg value="/feed.do"/>
+	</bean>
+	
+	<bean id="loginFailHandler" class="co.yedam.finalprj.users.handler.LoginFailHandler">
+		<property name="user_id" value="user_id"></property>
+		<property name="password" value="password"></property>
+		<property name="errorMsg" value="errorMsg"></property>
+		<property name="defaultTargetUrl" value="/home.do"></property>
 	</bean>
 	
 	<security:authentication-manager>

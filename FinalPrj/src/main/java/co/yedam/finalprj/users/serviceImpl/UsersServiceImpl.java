@@ -56,7 +56,7 @@ public class UsersServiceImpl implements UsersService {
 	
 	//로그인체크...
 	@Override
-	public int loginCheck(UsersVO vo) {
+	public UsersVO loginCheck(UsersVO vo) {
 		return loginmap.loginCheck(vo);
 	}
 	
