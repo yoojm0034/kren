@@ -14,7 +14,7 @@ public interface LoginMap {
 	int usersDelete(UsersVO vo);
 	
 	//login
-	int loginCheck(UsersVO vo);
+	public UsersVO loginCheck(UsersVO vo);
 		
 	//logout
 	public void logout(HttpSession session);

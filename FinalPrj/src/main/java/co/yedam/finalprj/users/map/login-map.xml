@@ -14,7 +14,7 @@
 	
 	<!-- 해당 loginCheck쿼리 사용X, security-context의 쿼리를 사용함 -->
 	<select id="loginCheck" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="int">
-		SELECT count(*)
+		SELECT *
 		FROM users
 		WHERE USER_ID = #{user_id}
 		AND PASSWORD = #{password}
