@@ -55,6 +55,10 @@
 												<span class="has-price" id="sh_type"><spring:message
 														code="stamph.pay" /></span>
 											</c:if>
+											<c:if test="${vo.sh_type eq '회원가입' }">
+												<span class="has-price" id="sh_type"><spring:message
+														code="stmaph.join" /></span>
+											</c:if>
 										</div>
 										<div class="discount">
 											<span class="has-price" id="cnt"> 
