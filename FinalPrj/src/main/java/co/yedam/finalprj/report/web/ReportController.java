@@ -1,5 +1,7 @@
 package co.yedam.finalprj.report.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,10 @@ public class ReportController {
    //신고리스트
    @RequestMapping("admin/userReportList.do")
    public String reportList(ReportVO vo, Model model) {
+	  //content가 삭제되었다면 불러올때부터 update가 실행되도록.
+	  reportDao.reportContentDeleteRead();
       model.addAttribute("reportList", reportDao.reportSelectList());
+      
       return "admin/reportList";
    }
    //신고입력

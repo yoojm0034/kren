@@ -61,4 +61,9 @@ public class ReportServiceImpl implements ReportService {
 		return map.reportUserCheck(vo);
 	}
 
+	@Override
+	public int reportContentDeleteRead() {
+		return map.reportContentDeleteRead();
+	}
+
 }

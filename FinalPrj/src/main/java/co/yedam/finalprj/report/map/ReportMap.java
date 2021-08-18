@@ -19,4 +19,7 @@ public interface ReportMap {
 	
 	//신고내역 확인
 	int reportUserCheck(ReportVO vo);
+	
+	//신고내역 삭제된 것 읽음 처리
+	int reportContentDeleteRead();
 }
