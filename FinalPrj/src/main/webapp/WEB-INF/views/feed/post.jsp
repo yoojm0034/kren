@@ -243,7 +243,9 @@
 					<div>
 						<p>
 							<c:if test="${not empty vo.tags }">
-								<a>#${fn:replace(vo.tags,',','#')}</a>
+								<c:forTokens items="${vo.tags }" delims="," var="item">
+								    <a class="tag-label" id="${item}">#${item}</a>
+								</c:forTokens>
 							</c:if>
 						</p>
 					</div>

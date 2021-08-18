@@ -223,7 +223,7 @@ input#feed-blocked {
 }
 
 button#report-btn {
-    margin-left: 100px;
+    margin-left: 66px;
 }
 </style>
 <script>
@@ -315,7 +315,6 @@ $(document).ready(function(){
 	  var increment=5;	//---5개씩추가----- 
 	  var startFilter=0;
 	  var endFilter=increment;
-	  
 	  var $this = $('.feedContents');						
 	  var elementLength = $this.children('#feed-post-1').length;
 
@@ -324,7 +323,6 @@ $(document).ready(function(){
 	  }else{
 		  $('#buttonToogle').hide();
 	  }
-	  
 	  $('.feedContents #feed-post-1').slice(startFilter, endFilter).addClass('shown');
 	  $('.feedContents #feed-post-1').not('.shown').hide();
 	  $('body').off('click','.load-more-button');
@@ -452,6 +450,7 @@ $(document).ready(function(){
 		$('#feedid').val(feedId);	
 		$('#publish').val(content);
 		document.getElementById('photo').value = fphoto;
+		
 		if(retag != ""){
 			$('#append_tag').append("#"+retag);			
 		}
@@ -469,12 +468,8 @@ $(document).ready(function(){
 	  	});
 	}
 
-	 
-	 
-	
 	$(function(){
 	loadMore();
-
 	//-------피드 등록---------
 	$('#publish-button').on('click', function(){
 		var feedId = $('#feedid').val();
@@ -504,7 +499,7 @@ $(document).ready(function(){
 			$('#feedInsert').submit();	
 		}
 	});
-
+	
 	//-------피드 Reset---------
 	$('.close-publish').on('click',function(){
 		$('#publish').val('');
@@ -512,33 +507,8 @@ $(document).ready(function(){
 		$('#photoChk').val('');
 		$('#feed-upload').empty();
 		$('#feedid').val('');
-	}); 
-	
-	//-------태그라벨---------
-	$('.tag-label').on('click',function(){
-		var tagName = this.id;
-		$.ajax({
-			url:"${pageContext.request.contextPath}/feedSelect.do" ,
-			data:{tags : tagName},
-			success:function(result){
-				$('.feedContents').html(result);
-				datePosdst();
-				loadMore();
-				initPostComments();
-				dateCmt();
-				$("div[id^='load_'").each(function(i, el){
-					var cid = $(this).data('cid');//cc_id.line
-					var cdc = $(this).data('cdc');//content
-					var cdo = $(this).data('cdo');//origin
-					test_diff(cid,cdc,cdo);
-				});
-			},
-			error:function(err){
-				console.log(err);
-			}
-		});
-	});
-	
+	});  
+
    //-------태그등록---------
    document.getElementById("activities-autocpl").onkeypress = function() {tagFunction()};
    function tagFunction() {
@@ -601,7 +571,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
 	
 	//-------내근처--------- 
 	$('#searchNear').on('click',function(){
@@ -674,21 +643,21 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-
-
+	
 	//-------프로필클릭시---------
 	$('.user-info').on('click',function(){
 		var userId= this.id;
 		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
 	});
+	
 	$('.delFeed').on('click',function(){
 		var feedId= this.id;
 		if(confirm('<spring:message code="feed.confirm.delete"/>')){
 		location.href='${pageContext.request.contextPath}/feedDelete.do?feed_id='+feedId			
 		}
 	})
-	});
+	
+});
 	
 	$(function(){
 	//-------태그자동완성---------
@@ -789,7 +758,31 @@ $(document).ready(function(){
 					}
 				}
 			};
-
+	});
+	
+	//-------태그라벨---------
+	$('body').on('click','.tag-label',function(){
+		var tagName = this.id;
+		$.ajax({
+			url:"${pageContext.request.contextPath}/feedSelect.do" ,
+			data:{tags : tagName},
+			success:function(result){
+				$('.feedContents').html(result);
+				datePosdst();
+				loadMore();
+				initPostComments();
+				dateCmt();
+				$("div[id^='load_'").each(function(i, el){
+					var cid = $(this).data('cid');//cc_id.line
+					var cdc = $(this).data('cdc');//content
+					var cdo = $(this).data('cdo');//origin
+					test_diff(cid,cdc,cdo);
+				});
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
 	});
 	
 	//---------피드신고---------
@@ -2019,7 +2012,9 @@ $(document).ready(function(){
 											<div>
 												<p>
 													<c:if test="${not empty vo.tags }">
-														<a>#${fn:replace(vo.tags,',','#')}</a>
+														<c:forTokens items="${vo.tags }" delims="," var="item">
+														    <a class="tag-label" id="${item}">#${item}</a>
+														</c:forTokens>
 													</c:if>
 												</p>
 											</div>

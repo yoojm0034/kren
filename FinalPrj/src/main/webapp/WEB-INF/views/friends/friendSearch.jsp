@@ -33,10 +33,7 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/fontisto@v3.0.4/css/fontisto/fontisto-brands.min.css"
 	rel="stylesheet">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css"
-	rel="stylesheet" />
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
 </head>
 <style>
 .navbar-v1 {
@@ -263,7 +260,7 @@
 	justify-content: center;
 }
 #friendSearch {
-	left: 286px;
+	left: 270px;
 }
 .title {
 	padding-top: 11px;
@@ -299,7 +296,7 @@ small {
 <script>
 $(document).ready(function() {
 	var locale = '${locale}';
-	
+
 	//검색 옵션 
 	 $('#friendSearch').on('click',function() {
 		 var gender = $('input[name=genderval]:checked').val();
@@ -343,32 +340,41 @@ $(document).ready(function() {
 	 		});
 		 });
 	 });
+	
 	// locale이 en 이라면 value=innerHTML 둘다 영어
 	//국가 선택시 라벨 어펜드 
  	 $('#country-op').on('change',function(){
-		 var enVal= this.value;
-		 var koVal= this.options[this.selectedIndex].text;
-		 var val2 = $("#country-op > option:selected").attr("value2");
-	     if($('#append-op').children().length==5){
+		 var enVal= this.value;	//DB검색되는value 
+		 var koVal= this.options[this.selectedIndex].text; //페이지에 보여지는value
+		 var val2 = $("#country-op > option:selected").attr("value2");	//삭제구분value
+	     if($('#append-op').children().length==5){	//5개이상선택불가 
 	    	 return;
 	     }else{
-			 $('#append-op').append("<span class='append-label "+val2+"' id='"+enVal+"' onclick="+"'deleteCountry(\""+ val2 + "\")'>"+koVal+"</span>"); 
+	    	 if($('#append-op').find('#'+enVal).length){	//중복불가
+	    		 return;
+	    	 }else{
+			 $('#append-op').append("<span class='append-label "+val2+"' id='"+enVal+"' onclick="+"'deleteCountry(\""+ val2 + "\")'>"+koVal+"</span>"); 	 
+	    	 }
 	     }
 	 });
 
 	//제외국가 선택시 라벨 어펜드 
 	 $('#dcountry-op').on('change',function(){
-		 var enVal= this.value;
-		 var koVal= this.options[this.selectedIndex].text;
-		 var val2 = $("#dcountry-op > option:selected").attr("value2");
+		 var enVal= this.value; //DB검색되는value
+		 var koVal= this.options[this.selectedIndex].text; //페이지에 보여지는value
+		 var val2 = $("#dcountry-op > option:selected").attr("value2"); //삭제구분value
 	     if($('#append-dop').children().length==5){
 	    	 return;
 	     }else{
-	    	 $('#append-dop').append("<span class='append-label dis"+val2+"' id='dis"+enVal+"' onclick="+"'deleteCountry(\"dis"+ val2 + "\")'>"+koVal+"</span>");
+	    	if($('#append-dop').find('#dis'+enVal).length){
+	    		 return;
+	    	}else{
+	    	 $('#append-dop').append("<span class='append-label dis"+val2+"' id='dis"+enVal+"' onclick="+"'deleteCountry(\"dis"+ val2 + "\")'>"+koVal+"</span>");	    		
+	    	}
 	     }
 	 });	
 	 
-	 // load more
+	 //-----load more firstTab-----
 	  var increment;
 	  var startFilter;
 	  var endFilter;
@@ -404,10 +410,10 @@ $(document).ready(function() {
 		      }
 		}
 	  });
-	  
+	//-----load more secondTab-----
 	   $('#allTab').on('click',function(){
-			increment = 12;
-			startFilter = 0;
+			increment = 12;			//12개씩 로드
+			startFilter = 0;		
 			endFilter = increment;
 		    
 			$this = $('#allRow');						
@@ -436,7 +442,7 @@ $(document).ready(function() {
 			     }
 		   });
 	   })
-	   
+	   //-----load more ThirdTab-----
 	   $('#newTab').on('click',function(){
 		    increment = 12;
 		    startFilter = 0;
@@ -467,10 +473,9 @@ $(document).ready(function() {
 			     }
 		   });
 	   })
-
 });
 
-
+//---국가 라벨 삭제-------
 function deleteCountry(value) {
 	 $('.'+value).remove();
 };	
