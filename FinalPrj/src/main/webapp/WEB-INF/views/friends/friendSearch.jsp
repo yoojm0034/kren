@@ -114,6 +114,8 @@
 	padding-left: 19px;
 	padding-right: 12px;
 	font-size: xx-small;
+	padding-top: 14px;
+	padding-bottom: 40px;
 }
 .filters-panel::-webkit-scrollbar {
 	width: 0 !important;
@@ -289,9 +291,15 @@ input.input.textFilter-input {
 .divCnt{
 	margin-top: 14px;
 }
+small {
+    font-size: .875em;
+    font-size: xx-small;
+}
 </style>
 <script>
 $(document).ready(function() {
+	var locale = '${locale}';
+	
 	//검색 옵션 
 	 $('#friendSearch').on('click',function() {
 		 var gender = $('input[name=genderval]:checked').val();
@@ -319,24 +327,32 @@ $(document).ready(function() {
 		 $('#dtopic').val(distopic);
 		 $('#frm').submit();
 	 });
+	
 	// 국가 드롭다운 
 	 $('#show-filters').on('click',function() {
 	 var url = '${pageContext.request.contextPath}/resources/template/assets/data/country.json';
 		 $.getJSON(url,function(data) {
 			 $.each(data,function(key,value) {
-				  $('#country-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
-				 $('#dcountry-op').append('<option value="'+value.CountryNameEN+'">'+value.CountryNameKR+'</option>');
+				 if(locale=='kr'){
+					 $('#country-op').append('<option value="'+value.CountryNameEN+'" value2="'+key+'">'+value.CountryNameKR+'</option>');
+					 $('#dcountry-op').append('<option value="'+value.CountryNameEN+'" value2="'+key+'">'+value.CountryNameKR+'</option>');
+				 }else{
+					 $('#country-op').append('<option value="'+value.CountryNameEN+'" value2="'+key+'">'+value.CountryNameEN+'</option>');
+					 $('#dcountry-op').append('<option value="'+value.CountryNameEN+'" value2="'+key+'">'+value.CountryNameEN+'</option>');
+				 }
 	 		});
 		 });
 	 });
+	// locale이 en 이라면 value=innerHTML 둘다 영어
 	//국가 선택시 라벨 어펜드 
  	 $('#country-op').on('change',function(){
 		 var enVal= this.value;
 		 var koVal= this.options[this.selectedIndex].text;
+		 var val2 = $("#country-op > option:selected").attr("value2");
 	     if($('#append-op').children().length==5){
 	    	 return;
 	     }else{
-			 $('#append-op').append("<span class='append-label' id='"+enVal+"' onclick="+"'deleteCountry(\""+ enVal + "\")'>"+koVal+"</span>"); 
+			 $('#append-op').append("<span class='append-label "+val2+"' id='"+enVal+"' onclick="+"'deleteCountry(\""+ val2 + "\")'>"+koVal+"</span>"); 
 	     }
 	 });
 
@@ -344,10 +360,11 @@ $(document).ready(function() {
 	 $('#dcountry-op').on('change',function(){
 		 var enVal= this.value;
 		 var koVal= this.options[this.selectedIndex].text;
+		 var val2 = $("#dcountry-op > option:selected").attr("value2");
 	     if($('#append-dop').children().length==5){
 	    	 return;
 	     }else{
-	    	 $('#append-dop').append("<span class='append-label' id='dis"+enVal+"' onclick="+"'deleteCountry(\"dis"+ enVal + "\")'>"+koVal+"</span>");
+	    	 $('#append-dop').append("<span class='append-label dis"+val2+"' id='dis"+enVal+"' onclick="+"'deleteCountry(\"dis"+ val2 + "\")'>"+koVal+"</span>");
 	     }
 	 });	
 	 
@@ -455,7 +472,7 @@ $(document).ready(function() {
 
 
 function deleteCountry(value) {
-	$('#'+value).remove();
+	 $('.'+value).remove();
 };	
 </script>
 <body>
@@ -580,9 +597,16 @@ function deleteCountry(value) {
 						<label class="search-label"><spring:message code="friends.search.topic"/></label>
 						<div class="topic-list">
 							<c:forEach items="${topicList }" var="vo">
+								<c:if test="${locale eq 'kr'}">
 								<input class="text-nicelabel" name="topic-label"
 									data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
 									type="checkbox" value="${vo.topic_id }">
+								</c:if>
+								<c:if test="${locale eq 'en'}">
+									<input class="text-nicelabel" name="topic-label"
+									data-nicelabel='{"checked_text": "${vo.en }", "unchecked_text": "${vo.en }"}'
+									type="checkbox" value="${vo.topic_id }">
+								</c:if>									
 							</c:forEach>
 						</div>
 					</div>
@@ -625,9 +649,16 @@ function deleteCountry(value) {
 						<div class="topic-list"
 							style="overflow: auto; height: 200px; -ms-overflow-style: none;">
 							<c:forEach items="${topicList }" var="vo">
+								<c:if test="${locale eq 'kr' }">
 								<input class="text-nicelabel" name="dtopic-label"
 									data-nicelabel='{"checked_text": "${vo.kr }", "unchecked_text": "${vo.kr }"}'
 									type="checkbox" value="${vo.topic_id }">
+								</c:if>
+								<c:if test="${locale eq 'en' }">
+									<input class="text-nicelabel" name="dtopic-label"
+									data-nicelabel='{"checked_text": "${vo.en }", "unchecked_text": "${vo.en }"}'
+									type="checkbox" value="${vo.topic_id }">
+								</c:if>	
 							</c:forEach>
 							<script>
 								$('input').nicelabel({});
@@ -646,13 +677,12 @@ function deleteCountry(value) {
 		<div id="friends-page" class="friends-wrapper main-container">
 			<!--First tab-->
 			<div id="all-friends" class="card-row-wrap is-active">
-				<div class="card-row-placeholder is-hidden">No matching
-					results!</div>
+				<div class="card-row-placeholder is-hidden"><spring:message code="friends.search.no"/></div>
 				<!-- /partials/pages/friends/friend-lists/all-friends.html -->
 				<!--Friend-->
 				<c:choose>
 					<c:when test="${fn:length(searchList) == 0}">
-						<div class="card-row-placeholder">No matching results!</div>
+						<div class="card-row-placeholder"><spring:message code="friends.search.no"/></div>
 						<div class="card-row" id="searchRow"></div>
 					</c:when>
 					<c:when test="${fn:length(searchList) < 12}">
@@ -771,13 +801,12 @@ function deleteCountry(value) {
 			
 			<!--Second tab-->
 			<div id="starred-friends" class="card-row-wrap">
-				<div class="card-row-placeholder is-hidden">No matching
-					results</div>
+				<div class="card-row-placeholder is-hidden"><spring:message code="friends.search.no"/></div>
 				<!-- /partials/pages/friends/friend-lists/all-friends.html -->
 				<!--Friend-->
 				<c:choose>
 					<c:when test="${fn:length(allList) == 0}">
-						<div class="card-row-placeholder">No matching results</div>
+						<div class="card-row-placeholder"><spring:message code="friends.search.no"/></div>
 						<div class="card-row" id="allRow"></div>
 					</c:when>
 					<c:when test="${fn:length(allList) < 12}">
@@ -878,11 +907,10 @@ function deleteCountry(value) {
 
 			<!--third tab-->
 			<div id="new-friends" class="card-row-wrap">
-				<div class="card-row-placeholder is-hidden">No matching
-					results</div>
+				<div class="card-row-placeholder is-hidden"><spring:message code="friends.search.no"/></div>
 			<c:choose>
 					<c:when test="${fn:length(newList) == 0}">
-					  <div class="card-row-placeholder">No matching results</div>
+					  <div class="card-row-placeholder"><spring:message code="friends.search.no"/></div>
 					  <div class="card-row" id="newRow"></div>
 					</c:when>
 					<c:when test="${fn:length(newList) < 12}">
@@ -911,7 +939,7 @@ function deleteCountry(value) {
 													<fmt:formatDate value="${vo.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" var="reg_dt"/>
 													<script type="text/javascript">														
 														document.write(timeForToday('${reg_dt }'));
-													</script><spring:message code="friends.search.new"/>
+													</script> <spring:message code="friends.search.new"/>
 													</p></span>
 												</div>
 											</div>
