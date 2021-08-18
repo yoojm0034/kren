@@ -105,5 +105,15 @@ public class LetterServiceImpl implements LetterService {
 		return map.letterDistance(vo);
 	}
 
+	@Override
+	public int letterTodayHistory(LetterVO vo) {
+		return map.letterTodayHistory(vo);
+	}
+
+	@Override
+	public int letterHistoryCheck(LetterVO vo) {
+		return map.letterTodayHistory(vo);
+	}
+
 
 }

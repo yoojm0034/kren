@@ -31,4 +31,8 @@ public interface LetterService {
 	
 	//PROFILE
 	public UsersVO letterDistance(UsersVO vo);
+	
+	//TODAY
+	public int letterTodayHistory(LetterVO vo);
+	public int letterHistoryCheck(LetterVO vo);
 }

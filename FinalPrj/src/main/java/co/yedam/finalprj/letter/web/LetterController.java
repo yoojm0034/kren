@@ -215,5 +215,27 @@ public class LetterController {
 		return "letter/pad";
 	}
 	
+	@RequestMapping("letterTodayHistory.do")
+	@ResponseBody
+	public int letterTodayHistory(LetterVO vo) {//오늘 보낸 편지가 있는지 count
+		int today = letterDao.letterTodayHistory(vo);
+		System.out.println(today);
+		if(letterDao.letterTodayHistory(vo) == 0) {
+			today = 0;
+		}
+		return today;
+	}
+	
+	@RequestMapping("letterHistoryCheck.do")
+	@ResponseBody
+	public int letterHistoryCheck(LetterVO vo) {//주고받은 편지내역 수 확인
+		int letter = letterDao.letterHistoryCheck(vo);		
+		System.out.println(letter);
+		if(letterDao.letterHistoryCheck(vo)==0) {
+			letter=0;
+		}
+		return letter;
+	}
+	
 	
 }
