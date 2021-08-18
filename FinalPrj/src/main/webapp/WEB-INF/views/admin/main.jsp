@@ -87,9 +87,8 @@ tr:hover {
 	-moz-transform: translate(-50%, -50%);
 	-o-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	padding-top: 100px;
 	width: 50%; /* Could be more or less, depending on screen size */
-	height: 50%;
+	height: 55%;
 }
 </style>
 <script>
@@ -129,7 +128,7 @@ tr:hover {
 							+ '<tr><th>국기</th><td  align="left"><img src='+data.flag+' width="20px"></td><th>성별</th><td>'+data.gender+'</td></tr>'
 							+ '</table>'
 							
-					$('#modalcontent').append(div);		
+					$('#modalcontent').prepend(div);		
 				}
 			});
 			$("#modal").show();
