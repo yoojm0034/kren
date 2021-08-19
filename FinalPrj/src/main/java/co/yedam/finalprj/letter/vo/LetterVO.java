@@ -33,5 +33,6 @@ public class LetterVO {
 	private int distance;
 	private String status;
 	private String cnt;
+	private String uuid;
 
 }
