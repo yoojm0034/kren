@@ -38,6 +38,8 @@ public class SendEmail extends HttpServlet {
 		p.put("mail.smtp.starttls.enable", "true");
 		p.put("mail.smtp.auth", "true");
 		p.put("mail.smtp.debug", "true");
+		p.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		p.put("mail.smtp.ssl.protocols", "TLSv1.2");
 		p.put("mail.smtp.socketFactory.port", "465");
 		p.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		p.put("mail.smtp.socketFactory.fallback", "false");
