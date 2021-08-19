@@ -245,14 +245,6 @@ $(document).ready(function() {
 					</div>
 				</div>
 			</div>
-			<div class="buttons" align="center">
-				<button id="tour-start" class="button is-hidden-mobile"
-					onclick="location.href='test.do'">테스트페이지</button>
-				<button id="tour-start" class="button is-hidden-mobile"
-					onclick="location.href='feed.do'">피드</button>
-				<button id="tour-start" class="button is-hidden-mobile"
-					onclick="location.href='admin/admin.do'">관리자</button>
-			</div>
 			<div class="floating" onclick="location.href='userQnaWrite.do'">
 				<span style="vertical-align: sub;"><img
 					src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png"
