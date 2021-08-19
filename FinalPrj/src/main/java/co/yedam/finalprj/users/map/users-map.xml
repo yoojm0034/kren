@@ -158,7 +158,6 @@
 						u.USER_ID 	"user_id",
 						u.EMAIL 	"email",
 						u.NAME 		"name",
-						u.PHOTO 	"photo",
 						u.STATUS 	"status",
 						u.LAT 		"lat",
 						u.LON 		"lon",
@@ -174,7 +173,10 @@
 	        			d.DIRECTORY,
 	        			p.DELETE_YN "delete_yn",
 	        			nvl(likeCnt.LIKECNT,0) "like_cnt",
-	        			F_COMMENT_CNT(f.feed_id) "cmt"
+	        			F_COMMENT_CNT(f.feed_id) "cmt",
+	        			mainlike.LIKERS "likers",
+            			mainlike.LIKERSUUID "likersuuid",
+            			userPhoto.uuid "photo"
             FROM 		feed f JOIN users u
                 ON f.USER_ID = u.USER_ID
                     left outer join photo p
@@ -183,6 +185,10 @@
                     on p.PHOTO_ID=  d.PHOTO_ID
                     left outer join feedLikeCnt_v likeCnt
                         on f.FEED_ID = likeCnt.FEED_ID
+               	    left outer join mainFeedlike_v mainlike
+               		on mainlike.feed_id = f.feed_id
+               		left outer join userPhoto_v userPhoto
+               		on userPhoto.USER_ID = u.user_id
         	  WHERE  	u.user_id=#{user_id}
 			ORDER BY f.REG_DATE DESC)
 	</select>

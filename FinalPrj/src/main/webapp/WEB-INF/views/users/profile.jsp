@@ -1847,7 +1847,7 @@ $(function(){
 											<!-- User meta -->
 											<div class="user-block">
 												<div class="image">
-													<img src="${pageContext.request.contextPath}/resources/upload/${vo.photo }"
+													<img src="${pageContext.request.contextPath}/resources/upload/${vo.photo}"
 														data-demo-src="assets/img/avatars/dan.jpg"
 														data-user-popover="1" alt="">
 												</div>
@@ -2090,9 +2090,16 @@ $(function(){
 																	<!-- User image -->
 																	<div class="media-left">
 																		<div class="image">
-																			<img src="https://via.placeholder.com/300x300"
-																				data-demo-src="assets/img/avatars/dan.jpg"
-																				data-user-popover="1" alt="">
+																			<c:if test="${cmt.uuid ne '-' }">
+																				<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+																					data-demo-src="assets/img/avatars/dan.jpg"
+																					data-user-popover="1" alt="">
+																			</c:if>
+																			<c:if test="${cmt.uuid eq '-' }">
+																				<img src="https://via.placeholder.com/300x300"
+																					data-demo-src="assets/img/avatars/dan.jpg"
+																					data-user-popover="1" alt="">
+																			</c:if>
 																		</div>
 																	</div>
 																	<!-- Content -->
@@ -2221,9 +2228,16 @@ $(function(){
 																	<!-- User image -->
 																	<div class="media-left">
 																		<div class="image">
-																			<img src="https://via.placeholder.com/300x300"
-																				data-demo-src="assets/img/avatars/dan.jpg"
-																				data-user-popover="1" alt="">
+																			<c:if test="${cmt.uuid ne '-' }">
+																				<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+																					data-demo-src="assets/img/avatars/dan.jpg"
+																					data-user-popover="1" alt="">
+																			</c:if>
+																			<c:if test="${cmt.uuid eq '-' }">
+																				<img src="https://via.placeholder.com/300x300"
+																					data-demo-src="assets/img/avatars/dan.jpg"
+																					data-user-popover="1" alt="">
+																			</c:if>
 																		</div>
 																	</div>
 																	<!-- Content -->
