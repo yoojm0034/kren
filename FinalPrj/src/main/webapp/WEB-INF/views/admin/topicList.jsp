@@ -105,7 +105,7 @@
 					</a>
 					<div class="avatar-wrap">
 						<img
-							src="${pageContext.request.contextPath}/resources/upload/photo1.jpg"
+							src="${pageContext.request.contextPath}/resources/upload/3bb0add0-85b2-4407-832f-ee556d08d585.jpeg"
 							data-user-popover="0" alt="">
 						<div class="badge">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
