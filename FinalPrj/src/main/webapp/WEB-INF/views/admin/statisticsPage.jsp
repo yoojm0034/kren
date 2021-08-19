@@ -14,7 +14,6 @@
 <script type="text/javascript">
 $(function(){
 	$('#btnDay').click(function(){
-		var colors = ['red','blue'];
 		var options = {
 			title : '시간대별 접속자수',
 			width : 1200,
@@ -32,9 +31,9 @@ $(function(){
 				success : function(data) {
 					//ajax결과를 chart에 맞는 data 형태로 가공
 					var chartData = [];
-					chartData.push([ '시간대', '접속자수', { role: 'style' } ])
+					chartData.push([ '시간대', '접속자수'])
 					for (i = 0; i < data.length; i++) {
-						var subarr = [ data[i].TIME+" ", parseInt(data[i].CNT) , colors[i%2] ];
+						var subarr = [ data[i].TIME+" ", parseInt(data[i].CNT) ];
 						chartData.push(subarr);
 					}
 					//챠트 그리기
