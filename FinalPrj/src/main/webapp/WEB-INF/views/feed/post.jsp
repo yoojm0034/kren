@@ -352,9 +352,16 @@
 											<!-- User image -->
 											<div class="media-left">
 												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/dan.jpg"
-														data-user-popover="1" alt="">
+													<c:if test="${cmt.uuid ne '-' }">
+														<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+															data-demo-src="assets/img/avatars/dan.jpg"
+															data-user-popover="1" alt="">
+													</c:if>
+													<c:if test="${cmt.uuid eq '-' }">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/dan.jpg"
+															data-user-popover="1" alt="">
+													</c:if>
 												</div>
 											</div>
 											<!-- Content -->
@@ -472,9 +479,16 @@
 											<!-- User image -->
 											<div class="media-left">
 												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
-														data-demo-src="assets/img/avatars/dan.jpg"
-														data-user-popover="1" alt="">
+													<c:if test="${cmt.uuid ne '-' }">
+														<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+															data-demo-src="assets/img/avatars/dan.jpg"
+															data-user-popover="1" alt="">
+													</c:if>
+													<c:if test="${cmt.uuid eq '-' }">
+														<img src="https://via.placeholder.com/300x300"
+															data-demo-src="assets/img/avatars/dan.jpg"
+															data-user-popover="1" alt="">
+													</c:if>
 												</div>
 											</div>
 											<!-- Content -->
