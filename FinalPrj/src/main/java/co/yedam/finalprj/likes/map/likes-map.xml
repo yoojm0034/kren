@@ -3,11 +3,14 @@
 <mapper namespace="co.yedam.finalprj.likes.map.LikesMap">
 	
 	<select id="likeSelectList" parameterType="co.yedam.finalprj.likes.vo.LikesVO" resultType="co.yedam.finalprj.likes.vo.LikesVO">
-		SELECT feed_id,
-			   user_id,
-			   like_date
-		FROM likes
-		WHERE feed_id = #{feed_id}
+       SELECT 
+      		  l.feed_id,
+              l.like_date,
+              l.user_id,
+              v.uuid
+        FROM likes l JOIN userPhoto_v v
+        ON l.USER_ID = v.USER_ID
+        WHERE feed_id =#{feed_id}
 	</select>
 	
 	<select id="likeChk" parameterType="co.yedam.finalprj.likes.vo.LikesVO" resultType="int">

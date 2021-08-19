@@ -31,6 +31,7 @@ public class LikesController {
 		
 		likeDao.likeChk(vo);	//삭제 or 등록
 		List<LikesVO> result = likeDao.likeSelectList(vo);
+		System.out.println("result : "+result);
 		return result;
 	}
 	
