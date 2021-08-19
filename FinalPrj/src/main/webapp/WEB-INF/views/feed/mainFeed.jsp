@@ -450,9 +450,12 @@ $(document).ready(function(){
 		$('#feedid').val(feedId);	
 		$('#publish').val(content);
 		document.getElementById('photo').value = fphoto;
-		
+	
 		if(retag != ""){
-			$('#append_tag').append("<a>#"+retag+"</a>");			
+			var afterStr = retag.split('#');
+			for(var i=0; i < afterStr.length; i++){
+				$('#append_tag').append("<a class='deleteTag'>#"+afterStr[i]+"</a>");
+			}
 		}
 		
 		if(photo != ""){	
@@ -466,7 +469,12 @@ $(document).ready(function(){
 	         $(this).closest('.upload-wrap').remove();
 	         photoChk.val(1);
 	  	});
+	      
+	     $('.deleteTag').on('click', function () {
+	         $( this ).remove(); 
+	     });
 	}
+
 
 	$(function(){
 	loadMore();
@@ -522,7 +530,7 @@ $(document).ready(function(){
 			if(div.children().length == 5){
 				return;
 			}else{
-				div.append('<span class="tagDelete">#' + tagval+ ' </span>');
+				div.append('<a class="tagDelete">#' + tagval+ ' </a>');
 			}
             	$('#activities-autocpl').val('');
             $.ajax({
@@ -535,10 +543,7 @@ $(document).ready(function(){
                }
             }); 
          }
-      }else if(event.keyCode==35){
-         event.preventDefault();
-         event.returnValue = false;
-      }else if(event.keyCode==44){
+      }else if(event.keyCode==35 || event.keyCode==44 || event.keyCode==32){
          event.preventDefault();
          event.returnValue = false;
       }
@@ -1588,11 +1593,10 @@ $(document).ready(function(){
 									<div class="tab-content">
 										<div class="compose">
 											<div class="compose-form">
-												<img src="https://via.placeholder.com/300x300"
-													data-demo-src="assets/img/avatars/jenna.png" alt="">
+												<img src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }"  alt="">
 												<div class="control">
 													<textarea id="publish" name="content" class="textarea"
-														rows="3" placeholder=""></textarea>
+														rows="3" placeholder='<spring:message code="feed.feed.text"/>'></textarea>
 												</div>
 											</div>
 											<div id="feed-upload" class="feed-upload"></div>
@@ -1621,7 +1625,7 @@ $(document).ready(function(){
 												<div id="activities-autocpl-wrapper"
 													class="control has-margin">
 													<input id="activities-autocpl" type="text" class="input"
-														placeholder="태그를 입력해 주세요">
+														placeholder="태그를 입력해 주세요" maxlength="10">
 													<div class="icon">
 														<i data-feather="search"></i>
 													</div>
@@ -1860,7 +1864,7 @@ $(document).ready(function(){
 											<!-- User meta -->
 											<div class="user-block">
 												<div class="image">
-													<img src="https://via.placeholder.com/300x300"
+													<img src="${pageContext.request.contextPath}/resources/upload/${vo.photo }"
 														data-demo-src="assets/img/avatars/dan.jpg"
 														data-user-popover="1" alt="">
 												</div>

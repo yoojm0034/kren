@@ -361,7 +361,6 @@ $(document).ready(function(){
 	function likeIt(feedId,userId){
 		var span = $('#recCnt'+feedId);
 		var myId= '${user.user_id}';
-		
 		$.ajax({
 			url:"${pageContext.request.contextPath}/likeCnt.do",
 			type:"POST",
@@ -453,7 +452,7 @@ $(document).ready(function(){
 		document.getElementById('photo').value = fphoto;
 		
 		if(retag != ""){
-			$('#append_tag').append("#"+retag);			
+			$('#append_tag').append("<a>#"+retag+"</a>");			
 		}
 		
 		if(photo != ""){	
@@ -692,7 +691,6 @@ $(document).ready(function(){
 
 	//-------태그검색---------
 	$('#searchTag').on('click',function(){
-		
 		  	var input = $('#tagInput').attr("class");
 		  	if(input=="input is-hidden"){
 		  		$('#tagInput').removeClass('is-hidden').addClass('is-active');
@@ -700,6 +698,14 @@ $(document).ready(function(){
 		  		$('#tagInput').removeClass('is-active').addClass('is-hidden');
 		  	}
 		  	
+		    $(document).click(function (e) {
+		        var target = e.target.id;
+	
+  		        if (target != 'searchTag' && target != 'tagInput') {
+		    	  $('#tagInput').removeClass('is-active').addClass('is-hidden');
+		        }  
+		      });
+		    
 			if ($('#tagInput').length) {
 			    var html = '';
 			    var activitiesOptions = {
@@ -2023,29 +2029,8 @@ $(document).ready(function(){
 
 										<!-- Post footer -->
 										<div class="card-footer">
-										<!-- Post statistics -->
-										<c:if test="${vo.like_cnt > 1 }">
-	                                    <div class="likers-group" id="likers-group${vo.feed_id }">
-		                                    <c:forEach items="${likeUsers }" var="likes" end="4">
-		                                        <c:if test="${vo.feed_id eq likes.feed_id}">
-		                                        <img src="${pageContext.request.contextPath}/resources/upload/${userPhoto.uuid }" id="photo${vo.user_id }" alt="">
-		                                        </c:if>
-		                                    </c:forEach>
-		                                    <!-- 좋아요 유저 없으면 텍스트 출력 X -->
-	                                    	<div class="likers-text" id="likers-text${vo.feed_id }">
-		                                        <p>
-												<c:forEach items="${likeUsers }" var="likes" end="1">
-													<c:if test="${vo.feed_id eq likes.feed_id}">
-		                                            <a href="#">${likes.user_id}</a>
-		                                            </c:if>
-												</c:forEach>
-		                                        </p>
-		                                        <p>그리고 ${vo.like_cnt} 명이 이 피드를 좋아합니다</p>
-		                                    </div>
-	                                   	</div>
-										</c:if>
+											<!-- Post statistics -->
 											<div class="social-count">
-											<!-- Followers avatars -->
 													<!-- Action buttons -->
 													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
 													<!-- 댓글 카운트 -->
@@ -2118,9 +2103,16 @@ $(document).ready(function(){
 																	<!-- User image -->
 																	<div class="media-left">
 																		<div class="image">
+																		<c:if test="${cmt.uuid ne '-' }">
+																			<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+																				data-demo-src="assets/img/avatars/dan.jpg"
+																				data-user-popover="1" alt="">
+																		</c:if>
+																		<c:if test="${cmt.uuid eq '-' }">
 																			<img src="https://via.placeholder.com/300x300"
 																				data-demo-src="assets/img/avatars/dan.jpg"
 																				data-user-popover="1" alt="">
+																		</c:if>
 																		</div>
 																	</div>
 																	<!-- Content -->
@@ -2249,9 +2241,16 @@ $(document).ready(function(){
 																	<!-- User image -->
 																	<div class="media-left">
 																		<div class="image">
+																		<c:if test="${cmt.uuid ne '-' }">
+																			<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+																				data-demo-src="assets/img/avatars/dan.jpg"
+																				data-user-popover="1" alt="">
+																		</c:if>
+																		<c:if test="${cmt.uuid eq '-' }">
 																			<img src="https://via.placeholder.com/300x300"
 																				data-demo-src="assets/img/avatars/dan.jpg"
 																				data-user-popover="1" alt="">
+																		</c:if>
 																		</div>
 																	</div>
 																	<!-- Content -->

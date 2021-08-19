@@ -17,4 +17,5 @@ public class CommentsVO {
 	private int line;
 	private String origin;
 	private String cc_id;
+	private String uuid;
 }

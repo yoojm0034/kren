@@ -27,12 +27,13 @@
 	
 	<!-- 답장 안한 편지목록 -->
 	<select id="selectNewLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT L.*, U.NAME FROM LETTER L, USERS U
+		 SELECT CASE WHEN F_USER_PHOTO(L.USER_ID) IS NOT NULL THEN F_USER_PHOTO(L.USER_ID) ELSE '-' END AS UUID,
+		        L.*, U.NAME FROM LETTER L, USERS U
 		 WHERE L.USER_ID=U.USER_ID
-    	   AND SEND_YN ='N'
-    	   AND TO_DELETE='N'
+      	   AND SEND_YN ='N'
+           AND TO_DELETE='N'
 		   AND TO_ID =#{to_id}
-       	   AND L.USER_ID NOT IN (SELECT BLOCK.BLOCKED FROM BLOCK WHERE USER_ID = #{to_id})
+           AND L.USER_ID NOT IN (SELECT BLOCK.BLOCKED FROM BLOCK WHERE USER_ID = #{to_id})
 		   AND ARRIVE_DATE IS NOT NULL
 		   AND GUBUN !='임시저장'
 		 ORDER BY ARRIVE_DATE DESC
@@ -52,10 +53,11 @@
 	
 	<!-- 해당친구이름과 해당편지목록 -->
 	<select id="selectFriendLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
- 		WITH TEST AS (SELECT U.NAME AS TO_NAME, T.*
+		  WITH TEST AS (SELECT CASE WHEN F_USER_PHOTO(T.USER_ID) IS NOT NULL THEN 
+                   F_USER_PHOTO(T.USER_ID) ELSE '-' END AS UUID, U.NAME AS TO_NAME, T.*
  		 				FROM (
  						     SELECT U.NAME, L.LETTER_ID, L.TO_ID, L.USER_ID, L.SEND_DATE, L.CONTENT, L.PHOTO,
- 						     	 	L.READ_DATE, L.TO_DELETE, L.FROM_DELETE, L.ARRIVE_DATE, L.SEND_YN, L.GUBUN, L.COR_YN
+                        L.TO_DELETE, L.FROM_DELETE, L.ARRIVE_DATE, L.SEND_YN, L.GUBUN, L.COR_YN
  						       FROM LETTER L, USERS U
   							  WHERE L.USER_ID = U.USER_ID) T, USERS U
   					   WHERE T.TO_ID=U.USER_ID
@@ -68,7 +70,8 @@
 	
 	<!-- 임시저장한 편지조회 -->
 	<select id="selectSaveLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT U.NAME, L.* FROM LETTER L, USERS U
+		SELECT CASE WHEN F_USER_PHOTO(L.TO_ID) IS NOT NULL THEN F_USER_PHOTO(L.TO_ID) ELSE '-' END AS uuid,
+		       U.NAME, L.* FROM LETTER L, USERS U
 		 WHERE L.TO_ID=U.USER_ID
 		   AND L.USER_ID =#{user_id}
 		   AND L.GUBUN ='임시저장'

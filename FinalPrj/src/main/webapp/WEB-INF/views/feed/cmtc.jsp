@@ -42,7 +42,7 @@ function test_diff(cid,dif,ori) {
 	<!-- User image -->
 	<div class="media-left">
 		<div class="image">
-			<img src="https://via.placeholder.com/300x300"
+			<img src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }"
 				data-demo-src="assets/img/avatars/dan.jpg"
 				data-user-popover="1" alt="">
 		</div>
