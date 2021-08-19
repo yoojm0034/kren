@@ -201,6 +201,7 @@ function initDropdowns() {
   $('.dropdown-trigger').click(function () {
     $('.dropdown-trigger').removeClass('is-active');
     $(this).addClass('is-active');
+    $('.reportMenu').hide();
   });
   $(document).click(function (e) {
     var target = e.target;
