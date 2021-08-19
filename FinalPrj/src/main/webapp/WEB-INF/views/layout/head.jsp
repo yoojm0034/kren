@@ -472,10 +472,12 @@ h5:hover {
 <div class="pageloader"></div>
 <div class="infraloader is-active"></div>
 <div class="app-overlay"></div>
-	<div class="floating" onclick="location.href='${pageContext.request.contextPath}/userQnaWrite.do'">
-		<span style="vertical-align: sub;"><img src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png" width="20px"></span>
-		<span><spring:message code="head.contact"/></span>
-	</div>
+	<c:if test="${user.user_id ne 'admin' }">
+		<div class="floating" onclick="location.href='${pageContext.request.contextPath}/userQnaWrite.do'">
+			<span style="vertical-align: sub;"><img src="${pageContext.request.contextPath}/resources/template/assets/img/contact.png" width="20px"></span>
+			<span><spring:message code="head.contact"/></span>
+		</div>
+	</c:if>
 <div id="main-navbar"
 	class="navbar navbar-v1 is-inline-flex is-transparent no-shadow is-hidden-mobile">
 	<div class="container is-fluid">
