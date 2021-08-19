@@ -70,7 +70,8 @@
 	
 	<!-- 임시저장한 편지조회 -->
 	<select id="selectSaveLetter" parameterType="co.yedam.finalprj.letter.vo.LetterVO" resultType="co.yedam.finalprj.letter.vo.LetterVO">
-		SELECT U.NAME, L.* FROM LETTER L, USERS U
+		SELECT CASE WHEN F_USER_PHOTO(L.TO_ID) IS NOT NULL THEN F_USER_PHOTO(L.TO_ID) ELSE '-' END AS uuid,
+		       U.NAME, L.* FROM LETTER L, USERS U
 		 WHERE L.TO_ID=U.USER_ID
 		   AND L.USER_ID =#{user_id}
 		   AND L.GUBUN ='임시저장'

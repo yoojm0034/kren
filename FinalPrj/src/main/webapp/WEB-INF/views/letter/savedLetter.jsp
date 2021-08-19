@@ -384,9 +384,12 @@ $(function() {
 												<div class="user-image">
 													<img
 														style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
-														src="https://via.placeholder.com/400x400" alt="friends">
+														src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }" alt="friends">
 													<span class="msg-from"
-														style="vertical-align: top; margin-left: 5px;"> <small><a>TO:${vo.name }</a></small>
+														style="vertical-align: top; margin-left: 5px;">
+														<small><a>
+														<spring:message code="letter.title.to" arguments="${vo.name }"/>
+														</a></small>
 													</span>
 												</div>
 											</div>
@@ -452,12 +455,21 @@ $(function() {
 							<div class="box-inner">
 								<div class="header">
 									<div class="avatar">
-										<img src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/dan.jpg" alt=""
-											data-user-popover="1">
+										<c:if test="${vo.uuid ne '-' }">
+											<img src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
+												data-demo-src="assets/img/avatars/dan.jpg" alt=""
+												data-user-popover="1">
+										</c:if>
+										<c:if test="${vo.uuid eq '-' }">
+											<img src="https://via.placeholder.com/300x300"
+												data-demo-src="assets/img/avatars/dan.jpg" alt=""
+												data-user-popover="1">
+										</c:if>
 									</div>
 									<div class="meta">
-										<div class="name">TO:${vo.name }</div>
+										<div class="name">
+											<spring:message code="letter.title.to" arguments="${vo.name }"/>
+										</div>
 										<div class="date"><fmt:formatDate value="${vo.send_date }" pattern="yy/MM/dd"/></div>
 									</div>
 									<div class="meta-right">							

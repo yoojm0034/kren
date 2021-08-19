@@ -712,9 +712,22 @@
 											</c:if>
 											<div class="msg-header">
 												<div class="user-image">
-													<img
-														style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
-														src="https://via.placeholder.com/400x400" alt="friends">
+													<c:if test="${vo.user_id eq user.user_id }">
+														<img
+															style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
+															src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }" alt="friends">
+													
+													</c:if>
+													<c:if test="${vo.user_id ne user.user_id and vo.uuid ne '-'}">
+														<img
+															style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
+															src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }" alt="friends">
+													</c:if>
+													<c:if test="${vo.user_id ne user.user_id and vo.uuid eq '-'}">
+														<img
+															style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
+															src="https://via.placeholder.com/400x400" alt="friends">
+													</c:if>
 													<span class="msg-from"
 														style="vertical-align: top; margin-left: 5px;"> <small><a>${vo.name }</a></small>
 													</span>
@@ -794,9 +807,21 @@
 							<div class="box-inner">
 								<div class="header">
 									<div class="avatar">
-										<img src="https://via.placeholder.com/300x300"
-											data-demo-src="assets/img/avatars/dan.jpg" alt=""
-											data-user-popover="1">
+										<c:if test="${vo.user_id eq user.user_id }">
+											<img
+												style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
+												src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }" alt="friends">									
+										</c:if>
+										<c:if test="${vo.user_id ne user.user_id and vo.uuid ne '-'}">
+											<img
+												style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
+												src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }" alt="friends">
+										</c:if>
+										<c:if test="${vo.user_id ne user.user_id and vo.uuid eq '-'}">
+											<img
+												style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
+												src="https://via.placeholder.com/300x300" alt="friends">
+										</c:if>
 									</div>
 									<div class="meta">
 										<div class="name">${vo.name }</div>
@@ -950,7 +975,6 @@
                                <div class="box-inner">
                                    <div class="header">
                                        <div class="avatar">
-                                           <img src="https://via.placeholder.com/300x300" data-demo-src="assets/img/avatars/jenna.png" alt="" data-user-popover="0">
                                        </div>
                                        <div class="meta">
                                            <div class="name">${vo.to_name}</div>
