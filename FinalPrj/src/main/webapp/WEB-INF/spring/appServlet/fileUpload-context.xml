@@ -7,9 +7,4 @@
    		 <property name="maxInMemorySize" value="200000000" />
 	</bean>
 
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="message"></property>
-		<property name="defaultEncoding" value="UTF-8"></property>
-	</bean>
-
 </beans>
