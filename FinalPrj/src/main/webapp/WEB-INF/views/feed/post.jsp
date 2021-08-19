@@ -255,6 +255,33 @@
 				<!-- Post footer -->
 				<div class="card-footer">
 					<!-- Post statistics -->
+					<div class="likers-group" id="likers-group${vo.feed_id }">
+						<c:forTokens items="${vo.likersuuid }" delims="," var="item"
+							end="4">
+							<img
+								src='${pageContext.request.contextPath}/resources/upload/${item}'
+								data-demo-src="assets/img/avatars/dan.jpg"
+								data-user-popover="1" alt="">
+						</c:forTokens>
+					</div>
+					<!-- Followers text -->
+					<div class="likers-text">
+						<p class="likename${vo.feed_id }">
+							<c:set var="cnt" value="1" />
+							<c:forTokens items="${vo.likers }" delims="," var="item"
+								end="1">
+								<a class="originLikename${vo.feed_id }" href="#"
+									id="${item}">${item}</a>
+								<c:set var="sum" value="${cnt+1}" />
+							</c:forTokens>
+	
+						</p>
+						<c:if test="${vo.like_cnt gt 2 }">
+							<p class="orginLikeText${vo.feed_id }">외 ${vo.like_cnt - sum}
+								명이 이 글을 좋아합니다</p>
+						</c:if>
+						<p class="likeText${vo.feed_id }"></p>
+					</div>
 					<div class="social-count">
 						<!-- Action buttons -->
 						<!-- /partials/pages/feed/buttons/feed-post-actions.html -->

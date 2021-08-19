@@ -2524,7 +2524,7 @@ $(document).ready(function(){
 								<c:forEach items="${sameTopic }" var="vo" end="3">
 									<c:if test="${vo.topicCnt ne  0 }">
 										<div class="add-friend-block transition-block">
-											<img src="https://via.placeholder.com/300x300"
+											<img src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 												data-demo-src="assets/img/avatars/nelly.png"
 												data-user-popover="9" alt="" style="cursor: pointer;"
 												onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
@@ -2574,7 +2574,7 @@ $(document).ready(function(){
 												<div>
 													<div class="birthday-avatar"
 														onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='${vo.user_id }">
-														<img src="https://via.placeholder.com/300x300"
+														<img src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 															data-demo-src="assets/img/avatars/dan.jpg" alt=""
 															style="cursor: pointer;">
 														<div class="birthday-indicator">${vo.cnt }</div>

@@ -68,12 +68,15 @@
 		SELECT 
 			    u.user_id, 
 			    u.NAME,
-			    TO_CHAR(sysdate,'YYYY') - TO_CHAR(u.BIRTH,'YYYY') as "cnt"
+			    TO_CHAR(sysdate,'YYYY') - TO_CHAR(u.BIRTH,'YYYY') as "cnt",
+          		photo.UUID
 		FROM    
-				friends f , users u
+				friends f join users u
+        		on f.FOLLOWING = u.USER_ID
+        		join USERPHOTO_V photo
+        		on photo.PHOTO_ID= u.PHOTO
 		WHERE   
-				f.FOLLOWING = u.USER_ID
-				AND    TO_CHAR(u.BIRTH,'MM/DD') = TO_CHAR(sysdate,'MM/DD')
+        		TO_CHAR(u.BIRTH,'MM/DD') = TO_CHAR(sysdate,'MM/DD')
 				AND    f.user_id = #{user_id}
 				AND    u.STATUS = '일반회원'
 				AND    not f.FOLLOWING in ( SELECT BLOCKED
@@ -83,22 +86,25 @@
 	</select>
 	
 	<!-- 나와 상대방의 일치하는 관심사 수 , 블락친구 제외, 이미 친구인 유저 제외 -->
-	<select id="sameTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
+	<select id="sameTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">				
 		SELECT 
-				topic_cnt(#{topic},topic) as "topicCnt" , 
-				user_id, name
+		        topic_cnt(#{topic},u.topic) as "topicCnt" , 
+		        u.user_id, 
+		        u.name,
+		        photo.uuid
 		FROM 	
-				users
-		WHERE 	not user_id IN (#{user_id})
-				AND NOT user_id IN (  SELECT blocked
-				                      FROM block
-				                      WHERE user_id = #{user_id}
-				                    )
-				AND NOT user_id IN ( SELECT FOLLOWING
-				                     FROM friends
-				                     WHERE user_id = #{user_id}
-				                    )
-				AND STATUS = '일반회원'
+				users u join USERPHOTO_V photo
+        		on photo.PHOTO_ID= u.PHOTO
+		WHERE 	not u.user_id IN (#{user_id})
+				AND NOT u.user_id IN (  SELECT blocked
+				                     	FROM block
+				                      	WHERE user_id = #{user_id}
+				                      )
+				AND NOT u.user_id IN ( SELECT FOLLOWING
+				                       FROM friends
+				                       WHERE user_id = #{user_id}
+				                      )
+				AND u.status ='일반회원'
 	</select>
 
 	<!-- 피드 등록 -->
