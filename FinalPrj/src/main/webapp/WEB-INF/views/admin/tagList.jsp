@@ -30,7 +30,11 @@
 				header : 'TAG',
 				name : 'tag_name',
 				editor: 'text',
-				filter : 'select',
+				filter : {
+					type : 'text',
+					showApplyBtn : true,
+					showClearBtn : true
+					},
 				align : 'center'
 			}],
 			rowHeaders : [ 'checkbox' ],
