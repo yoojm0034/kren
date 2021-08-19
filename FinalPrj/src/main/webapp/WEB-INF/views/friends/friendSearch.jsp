@@ -699,9 +699,16 @@ function deleteCountry(value) {
 									<a id="goProfile"
 										href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 										<div class="img-container">
-											<img class="avatar" src="https://via.placeholder.com/300x300"
-												data-demo-src="resources/template/assets/img/avatars/david.jpg"
-												alt=""> <img class="flag" src="${vo.flag }" alt="">
+											<c:if test="${vo.uuid ne '-'}">
+												<img class="avatar" src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
+											<c:if test="${vo.uuid eq '-'}">
+												<img class="avatar" src="https://via.placeholder.com/300x300"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
 										</div>
 										<div class="friend-info">
 											<div class="friend-name textFilter-match">${vo.name }</div>
@@ -753,9 +760,16 @@ function deleteCountry(value) {
 									<a id="goProfile"
 										href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 										<div class="img-container">
-											<img class="avatar" src="https://via.placeholder.com/300x300"
-												data-demo-src="resources/template/assets/img/avatars/david.jpg"
-												alt=""> <img class="flag" src="${vo.flag }" alt="">
+											<c:if test="${vo.uuid ne '-'}">
+												<img class="avatar" src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
+											<c:if test="${vo.uuid eq '-'}">
+												<img class="avatar" src="https://via.placeholder.com/300x300"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
 										</div>
 										<div class="friend-info">
 											<div class="friend-name textFilter-match">${vo.name }</div>
@@ -823,9 +837,16 @@ function deleteCountry(value) {
 									<a id="goProfile"
 										href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 										<div class="img-container">
-											<img class="avatar" src="https://via.placeholder.com/300x300"
-												data-demo-src="resources/template/assets/img/avatars/david.jpg"
-												alt=""> <img class="flag" src="${vo.flag }" alt="">
+											<c:if test="${vo.uuid ne '-'}">
+												<img class="avatar" src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
+											<c:if test="${vo.uuid eq '-'}">
+												<img class="avatar" src="https://via.placeholder.com/300x300"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
 										</div>
 										<div class="friend-info">
 											<div class="friend-name textFilter-match">${vo.name }</div>
@@ -867,9 +888,16 @@ function deleteCountry(value) {
 									<a id="goProfile"
 										href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 										<div class="img-container">
-											<img class="avatar" src="https://via.placeholder.com/300x300"
-												data-demo-src="resources/template/assets/img/avatars/david.jpg"
-												alt=""> <img class="flag" src="${vo.flag }" alt="">
+											<c:if test="${vo.uuid ne '-'}">
+												<img class="avatar" src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
+											<c:if test="${vo.uuid eq '-'}">
+												<img class="avatar" src="https://via.placeholder.com/300x300"
+													data-demo-src="resources/template/assets/img/avatars/david.jpg"
+													alt=""> <img class="flag" src="${vo.flag }" alt="">
+											</c:if>
 										</div>
 										<div class="friend-info">
 											<div class="friend-name textFilter-match">${vo.name }</div>
@@ -924,11 +952,16 @@ function deleteCountry(value) {
 									<div class="card-flex friend-card" id="newItem" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
 										<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 											<div class="img-container">
-												<img class="avatar" src="https://via.placeholder.com/300x300"
-													data-demo-src="resources/template/assets/img/avatars/david.jpg"
-													alt=""> <img class="flag"
-													src="${vo.flag }"
-													alt="">
+												<c:if test="${vo.uuid ne '-'}">
+													<img class="avatar" src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
+														data-demo-src="resources/template/assets/img/avatars/david.jpg"
+														alt=""> <img class="flag" src="${vo.flag }" alt="">
+												</c:if>
+												<c:if test="${vo.uuid eq '-'}">
+													<img class="avatar" src="https://via.placeholder.com/300x300"
+														data-demo-src="resources/template/assets/img/avatars/david.jpg"
+														alt=""> <img class="flag" src="${vo.flag }" alt="">
+												</c:if>
 											</div>
 											<div class="friend-info" >
 											<div class="friend-name textFilter-match">${vo.name }</div>
@@ -979,11 +1012,16 @@ function deleteCountry(value) {
 									<div class="card-flex friend-card" id="newItem" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='"+ ${vo.user_id}>
 										<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }">
 											<div class="img-container">
-												<img class="avatar" src="https://via.placeholder.com/300x300"
-													data-demo-src="resources/template/assets/img/avatars/david.jpg"
-													alt=""> <img class="flag"
-													src="${vo.flag }"
-													alt="">
+												<c:if test="${vo.uuid ne '-'}">
+													<img class="avatar" src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
+														data-demo-src="resources/template/assets/img/avatars/david.jpg"
+														alt=""> <img class="flag" src="${vo.flag }" alt="">
+												</c:if>
+												<c:if test="${vo.uuid eq '-'}">
+													<img class="avatar" src="https://via.placeholder.com/300x300"
+														data-demo-src="resources/template/assets/img/avatars/david.jpg"
+														alt=""> <img class="flag" src="${vo.flag }" alt="">
+												</c:if>
 											</div>
 											<div class="friend-info" >
 											<div class="friend-name textFilter-match">${vo.name }</div>

@@ -44,6 +44,7 @@
 				u.USER_ID,
 				u.STATUS,
 				u.FLAG,
+				CASE WHEN F_USER_PHOTO(U.USER_ID) IS NOT NULL THEN F_USER_PHOTO(U.USER_ID) ELSE '-' END AS uuid,
         		NVL( fv.feedCnt,0) "feedCnt",
 		        NVL(fing.FOLLOWINGCNT,0) "followingCnt",
 		        NVL(fer.FOLLOWERCNT,0) "followerCnt",
@@ -77,6 +78,7 @@
 				u.USER_ID,
 				u.STATUS,
 				u.FLAG,
+				CASE WHEN F_USER_PHOTO(U.USER_ID) IS NOT NULL THEN F_USER_PHOTO(U.USER_ID) ELSE '-' END AS uuid,
         		NVL( fv.feedCnt,0) "feedCnt",
 		        NVL(fing.FOLLOWINGCNT,0) "followingCnt",
 		        NVL(fer.FOLLOWERCNT,0) "followerCnt"
@@ -119,6 +121,7 @@
 						u.USER_ID,
 						u.STATUS,
 						u.FLAG,
+						CASE WHEN F_USER_PHOTO(U.USER_ID) IS NOT NULL THEN F_USER_PHOTO(U.USER_ID) ELSE '-' END AS uuid,
 						a.age as cnt,
 		        		NVL(fv.feedCnt,0) as feedCnt,
 				        NVL(fing.FOLLOWINGCNT,0) as followingCnt,
