@@ -153,7 +153,7 @@ public class UsersController {
 	
 	// 사진X 프로필 업데이트 실행
 	@RequestMapping("usersUpdateNoPhoto.do")
-	public String usersUpdateNoPhoto(UsersVO vo, Model model, Authentication auth) {
+	public String usersUpdateNoPhoto(UsersVO vo, Model model, Authentication auth, HttpServletRequest request) {
 		//로그인한 아이디 
 		User user = (User) auth.getPrincipal();
 		String Sessionid = (String) user.getUsername();
@@ -166,7 +166,8 @@ public class UsersController {
 		System.out.println(vo);
 		System.out.println("사진 없이" + Sessionid + "의 프로필 정보가 수정됨.");
 		usersDao.usersUpdateNoPhoto(vo);
-		return "redirect:profile.do?user_id="+Sessionid;
+		String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
+		return "redirect:"+ referer; // 이전 페이지로 리다이렉트
 	}	
 	
 	
