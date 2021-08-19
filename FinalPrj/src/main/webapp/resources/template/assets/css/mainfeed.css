@@ -1,0 +1,198 @@
+article, aside, details, figcaption, figure, footer, header, hgroup,
+	menu, nav, section {
+	display: block;
+}
+
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.view-wrapper {
+	padding: 40px 12px;
+}
+
+.search-label {
+	display: inline-block;
+	font-size: 14px;
+	padding: 6px 15px 10px 15px;
+	border-radius: 2rem;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	transition: all 0.2s;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	background-color: #6ba4e9;
+	color: white;
+	margin-left: 10px;
+	margin-bottom: 15px;
+}
+
+.tdiv {
+	text-shadow: 0 0 black;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.card.is-post .content-wrap .post-image .fab-wrapper.is-comment,
+	.shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .content-wrap .post-image .fab-wrapper.is-comment
+	{
+	right: 60px;
+}
+
+.media table {
+	table-layout: fixed;
+	width: 100%;
+	text-align: left;
+}
+
+.content-wrap table {
+	table-layout: fixed;
+	width: 100%;
+	text-align: left;
+}
+
+.content-wrap table textarea {
+	width: -webkit-fill-available;
+	border: none;
+	resize: none;
+	padding: revert;
+}
+
+.user-info .time {
+	margin-top: 5px;
+}
+
+#todayCheck {
+	cursor: pointer;
+	display: block;
+	text-align: center;
+	line-height: 2;
+}
+
+.menu { /*기본 menu 버튼 style 속성*/
+	position: relative;
+	color: #5f6368;
+	border: solid 1px #dadce0;
+	border-radius: 1vw;
+	display: inline-block;
+	padding: 10px;
+	cursor: pointer;
+	width: 14%;
+	text-align: center;
+	margin: 1rem 0.5rem 1rem 0;
+	font-size: 0.9rem;
+}
+
+.clicked_menu { /*클릭 시 적용되는 style 속성*/
+	border-color: #4285f4;
+	color: #4285f4;
+	background: #e9f1fe;
+}
+
+#correcting-table td {
+	font-size: 0.9rem;
+	padding: 2.5%;
+	border-top: solid 1px #f1f1f1;
+}
+
+#report-table td {
+	font-size: 0.9rem;
+	padding: 7px;
+}
+
+.is-comment .media-content {
+	line-height: 1.6;
+}
+
+.card.is-post .comments-wrap .comments-body .is-comment .media-content a,
+	.shop-wrapper .cart-container .cart-content .cart-summary .is-post.summary-card .comments-wrap .comments-body .is-comment .media-content a
+	{
+	display: inline;
+	font-weight: 600 !important;
+	font-size: 0.9rem;
+}
+
+.is-comment>.media-content>.time {
+	display: inline !important;
+	font-size: .8rem !important;
+	color: #888da8;
+	margin-bottom: 10px;
+	margin-left: 0.5rem;
+}
+
+.media-content>div>pre {
+	background-color: transparent !important;
+	color: unset;
+	font-size: .875em;
+	overflow-x: auto;
+	padding: 0 !important;
+	white-space: pre-wrap;
+	word-wrap: normal;
+	font-family: ONE-Mobile-Regular;
+}
+
+.dropdown-content .reportMenu {
+	margin-top: 18px;
+	padding-left: 7px;
+}
+
+reported-div {
+	padding-left: 49px;
+}
+
+#widget-slide-1 {
+	position: relative;
+	margin: 20px auto;
+}
+
+#widget-slide-1 ul {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+}
+
+#widget-slide-1 ul li {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: none; /*순번표기용*/
+	text-align: center; /*순번표기용 끝*/
+}
+
+#widget-slide-1 ul li.on {
+	display: block;
+}
+.activeCnt {
+	padding-left: 7px;
+    color: #777777;
+}
+input#fmsg {
+    margin-right: 11px;
+}
+input#feed-blocked {
+    margin-right: 8px;
+    margin-top: 3px;
+}
+
+button#report-btn {
+    margin-left: 66px;
+}

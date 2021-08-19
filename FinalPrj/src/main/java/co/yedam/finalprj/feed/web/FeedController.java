@@ -197,8 +197,8 @@ public class FeedController {
 					}
 				}
 			}
-			
-			return "redirect:feed.do";
+			String referer = request.getHeader("Referer"); // 헤더에서 이전 페이지를 읽는다.
+			return "redirect:"+ referer; // 이전 페이지로 리다이렉트
 		}
 	//피드삭제
 	@RequestMapping("feedDelete.do")

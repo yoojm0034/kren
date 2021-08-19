@@ -54,6 +54,7 @@
 
 .content table td {
 	text-align: left;
+	width: 100%
 }
 
 .content table textarea {
