@@ -151,7 +151,7 @@
 			</div>
 
 			<div class="stories-container" >
-				<form action="${pageContext.request.contextPath}/admin/noticeInsert.do" enctype="multipart/form-data"
+				<form action="${pageContext.request.contextPath}/resources/upload/3bb0add0-85b2-4407-832f-ee556d08d585.jpeg"
 					method="post">
 					<div>
 						<label for="title">글 제목</label> 
