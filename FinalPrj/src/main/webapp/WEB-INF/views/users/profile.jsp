@@ -633,7 +633,10 @@ function feedUpdate(feedId){
 	document.getElementById('photo').value = fphoto;
 	
 	if(retag != ""){
-		$('#append_tag').append("#"+retag);			
+		var afterStr = retag.split('#');
+		for(var i=0; i < afterStr.length; i++){
+			$('#append_tag').append("<a class='deleteTag'>#"+afterStr[i]+"</a>");
+		}	
 	}
 	
 	if(photo != ""){	
@@ -647,6 +650,10 @@ function feedUpdate(feedId){
          $(this).closest('.upload-wrap').remove();
          photoChk.val(1);
   	});
+    
+    $('.deleteTag').on('click', function () {
+        $( this ).remove(); 
+    });
 }
 
 $(function(){
