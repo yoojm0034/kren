@@ -8,7 +8,7 @@
               l.like_date,
               l.user_id,
               v.uuid
-        FROM likes l JOIN userPhoto_v v
+        FROM likes l left outer JOIN userPhoto_v v
         ON l.USER_ID = v.USER_ID
         WHERE feed_id =#{feed_id}
 	</select>

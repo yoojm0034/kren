@@ -210,20 +210,23 @@ reported-div {
 #widget-slide-1 ul li.on {
 	display: block;
 }
+
 .activeCnt {
 	padding-left: 7px;
-    color: #777777;
+	color: #777777;
 }
+
 input#fmsg {
-    margin-right: 11px;
+	margin-right: 11px;
 }
+
 input#feed-blocked {
-    margin-right: 8px;
-    margin-top: 3px;
+	margin-right: 8px;
+	margin-top: 3px;
 }
 
 button#report-btn {
-    margin-left: 66px;
+	margin-left: 66px;
 }
 </style>
 <script>
@@ -309,7 +312,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<script>
+	<script>
 	function loadMore(){
 	 //-------load more-------
 	  var increment=5;	//---5개씩추가----- 
@@ -362,79 +365,54 @@ $(document).ready(function(){
 		var span = $('#recCnt'+feedId);
 		var userText = $('.orginLikeText'+feedId);	//원래조건에 해당하는 텍스트
 		var userNewText = $('.likeText'+feedId);	//새로운텍스트 append
-		var userName= $('.originLikename'+feedId);
+		var userImg = $('#likers-group'+feedId);
+		var userName=$('.likename'+feedId);
 		var myId= '${user.user_id}';
 		var user_id = new Array();		//새로운 유저네임
-		
+		var user_img = new Array();		//새로운 유저이미지
+
 		$.ajax({
 			url:"${pageContext.request.contextPath}/likeCnt.do",
 			type:"POST",
 			data:{feed_id:feedId},
 			dataType:"JSON",
 			success:function(data){
-				var count=data.length;	//새로운 카운트 
+				var count=data.length;	//새로운 좋아요 카운트 
 				var chk=0;				//새로운리스트에 user_id 있는지여부 
-				
                	$.each(data, function(idx, val) {
-             		if('${user.user_id}' == val.user_id){ chk = 1; } 
-             		user_id += val.user_id;
+             		if('${user.user_id}' == val.user_id){ chk = 1; }
+             			user_id.push(val.user_id);
+             			user_img.push(val.uuid);
                	});
-				
-               	if(chk){
-					userName.empty();	//원래 이름
-	         	    userText.empty();	//원래 텍스트
-	         	    userNewText.empty();	//새로 추가된 태그 비우고 다시 
-					console.log(user_id);
-					$('.likename'+feedId).empty();
-					var aTag = "";
-					
-					for(var i = 0; i<2; i++){
-						aTag += "<a>" + user_id[i] + "</a>";
+				//append 전 모든 태그 공백 
+				span.empty();
+			 	userImg.empty();
+				userName.empty();
+				userText.empty();
+				userNewText.empty();
+				//카운트 수만큼 username append 
+				for(var i =0; i<count; i++){
+					if(userName.children().length<2){	//2개가 있으면 append 하지 않음 
+					userName.append("<a>"+user_id[i]+" </a>");	
 					}
-					console.log(aTag);
-					$('.likename'+feedId).append("<a>유저아이디</a>");
-
-				}else{
-					console.log('좋아요 취소');
-					userName.empty();	//원래 이름
-	         	    userText.empty();	//원래 텍스트
-	         	    userNewText.empty();	//새로 추가된 태그 비우고 다시 
-					console.log(user_id);
-					$('.likename'+feedId).empty();
-					var aTag = "";
-					
-					for(var i = 0; i<2; i++){
-						aTag += "<a>" + user_id[i] + "</a>";
-					}
-					console.log(aTag);
-					
-					$('.likename'+feedId).append("<a>유저아이디</a>");
 				}
-                
-               	
-				//user_id = user_id.slice(0,-1);	//마지막 콤마 제거 
-               	//user_id = user_id.split(',');	//쉼표기준으로 자르기 
-               	//user_id=user_id.reverse();		//최신순두개
-               	
-/*         		
-          	    console.log("aTag : "+aTag + " ///////////// User ID : " + user_id + count);          		   
-				for(var j = 0; j < count; j++){
-					userName.empty();	//원래 이름
-	         	    userText.empty();	//원래 텍스트
-	         	    userNewText.empty();	//새로 추가된 태그 비우고 다시 
-	         	   	$('.likename'+feedId).empty();
-					if(j <= 1) {
-						$('.likename'+feedId).append("<a>"+user_id+"</a>");
-					} else if(j == 2){
-						$('.likename'+feedId).append(aTag);
-					} else if(j >= 3) {
-						$('.likename'+feedId).append(aTag);
-						userNewText.append('외'+parseInt(count-2)+'명이 이글을 좋아합니다.'); 
+				//카운트 수만큼 userImg append
+				for(var j=0; j<count;j++){
+					if(userImg.children().length<5){	//5개가 있으면 더이상 추가 하지 않음 
+					userImg.append("<img src='${pageContext.request.contextPath}/resources/upload/"+user_img[j]+"'>");						
 					}
-				} */
-
-   				span.empty();
-   				span.append(count); 
+				}
+				//좋아요 유저가 2 이상일때
+				if(count>2){
+					userNewText.append('외'+parseInt(count-2)+'명이 이글을 좋아합니다.'); 
+				}
+	   			span.append(count); 
+	   			
+				if(chk){
+					alert('좋아요');
+				}else{
+					alert('좋아요 취소')
+				}
 			},
 			error:function(err){
 				console.log(err);
@@ -1549,7 +1527,9 @@ $(document).ready(function(){
 					<div class="column is-3 is-hidden-mobile">
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4><spring:message code="feed.tag.title"/></h4>
+								<h4>
+									<spring:message code="feed.tag.title" />
+								</h4>
 							</div>
 							<div class="card-body">
 								<c:forEach var="vo" items="${likeTag }" end="9">
@@ -1565,7 +1545,9 @@ $(document).ready(function(){
 						<!------------------------ 공지사항 시작 ------------------------->
 						<div id="latest-activity-1" class="card">
 							<div class="card-heading is-bordered">
-								<h4><spring:message code="feed.notice.title"/></h4>
+								<h4>
+									<spring:message code="feed.notice.title" />
+								</h4>
 							</div>
 							<div class="card-body no-padding">
 								<c:forEach items="${noticeList }" var="vo" end="3">
@@ -1626,7 +1608,7 @@ $(document).ready(function(){
 										<ul>
 											<li class="is-active"><a> <span
 													class="icon is-small"><i data-feather="edit-3"></i></span>
-													<span><spring:message code="feed.feed.publish"/></span>
+													<span><spring:message code="feed.feed.publish" /></span>
 											</a></li>
 											<!-- Close X button -->
 											<li class="close-wrap"><span class="close-publish">
@@ -1644,10 +1626,13 @@ $(document).ready(function(){
 									<div class="tab-content">
 										<div class="compose">
 											<div class="compose-form">
-												<img src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }"  alt="">
+												<img
+													src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }"
+													alt="">
 												<div class="control">
 													<textarea id="publish" name="content" class="textarea"
-														rows="3" placeholder='<spring:message code="feed.feed.text"/>'></textarea>
+														rows="3"
+														placeholder='<spring:message code="feed.feed.text"/>'></textarea>
 												</div>
 											</div>
 											<div id="feed-upload" class="feed-upload"></div>
@@ -1861,15 +1846,16 @@ $(document).ready(function(){
 										<div id="basic-options" class="compose-options">
 											<!-- Upload action -->
 											<div class="compose-option" style="height: 32px">
-												<span>📷 <spring:message code="feed.feed.photo"/></span> <input id="feed-upload-input-2"
-													name="file" type="file" accept=".png, .jpg, .jpeg"
-													onchange="readURL(this)">
+												<span>📷 <spring:message code="feed.feed.photo" /></span> <input
+													id="feed-upload-input-2" name="file" type="file"
+													accept=".png, .jpg, .jpeg" onchange="readURL(this)">
 											</div>
 											<!-- Tag action -->
 											<div id="show-activities" class="compose-option">
 												<img
 													src="resources/template/assets/img/icons/emoji/emoji-1.svg"
-													alt=""> <span><spring:message code="feed.feed.tag"/></span>
+													alt=""> <span><spring:message
+														code="feed.feed.tag" /></span>
 											</div>
 										</div>
 										<!-- /General basic options -->
@@ -1887,11 +1873,21 @@ $(document).ready(function(){
 						</form>
 
 						<!-------------- 검색 태그 부분------------ -->
-						<div class="menu" id="allSearch"><spring:message code="feed.new"/></div>
-						<div class="menu" id="searchNear"><spring:message code="feed.neer"/></div>
-						<div class="menu" id="searchTag"><spring:message code="feed.tag"/></div>
-						<div class="menu" id="searchKo"><spring:message code="feed.ko"/></div>
-						<div class="menu" id="searchEn"><spring:message code="feed.en"/></div>
+						<div class="menu" id="allSearch">
+							<spring:message code="feed.new" />
+						</div>
+						<div class="menu" id="searchNear">
+							<spring:message code="feed.neer" />
+						</div>
+						<div class="menu" id="searchTag">
+							<spring:message code="feed.tag" />
+						</div>
+						<div class="menu" id="searchKo">
+							<spring:message code="feed.ko" />
+						</div>
+						<div class="menu" id="searchEn">
+							<spring:message code="feed.en" />
+						</div>
 
 						<div id="SearchDiv" class="control has-margin">
 							<input class="input is-hidden" type="text" id="tagInput"
@@ -1915,14 +1911,14 @@ $(document).ready(function(){
 											<!-- User meta -->
 											<div class="user-block">
 												<div class="image">
-													<img src="${pageContext.request.contextPath}/resources/upload/${vo.photo }"
+													<img
+														src="${pageContext.request.contextPath}/resources/upload/${vo.photo }"
 														data-demo-src="assets/img/avatars/dan.jpg"
 														data-user-popover="1" alt="">
 												</div>
 												<div class="user-info" id="${vo.user_id }">
 													<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
-													<span class="time"> <script
-															type="text/javascript">														
+													<span class="time"> <script type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
 													</script>
 													</span>
@@ -1952,7 +1948,9 @@ $(document).ready(function(){
 															<div class="media">
 																<div class="media-content" id="${vo.content }"
 																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
-																	<h3><spring:message code="feed.drop.trans"/></h3>
+																	<h3>
+																		<spring:message code="feed.drop.trans" />
+																	</h3>
 																</div>
 															</div>
 														</a>
@@ -1962,7 +1960,9 @@ $(document).ready(function(){
 																	<div class="media-content" id="feedcor"
 																		data-fid="${vo.feed_id }" data-fidx="${status.index }"
 																		data-fuser="${vo.user_id }">
-																		<h3><spring:message code="feed.drop.corr"/></h3>
+																		<h3>
+																			<spring:message code="feed.drop.corr" />
+																		</h3>
 																	</div>
 																</div>
 															</a>
@@ -1972,7 +1972,9 @@ $(document).ready(function(){
 																	<div class="media-content" id="frbtn"
 																		data-repo2="${vo.feed_id }"
 																		data-report2="${vo.user_id }">
-																		<h3><spring:message code="feed.drop.report"/></h3>
+																		<h3>
+																			<spring:message code="feed.drop.report" />
+																		</h3>
 																	</div>
 																	<div class="dropdown-menu">
 																		<div class="dropdown-content reportMenu">
@@ -1980,31 +1982,34 @@ $(document).ready(function(){
 																				<table id="report-table">
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물"><spring:message code="feed.report.content"/></label></td>
+																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물">
+																								<spring:message code="feed.report.content" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공"><spring:message code="feed.report.lie"/>
-																								</label></td>
+																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">
+																								<spring:message code="feed.report.lie" /> </label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="성적인 내용"><spring:message code="feed.report.sexual"/></label></td>
+																								id="fmsg" name="${vo.feed_id }" value="성적인 내용">
+																								<spring:message code="feed.report.sexual" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
 																								id="fmsg" name="${vo.feed_id }"
-																								value="데이트가 목적인 내용"><spring:message code="feed.report.date"/></label></td>
+																								value="데이트가 목적인 내용"> <spring:message
+																									code="feed.report.date" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="욕설/비방"><spring:message code="feed.report.word"/></label>
-																						</td>
+																								id="fmsg" name="${vo.feed_id }" value="욕설/비방">
+																								<spring:message code="feed.report.word" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="기타"><spring:message code="feed.report.etc"/></label>
-																						</td>
+																								id="fmsg" name="${vo.feed_id }" value="기타">
+																								<spring:message code="feed.report.etc" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><input placeholder="신고이유" hidden="true"
@@ -2017,9 +2022,11 @@ $(document).ready(function(){
 																			<div class="reported-div">
 																				<input type="checkbox" id="feed-blocked"
 																					data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
-																				<spring:message code="feed.report.block"/>
+																				<spring:message code="feed.report.block" />
 																				<button id="report-btn" data-repo2="${vo.feed_id  }"
-																					data-report2="${vo.user_id }"><spring:message code="feed.report.btn"/></button>
+																					data-report2="${vo.user_id }">
+																					<spring:message code="feed.report.btn" />
+																				</button>
 																			</div>
 																		</div>
 																	</div>
@@ -2029,7 +2036,8 @@ $(document).ready(function(){
 														<c:if test="${vo.user_id eq user.user_id}">
 															<hr class="dropdown-divider">
 															<a class="dropdown-item">
-																<div class="media feedUpdate" id="update${vo.feed_id }" onclick="feedUpdate('${vo.feed_id }')">
+																<div class="media feedUpdate" id="update${vo.feed_id }"
+																	onclick="feedUpdate('${vo.feed_id }')">
 																	<i data-feather="bell"></i>
 																	<div class="media-content">
 																		<input type="hidden" id="update-tag" name="update-tag"
@@ -2040,13 +2048,17 @@ $(document).ready(function(){
 																			value="${vo.uuid }"> <input type="hidden"
 																			id="update-fphoto" name="update-fphoto"
 																			value="${vo.fphoto }">
-																		<h3><spring:message code="feed.drop.update"/></h3>
+																		<h3>
+																			<spring:message code="feed.drop.update" />
+																		</h3>
 																	</div>
 																</div> <a href="#" class="dropdown-item">
 																	<div class="media">
 																		<i data-feather="flag"></i>
 																		<div class="media-content delFeed" id="${vo.feed_id }">
-																			<h3><spring:message code="feed.drop.delete"/></h3>
+																			<h3>
+																				<spring:message code="feed.drop.delete" />
+																			</h3>
 																		</div>
 																	</div>
 															</a>
@@ -2065,16 +2077,16 @@ $(document).ready(function(){
 												<div class="tdiv" id="tdiv${vo.feed_id }"></div>
 												<div class="twdiv" id="${vo.write_lan }"></div>
 											</div>
-												<div class="post-image">
-													<img
-														src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
-														alt="" />
-												</div>
+											<div class="post-image">
+												<img
+													src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
+													alt="" />
+											</div>
 											<div>
 												<p>
 													<c:if test="${not empty vo.tags }">
 														<c:forTokens items="${vo.tags }" delims="," var="item">
-														    <a class="tag-label" id="${item}">#${item}</a>
+															<a class="tag-label" id="${item}">#${item}</a>
 														</c:forTokens>
 													</c:if>
 												</p>
@@ -2085,52 +2097,63 @@ $(document).ready(function(){
 										<!-- Post footer -->
 										<div class="card-footer">
 											<!-- Post statistics -->
-											<div class="likers-group">
-											    <c:forTokens items="${vo.likersuuid }" delims="," var="item" end="4">
-		                                        <img src='${pageContext.request.contextPath}/resources/upload/${item}' data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1" alt="">
+											<div class="likers-group" id="likers-group${vo.feed_id }">
+												<c:forTokens items="${vo.likersuuid }" delims="," var="item"
+													end="4">
+													<img
+														src='${pageContext.request.contextPath}/resources/upload/${item}'
+														data-demo-src="assets/img/avatars/dan.jpg"
+														data-user-popover="1" alt="">
 												</c:forTokens>
-		                                    </div>
-		                                    <!-- Followers text -->
-		                                    <div class="likers-text">
-		                                        <p class="likename${vo.feed_id }">
-		                                        <c:set var="cnt" value="1"/>
-                                        		<c:forTokens items="${vo.likers }" delims="," var="item" end="1">
-												    <a class="originLikename${vo.feed_id }" href="#" id="${item}">${item}</a>
-												    <c:set var="sum" value="${cnt+1}"/>
-												</c:forTokens>
-		                                        </p>
-		                                        <c:if test="${vo.like_cnt gt 2 }">
-		                                        <p class="orginLikeText${vo.feed_id }">외 ${vo.like_cnt - sum} 명이 이 글을 좋아합니다</p>
-		                                        </c:if>
-		                                        <p class="likeText${vo.feed_id }"></p>
-		                                    </div>
+											</div>
+											<!-- Followers text -->
+											<div class="likers-text">
+												<p class="likename${vo.feed_id }">
+													<c:set var="cnt" value="1" />
+													<c:forTokens items="${vo.likers }" delims="," var="item"
+														end="1">
+														<a class="originLikename${vo.feed_id }" href="#"
+															id="${item}">${item}</a>
+														<c:set var="sum" value="${cnt+1}" />
+													</c:forTokens>
+
+												</p>
+												<c:if test="${vo.like_cnt gt 2 }">
+													<p class="orginLikeText${vo.feed_id }">외 ${vo.like_cnt - sum}
+														명이 이 글을 좋아합니다</p>
+												</c:if>
+												<p class="likeText${vo.feed_id }"></p>
+											</div>
 											<div class="social-count">
-													<!-- Action buttons -->
-													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
-													<!-- 댓글 카운트 -->
-													<div class="fab-wrapper is-comment" style="padding-right: 10px;">
-														<a href="javascript:void(0);" class="small-fab"> <svg
-																viewBox="0 0 24 24" width="24" height="24"
-																stroke="currentColor" stroke-width="2" fill="none"
-																stroke-linecap="round" stroke-linejoin="round"
-																class="css-i6dzq1">
+												<!-- Action buttons -->
+												<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
+												<!-- 댓글 카운트 -->
+												<div class="fab-wrapper is-comment"
+													style="padding-right: 10px;">
+													<a href="javascript:void(0);" class="small-fab"> <svg
+															viewBox="0 0 24 24" width="24" height="24"
+															stroke="currentColor" stroke-width="2" fill="none"
+															stroke-linecap="round" stroke-linejoin="round"
+															class="css-i6dzq1">
 																<path
-																	d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-														<span class="activeCnt" id="minicmt" data-minicmt="${status.index }">
-															<c:if test="${vo.cmt eq 0 }">0</c:if>
-															<c:if test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
-														</span>
-														</a>
-													</div>
-													<!-- 좋아요 카운트 -->
-													<div class="like-wrapper">
-														<a class="like-button"
-															onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;"> <i
-															class="mdi mdi-heart not-liked bouncy"></i> <i
-															class="mdi mdi-heart is-liked bouncy"></i> 
-															<span class="activeCnt" id="recCnt${vo.feed_id }"> ${vo.like_cnt } </span>
-														</a>
-													</div>
+																d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+														<span class="activeCnt" id="minicmt"
+														data-minicmt="${status.index }"> <c:if
+																test="${vo.cmt eq 0 }">0</c:if> <c:if
+																test="${vo.cmt gt 0 }">${vo.cmt }</c:if>
+													</span>
+													</a>
+												</div>
+												<!-- 좋아요 카운트 -->
+												<div class="like-wrapper">
+													<a class="like-button"
+														onclick="likeIt('${vo.feed_id}','${vo.user_id }'); return false;">
+														<i class="mdi mdi-heart not-liked bouncy"></i> <i
+														class="mdi mdi-heart is-liked bouncy"></i> <span
+														class="activeCnt" id="recCnt${vo.feed_id }">
+															${vo.like_cnt } </span>
+													</a>
+												</div>
 											</div>
 										</div>
 										<div data-table="${status.index }"></div>
@@ -2239,39 +2262,37 @@ $(document).ready(function(){
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="스팸 게시물">
-																										<spring:message code="comment.report.content" /></label>
-																									</td>
+																											value="스팸 게시물"> <spring:message
+																												code="comment.report.content" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="가짜정보 제공">
-																										<spring:message code="comment.report.lie" /></label></td>
+																											value="가짜정보 제공"> <spring:message
+																												code="comment.report.lie" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="성적인 내용">
-																										<spring:message code="comment.report.sexual" /></label>
-																									</td>
+																											value="성적인 내용"> <spring:message
+																												code="comment.report.sexual" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="데이트가 목적인 내용">
-																										<spring:message code="letter.report.date" /></label></td>
+																											value="데이트가 목적인 내용"> <spring:message
+																												code="letter.report.date" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="욕설/비방">
-																										<spring:message code="letter.report.word" /></label></td>
+																											value="욕설/비방"> <spring:message
+																												code="letter.report.word" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }" value="기타">
-																										<spring:message code="letter.report.etc" /></label></td>
+																											<spring:message code="letter.report.etc" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><spring:message
@@ -2375,39 +2396,37 @@ $(document).ready(function(){
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="스팸 게시물">
-																										<spring:message code="comment.report.content" /></label>
-																									</td>
+																											value="스팸 게시물"> <spring:message
+																												code="comment.report.content" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="가짜정보 제공">
-																										<spring:message code="comment.report.lie" /></label></td>
+																											value="가짜정보 제공"> <spring:message
+																												code="comment.report.lie" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="성적인 내용">
-																										<spring:message code="comment.report.sexual" /></label>
-																									</td>
+																											value="성적인 내용"> <spring:message
+																												code="comment.report.sexual" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="데이트가 목적인 내용">
-																										<spring:message code="letter.report.date" /></label></td>
+																											value="데이트가 목적인 내용"> <spring:message
+																												code="letter.report.date" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }"
-																											value="욕설/비방">
-																										<spring:message code="letter.report.word" /></label></td>
+																											value="욕설/비방"> <spring:message
+																												code="letter.report.word" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><label><input type="radio"
 																											id="msg" name="${cmt.comment_id }" value="기타">
-																										<spring:message code="letter.report.etc" /></label></td>
+																											<spring:message code="letter.report.etc" /></label></td>
 																								</tr>
 																								<tr>
 																									<td><spring:message
@@ -2484,7 +2503,8 @@ $(document).ready(function(){
 							<!------------------------ 포스트 끝 ------------------------->
 							<div class="load-more-wrap narrow-top has-text-centered"
 								id="buttonToogle">
-								<a href="javascript:;" class="load-more-button"><spring:message code="feed.loadmore"/> </a>
+								<a href="javascript:;" class="load-more-button"><spring:message
+										code="feed.loadmore" /> </a>
 							</div>
 						</div>
 						<!-- /Load more posts -->
@@ -2495,7 +2515,9 @@ $(document).ready(function(){
 						<!------------------------ 친구추천 시작!------------------------->
 						<div class="card">
 							<div class="card-heading is-bordered">
-								<h4><spring:message code="feed.friend.title"/></h4>
+								<h4>
+									<spring:message code="feed.friend.title" />
+								</h4>
 							</div>
 							<div class="card-body no-padding">
 								<!-- Suggested friend -->
@@ -2508,7 +2530,9 @@ $(document).ready(function(){
 												onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
 											<div class="page-meta">
 												<span style="font-size: 0.9rem">${vo.name }</span> <span
-													style="font-size: 0.75rem"><spring:message code="feed.friend.topic"/> ${vo.topicCnt }<spring:message code="feed.friend.topic2"/> </span>
+													style="font-size: 0.75rem"><spring:message
+														code="feed.friend.topic" /> ${vo.topicCnt }<spring:message
+														code="feed.friend.topic2" /> </span>
 											</div>
 											<div class="add-friend add-transition" id="${vo.user_id }"
 												onclick="addFriend('${vo.user_id }')">
@@ -2556,8 +2580,8 @@ $(document).ready(function(){
 														<div class="birthday-indicator">${vo.cnt }</div>
 													</div>
 													<div class="birthday-content">
-														<h4>${vo.name }<spring:message
-																code="feed.birth.msg1" arguments="${vo.cnt }" />
+														<h4>${vo.name }<spring:message code="feed.birth.msg1"
+																arguments="${vo.cnt }" />
 														</h4>
 														<p style="line-height: 2">
 															<spring:message code="feed.birth.msg2" />
