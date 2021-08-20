@@ -6,6 +6,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -108,8 +109,10 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 		}
 		else request.setAttribute("LoginFailMessage", "회원을 찾을 수 없는 계정입니다. 회원가입을 해주세요.");
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home.do");
-//		RequestDispatcher dispatcher = request.getRequestDispatcher("/home.do?lang=" + lgsession);
-		dispatcher.forward(request, response);
+//		RequestDispatcher dispatcher = request.getRequestDispatcher("/home.do");
+////		RequestDispatcher dispatcher = request.getRequestDispatcher("/home.do?lang=" + lgsession);
+//		dispatcher.forward(request, response);
+
+		 response.sendRedirect("home.do");
 	}
 }
