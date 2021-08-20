@@ -1956,7 +1956,6 @@ $(document).ready(function(){
 																<% pageContext.setAttribute("enter", "\r\n"); %>
 																<c:set var="content" value="${vo.content }"/>
 																<c:set var="text" value="${fn:replace(content,enter,' ')}"/>
-																
 																<div class="media-content" id="${text }"
 																	onclick="trans('${vo.feed_id }','${text }'); return false;">
 																	<h3>

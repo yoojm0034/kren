@@ -83,7 +83,7 @@
 <script>
 	// 영어 -> 한국어
 	function tokr(index){
-		var en = $("#trans"+index).val();
+		var en = $("#trans"+index).val().replace("\r\n","");
 		var Data = {english:en};
 		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
@@ -109,7 +109,7 @@
 		
 	// 한국어 -> 영어
 	function toen(index){
-		var ko = $("#trans"+index).val();
+		var ko = $("#trans"+index).val().replace("\r\n","");
 		var Data = {korean:ko};
 		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
