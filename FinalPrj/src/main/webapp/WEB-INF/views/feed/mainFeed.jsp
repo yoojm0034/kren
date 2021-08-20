@@ -2222,7 +2222,7 @@ $(document).ready(function(){
 																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script> <!-- Actions --> <c:if
-																				test="${cmt.user_id eq user.user_id }">
+																				test="${cmt.user_id eq user.user_id}">
 																				<div class="controls" style="display: inline-block">
 																					<div class="edit">
 																						<a id="del" data-delcmt="${cmt.comment_id }"
@@ -2243,7 +2243,7 @@ $(document).ready(function(){
 																			style="color: #525252; word-wrap: break-word; white-space: pre-line;">${cmt.content }
 																		</p>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id}">
+																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div
@@ -2358,7 +2358,7 @@ $(document).ready(function(){
 																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script> <!-- Actions --> <c:if
-																				test="${cmt.user_id eq user.user_id }">
+																				test="${cmt.user_id eq user.user_id}">
 																				<div class="controls" style="display: inline-block">
 																					<div class="edit">
 																						<a id="cdel" data-delcmt="${cmt.comment_id }"
@@ -2384,7 +2384,7 @@ $(document).ready(function(){
 																			</c:if>
 																		</c:forEach>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id}">
+																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div

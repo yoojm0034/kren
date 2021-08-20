@@ -2140,7 +2140,7 @@ $(function(){
 																			style="color: #525252; word-wrap: break-word; white-space: pre-line;">${cmt.content }
 																		</p>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id}">
+																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div
@@ -2283,7 +2283,7 @@ $(function(){
 																			</c:if>
 																		</c:forEach>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id}">
+																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div
