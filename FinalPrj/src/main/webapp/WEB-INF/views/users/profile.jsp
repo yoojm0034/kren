@@ -413,7 +413,7 @@ $(function(){
 						+ '<button class="upload-button dz-clickable" id="photoUpdate">'
 						+ '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>'
 						+ '</button>'
-						+ '<img id="upload-preview" class="avatar-image" src="${pageContext.request.contextPath}/resources/upload/${usersPhoto.uuid }" data-demo-src="/FinalPrj/assets/img/avatars/avatar-w.png" alt="">'
+						+ '<img id="upload-preview" class="avatar-image" src="${pageContext.request.contextPath}/resources/upload/${userPhoto.uuid }" data-demo-src="/FinalPrj/assets/img/avatars/avatar-w.png" alt="">'
 						+ '<form id="profile-pic-dz" name="profile-pic-dz" class="dropzone is-hidden" action="/">'
 						+ '<div class="dz-default dz-message"><span>Drop files here to upload</span></div></form></div>';
 				$('.photo-upload').append(img);
