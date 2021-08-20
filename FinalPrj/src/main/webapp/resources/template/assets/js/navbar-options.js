@@ -20,15 +20,12 @@ function initSubSearch() {
 function initSidebar() {
   //Toggle sidebar
   if ($('#show-filters, #hide-filters').length) {
+  
     $('#show-filters, #hide-filters').on('click', function () {
       $('#show-filters, #hide-filters').toggleClass('is-hidden');
       $('.filters-panel').toggleClass('is-active');
       $('.main-container').toggleClass('has-sidebar');
-      
-
-  
     });
-    
   }
 }
 

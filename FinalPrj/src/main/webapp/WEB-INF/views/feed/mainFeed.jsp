@@ -1667,7 +1667,7 @@ $(document).ready(function(){
 												<div id="activities-autocpl-wrapper"
 													class="control has-margin">
 													<input id="activities-autocpl" type="text" class="input"
-														placeholder="태그를 입력해 주세요" maxlength="10">
+														placeholder="<spring:message code="feed.insert.tag"/>" maxlength="10">
 													<div class="icon">
 														<i data-feather="search"></i>
 													</div>
