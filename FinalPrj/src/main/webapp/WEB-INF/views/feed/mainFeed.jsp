@@ -404,7 +404,7 @@ $(document).ready(function(){
 				}
 				//좋아요 유저가 2 이상일때
 				if(count>2){
-					userNewText.append('<spring:message code="feed.like.user1"/>'+parseInt(count-2)+'<spring:message code="feed.like.user1"/>'); 
+					userNewText.append('<spring:message code="feed.like.user1"/>'+parseInt(count-2)+'<spring:message code="feed.like.user2"/>'); 
 				}
 	   			span.append(count); 
 	   			
