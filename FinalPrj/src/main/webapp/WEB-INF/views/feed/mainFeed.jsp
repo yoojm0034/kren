@@ -2112,7 +2112,7 @@ $(document).ready(function(){
 													<c:set var="cnt" value="1" />
 													<c:forTokens items="${vo.likers }" delims="," var="item"
 														end="1">
-														<a class="originLikename${vo.feed_id }" href="#"
+														<a class="originLikename${vo.feed_id }" href="${pageContext.request.contextPath}/profile.do?user_id=${item}"
 															id="${item}">${item}</a>
 														<c:set var="sum" value="${cnt+1}" />
 													</c:forTokens>
