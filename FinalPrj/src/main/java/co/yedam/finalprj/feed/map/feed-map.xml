@@ -7,8 +7,6 @@
 		parameterType="co.yedam.finalprj.feed.vo.FeedVO" resultType="map">
 		SELECT *
 	    FROM (SELECT
-	    				<![CDATA[CASE WHEN #{user_id} <> U.USER_ID THEN TRUNC(CAL(#{user_id} ,U.USER_ID),0)
-	    				ELSE 0 END ]]>,
 						u.USER_ID 	"user_id",
 						u.EMAIL 	"email",
 						u.NAME 		"name",
@@ -55,8 +53,11 @@
 	  	    <if test="write_lan != null">
 			AND write_lan = #{write_lan}
 	  	    </if>
-	  	    <if test="location != null">
-			AND 1 BETWEEN 0 AND 2000
+	  	    <if test="friendsChk != null">
+            AND f.user_id IN ( SELECT following
+                       		   FROM   friends 
+                       		   WHERE  user_id =#{user_id}
+                    		 ) 
 	  	    </if>
 	  	    <if test="feed_id != null">
 			AND f.feed_id = #{feed_id}

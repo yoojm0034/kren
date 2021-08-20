@@ -16,7 +16,7 @@ public class FeedVO {
 	private Date reg_date;
 	private String tags;
 	private String write_lan;
-	private String location;
+	private String friendsChk;
 	
 	//photo.vo
 	private String photo_id;

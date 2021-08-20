@@ -430,6 +430,7 @@ $(document).ready(function(){
 
 	//-------번역---------
 	function trans(id, text){
+		console.log(id, text);
 		var div = $("#tdiv"+id);			//div ID
 		var lan = div.next().attr('id');	//content
 	 	$.ajax({
@@ -1274,7 +1275,6 @@ $(document).ready(function(){
 //--------교정END----------------------------------------
 </script>
 	<!-- Pageloader -->
-
 	<div class="infraloader is-active"></div>
 	<div class="app-overlay"></div>
 	<div class="view-wrapper">
@@ -1953,8 +1953,11 @@ $(document).ready(function(){
 													<div class="dropdown-content">
 														<a href="#" class="dropdown-item">
 															<div class="media">
-																<div class="media-content" id="${vo.content }"
-																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
+																<% pageContext.setAttribute("enter", "\r\n"); %>
+																<c:set var="content" value="${vo.content }"/>
+																<c:set var="text" value="${fn:replace(content,enter,' ')}"/>
+																<div class="media-content" id="${text }"
+																	onclick="trans('${vo.feed_id }','${text }'); return false;">
 																	<h3>
 																		<spring:message code="feed.drop.trans" />
 																	</h3>

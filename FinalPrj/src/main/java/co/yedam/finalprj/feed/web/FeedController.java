@@ -98,7 +98,6 @@ public class FeedController {
 		
 		vo.setUser_id(id);
 		model.addAttribute("feedList",feedDao.feedSelectList(vo));
-	
 		//댓글
 		model.addAttribute("commentList",CommentDao.commentSelectList());
 		model.addAttribute("cdList",commentDetailDao.CommentDetailList());
