@@ -33,7 +33,7 @@ $(document).ready(function () {
     }
   });
 
-/*	function page1() {
+	function page1() {
 		if ($('#idCheck').val() == 'unChecked') {
 			alert("ID 중복체크를 하세요.");
 			return false;
@@ -46,7 +46,7 @@ $(document).ready(function () {
 			alert("생년월일을 입력하세요.");
 			return false;
 		}
-		if ($('input[name=gender]:checked').val() == "") {
+		if ($('input[name=gender]:checked').val() == undefined) {
 			alert("성별을 체크하세요.");
 			return false;
 		}
@@ -61,11 +61,43 @@ $(document).ready(function () {
 			return false;
 		}
 		if ($('#codeCheck').val() == 'unChecked') {
-			alert("이메일 인증을 재확인하세요.");
+			alert("이메일 인증을 확인하세요.");
 			return false;
 		}			
 		return true;	
-	};*/
+	};
+	
+	function page2() {
+		if ($('#city').val() == "") {
+			alert("위치를 조회해주세요");
+			return false;
+		}
+		return true;	
+	};
+	
+	function page3() {
+		if ($('#language1').val() == "") {
+			alert("모국어를 선택하세요.");
+			return false;
+		}
+		if ($('#language2_level').val() == "") {
+			alert("배울 언어의 레벨을 선택하세요.");
+			return false;
+		}
+		if (Number($('#checked').text()) < 3) {
+			alert("관심사를 3개 이상 선택하세요.");
+			return false;
+		}
+		return true;	
+	};
+	
+	function page4() {
+		if ($('#upload-preview').attr("src").includes("base64")) {
+			return true;
+		}
+		alert("사진을 업로드 해주세요");
+		return false;	
+	};
 	
   $('.process-button').on('click', function () {
     var $this = $(this);
@@ -74,9 +106,13 @@ $(document).ready(function () {
 	var ret = true;
 	
 	if (id == 'step2') {
-//		ret = page1();
+		ret = page1();
 	} else if ( id == 'step3') {
-//		ret = page2();
+		ret = page2();
+	} else if ( id == 'step4') {
+		ret = page3();
+	} else if ( id == 'step5') {
+		ret = page4();
 	}
 	
 	if (ret == true) {
