@@ -228,6 +228,9 @@ input#feed-blocked {
 button#report-btn {
 	margin-left: 66px;
 }
+input#tagInput{
+	margin-bottom: 18px;
+}
 </style>
 <script>
 $(document).ready(function(){
@@ -618,11 +621,10 @@ $(document).ready(function(){
 		});
 	});
 	
-	//-------내근처--------- 
-	$('#searchNear').on('click',function(){
+	$('#myFriend').on('click',function(){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/feedSelect.do",
-			data:{location : 'true' },
+			data:{friendsChk : 'true' },
 			success:function(result){
 				$('.feedContents').html(result);
 				datePosdst();
@@ -639,7 +641,7 @@ $(document).ready(function(){
 			error:function(err){
 				console.log(err);
 			}
-		});
+		})
 	});
 	
 	//-------언어별 Ko---------
@@ -741,7 +743,6 @@ $(document).ready(function(){
 		  	
 		    $(document).click(function (e) {
 		        var target = e.target.id;
-	
   		        if (target != 'searchTag' && target != 'tagInput') {
 		    	  $('#tagInput').removeClass('is-active').addClass('is-hidden');
 		        }  
@@ -785,11 +786,12 @@ $(document).ready(function(){
 							url:"${pageContext.request.contextPath}/feedSelect.do",
 							data:{tags : tagval },
 							success:function(result){
+								console.log('결과' + result);
 								$('.feedContents').html(result);
 								datePosdst();
+								dateCmt();
 								loadMore();
 								initPostComments();
-								dateCmt();
 								$('.load-more-wrap.narrow-top.has-text-centered').addClass('is-hidden');
 								$("div[id^='load_'").each(function(i, el){
 									var cid = $(this).data('cid');//cc_id.line
@@ -1275,6 +1277,7 @@ $(document).ready(function(){
 //--------교정END----------------------------------------
 </script>
 	<!-- Pageloader -->
+
 	<div class="infraloader is-active"></div>
 	<div class="app-overlay"></div>
 	<div class="view-wrapper">
@@ -1882,8 +1885,8 @@ $(document).ready(function(){
 						<div class="menu" id="allSearch">
 							<spring:message code="feed.new" />
 						</div>
-						<div class="menu" id="searchNear">
-							<spring:message code="feed.neer" />
+						<div class="menu" id="myFriend">
+							<spring:message code="feed.friend" />
 						</div>
 						<div class="menu" id="searchTag">
 							<spring:message code="feed.tag" />
@@ -1898,12 +1901,6 @@ $(document).ready(function(){
 						<div id="SearchDiv" class="control has-margin">
 							<input class="input is-hidden" type="text" id="tagInput"
 								placeholder="<spring:message code="feed.insert.tag"/>">
-							<div class="icon">
-								<i data-feather="search"></i>
-							</div>
-							<div class="close-icon is-main">
-								<i data-feather="x"></i>
-							</div>
 						</div>
 
 						<div class="feedContents">
@@ -1953,7 +1950,7 @@ $(document).ready(function(){
 													<div class="dropdown-content">
 														<a href="#" class="dropdown-item">
 															<div class="media">
-																<% pageContext.setAttribute("enter", "\r\n"); %>
+															<% pageContext.setAttribute("enter", "\r\n"); %>
 																<c:set var="content" value="${vo.content }"/>
 																<c:set var="text" value="${fn:replace(content,enter,' ')}"/>
 																<div class="media-content" id="${text }"
