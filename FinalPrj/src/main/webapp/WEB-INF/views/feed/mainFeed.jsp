@@ -231,7 +231,7 @@ button#report-btn {
 </style>
 <script>
 $(document).ready(function(){
-	//생일
+	//-------생일---------
     function setSlide(){// 동작 함수 생성
         var box   = document.getElementById("widget-slide-1");
         var elm   = box.getElementsByTagName( 'li' );
@@ -286,7 +286,7 @@ $(document).ready(function(){
 										//alert('우표 하나 받았어요!');
 										alert('<spring:message code="feed.check.stamp.plus"/>');
 										$('.checkMsg').children().remove();
-										$('.checkMsg').html("<spring:message code="feed.check.done"/>");
+										$('.checkMsg').html("<spring:message code='feed.check.done'/>");
 									},
 									error:function() {
 										//alert('관리자에게 문의해주세요');								
@@ -362,14 +362,14 @@ $(document).ready(function(){
 
 	//-------좋아요--------
 	function likeIt(feedId,userId){
-		var span = $('#recCnt'+feedId);
+		var span = $('#recCnt'+feedId);				//원래카운트
 		var userText = $('.orginLikeText'+feedId);	//원래조건에 해당하는 텍스트
-		var userNewText = $('.likeText'+feedId);	//새로운텍스트 append
-		var userImg = $('#likers-group'+feedId);
-		var userName=$('.likename'+feedId);
+		var userNewText = $('.likeText'+feedId);	//새로운텍스트 
+		var userImg = $('#likers-group'+feedId);	//새로운유저사진
+		var userName=$('.likename'+feedId);			//새로운유저네임
 		var myId= '${user.user_id}';
-		var user_id = new Array();		//새로운 유저네임
-		var user_img = new Array();		//새로운 유저이미지
+		var user_id = new Array();		
+		var user_img = new Array();	
 
 		$.ajax({
 			url:"${pageContext.request.contextPath}/likeCnt.do",
@@ -378,13 +378,13 @@ $(document).ready(function(){
 			dataType:"JSON",
 			success:function(data){
 				var count=data.length;	//새로운 좋아요 카운트 
-				var chk=0;				//새로운리스트에 user_id 있는지여부 
+				var chk=0;				//새로운리스트에 user_id 있는지여부 1이면 좋아요, 0이면 좋아요 취소
                	$.each(data, function(idx, val) {
              		if('${user.user_id}' == val.user_id){ chk = 1; }
              			user_id.push(val.user_id);
              			user_img.push(val.uuid);
                	});
-				//append 전 모든 태그 공백 
+				//append 전 모든 태그 공백으로 만들기 
 				span.empty();
 			 	userImg.empty();
 				userName.empty();
@@ -393,7 +393,7 @@ $(document).ready(function(){
 				//카운트 수만큼 username append 
 				for(var i =0; i<count; i++){
 					if(userName.children().length<2){	//2개가 있으면 append 하지 않음 
-					userName.append("<a>"+user_id[i]+" </a>");	
+					userName.append("<a href='${pageContext.request.contextPath}/profile.do?user_id="+user_id[i]+"'>"+user_id[i]+" </a>");	
 					}
 				}
 				//카운트 수만큼 userImg append
@@ -404,14 +404,17 @@ $(document).ready(function(){
 				}
 				//좋아요 유저가 2 이상일때
 				if(count>2){
-					userNewText.append('외'+parseInt(count-2)+'명이 이글을 좋아합니다.'); 
+					userNewText.append('<spring:message code="feed.like.user1"/>'+parseInt(count-2)+'<spring:message code="feed.like.user2"/>'); 
 				}
 	   			span.append(count); 
 	   			
 				if(chk){
-					alert('좋아요');
+					alert('<spring:message code="feed.like"/>');
+					if(userId != myId ){
+						sendLikePush(userId,feedId);						
+					}
 				}else{
-					alert('좋아요 취소')
+					alert('<spring:message code="feed.like.cancle"/>')
 				}
 			},
 			error:function(err){
@@ -419,12 +422,16 @@ $(document).ready(function(){
 			}
 		}) 
 	}; 
+	
+	//-------프로필클릭시---------
+	function profile(userId){
+	  location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
+	}
 
 	//-------번역---------
 	function trans(id, text){
 		var div = $("#tdiv"+id);			//div ID
 		var lan = div.next().attr('id');	//content
-
 	 	$.ajax({
 			url:"${pageContext.request.contextPath}/transContent.do",
 			type:"GET",
@@ -433,8 +440,8 @@ $(document).ready(function(){
 			success:function(v){
 				var json = JSON.parse(v);
 				var transval = json.message.result.translatedText;
-
-				if(div.children().length){
+				
+				if(div.children().length){	//이미번역된글이있으면 추가로 append하지않음
 					return;
 				}else{
 					div.append($('<p/>').html(transval));
@@ -446,7 +453,7 @@ $(document).ready(function(){
 		});  
 	};
 	
-	//새 편지 쓰기
+	//-------새 편지 쓰기--------
 	function writePopup(id,name) {
 		var winWidth = 860;
 	    var winHeight = 580;
@@ -464,8 +471,10 @@ $(document).ready(function(){
 		letterform.submit();	
 	}
 
+	//-------피드수정--------
 	function feedUpdate(feedId){
-		$('.app-overlay').addClass('is-active');
+		//버튼클릭시 글쓰는 폼으로 포커스 이동 및 클래스 변경 
+		$('.app-overlay').addClass('is-active');	
 		$('.is-new-content').addClass('is-highlighted');
 		$('#publish').focus();
 		
@@ -473,8 +482,8 @@ $(document).ready(function(){
 		var content = $('#update'+feedId).children(1).children(":eq(1)").val();
 		var photo = $('#update'+feedId).children(1).children(":eq(2)").val(); 
 		var fphoto = $('#update'+feedId).children(1).children(":eq(3)").val(); 
-		var retag = tags.replace(/,/g, "#");	
-		var photoChk = $('#photoChk');	//사진 수정시 체크 여부 
+		var retag = tags.replace(/,/g, "#");	//, 를 # 으로 변경	
+		var photoChk = $('#photoChk');			//사진 수정시 체크 여부 
 		
 		$('#feedid').val(feedId);	
 		$('#publish').val(content);
@@ -496,7 +505,7 @@ $(document).ready(function(){
 
 	  	$('.remove-file').on('click', function () {
 	         $(this).closest('.upload-wrap').remove();
-	         photoChk.val(1);
+	         photoChk.val(1);					//피드수정시사진변경여부 확인
 	  	});
 	      
 	     $('.deleteTag').on('click', function () {
@@ -506,26 +515,29 @@ $(document).ready(function(){
 
 
 	$(function(){
-	loadMore();
+	
+	loadMore();	
+	
 	//-------피드 등록---------
 	$('#publish-button').on('click', function(){
 		var feedId = $('#feedid').val();
 		var tagval = $('#append_tag').text();
+	
 		if(tagval == ""){
 		}else{
 			tagval= tagval.replace("#","");
 			tagval= tagval.replace(/#/g,",");
 		}
+		
 		document.getElementById('tags').value = tagval;		
+		
 		//피드작성스탬프지급
 		if(feedId ==""){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/stamphFeedChk.do",
 			type:"POST",
 			success:function(v){
-				if(v==0){
-					alert('<spring:message code="feed.feed.stamp"/>');				
-				}
+				if(v==0){ alert('<spring:message code="feed.feed.stamp"/>'); }
 				$('#feedInsert').submit();		
 			},
 			error:function(err){
@@ -675,12 +687,6 @@ $(document).ready(function(){
 				console.log(err);
 			}
 		});
-	});
-	
-	//-------프로필클릭시---------
-	$('.user-info').on('click',function(){
-		var userId= this.id;
-		location.href="${pageContext.request.contextPath}/profile.do?user_id="+userId
 	});
 	
 	$('.delFeed').on('click',function(){
@@ -1891,7 +1897,7 @@ $(document).ready(function(){
 
 						<div id="SearchDiv" class="control has-margin">
 							<input class="input is-hidden" type="text" id="tagInput"
-								placeholder="태그를 입력해 주세요">
+								placeholder="<spring:message code="feed.insert.tag"/>">
 							<div class="icon">
 								<i data-feather="search"></i>
 							</div>
@@ -1914,9 +1920,10 @@ $(document).ready(function(){
 													<img
 														src="${pageContext.request.contextPath}/resources/upload/${vo.photo }"
 														data-demo-src="assets/img/avatars/dan.jpg"
-														data-user-popover="1" alt="">
+														data-user-popover="1" alt=""
+														onclick="profile('${vo.user_id }')" style="cursor: pointer;">
 												</div>
-												<div class="user-info" id="${vo.user_id }">
+												<div class="user-info" onclick="profile('${vo.user_id }')">
 													<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
 													<span class="time"> <script type="text/javascript">														
 														document.write(timeForToday('${vo.reg_date}'));
@@ -2112,15 +2119,16 @@ $(document).ready(function(){
 													<c:set var="cnt" value="1" />
 													<c:forTokens items="${vo.likers }" delims="," var="item"
 														end="1">
-														<a class="originLikename${vo.feed_id }" href="${pageContext.request.contextPath}/profile.do?user_id=${item}"
+														<a class="originLikename${vo.feed_id }"
+															href="${pageContext.request.contextPath}/profile.do?user_id=${item}"
 															id="${item}">${item}</a>
 														<c:set var="sum" value="${cnt+1}" />
 													</c:forTokens>
 
 												</p>
 												<c:if test="${vo.like_cnt gt 2 }">
-													<p class="orginLikeText${vo.feed_id }">외 ${vo.like_cnt - sum}
-														명이 이 글을 좋아합니다</p>
+													<p class="orginLikeText${vo.feed_id }"><spring:message code="feed.like.user1"/> ${vo.like_cnt - sum}
+														<spring:message code="feed.like.user2"/></p>
 												</c:if>
 												<p class="likeText${vo.feed_id }"></p>
 											</div>
@@ -2201,7 +2209,8 @@ $(document).ready(function(){
 																	<div class="media-left">
 																		<div class="image">
 																			<c:if test="${cmt.uuid ne '-' }">
-																				<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+																				<img
+																					src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
 																					data-demo-src="assets/img/avatars/dan.jpg"
 																					data-user-popover="1" alt="">
 																			</c:if>
@@ -2222,7 +2231,7 @@ $(document).ready(function(){
 																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script> <!-- Actions --> <c:if
-																				test="${cmt.user_id eq user.user_id}">
+																				test="${cmt.user_id eq user.user_id }">
 																				<div class="controls" style="display: inline-block">
 																					<div class="edit">
 																						<a id="del" data-delcmt="${cmt.comment_id }"
@@ -2243,7 +2252,7 @@ $(document).ready(function(){
 																			style="color: #525252; word-wrap: break-word; white-space: pre-line;">${cmt.content }
 																		</p>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
+																	<c:if test="${user.user_id ne cmt.user_id}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div
@@ -2337,7 +2346,8 @@ $(document).ready(function(){
 																	<div class="media-left">
 																		<div class="image">
 																			<c:if test="${cmt.uuid ne '-' }">
-																				<img src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
+																				<img
+																					src="${pageContext.request.contextPath}/resources/upload/${cmt.uuid}"
 																					data-demo-src="assets/img/avatars/dan.jpg"
 																					data-user-popover="1" alt="">
 																			</c:if>
@@ -2358,7 +2368,7 @@ $(document).ready(function(){
 																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script> <!-- Actions --> <c:if
-																				test="${cmt.user_id eq user.user_id}">
+																				test="${cmt.user_id eq user.user_id }">
 																				<div class="controls" style="display: inline-block">
 																					<div class="edit">
 																						<a id="cdel" data-delcmt="${cmt.comment_id }"
@@ -2384,7 +2394,7 @@ $(document).ready(function(){
 																			</c:if>
 																		</c:forEach>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
+																	<c:if test="${user.user_id ne cmt.user_id}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div
@@ -2538,12 +2548,13 @@ $(document).ready(function(){
 								<c:forEach items="${sameTopic }" var="vo" end="3">
 									<c:if test="${vo.topicCnt ne  0 }">
 										<div class="add-friend-block transition-block">
-											<img src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
+											<img
+												src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 												data-demo-src="assets/img/avatars/nelly.png"
 												data-user-popover="9" alt="" style="cursor: pointer;"
-												onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
+												onclick="profile('${vo.user_id}')">
 											<div class="page-meta">
-												<span style="font-size: 0.9rem">${vo.name }</span> <span
+												<span style="font-size: 0.9rem;cursor: pointer;" onclick="profile('${vo.user_id}')">${vo.name }</span> <span
 													style="font-size: 0.75rem"><spring:message
 														code="feed.friend.topic" /> ${vo.topicCnt }<spring:message
 														code="feed.friend.topic2" /> </span>
@@ -2588,7 +2599,8 @@ $(document).ready(function(){
 												<div>
 													<div class="birthday-avatar"
 														onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='${vo.user_id }">
-														<img src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
+														<img
+															src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 															data-demo-src="assets/img/avatars/dan.jpg" alt=""
 															style="cursor: pointer;">
 														<div class="birthday-indicator">${vo.cnt }</div>

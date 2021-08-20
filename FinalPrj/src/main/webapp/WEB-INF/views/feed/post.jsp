@@ -87,9 +87,9 @@
 						<div class="image">
 							<img src="${pageContext.request.contextPath}/resources/upload/${vo.photo }"
 								data-demo-src="assets/img/avatars/dan.jpg" data-user-popover="1"
-								alt="">
+								alt="" onclick="profile('${vo.user_id }')" style="cursor: pointer;">
 						</div>
-						<div class="user-info" id="${vo.user_id }">
+						<div class="user-info" onclick="profile('${vo.user_id }')">
 							<a href="#" style="font-size: 1rem; display: inline">${vo.name }</a>
 							<span class="time postTime"><fmt:formatDate
 									value="${vo.reg_date }" pattern="yyyy-MM-dd HH:mm:ss" /></span>
@@ -277,8 +277,8 @@
 	
 						</p>
 						<c:if test="${vo.like_cnt gt 2 }">
-							<p class="orginLikeText${vo.feed_id }">외 ${vo.like_cnt - sum}
-								명이 이 글을 좋아합니다</p>
+							<p class="orginLikeText${vo.feed_id }"><spring:message code="feed.like.user1"/> ${vo.like_cnt - sum}
+								<spring:message code="feed.like.user2"/></p>
 						</c:if>
 						<p class="likeText${vo.feed_id }"></p>
 					</div>
