@@ -337,7 +337,7 @@
 			$.ajax({
 				url : '${pageContext.request.contextPath}/stampLetterCheck.do',
 				type : 'post',
-				data : JSON.stringify({user_id : $('#user_id').val()}),
+				data : JSON.stringify({user_id:'${user.user_id}'}),
 			    contentType : "application/json; charset=UTF-8",
 				success : function(data) {
 					if (data > 0) { //우표가 있으면
