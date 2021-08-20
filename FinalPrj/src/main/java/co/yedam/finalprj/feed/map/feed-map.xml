@@ -29,6 +29,7 @@
 	        			nvl(likeCnt.LIKECNT,0) "like_cnt",
 	        			F_COMMENT_CNT(f.feed_id) "cmt",
 	        			mainlike.LIKERS "likers",
+	        			mainlike.LIKERSNAME "likersname",
             			mainlike.LIKERSUUID "likersuuid",
             			userPhoto.uuid "photo"
 			  FROM 		feed f JOIN users u

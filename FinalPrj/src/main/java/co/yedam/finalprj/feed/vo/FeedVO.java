@@ -35,6 +35,8 @@ public class FeedVO {
 	//like 
 	private String likers;
 	private String likersuuid;
+	private String likersname;
+	
 	//comment
 	private int cmt;
 }

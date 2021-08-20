@@ -149,7 +149,7 @@ $(function () {
 			$('#text').focus();
 			return ;
 		}
-		if (getTextLength(content) < 1000) {
+		if (getTextLength(content) < 500) {
 			alert('<spring:message code="letter.alert.min"/>');
 			return ;
 		}

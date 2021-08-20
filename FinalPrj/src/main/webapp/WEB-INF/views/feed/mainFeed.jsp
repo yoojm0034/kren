@@ -286,7 +286,7 @@ $(document).ready(function(){
 										//alert('우표 하나 받았어요!');
 										alert('<spring:message code="feed.check.stamp.plus"/>');
 										$('.checkMsg').children().remove();
-										$('.checkMsg').html('<spring:message code="feed.check.done"/>');
+										$('.checkMsg').html("<spring:message code="feed.check.done"/>");
 									},
 									error:function() {
 										//alert('관리자에게 문의해주세요');								
@@ -2112,7 +2112,7 @@ $(document).ready(function(){
 													<c:set var="cnt" value="1" />
 													<c:forTokens items="${vo.likers }" delims="," var="item"
 														end="1">
-														<a class="originLikename${vo.feed_id }" href="#"
+														<a class="originLikename${vo.feed_id }" href="${pageContext.request.contextPath}/profile.do?user_id=${item}"
 															id="${item}">${item}</a>
 														<c:set var="sum" value="${cnt+1}" />
 													</c:forTokens>
@@ -2222,7 +2222,7 @@ $(document).ready(function(){
 																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script> <!-- Actions --> <c:if
-																				test="${cmt.user_id eq user.user_id }">
+																				test="${cmt.user_id eq user.user_id}">
 																				<div class="controls" style="display: inline-block">
 																					<div class="edit">
 																						<a id="del" data-delcmt="${cmt.comment_id }"
@@ -2243,7 +2243,7 @@ $(document).ready(function(){
 																			style="color: #525252; word-wrap: break-word; white-space: pre-line;">${cmt.content }
 																		</p>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id}">
+																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div
@@ -2358,7 +2358,7 @@ $(document).ready(function(){
 																				type="text/javascript">														
 														document.write(timeForToday('${rg_dt}'));
 													</script> <!-- Actions --> <c:if
-																				test="${cmt.user_id eq user.user_id }">
+																				test="${cmt.user_id eq user.user_id}">
 																				<div class="controls" style="display: inline-block">
 																					<div class="edit">
 																						<a id="cdel" data-delcmt="${cmt.comment_id }"
@@ -2384,7 +2384,7 @@ $(document).ready(function(){
 																			</c:if>
 																		</c:forEach>
 																	</div>
-																	<c:if test="${user.user_id ne cmt.user_id}">
+																	<c:if test="${user.user_id ne cmt.user_id and cmt.user_id ne 'admin'}">
 																		<!-- Right side dropdown -->
 																		<div class="media-right">
 																			<div
