@@ -286,7 +286,7 @@ $(document).ready(function(){
 										//alert('우표 하나 받았어요!');
 										alert('<spring:message code="feed.check.stamp.plus"/>');
 										$('.checkMsg').children().remove();
-										$('.checkMsg').html('<spring:message code="feed.check.done"/>');
+										$('.checkMsg').html("<spring:message code='feed.check.done'/>");
 									},
 									error:function() {
 										//alert('관리자에게 문의해주세요');								
