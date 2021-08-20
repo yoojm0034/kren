@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>findPW</title>
+<title>KREN</title>
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"

@@ -643,6 +643,8 @@ h5:hover {
 				data-feather="search"></i>
 			</a>
 		</div>
+		
+		<!-- 알람 -->
 		<div class="navbar-item is-icon drop-trigger">
 			<a class="icon-link" href="javascript:void(0);"> <i
 				data-feather="bell"></i> <span class="indicator"></span>
@@ -651,90 +653,20 @@ h5:hover {
 			<div class="nav-drop">
 				<div class="inner">
 					<div class="nav-drop-header">
-						<span>Notifications</span> <a href="#"> <i data-feather="bell"></i>
+						<span><spring:message code="push.noti"/></span> <a href="#"> <i
+							data-feather="bell"></i>
 						</a>
 					</div>
-					<div class="nav-drop-body is-notifications">
-						<!-- Notification -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/david.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<span><a href="#">David Kim</a> commented on <a href="#">your
-										post</a>.</span> <span class="time">30 minutes ago</span>
-							</div>
-							<div class="media-right">
-								<div class="added-icon">
-									<i data-feather="message-square"></i>
-								</div>
-							</div>
-						</div>
-						<!-- Notification -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/daniel.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<span><a href="#">Daniel Wellington</a> liked your <a
-									href="#">profile.</a></span> <span class="time">43 minutes ago</span>
-							</div>
-							<div class="media-right">
-								<div class="added-icon">
-									<i data-feather="heart"></i>
-								</div>
-							</div>
-						</div>
-						<!-- Notification -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/stella.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<span><a href="#">Stella Bergmann</a> shared a <a
-									href="#">New video</a> on your wall.</span> <span class="time">Yesterday</span>
-							</div>
-							<div class="media-right">
-								<div class="added-icon">
-									<i data-feather="youtube"></i>
-								</div>
-							</div>
-						</div>
-						<!-- Notification -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/300x300"
-										data-demo-src="assets/img/avatars/elise.jpg" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<span><a href="#">Elise Walker</a> shared an <a href="#">Image</a>
-									with you an 2 other people.</span> <span class="time">2 days
-									ago</span>
-							</div>
-							<div class="media-right">
-								<div class="added-icon">
-									<i data-feather="image"></i>
-								</div>
-							</div>
-						</div>
+					<div class="nav-drop-body is-notifications" id="replyC" style="overflow:scroll;height:200px;">
 					</div>
 					<div class="nav-drop-footer">
-						<a href="#">View All</a>
+						<small id="clearC"><spring:message code="push.clear"/></small>
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		<!-- 메시지 아이콘 -->
 		<div class="navbar-item is-icon drop-trigger">
 			<a class="icon-link" href="javascript:void(0);"> <i
 				data-feather="mail"></i> <span class="indicator"></span>
@@ -743,71 +675,12 @@ h5:hover {
 			<div class="nav-drop">
 				<div class="inner">
 					<div class="nav-drop-header">
-						<span>Messages</span> <a href="messages-inbox.html">Inbox</a>
+						<span><spring:message code="push.letters"/></span> <a href="${pageContext.request.contextPath}/letterBox.do">Inbox</a>
 					</div>
-					<div class="nav-drop-body is-friend-requests">
-						<!-- Message -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/150x150"
-										data-demo-src="assets/img/avatars/nelly.png"
-										data-user-popover="9" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<a href="#">Nelly Schwartz</a> <span>I think we should
-									meet near the Starbucks so we can get...</span> <span class="time">Yesterday</span>
-							</div>
-							<div class="media-right is-centered">
-								<div class="added-icon">
-									<i data-feather="message-square"></i>
-								</div>
-							</div>
-						</div>
-						<!-- Message -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/150x150"
-										data-demo-src="assets/img/avatars/edward.jpeg"
-										data-user-popover="5" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<a href="#">Edward Mayers</a> <span>That was a real
-									pleasure seeing you last time we really should...</span> <span
-									class="time">last week</span>
-							</div>
-							<div class="media-right is-centered">
-								<div class="added-icon">
-									<i data-feather="message-square"></i>
-								</div>
-							</div>
-						</div>
-						<!-- Message -->
-						<div class="media">
-							<figure class="media-left">
-								<p class="image">
-									<img src="https://via.placeholder.com/150x150"
-										data-demo-src="assets/img/avatars/dan.jpg"
-										data-user-popover="1" alt="">
-								</p>
-							</figure>
-							<div class="media-content">
-								<a href="#">Dan Walker</a> <span>Hey there, would it be
-									possible to borrow your bicycle, i really need...</span> <span
-									class="time">Jun 03 2018</span>
-							</div>
-							<div class="media-right is-centered">
-								<div class="added-icon">
-									<i data-feather="message-square"></i>
-								</div>
-							</div>
-						</div>
+					<div class="nav-drop-body is-friend-requests" id="replyD" style="overflow:scroll;height:200px;">
 					</div>
 					<div class="nav-drop-footer">
-						<a href="#">Clear All</a>
+						<small id="clearD"><spring:message code="push.clear"/></small>
 					</div>
 				</div>
 			</div>
@@ -823,50 +696,46 @@ h5:hover {
 	<div class="navbar-menu">
 		<!-- Account -->
 		<div class="navbar-item has-dropdown is-active">
-			<a href="/navbar-v1-profile-main.html" class="navbar-link"> <img
-				src="https://via.placeholder.com/150x150"
+			<a href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id}" class="navbar-link"> <img
+				src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }"
 				data-demo-src="assets/img/avatars/jenna.png" alt=""> <span
-				class="is-heading">Jenna Davis</span>
+				class="is-heading">${user.name }</span>
 			</a>
 
 			<!-- Mobile Dropdown -->
 			<div class="navbar-dropdown">
-				<a href="/navbar-v1-feed.html" class="navbar-item is-flex is-mobile-icon">
-					<span><i data-feather="activity"></i>Feed</span> <span class="menu-badge">87</span>
+				<a href="${pageContext.request.contextPath}/feed.do" class="navbar-item is-flex is-mobile-icon">
+					<span><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+					<spring:message code="head.feed"/></span>
 				</a>
-				<a href="/navbar-v1-videos-home-v2.html" class="navbar-item is-flex is-mobile-icon">
-					<span><i data-feather="icon-users"></i>Friends</span> <span class="menu-badge">21</span>
+				<a href="${pageContext.request.contextPath}/friendSearch.do" class="navbar-item is-flex is-mobile-icon">
+					<span><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+					<spring:message code="head.friends"/></span>
 				</a>
-				<a href="/navbar-v1-profile-friends.html" class="navbar-item is-flex is-mobile-icon"> 
-					<span><i data-feather="icon-envelope-o"></i>Letter</span> <span class="menu-badge">3</span>
+				<a href="${pageContext.request.contextPath}/letterBox.do" class="navbar-item is-flex is-mobile-icon"> 
+					<span><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+					<spring:message code="head.letter"/></span>
 				</a>
-				<a href="/navbar-v1-profile-main.html" class="navbar-item is-flex is-mobile-icon"> 
-					<span><i data-feather="user"></i>Profile</span>
+				<a href="${pageContext.request.contextPath}/userNoticeList.do" class="navbar-item is-flex is-mobile-icon"> 
+					<span><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+					<spring:message code="head.notice"/></span>
 				</a>
-				<a href="/navbar-v1-ecommerce-cart.html" class="navbar-item is-flex is-mobile-icon">
-					<span><i data-feather="shopping-cart"></i>Cart</span> <span class="menu-badge">3</span>
+				<c:if test="${user.user_id eq 'admin' }">
+				<a href="${pageContext.request.contextPath}/admin/admin.do" class="navbar-item is-flex is-mobile-icon">
+					<span><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+					관리자</span> <span class="menu-badge">3</span>
 				</a>
-				<a href="#" class="navbar-item is-flex is-mobile-icon"> 
-					<span><i data-feather="bookmark"></i>Bookmarks</span>
-				</a>
+				</c:if>
 			</div>
 		</div>
 
 		<!-- More -->
 		<div class="navbar-item has-dropdown">
-			<a href="/navbar-v1-settings.html" class="navbar-link"> <i
-				data-feather="user"></i> <span class="is-heading">Account</span>
-			</a>
-
 			<!-- Mobile Dropdown -->
 			<div class="navbar-dropdown">
-				<a href="#" class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="life-buoy"></i>Support</span>
-				</a> <a href="/navbar-v1-settings.html"
-					class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="settings"></i>Settings</span>
-				</a> <a href="#" class="navbar-item is-flex is-mobile-icon"> <span><i
-						data-feather="log-out"></i>Logout</span>
+				<a href="${pageContext.request.contextPath}/logout" class="navbar-item is-flex is-mobile-icon">
+				<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+				<spring:message code="head.logout"/></span>
 				</a>
 			</div>
 		</div>

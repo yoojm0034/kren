@@ -157,7 +157,7 @@ $(function() {
 			url : '${pageContext.request.contextPath}/stampLetterCheck.do',
 			type : 'post',
 			data : JSON.stringify({
-				user_id : $('#user_id').val()
+				user_id:'${user.user_id}'
 			}),
 			contentType : "application/json; charset=UTF-8",
 			success : function(cnt) {

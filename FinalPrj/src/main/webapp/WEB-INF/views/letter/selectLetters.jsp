@@ -83,7 +83,7 @@
 <script>
 	// 영어 -> 한국어
 	function tokr(index){
-		var en = $("#trans"+index).val();
+		var en = $("#trans"+index).val().replace("\r\n","");
 		var Data = {english:en};
 		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
@@ -109,7 +109,7 @@
 		
 	// 한국어 -> 영어
 	function toen(index){
-		var ko = $("#trans"+index).val();
+		var ko = $("#trans"+index).val().replace("\r\n","");
 		var Data = {korean:ko};
 		var div = $("#tdiv"+index);
 		var opt = $("select[data-transopt="+index+"]");
@@ -261,7 +261,7 @@
 			$.ajax({
 				url : '${pageContext.request.contextPath}/stampLetterCheck.do',
 				type : 'post',
-				data : JSON.stringify({user_id : $('#user_id').val()}),
+				data : JSON.stringify({user_id:'${user.user_id}'}),
 			    contentType : "application/json; charset=UTF-8",
 				success : function(data) {
 					if (data > 0) { //우표가 있으면

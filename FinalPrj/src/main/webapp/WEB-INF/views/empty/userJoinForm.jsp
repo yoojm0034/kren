@@ -494,7 +494,7 @@ $('#step5').click(function() {
 							</div>
 						</div>
 						<div class="buttons">
-							<a class="button process-button" href="home.do">Home</a>
+							<a class="button process-button" href="${pageContext.request.contextPath}/home.do">Home</a>
 							<a class="button process-button is-next" data-step="step-dot-2" id="step2">Next</a>
 						</div>
 					</div>
