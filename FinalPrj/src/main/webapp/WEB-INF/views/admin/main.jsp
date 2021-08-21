@@ -115,6 +115,7 @@ tr:hover {
 				success : function(data) {
 					var div = '<table class="table"><tr>'
 							+ '<th colspan="4" align="left"><h2>'+data.name+'의 상세정보</h2></th></tr>'
+							+ '<tr><th>프로필사진</th><td width="10%" align="left" colspan="3"><img src=${pageContext.request.contextPath}/resources/upload/'+data.uuid+' width="100px" height="100px"></td>'
 							+ '<tr><th>아이디</th><td width="10%" align="left">'+data.user_id+'</td>'
 							+ '<th>이름</th><td>'+data.name+'</td></tr>'
 							+ '<tr><th>소개</th><td colspan="4" align="left"><textarea class="textarea comment-textarea" rows="6" id="content" name="content" width="100%" readonly="readonly">'+data.profile+'</textarea></td></tr>'

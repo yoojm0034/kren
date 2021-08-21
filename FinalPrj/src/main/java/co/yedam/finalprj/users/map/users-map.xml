@@ -3,9 +3,10 @@
 <mapper namespace="co.yedam.finalprj.users.map.UsersMap">
 	<!-- 관리자 -->
 	<select id="usersSelect" resultType="co.yedam.finalprj.users.vo.UsersVO">
-		select *
-		from users
-		where user_id=#{user_id}
+		select a.*,b.uuid
+		from users a, users_photo_v b
+		where a.user_id = b.user_id
+		and a.user_id=#{user_id}
 	</select>
 	<select id="usersSelectList" resultType="co.yedam.finalprj.users.vo.UsersVO">
 		select *
