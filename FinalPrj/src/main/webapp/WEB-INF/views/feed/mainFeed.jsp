@@ -482,10 +482,10 @@ $(document).ready(function(){
 		$('.is-new-content').addClass('is-highlighted');
 		$('#publish').focus();
 		
-		var tags = $('#update'+feedId).children(1).children(":eq(0)").val();
-		var content = $('#update'+feedId).children(1).children(":eq(1)").val();
-		var photo = $('#update'+feedId).children(1).children(":eq(2)").val(); 
-		var fphoto = $('#update'+feedId).children(1).children(":eq(3)").val(); 
+		var tags = $('#update'+feedId).find('#update-tag').val();
+		var content = $('#update'+feedId).find('#update-content').val();
+		var photo = $('#update'+feedId).find('#update-photo').val(); 
+		var fphoto = $('#update'+feedId).find('#update-fphoto').val(); 
 		var retag = tags.replace(/,/g, "#");	//, 를 # 으로 변경	
 		var photoChk = $('#photoChk');			//사진 수정시 체크 여부 
 		
