@@ -194,6 +194,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyA').append(div);
+					        $('#replyC').append(div);
 					        
 				     }
 		    		 else if(data[i].type == 'follow') {
@@ -214,6 +215,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyA').append(div);
+					        $('#replyC').append(div);
 					 }
 		    		 else if(data[i].type == 'like') {
 					     	var lik = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].name + " <spring:message code="push.like"/></h5>"
@@ -233,6 +235,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyA').append(div);
+					        $('#replyC').append(div);
 					 }
 		    		 else if(data[i].type == 'letter') {
 		    			 	var userid = data[i].name;
@@ -254,6 +257,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyB').append(div);
+					        $('#replyD').append(div);
 					 }
 		    	}
 		    	if ($('#replyA').children().html() != null){
@@ -261,6 +265,12 @@ h5:hover {
 		    	 }
 		    	if ($('#replyB').children().html() != null){
 		    		$('#clearB').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+		    	 }
+		    	if ($('#replyC').children().html() != null){
+		    		$('#clearC').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+		    	 }
+		    	if ($('#replyD').children().html() != null){
+		    		$('#clearD').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 		    	 }
 		    }
 		});
@@ -299,6 +309,16 @@ h5:hover {
 				}
 			});
 		});
+		$('#clearC').click(function() {
+			$.ajax({
+				url:'${pageContext.request.contextPath}/deletePushAll.do',
+				success: function(data) {
+					//인디케이터 지우기
+					$('#replyC').children().remove();
+					$('#clearC').parent().parent().parent().parent().children().eq(0).children().eq(1).removeClass("dot");
+				}
+			});
+		});
 		//push letter clear 
 		$('#clearB').click(function() {
 			$.ajax({
@@ -310,9 +330,28 @@ h5:hover {
 				}
 			});
 		});
+		$('#clearD').click(function() {
+			$.ajax({
+				url:'${pageContext.request.contextPath}/deleteLetterPushAll.do',
+				success: function(data) {
+					//인디케이터 지우기
+					$('#replyD').children().remove();
+					$('#clearD').parent().parent().parent().parent().children().eq(0).children().eq(1).removeClass("dot");
+				}
+			});
+		});
 		$('#search').keydown(function() {
 			 if (event.keyCode === 13) {
 				 if($('#search').val() != '') {
+					 searchForm.submit();
+				 }
+			 };
+		});
+		$('#tipue_drop_input_mobile').keydown(function() {
+			 if (event.keyCode === 13) {
+				 if($('#tipue_drop_input_mobile').val() != '') {
+					 var input = $('#tipue_drop_input_mobile').val();
+					 $('#search').val(input);
 					 searchForm.submit();
 				 }
 			 };
@@ -359,6 +398,8 @@ h5:hover {
 	        if(data.includes('편지')) {
 	        	$('#replyB').prepend(div);
 	        	$('#clearB').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+	        	$('#replyD').prepend(div);
+	        	$('#clearD').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 	        	toastr.options.escapeHtml = true;
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;
@@ -367,6 +408,8 @@ h5:hover {
 	        }else{
 	        	$('#replyA').prepend(div);
 	        	$('#clearA').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+	        	$('#replyC').prepend(div);
+	        	$('#clearC').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 	        	toastr.options.escapeHtml = true;
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;
@@ -643,6 +686,23 @@ h5:hover {
 				data-feather="search"></i>
 			</a>
 		</div>
+		<!-- 언어선택 -->
+		<div class="navbar-item is-icon drop-trigger">
+			<a class="icon-link" href="javascript:void(0);">
+			 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+			</a>
+			<div class="nav-drop is-account-dropdown" style="width:150px">
+				<div class="inner" >
+					<div class="nav-drop-header">
+						<span><spring:message code="push.lang"/></span>
+					</div>
+					<div class="nav-drop-body is-notifications" style="line-height: 2;">	
+						<span class="lang" id="kr">KOREAN</span>
+						<span class="lang" id="en" style="display: block;">ENGLISH</span>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		<!-- 알람 -->
 		<div class="navbar-item is-icon drop-trigger">
@@ -740,15 +800,17 @@ h5:hover {
 			</div>
 		</div>
 	</div>
+	
 	<!--Search-->
 	<div class="mobile-search is-hidden">
 		<div class="control">
-			<input id="tipue_drop_input_mobile" class="input"
-				placeholder="Search...">
+			<input type="text" id="tipue_drop_input_mobile" class="input"
+				placeholder="Search" required>
 			<div class="close-icon">
-				<i data-feather="x"></i>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 			</div>
 			<div id="tipue_drop_content_mobile" class="tipue-drop-content"></div>
 		</div>
 	</div>
+	
 </nav>
