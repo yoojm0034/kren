@@ -194,7 +194,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyA').append(div);
-					        $('#replyC').append(div);
+// 					        $('#replyC').append(div);
 					        
 				     }
 		    		 else if(data[i].type == 'follow') {
@@ -215,7 +215,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyA').append(div);
-					        $('#replyC').append(div);
+// 					        $('#replyC').append(div);
 					 }
 		    		 else if(data[i].type == 'like') {
 					     	var lik = "<h5 id='clickUpdatePush' data-id='"+data[i].push_id+"'" +"data-fid='"+data[i].content_id+"'data-type='"+data[i].type+"'>" + data[i].name + " <spring:message code="push.like"/></h5>"
@@ -235,7 +235,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyA').append(div);
-					        $('#replyC').append(div);
+// 					        $('#replyC').append(div);
 					 }
 		    		 else if(data[i].type == 'letter') {
 		    			 	var userid = data[i].name;
@@ -257,7 +257,7 @@ h5:hover {
 					        div.append(div2);
 					        div.append(div3);
 					        $('#replyB').append(div);
-					        $('#replyD').append(div);
+// 					        $('#replyD').append(div);
 					 }
 		    	}
 		    	if ($('#replyA').children().html() != null){
@@ -266,12 +266,12 @@ h5:hover {
 		    	if ($('#replyB').children().html() != null){
 		    		$('#clearB').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 		    	 }
-		    	if ($('#replyC').children().html() != null){
-		    		$('#clearC').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
-		    	 }
-		    	if ($('#replyD').children().html() != null){
-		    		$('#clearD').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
-		    	 }
+// 		    	if ($('#replyC').children().html() != null){
+// 		    		$('#clearC').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+// 		    	 }
+// 		    	if ($('#replyD').children().html() != null){
+// 		    		$('#clearD').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+// 		    	 }
 		    }
 		});
 		$('body').on('click', '#clickUpdatePush',  function() {
@@ -398,8 +398,8 @@ h5:hover {
 	        if(data.includes('편지')) {
 	        	$('#replyB').prepend(div);
 	        	$('#clearB').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
-	        	$('#replyD').prepend(div);
-	        	$('#clearD').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+// 	        	$('#replyD').prepend(div);
+// 	        	$('#clearD').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 	        	toastr.options.escapeHtml = true;
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;
@@ -408,8 +408,8 @@ h5:hover {
 	        }else{
 	        	$('#replyA').prepend(div);
 	        	$('#clearA').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
-	        	$('#replyC').prepend(div);
-	        	$('#clearC').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
+// 	        	$('#replyC').prepend(div);
+// 	        	$('#clearC').parent().parent().parent().parent().children().eq(0).children().eq(1).addClass("dot");
 	        	toastr.options.escapeHtml = true;
 				toastr.options.closeButton = true;
 				toastr.options.newestOnTop = false;
