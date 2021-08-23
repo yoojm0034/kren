@@ -107,7 +107,7 @@
 				                       WHERE user_id = #{user_id}
 				                      )
 				AND u.status ='일반회원'
-				order by 1 desc
+				order by DBMS_RANDOM.RANDOM
 	</select>
 
 	<!-- 피드 등록 -->
