@@ -42,9 +42,6 @@
 <body>
 	<!-- 컨텐츠 시작 -->
 	<div class="inner-wrapper">
-		<a class="mobile-sidebar-trigger is-home-v2"> <i
-			data-feather="menu"></i>
-		</a>
 		<!-- Page Wrapper -->
 		<div id="wrapper">
 			<!-- Content Wrapper -->
