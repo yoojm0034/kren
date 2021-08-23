@@ -433,7 +433,6 @@ $(document).ready(function(){
 
 	//-------번역---------
 	function trans(id, text){
-		console.log(id, text);
 		var div = $("#tdiv"+id);			//div ID
 		var lan = div.next().attr('id');	//content
 	 	$.ajax({
@@ -1071,7 +1070,6 @@ $(document).ready(function(){
 	$('body').on('click','#msg', function() { //기타를 누르면 값을 입력할 수 있도록
 		var select = $(this);
 		var repo = select.attr('name');
-		console.log(repo);
 		var msg = $("input:radio[name='"+repo+"']:checked").val();
 		if(msg == '기타') {
 			$('input[data-rtxt="'+repo+'"]').attr('hidden',false);				

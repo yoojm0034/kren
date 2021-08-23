@@ -1891,7 +1891,7 @@ $(function(){
 															<div class="media">
 																<div class="media-content" id="${vo.content }"
 																	onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
-																	<h3>번역</h3>
+																	<h3><spring:message code="feed.drop.trans" /></h3>
 																</div>
 															</div>
 														</a>
@@ -1901,7 +1901,7 @@ $(function(){
 																	<div class="media-content" id="feedcor"
 																		data-fid="${vo.feed_id }" data-fidx="${status.index }"
 																		data-fuser="${vo.user_id }">
-																		<h3>교정</h3>
+																		<h3><spring:message code="feed.drop.corr" /></h3>
 																	</div>
 																</div>
 															</a>
@@ -1911,7 +1911,7 @@ $(function(){
 																	<div class="media-content" id="frbtn"
 																		data-repo2="${vo.feed_id }"
 																		data-report2="${vo.user_id }">
-																		<h3>신고</h3>
+																		<h3><spring:message code="feed.drop.report" /></h3>
 																	</div>
 																	<div class="dropdown-menu">
 																		<div class="dropdown-content reportMenu">
@@ -1919,36 +1919,35 @@ $(function(){
 																				<table id="report-table">
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물">스팸
-																								게시물</label></td>
+																								id="fmsg" name="${vo.feed_id }" value="스팸 게시물"><spring:message code="feed.report.content" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공">가짜정보
-																								제공</label></td>
+																								id="fmsg" name="${vo.feed_id }" value="가짜정보 제공"><spring:message code="feed.report.lie" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="성적인 내용">성적인
-																								내용</label></td>
+																								id="fmsg" name="${vo.feed_id }" value="성적인 내용"><spring:message code="feed.report.sexual" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
 																								id="fmsg" name="${vo.feed_id }"
-																								value="데이트가 목적인 내용">데이트가 목적인 내용</label></td>
+																								value="데이트가 목적인 내용"><spring:message
+																									code="feed.report.date" /></label></td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="욕설/비방">욕설/비방</label>
+																								id="fmsg" name="${vo.feed_id }" value="욕설/비방"><spring:message code="feed.report.word" /></label>
 																						</td>
 																					</tr>
 																					<tr>
 																						<td><label><input type="radio"
-																								id="fmsg" name="${vo.feed_id }" value="기타">기타</label>
+																								id="fmsg" name="${vo.feed_id }" value="기타"><spring:message code="feed.report.etc" /></label>
 																						</td>
 																					</tr>
 																					<tr>
-																						<td><input placeholder="신고이유" hidden="true"
+																					<spring:message code="comment.report.input.placeholder" var="feed_placeholder" />
+																						<td><input placeholder="${feed_placeholder }" hidden="true"
 																							data-rftxt="${vo.feed_id }" maxlength="30"></input>
 																						</td>
 																					</tr>
@@ -1958,9 +1957,9 @@ $(function(){
 																			<div class="reported-div">
 																				<input type="checkbox" id="feed-blocked"
 																					data-rfchk="${vo.feed_id  }" value="${vo.user_id }">${vo.name }
-																				차단
+																				<spring:message code="feed.report.block" />
 																				<button id="report-btn" data-repo2="${vo.feed_id  }"
-																					data-report2="${vo.user_id }">신고</button>
+																					data-report2="${vo.user_id }"><spring:message code="feed.report.btn" /></button>
 																			</div>
 																		</div>
 																	</div>
@@ -1981,13 +1980,13 @@ $(function(){
 																			value="${vo.uuid }"> <input type="hidden"
 																			id="update-fphoto" name="update-fphoto"
 																			value="${vo.fphoto }">
-																		<h3>수정</h3>
+																		<h3><spring:message code="profile.posts.edit"/></h3>
 																	</div>
 																</div> <a href="#" class="dropdown-item">
 																	<div class="media">
 																		<i data-feather="flag"></i>
 																		<div class="media-content delFeed" id="${vo.feed_id }">
-																			<h3>삭제</h3>
+																			<h3><spring:message code="profile.posts.delete"/></h3>
 																		</div>
 																	</div>
 															</a>
