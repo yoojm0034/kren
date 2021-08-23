@@ -107,6 +107,7 @@
 				                       WHERE user_id = #{user_id}
 				                      )
 				AND u.status ='일반회원'
+				order by 1 desc
 	</select>
 
 	<!-- 피드 등록 -->
