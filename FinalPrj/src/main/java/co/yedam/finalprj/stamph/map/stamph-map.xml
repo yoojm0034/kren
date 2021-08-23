@@ -4,14 +4,15 @@
 	
 	<select id="stamphSelectList" resultType="co.yedam.finalprj.stamph.vo.StamphVO" parameterType="co.yedam.finalprj.stamph.vo.StamphVO">
 		<![CDATA[
-		SELECT rownum, USER_ID, SH_TYPE, SH_DT, STAMPH_ID, CNT, TO_ID 
+		SELECT ROWNUM, USER_ID, SH_TYPE, SH_DT, STAMPH_ID, CNT, TO_ID, NAME
 		FROM (
-          		SELECT USER_ID, SH_TYPE, SH_DT, STAMPH_ID, CNT, TO_ID
-          		FROM stamph
-          		WHERE USER_ID = #{user_id}
-          		order by SH_DT DESC
+          		SELECT S.USER_ID, S.SH_TYPE, S.SH_DT, S.STAMPH_ID, S.CNT, S.TO_ID, U.NAME
+          		  FROM STAMPH S, USERS U
+          		 WHERE S.TO_ID = U.USER_ID 
+                   AND S.USER_ID = #{user_id}
+          		  ORDER BY SH_DT DESC
 			 )
-		where rownum < 16
+		WHERE ROWNUM < 16
 		]]>
 	</select>
 

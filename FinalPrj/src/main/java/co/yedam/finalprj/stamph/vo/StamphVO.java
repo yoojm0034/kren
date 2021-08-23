@@ -15,4 +15,5 @@ public class StamphVO {
 	private String stamph_id;
 	private int cnt;
 	private String to_id;
+	private String name;
 }
