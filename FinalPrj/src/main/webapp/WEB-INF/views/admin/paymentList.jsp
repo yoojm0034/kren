@@ -87,7 +87,7 @@ tr:hover {
 			paging : true,
 			columnDefs : [ {
 				targets : 2,
-				render : $.fn.dataTable.render.number('.', 0, '', '$')
+				render : $.fn.dataTable.render.number(',', '.', 0, '', '원')
 			} ]
 		});
 	});
