@@ -100,7 +100,7 @@
 										</div>
 
 										<div class="price">
-											<span class="has-price" id="pay">{vo.pay}</span>
+											<span class="has-price" id="pay">${vo.pay}</span>
 										</div>
 
 										<div>
