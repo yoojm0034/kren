@@ -45,7 +45,7 @@
 					//결제 성공 로직
 					console.log(rsp);
 					var msg = '결제가 완료되었습니다.';
-					msg += '결제 금액 : ' + rsp.paid_amount;
+					msg += '결제 금액 : ' + '$'+rsp.paid_amount;
 					
 	 				$.ajax({
 								url:'paymentInsert.do',
