@@ -99,8 +99,8 @@
 											<span class="has-price" id="cnt">X${vo.cnt}<spring:message code="stamp.cnt"/></span>
 										</div>
 
-										<div class="price">
-											<span class="has-price" id="pay">${vo.pay}</span>
+										<div class="discount">
+											<span class="has-price" id="pay">${vo.pay}원</span>
 										</div>
 
 										<div>
