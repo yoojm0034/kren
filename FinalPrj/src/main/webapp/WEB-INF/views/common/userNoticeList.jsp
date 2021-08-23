@@ -97,9 +97,6 @@ tr:hover {
 <body>
 	<!-- 컨텐츠 시작 -->
 	<div class="inner-wrapper">
-		<a class="mobile-sidebar-trigger is-home-v2"> <i
-			data-feather="menu"></i>
-		</a>
 		<!-- Page Wrapper -->
 		<div id="wrapper">
 			<!-- Content Wrapper -->
@@ -111,7 +108,7 @@ tr:hover {
 						<!-- DataTales Example -->
 						<div class="card shadow mb-4" style="box-shadow: 0 0 19px 4px #b2b2b2;">
 							<div class="card-body">
-								<div style="padding-top: 40px;">
+								<div style="padding-top: 40px; text-align:center;">
 								<span class="title"><spring:message code="notice.table.notice"/></span>
 								<button type="button" id="btnBack" class="button primary-button" style="float: right;"><spring:message code="notice.table.back"/></button>
 								</div>
