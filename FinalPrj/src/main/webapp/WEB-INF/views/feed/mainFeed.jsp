@@ -412,12 +412,10 @@ $(document).ready(function(){
 	   			span.append(count); 
 	   			
 				if(chk){
-					alert('<spring:message code="feed.like"/>');
 					if(userId != myId ){
 						sendLikePush(userId,feedId);						
 					}
 				}else{
-					alert('<spring:message code="feed.like.cancle"/>')
 				}
 			},
 			error:function(err){

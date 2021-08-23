@@ -511,7 +511,6 @@ $(function() {
 				
 				if ($('#currentPhoto').val() == src){
 					//프로필사진 변경안된 경우
-					alert("사진 변경 없이 프로필 변경 수행");
 					$('#profileUpdate').submit();
 				} else {
 					//프로필 사진 변경된 경우
@@ -534,7 +533,6 @@ $(function() {
 						 })
 					 .then(res => res.json()) 
 					 .then(res => console.log(res))
-						alert("정보수정완료");
 						window.location.reload(true);
 					}); 
 				}
