@@ -88,7 +88,7 @@ tr:hover {
 	-o-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	width: 50%; /* Could be more or less, depending on screen size */
-	height: 55%;
+	height: 70%;
 }
 </style>
 <script>
