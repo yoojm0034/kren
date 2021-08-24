@@ -2594,7 +2594,7 @@ $(document).ready(function(){
 											<div class="card-body">
 												<div>
 													<div class="birthday-avatar"
-														onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id='${vo.user_id }">
+														onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
 														<img
 															src='${pageContext.request.contextPath}/resources/upload/${vo.uuid}'
 															data-demo-src="assets/img/avatars/dan.jpg" alt=""
