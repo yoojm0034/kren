@@ -90,24 +90,32 @@
 	<!-- 나와 상대방의 일치하는 관심사 수 , 블락친구 제외, 이미 친구인 유저 제외 -->
 	<select id="sameTopicList" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">				
 		SELECT 
-		        topic_cnt(#{topic},u.topic) as "topicCnt" , 
-		        u.user_id, 
-		        u.name,
-		        photo.uuid
-		FROM 	
-				users u join USERPHOTO_V photo
-        		on photo.PHOTO_ID= u.PHOTO
-		WHERE 	not u.user_id IN (#{user_id})
-				AND NOT u.user_id IN (  SELECT blocked
-				                     	FROM block
-				                      	WHERE user_id = #{user_id}
-				                      )
-				AND NOT u.user_id IN ( SELECT FOLLOWING
-				                       FROM friends
-				                       WHERE user_id = #{user_id}
-				                      )
-				AND u.status ='일반회원'
-				order by DBMS_RANDOM.RANDOM
+			   c."topicCnt", 
+			   c.user_id,
+			   c.name,
+			   c.uuid
+		FROM 
+				(	SELECT 
+						    topic_cnt('topic_89,topic_76,topic_73,topic_71,topic_60,topic_6,topic_56,topic_5,topic_48,topic_35,topic_32,topic_25,topic_11',u.topic) as "topicCnt" , 
+						    u.user_id, 
+						    u.name,
+						    photo.uuid
+					FROM 	
+							users u join USERPHOTO_V photo
+				        	on photo.PHOTO_ID= u.PHOTO
+					WHERE 	not u.user_id IN (#{user_id})
+							AND NOT u.user_id IN (  SELECT blocked
+								                    FROM block
+								                    WHERE user_id = #{user_id}
+								                  )
+							AND NOT u.user_id IN ( SELECT FOLLOWING
+								                       FROM friends
+								                       WHERE user_id = #{user_id}
+								                      )
+							AND u.status ='일반회원'
+							order by DBMS_RANDOM.RANDOM
+				)c
+		 WHERE not c."topicCnt" in ('0')
 	</select>
 
 	<!-- 피드 등록 -->

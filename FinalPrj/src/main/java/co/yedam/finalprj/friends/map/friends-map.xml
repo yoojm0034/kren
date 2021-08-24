@@ -62,6 +62,7 @@
 							              FROM block
 								    	  WHERE USER_ID = #{user_id}
 				                    )
+		order by u.EDIT_DT desc		                    
 	</select>
 	<select id="newUser" parameterType="co.yedam.finalprj.users.vo.UsersVO" resultType="co.yedam.finalprj.users.vo.UsersVO">
 	   select   u.email,
@@ -100,6 +101,7 @@
 								    	 WHERE USER_ID = #{user_id}
 				                      	)         
 				AND  u.REG_DATE BETWEEN TRUNC(SYSDATE , 'iw') AND TRUNC(SYSDATE, 'iw')+6          
+		order by u.EDIT_DT desc
 	</select>
        
 	<!-- 나이, 성별, 국가, 언어, 관심사 -->
@@ -178,5 +180,6 @@
   		<if test="dtopic != null">
 			AND dtopicCnt = 0
 		</if>
+		order by topicCnt desc
 	</select>  
 </mapper>
