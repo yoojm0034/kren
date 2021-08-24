@@ -553,7 +553,7 @@ function deleteCountry(value) {
 			<div class="filters-panel" style="overflow: scroll;">
 				<div class="panel-inner">
 					<div class="title">
-						<span class="search-title">검색조건</span>
+						<span class="search-title"><spring:message code="friends.search.title"/></span>
 						<a class="button is-rounded is-solid accent-button" id="friendSearch"><spring:message code="friends.search"/></a>
 					</div>
 					<div class="field" style="font-size: .7rem;">
@@ -618,7 +618,7 @@ function deleteCountry(value) {
 					</div>
 					<div class="title">
 					<hr>
-					<span class="search-title">제외조건</span>
+					<span class="search-title"><spring:message code="friends.search.title2"/></span>
 					</div>
 					<!-- 제외조건 시작 -->
 					<div class="field" style="font-size: .7rem;">
