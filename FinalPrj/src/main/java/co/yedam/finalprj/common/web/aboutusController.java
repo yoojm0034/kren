@@ -1,5 +1,7 @@
 package co.yedam.finalprj.common.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +55,7 @@ public class aboutusController {
 	}
 	
 	@RequestMapping("userQnaInsert.do") 
-	public String userQnaInsert(QnaVO vo) {
+	public String userQnaInsert(QnaVO vo, HttpServletRequest req) {
 		int r = qnaDao.qnaInsert(vo);
 		System.out.println(r + "건 입력");
 		return "redirect:feed.do";
