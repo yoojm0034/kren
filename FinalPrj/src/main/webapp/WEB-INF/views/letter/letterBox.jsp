@@ -675,7 +675,7 @@
 											</c:if>
 											</c:if>
 											<div class="msg-header">
-												<div class="user-image">
+												<div class="user-image" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
 													<c:if test="${vo.uuid ne '-' }">
 														<img
 															style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
@@ -759,7 +759,7 @@
 						<div class="box message-preview">
 							<div class="box-inner">
 								<div class="header">
-									<div class="avatar">
+									<div class="avatar" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
 										<c:if test="${vo.uuid ne '-' }">
 											<img src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }"
 												alt=""
