@@ -212,8 +212,7 @@ public class FeedController {
 	public String transContent(@RequestParam(value = "korean", defaultValue = "-")String text,
 						Model model,FeedVO vo ) {	
 		String result = vo.getWrite_lan();
-	    System.out.println(result);
-	    System.out.println(text);
+
 		TransVO tvo = new TransVO();
 	    if(result.equals("ko")) {
 	    	tvo.setKr(text);
