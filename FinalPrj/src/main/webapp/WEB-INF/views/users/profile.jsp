@@ -573,12 +573,10 @@ function likeIt(feedId,userId){
            		}
           	});
 			if(chk){
-				alert('좋아요!');
 				if(userId != myId ){
 					sendLikePush(userId,feedId);						
 				}
 			}else{
-				alert('좋아요 취소');				
 			}
 				span.empty();
 				span.append(count);
