@@ -604,7 +604,7 @@
 					<!-- BUTTON GROUP -->
 					<div class="action-buttons">
 						<div class="control is-grouped is-hidden-desktop is-hidden-landscape">
-							<a id="open-compose" class="button is-solo" href="javascript:window.print()"> <svg
+							<a id="open-compose" class="button is-solo"> <svg
 									xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 									viewBox="0 0 24 24" fill="none" stroke="currentColor"
 									stroke-width="2" stroke-linecap="round"
@@ -723,7 +723,7 @@
 						<!-- BUTTON GROUP -->
 						<div class="action-buttons">
 							<div class="control is-grouped">
-								<a class="button"><svg viewBox="0 0 24 24" width="24"
+								<a class="button" href="javascript:window.print()"><svg viewBox="0 0 24 24" width="24"
 										height="24" stroke="currentColor" stroke-width="2" fill="none"
 										stroke-linecap="round" stroke-linejoin="round"
 										class="css-i6dzq1">
