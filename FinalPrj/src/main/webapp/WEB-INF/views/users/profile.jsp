@@ -555,37 +555,67 @@ function loadMore(){
 	} 
 	
 
-//-------좋아요--------
-function likeIt(feedId,userId){
-	var span = $('#recCnt'+feedId);
-	var myId= '${user.user_id}';
-	$.ajax({
-		url:"${pageContext.request.contextPath}/likeCnt.do",
-		type:"POST",
-		data:{feed_id:feedId},
-		dataType:"JSON",
-		success:function(data){
-			var count=data.length;	//새로운 카운트 
-			var chk=0;				
-           	$.each(data, function(idx, val) {
-           		if('${user.user_id}' == val.user_id){
-           			chk = 1; 
-           		}
-          	});
-			if(chk){
-				if(userId != myId ){
-					sendLikePush(userId,feedId);						
-				}
-			}else{
-			}
+	//-------좋아요--------
+	function likeIt(feedId,userId){
+		var span = $('#recCnt'+feedId);				//원래카운트
+		var userText = $('.orginLikeText'+feedId);	//원래조건에 해당하는 텍스트
+		var userNewText = $('.likeText'+feedId);	//새로운텍스트 
+		var userImg = $('#likers-group'+feedId);	//새로운유저사진
+		var userName=$('.likename'+feedId);			//새로운유저네임
+		var myId= '${user.user_id}';
+		var user_id = new Array();		
+		var user_img = new Array();	
+
+		$.ajax({
+			url:"${pageContext.request.contextPath}/likeCnt.do",
+			type:"POST",
+			data:{feed_id:feedId},
+			dataType:"JSON",
+			success:function(data){
+				var count=data.length;	//새로운 좋아요 카운트 
+				var chk=0;				//새로운리스트에 user_id 있는지여부 1이면 좋아요, 0이면 좋아요 취소
+               	$.each(data, function(idx, val) {
+             		if('${user.user_id}' == val.user_id){ chk = 1; }
+             			user_id.push(val.user_id);
+             			user_img.push(val.uuid);
+               	});
+				//append 전 모든 태그 공백으로 만들기 
 				span.empty();
-				span.append(count);
-		},
-		error:function(err){
-			console.log(err);
-		}
-	}) 
-}; 
+			 	userImg.empty();
+				userName.empty();
+				userText.empty();
+				userNewText.empty();
+				//카운트 수만큼 username append 
+				for(var i =0; i<count; i++){
+					if(userName.children().length<2){	//2개가 있으면 append 하지 않음 
+					userName.append("<a href='${pageContext.request.contextPath}/profile.do?user_id="+user_id[i]+"'>"+user_id[i]+" </a>");	
+					}
+				}
+				//카운트 수만큼 userImg append
+				for(var j=0; j<count;j++){
+					if(userImg.children().length<5){	//5개가 있으면 더이상 추가 하지 않음 
+					userImg.append("<img src='${pageContext.request.contextPath}/resources/upload/"+user_img[j]+"'>");						
+					}
+				}
+				//좋아요 유저가 2 이상일때
+				if(count>2){
+					userNewText.append('<spring:message code="feed.like.user1"/>'+parseInt(count-2)+'<spring:message code="feed.like.user2"/>'); 
+				}
+	   			span.append(count); 
+	   			
+				if(chk){
+					if(userId != myId ){
+						sendLikePush(userId,feedId);						
+					}
+				}else{
+				}
+			},
+			error:function(err){
+				console.log(err);
+			}
+		}) 
+	}; 
+	
 
 //-------번역---------
 function trans(id, text){
@@ -2021,6 +2051,34 @@ $(function(){
 										<!-- Post footer -->
 										<div class="card-footer">
 											<!-- Post statistics -->
+											<div class="likers-group" id="likers-group${vo.feed_id }">
+												<c:forTokens items="${vo.likersuuid }" delims="," var="item"
+													end="4">
+													<img
+														src='${pageContext.request.contextPath}/resources/upload/${item}'
+														data-demo-src="assets/img/avatars/dan.jpg"
+														data-user-popover="1" alt="">
+												</c:forTokens>
+											</div>
+											<!-- Followers text -->
+											<div class="likers-text">
+												<p class="likename${vo.feed_id }">
+													<c:set var="cnt" value="1" />
+													<c:forTokens items="${vo.likers }" delims="," var="item"
+														end="1">
+														<a class="originLikename${vo.feed_id }"
+															href="${pageContext.request.contextPath}/profile.do?user_id=${item}"
+															id="${item}">${item}</a>
+														<c:set var="sum" value="${cnt+1}" />
+													</c:forTokens>
+
+												</p>
+												<c:if test="${vo.like_cnt gt 2 }">
+													<p class="orginLikeText${vo.feed_id }"><spring:message code="feed.like.user1"/> ${vo.like_cnt - sum}
+														<spring:message code="feed.like.user2"/></p>
+												</c:if>
+												<p class="likeText${vo.feed_id }"></p>
+											</div>
 											<div class="social-count">
 													<!-- Action buttons -->
 													<!-- /partials/pages/feed/buttons/feed-post-actions.html -->
