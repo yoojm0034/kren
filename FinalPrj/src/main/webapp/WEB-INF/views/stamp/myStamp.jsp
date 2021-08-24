@@ -41,7 +41,7 @@
 											style="width: 60%; justify-content: left; padding-left: 12px">
 											<c:if test="${vo.sh_type eq '편지작성' }">
 												<span class="has-price" id="sh_type"><spring:message
-														code="stamph.letter" arguments="${vo.name}" /></span>
+														code="stamph.letter" arguments="${vo.to_id}" /></span>
 											</c:if>
 											<c:if test="${vo.sh_type eq '출석체크' }">
 												<span class="has-price" id="sh_type"><spring:message
