@@ -101,7 +101,7 @@
 								    	 WHERE USER_ID = #{user_id}
 				                      	)         
 				AND  u.REG_DATE BETWEEN TRUNC(SYSDATE , 'iw') AND TRUNC(SYSDATE, 'iw')+6          
-		order by u.EDIT_DT desc
+		order by u.reg_date desc
 	</select>
        
 	<!-- 나이, 성별, 국가, 언어, 관심사 -->
