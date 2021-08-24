@@ -1226,7 +1226,7 @@ $(document).ready(function(){
 		 		    data: JSON.stringify(Data),
 		 		    contentType : "application/json; charset=UTF-8",
 		 			success:function(r){
-		 				alert('<spring:message code="comment.send.success"/>');
+		 				//alert('<spring:message code="comment.send.success"/>');
 		 				$('div[data-table="'+idx+'"]').remove();//교정테이블 삭제
 						//입력된 값 조회 후 jsp
 						$.ajax({

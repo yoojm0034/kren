@@ -94,7 +94,7 @@ $(function () {
 		    	}),
 			    contentType : "application/json; charset=UTF-8",
 		    	success: function(data) {
-		    		alert('<spring:message code="letter.save.success"/>');
+		    		//alert('<spring:message code="letter.save.success"/>');
 		    		opener.parent.location.href = '${pageContext.request.contextPath}/savedLetter.do';
 		    		window.close();
 		    	},
@@ -186,7 +186,7 @@ $(function () {
 											    	}),
 												    contentType : "application/json; charset=UTF-8",
 											    	success: function(data) {
-											    		alert('<spring:message code="letter.send.success"/>');
+											    		//alert('<spring:message code="letter.send.success"/>');
 											    		sendLetterPush(toid);
 											    		opener.parent.location.reload();
 											    		window.close();
@@ -212,7 +212,7 @@ $(function () {
 									    	}),
 										    contentType : "application/json; charset=UTF-8",
 									    	success: function(data) {
-									    		alert('<spring:message code="letter.save.success"/>');
+									    		//alert('<spring:message code="letter.save.success"/>');
 									    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 									    		window.close();
 									    	},
@@ -237,7 +237,7 @@ $(function () {
 								    	}),
 									    contentType : "application/json; charset=UTF-8",
 								    	success: function(data) {
-								    		alert('<spring:message code="letter.save.success"/>');
+								    		//alert('<spring:message code="letter.save.success"/>');
 								    		opener.parent.location.href = '${pageContext.request.contextPath}/savedLetter.do';
 								    		window.close();
 								    	},

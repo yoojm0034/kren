@@ -193,7 +193,7 @@
 			    	data:JSON.stringify({letter_id:delid}),
 				    contentType : "application/json; charset=UTF-8",
 			    	success: function(data) {
-			    		alert('<spring:message code="letter.delete.success"/>');
+			    		//alert('<spring:message code="letter.delete.success"/>');
 			    		location.reload(true);
 			    	},
 			    	error: function(e) {
@@ -359,7 +359,7 @@
 									    	}),
 										    contentType : "application/json; charset=UTF-8",
 									    	success: function(data) {
-									    		alert('<spring:message code="letter.send.success"/>');
+									    		//alert('<spring:message code="letter.send.success"/>');
 									    		location.reload(true);
 									    		sendLetterPush(to);
 									    	},
@@ -381,7 +381,7 @@
 										    	}),
 											    contentType : "application/json; charset=UTF-8",
 										    	success: function(data) {
-										    		alert('<spring:message code="letter.save.success"/>');
+										    		//alert('<spring:message code="letter.save.success"/>');
 										    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 										    	},
 										    	error: function(e) {
@@ -405,7 +405,7 @@
 							    	}),
 								    contentType : "application/json; charset=UTF-8",
 							    	success: function(data) {
-							    		alert('<spring:message code="letter.save.success"/>');
+							    		//alert('<spring:message code="letter.save.success"/>');
 							    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 							    	},
 							    	error: function(e) {
@@ -430,7 +430,7 @@
 						    	}),
 							    contentType : "application/json; charset=UTF-8",
 						    	success: function(data) {
-						    		alert('<spring:message code="letter.save.success"/>');
+						    		//alert('<spring:message code="letter.save.success"/>');
 						    		location.href = '${pageContext.request.contextPath}/savedLetter.do';
 						    	},
 						    	error: function(e) {
@@ -534,7 +534,7 @@
 		    data: JSON.stringify(Data),
 		    contentType : "application/json; charset=UTF-8",
 			success:function(v){
-				alert('<spring:message code="letter.corr.success"/>');
+				//alert('<spring:message code="letter.corr.success"/>');
 				$('#tbl'+letter).remove(); // 교정 테이블 삭제
 				location.reload(true);
 			},error:function(e){
