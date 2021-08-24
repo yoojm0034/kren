@@ -113,9 +113,9 @@
 								                       WHERE user_id = #{user_id}
 								                      )
 							AND u.status ='일반회원'
-							order by DBMS_RANDOM.RANDOM
 				)c
 		 WHERE not c."topicCnt" in ('0')
+		 order by c."topicCnt" desc
 	</select>
 
 	<!-- 피드 등록 -->
