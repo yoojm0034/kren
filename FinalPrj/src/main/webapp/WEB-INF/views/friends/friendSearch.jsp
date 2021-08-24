@@ -110,7 +110,7 @@
 .filters-panel .panel-inner {
 	padding-left: 19px;
 	padding-right: 12px;
-	font-size: xx-small;
+	font-size: 0.9rem;
 	padding-top: 14px;
 	padding-bottom: 40px;
 }
@@ -119,7 +119,7 @@
 	display: none;
 }
 .search-label {
-	font-size: .7rem;
+	font-size: 0.9rem;
 	font-weight: 500;
 	margin-right: 21px;
 }
@@ -133,7 +133,7 @@
 }
 .topic-list {
 	overflow: auto;
-	height: 200px;
+	height: 150px;
 	-ms-overflow-style: none;
 	margin-top: 15px;
 }
@@ -260,13 +260,14 @@
 	justify-content: center;
 }
 #friendSearch {
-	left: 270px;
+	float: right;
 }
 .title {
 	padding-top: 11px;
+	padding-bottom: 11px;
 }
 .field label {
-	font-size: .7rem;
+	font-size: .9rem;
 }
 .radio {
 	margin-left: 5px;
@@ -282,7 +283,7 @@ input.input.textFilter-input {
 }
 .spanCnt{
 	font-weight: 600;
-    color: crimson;
+    color: #828282;
     margin: 0px 2px 0px 4px;
 }
 .divCnt{
@@ -290,8 +291,12 @@ input.input.textFilter-input {
 }
 small {
     font-size: .875em;
-    font-size: xx-small;
 }
+
+.radio-label { margin-right: 10px; }
+
+.search-title { font-size: 1.4rem }
+
 </style>
 <script>
 $(document).ready(function() {
@@ -485,7 +490,7 @@ function deleteCountry(value) {
 	<div class="pageloader"></div>
 	<div class="infraloader is-active"></div>
 	<div class="app-overlay"></div>
-	<div class="view-wrapper">
+	<div class="view-wrapper" style="font-family: 'ONE-Mobile-Regular' !important;">
 		<!-- /partials/global/options-nav/friends-options-nav.html -->
 		<div class="options-nav no-shadow">
 			<div class="container is-fluid">
@@ -548,12 +553,8 @@ function deleteCountry(value) {
 			<div class="filters-panel" style="overflow: scroll;">
 				<div class="panel-inner">
 					<div class="title">
-						<svg viewBox="0 0 24 24" width="24" height="24"
-							stroke="currentColor" stroke-width="2" fill="none"
-							stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-							<path
-								d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
-						<a class="button is-rounded" id="friendSearch"><spring:message code="friends.search"/></a>
+						<span class="search-title">검색조건</span>
+						<a class="button is-rounded is-solid accent-button" id="friendSearch"><spring:message code="friends.search"/></a>
 					</div>
 					<div class="field" style="font-size: .7rem;">
 						<div class="control">
@@ -567,10 +568,10 @@ function deleteCountry(value) {
 					</div>
 					<div>
 						<label class="search-label"><spring:message code="friends.search.gender"/></label> 
-						<spring:message code="friends.search.gender.all"/><input class="radio"type="radio" name="genderval" value="" checked="checked">
-						<spring:message code="friends.search.gender.m"/><input class="radio" type="radio" name="genderval" value="M">
-						<spring:message code="friends.search.gender.w"/><input class="radio" type="radio" name="genderval" value="W">
-						<spring:message code="friends.search.gender.o"/><input class="radio" type="radio" name="genderval" value="O">
+						<label class="radio-label"><input class="radio"type="radio" name="genderval" value="" checked="checked"><spring:message code="friends.search.gender.all"/></label>
+						<label class="radio-label"><input class="radio" type="radio" name="genderval" value="M"><spring:message code="friends.search.gender.m"/></label>
+						<label class="radio-label"><input class="radio" type="radio" name="genderval" value="W"><spring:message code="friends.search.gender.w"/></label>
+						<label class="radio-label"><input class="radio" type="radio" name="genderval" value="O"><spring:message code="friends.search.gender.o"/></label>
 					</div>
 					<div class="div-margin">
 						<div class="control">
@@ -616,12 +617,10 @@ function deleteCountry(value) {
 						</div>
 					</div>
 					<div class="title">
-						<svg viewBox="0 0 24 24" width="24" height="24"
-							stroke="currentColor" stroke-width="2" fill="none"
-							stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
-							<path
-								d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg>
+					<hr>
+					<span class="search-title">제외조건</span>
 					</div>
+					<!-- 제외조건 시작 -->
 					<div class="field" style="font-size: .7rem;">
 						<div class="control">
 							<label class="search-label"><spring:message code="friends.search.age"/></label> <input type="text"
@@ -634,9 +633,9 @@ function deleteCountry(value) {
 					</div>
 					<div>
 						<label class="search-label"><spring:message code="friends.search.gender"/></label> 
-						<spring:message code="friends.search.gender.m"/><input class="radio"type="radio" name="dgenderval" value="M"> 
-						<spring:message code="friends.search.gender.w"/><input class="radio" type="radio" name="dgenderval" value="W">
-						<spring:message code="friends.search.gender.o"/><input class="radio" type="radio" name="dgenderval" value="O">
+						<label class="radio-label"><input class="radio"type="radio" name="dgenderval" value="M"><spring:message code="friends.search.gender.m"/></label>
+						<label class="radio-label"><input class="radio" type="radio" name="dgenderval" value="W"><spring:message code="friends.search.gender.w"/></label>
+						<label class="radio-label"><input class="radio" type="radio" name="dgenderval" value="O"><spring:message code="friends.search.gender.o"/></label>
 					</div>
 					<div class="div-margin">
 						<div class="control">
@@ -723,8 +722,8 @@ function deleteCountry(value) {
 													${vo.country}</span>
 												<c:if test="${vo.topicCnt ne 0 }">
 													<div class="divCnt">
-													<p><spring:message code="friends.search.topic.count"/><span class="spanCnt">${vo.topicCnt }</span><spring:message code="friends.search.topic.count2"/>
-													</p>
+													<h4><spring:message code="friends.search.topic.count"/><span class="spanCnt">${vo.topicCnt }</span><spring:message code="friends.search.topic.count2"/>
+													</h4>
 													</div>
 												</c:if>
 												<c:if test="${vo.topicCnt eq 0 }">
@@ -784,7 +783,7 @@ function deleteCountry(value) {
 													${vo.country}</span>
 												<c:if test="${vo.topicCnt ne 0 }">
 													<div class="divCnt">
-													<p><spring:message code="friends.search.topic.count"/><span class="spanCnt">${vo.topicCnt }</span><spring:message code="friends.search.topic.count2"/></p>
+													<h4><spring:message code="friends.search.topic.count"/><span class="spanCnt">${vo.topicCnt }</span><spring:message code="friends.search.topic.count2"/></h4>
 													</div>
 												</c:if>
 												<c:if test="${vo.topicCnt eq 0 }">
@@ -795,12 +794,12 @@ function deleteCountry(value) {
 									</a>
 									<div class="friend-stats">
 										<div class="stat-block">
-											<label>Following</label>
-											<div class="stat-number">${vo.followingCnt }</div>
-										</div>
-										<div class="stat-block">
 											<label>Posts</label>
 											<div class="stat-number">${vo.feedCnt }</div>
+										</div>
+										<div class="stat-block">
+											<label>Following</label>
+											<div class="stat-number">${vo.followingCnt }</div>
 										</div>
 										<div class="stat-block">
 											<label>Followers</label>
