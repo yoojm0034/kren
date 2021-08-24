@@ -675,11 +675,12 @@
 											</c:if>
 											</c:if>
 											<div class="msg-header">
-												<div class="user-image" onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">
+												<div class="user-image">
 													<c:if test="${vo.uuid ne '-' }">
 														<img
 															style="width: 48px; height: 48px; border-radius: 50%; display: inline-block;"
-															src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }" alt="friends">									
+															src="${pageContext.request.contextPath}/resources/upload/${vo.uuid }" alt="friends"
+     														onclick="location.href='${pageContext.request.contextPath}/profile.do?user_id=${vo.user_id }'">									
 													</c:if>
 													<c:if test="${vo.uuid eq '-' }">										
 														<img
