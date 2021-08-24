@@ -470,7 +470,7 @@ function follow(check) {
 	    			var sessioninfo = '<div class="card-flex friend-card" id="${user.user_id}">'
 	    							+ '<a id="goProfile" href="${pageContext.request.contextPath}/profile.do?user_id=${user.user_id }">'
 	    							+ '<div class="img-container">'
-	    							+ '<img class="avatar" src="https://via.placeholder.com/300x300" data-demo-src="resources/template/assets/img/avatars/elise.jpg" alt=""> <img class="flag" src="${user.flag }" alt="">'
+	    							+ '<img class="avatar" src="${pageContext.request.contextPath}/resources/upload/${photo.uuid }"> <img class="flag" src="${user.flag }" alt="">'
 	    							+ '</div>'
 	    							+ '<div class="friend-info">'
 	    							+ '<div class="friend-name">${user.name }</div>'
