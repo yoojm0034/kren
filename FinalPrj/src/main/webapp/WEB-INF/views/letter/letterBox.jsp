@@ -687,7 +687,7 @@
 															src="https://via.placeholder.com/400x400" alt="friends">
 													</c:if>	
 													<span class="msg-from"
-														style="vertical-align: top; margin-left: 5px;"> <small><a>${vo.name }</a></small>
+														style="vertical-align: top; margin-left: 5px;"> <small><a>${vo.name }</a><img src="https://image.flaticon.com/icons/png/512/3925/3925153.png" width="20"></small>
 													</span>
 												</div>
 											</div>
