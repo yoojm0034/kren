@@ -18,6 +18,8 @@
 			access="permitAll()" />
 		<security:intercept-url pattern="/userQnaWrite.do"
 			access="permitAll()" />	
+		<security:intercept-url pattern="/userQnaInsert.do"
+			access="permitAll()" />		
 		<security:intercept-url pattern="/find/**"
 			access="permitAll()" />
 		<security:intercept-url pattern="/sendEmail.do"
