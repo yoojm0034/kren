@@ -21,6 +21,7 @@
 	rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/template/assets/nicelabel/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
+
 </head>
 <body>
 <!-- Pageloader -->

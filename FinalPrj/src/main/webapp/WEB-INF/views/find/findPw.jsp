@@ -22,63 +22,60 @@
 	rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/template/assets/nicelabel/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/template/assets/nicelabel/js/jquery.nicelabel.js"></script>
+<style>
+#findPwBtn {
+	background: #5596e6;
+    border-color: #5596e6;
+    color: #fff;
+    left: 36%;
+    margin-top: 5%;
+}
+</style>
 </head>
 <body>
 <script>
-	//아이디 체크 버튼...
-	$(function(){
-		$("#findPw2Btn").on("click", function(){
-			var id = $('#id').val();
-			
-			if(id == ""){
-				alert('<spring:message code="id.check.alert1" />');
-				$('#id').focus();
-				return false;
-			}
-			
-			$.ajax({
-					url: 'idCheck.do',
-					data: { user_id: $('#id').val() },
-					success: function(res){ //res= 컨트롤러에서 넘어오는 값
-						if(res == true){
-							//이메일 입력창 떠야함
-							
-							alert('<spring:message code="id.check.alert3" />');
-						}else{
-							alert('<spring:message code="id.check.alert2" />');
-						}
-					},
-					error: function(error){
-						alert('<spring:message code="check.alert" />');
-					}
-			});
-		});
-	});
-
 	//이메일 체크 버튼...
 	$(function() {
 	  $("#findPwBtn").on("click", function(){
+		  var id = $('#id').val();
 		  var mail = $('#email').val();
 		  
-		//이메일 입력을 하지 않고 버튼을 누를 경우...
-		if(mail == ""){
+		if(id == ""){
+			alert('<spring:message code="id.check.alert1" />');
+			$('#id').focus();
+			return false;
+		}else if( mail == ""){
 			alert('<spring:message code="mail.check.alert1" />');
 			$('#email').focus();
 			return false;
 		}
 		
-		//이메일 DB 비교...
 			$.ajax({
-				url: 'pwSendMail.do',
-				data: { email: $('#email').val() },
+				url: 'idCheck.do',
+				data: { user_id: $('#id').val() },
 				success: function(res){ //res= 컨트롤러에서 넘어오는 값
-					if(res == 1){
-						//회원정보와 동일한 이메일이 존재할 경우...
-						alert('<spring:message code="mail.check.alert.p" />');
+					if(res == true){
+						//이메일 입력창 떠야함
+						//alert('<spring:message code="id.check.alert3" />');
 					}else{
-						//동일 이메일이 없을 경우...
-						alert('<spring:message code="mail.check.alert2" />');
+						alert('<spring:message code="id.check.alert2" />');
 					}
+						$.ajax({
+							url: 'pwSendMail.do',
+							data: { email: $('#email').val() },
+							success: function(res){ //res= 컨트롤러에서 넘어오는 값
+								if(res == 1){
+									//회원정보와 동일한 이메일이 존재할 경우...
+									alert('<spring:message code="mail.check.alert.p" />');
+								}else{
+									//동일 이메일이 없을 경우...
+									alert('<spring:message code="mail.check.alert2" />');
+								}
+							},
+							error: function(error){
+								alert('<spring:message code="check.alert" />');
+							}
+						});
 				},
 				error: function(error){
 					alert('<spring:message code="check.alert" />');
@@ -117,17 +114,16 @@
 											<input type="text" class="input" id="id" name="id"
 												placeholder="<spring:message code="enter.id" />">
 										</div>
-											<button type="button" id="findPw2Btn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 									</div>
 									<div class="field">
 										<label><spring:message code="mail.title" /></label>
 										<div class="control">
 											<input type="text" class="input" id="email" name="email"
 												placeholder="<spring:message code="enter.mail" />">
-											<button type="button" id="findPwBtn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
 										</div>
 									</div>
 								</form>
+								<button type="button" id="findPwBtn" class="button is-solid accent-button raised"><spring:message code="check.button" /></button>
                             </div>
                             <br>
                             <div class="account-link has-text-centered">
