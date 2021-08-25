@@ -119,9 +119,12 @@
 							<div class="dropdown-content">
 								<a href="#" class="dropdown-item">
 									<div class="media">
+									<% pageContext.setAttribute("enter", "\r\n"); %>
+										<c:set var="content" value="${vo.content }"/>
+										<c:set var="text" value="${fn:replace(content,enter,' ')}"/>
 										<i data-feather="bookmark"></i>
-										<div class="media-content" id="${vo.content }"
-											onclick="trans('${vo.feed_id }','${vo.content }'); return false;">
+										<div class="media-content" id="${text }"
+											onclick="trans('${vo.feed_id }','${text }'); return false;">
 											<h3><spring:message code="feed.drop.trans"/></h3>
 										</div>
 									</div>
